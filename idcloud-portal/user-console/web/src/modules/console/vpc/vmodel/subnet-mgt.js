@@ -34,6 +34,7 @@ define(['lib/jquery/pintuer',
             alert(subnetMgt.zoneValue);
         },
         refreshclick:function(){
+            initSubnetGrid();
             messageBox.msgNotification({
                 type:"success",
                 message:"刷新成功！"
@@ -67,7 +68,7 @@ define(['lib/jquery/pintuer',
                             callback : function (data) {
                                 // 关闭新增window
                                 layer.closeAll();
-                                initGrid();
+                                initSubnetGrid();
                             }
                         });
                         return true;
@@ -92,7 +93,7 @@ define(['lib/jquery/pintuer',
                             params: data,
                             async: true,
                             callback : function (data) {
-                                initGrid();
+                                initSubnetGrid();
                             }
                         });
                         return true;
@@ -127,7 +128,7 @@ define(['lib/jquery/pintuer',
                         params: data,
                         async: true,
                         callback : function (data) {
-                            initGrid();
+                            initSubnetGrid();
                         }
                     });
                 }
@@ -143,7 +144,7 @@ define(['lib/jquery/pintuer',
 
 
     //初始grid
-    var initGrid = function(){
+    var initSubnetGrid = function(){
         var json = {
             zoneSid: subnetMgt.zoneValue,
         };
@@ -191,7 +192,7 @@ define(['lib/jquery/pintuer',
         $ctrl.$onRendered = function () {
             pintuer.init();
             subnetMgt.initModelData();
-            initGrid();
+            initSubnetGrid();
         };
 
         $ctrl.$onBeforeUnload = function () {
