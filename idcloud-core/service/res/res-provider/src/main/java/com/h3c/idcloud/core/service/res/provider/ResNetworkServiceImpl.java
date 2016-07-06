@@ -589,6 +589,7 @@ public class ResNetworkServiceImpl implements ResNetworkService {
         // 新建子网
         ResNetwork resNetwork = new ResNetwork();
         JsonNode networkJson = jsonNode.get("subNet");
+        resNetwork.setZone(resCommonInst.getZoneId());
         resNetwork.setNetworkName(networkJson.get("subNetName").getTextValue());
         String cidr = networkJson.get("subNetCidr").getTextValue();
         resNetwork.setParentTopologySid(networkJson.get("vpcSid").getTextValue());

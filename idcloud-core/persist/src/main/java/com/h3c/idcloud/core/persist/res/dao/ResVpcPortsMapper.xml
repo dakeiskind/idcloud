@@ -102,7 +102,7 @@
     where RES_PORT_SID = #{resPortSid}
   </delete>
   <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
-    delete from res_vpc_ports
+    delete from A using res_vpc_ports as A
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>

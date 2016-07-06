@@ -338,7 +338,7 @@ public class ResFloatingIpServiceImpl implements ResFloatingIpService {
             if (floatingIpDetachResult.isSuccess()) {
                 ResNetwork resNetwork = this.resNetworkMapper.selectByPrimaryKey(resFloatingIpVm.getMappingNetworkSid());
                 // 删除端口信息
-                this.resVpcPortsMapper.deleteByParams(new Criteria().put("diviceId", resFloatingIp.getUuid())
+                this.resVpcPortsMapper.deleteByParams(new Criteria().put("deviceId", resFloatingIp.getUuid())
                                                                     .put("vpcId", resNetwork.getParentTopologySid()));
 
                 // 更新关联信息
