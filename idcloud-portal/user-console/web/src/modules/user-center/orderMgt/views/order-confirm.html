@@ -1,0 +1,231 @@
+<!--订单确认 -->
+<script type="text/javascript">
+     require(["lib/jquery/pintuer",
+              "app-modules/user-center/orderMgt/vmodel/order-confirm",
+              "app-utils/$extendService"],function(pintuer,confirm){
+
+            // TODO 判断数据来源
+            confirm.data = avalon.vmodels.orderDg.orderData;
+            if(avalon.vmodels.orderMgt == undefined){
+                confirm.data = avalon.vmodels.orderDg.orderData;
+            }else{
+//                confirm.data = JSON.stringify(avalon.vmodels.orderMgt.rowdata);
+            }
+            console.log(JSON.stringify(confirm.data));
+
+            var localData = [];
+            var totalMoney = 0;
+            for(var i=0;i<confirm.data.length;i++){
+                var obj = new Object();
+                obj.serverName = "云主机";
+                obj.serverConfig = "cpu:"+confirm.data[i].cpu+
+                                   ",内存："+confirm.data[i].memory+
+                                   ",系统盘："+confirm.data[i].systemDisk+"GB"+
+                                   ",操作系统："+confirm.data[i].os;
+                obj.serverCount = confirm.data[i].orderCount;
+                obj.serverTime = confirm.data[i].buyTime;
+                obj.serverPrice = confirm.data[i].moneyPer+"元";
+                totalMoney += parseInt(confirm.data[i].moneyPer);
+                localData.push(obj);
+            }
+            confirm.totalMoney = totalMoney.toFixed(2);
+            confirm.usedAmountMoney = ((confirm.amountMoney-totalMoney > 0)?totalMoney:confirm.amountMoney).toFixed(2);
+            confirm.usedBankMoney = ((confirm.amountMoney-totalMoney > 0)?0.00:(totalMoney-confirm.amountMoney)).toFixed(2);
+            $("#orderConfirmGrid").ptGrid({
+    			pagesize:4,
+    			data:{
+    				localData:localData
+    			},
+    			columns: [
+    				{ text: '服务名称', datafield: 'serverName',sortable: true},
+    				{ text: '配置', datafield: 'serverConfig',sortable: true},
+    				{ text: '数量', datafield: 'serverCount'},
+    				{ text: '时长', datafield: 'serverTime'},
+    				{text:'价格',datafield:'serverPrice'}
+    			]
+    		});
+			pintuer.init();
+     });
+</script>
+
+<div id="order-confirm" class="line" ms-controller="orderconfirm">
+	<div class=" x12 margin-small-bottom top-height">
+        <div class="x8">
+            <div class="float-left text-large" id="confirmtitle">确认订单</div>
+        </div>
+    </div>
+    <hr>
+    <!-- 1、确认页面 -->
+    <div id="firstDIV" class="show" >
+		<div class="step margin-top" style="margin-top:20px;">
+       	 	<div class="step-bar bg-blue " style="width: 33%;">
+            	<span class="step-point bg-blue">1</span><span class="step-text">确认订单</span>
+        	</div>
+        	<div class="step-bar" style="width: 33%;">
+            	<span class="step-point">2</span><span class="step-text">支付</span>
+        	</div>
+        	<div class="step-bar" style="width: 34%;">
+            	<span class="step-point">3</span><span class="step-text">支付成功</span>
+        	</div>
+    	</div>
+    	<div class="line step_one show" style="margin-top:45px;" id="firstOrder">
+        	<div id="orderConfirmGrid" class="grid" ></div>
+        	<div class="xs2 xs10-move text-center">
+            <div class="margin-top">应付款： <span id="sumPrice " class="text-dot text-large">￥{{totalMoney}}</span></div>
+        	</div>
+        	<div >
+        	<div class="xs3 xs9-move text-right " style="margin-top: 20px;">
+        		<button class="button bg-blue radius-none" ms-click="backList()" type="button" > 返回订购 </button>
+        		<button class="button  next_step bg-yellow radius-none" type="button"  ms-click="toPay()"> 去支付</button>
+        	</div>
+        	</div>
+    	</div>
+	</div>
+    <!-- 2、支付 -->
+	<div id="secondDIV" class="hidden">
+		<div class="step" style="margin-top:20px;">
+    		<div class="step-bar  bg-green" style="width: 33%;">
+        		<span class="step-point bg-green icon-check"></span><span class="step-text">确认订单</span>
+    		</div>
+        	<div class="step-bar bg-blue" style="width: 33%;">
+            	<span class="step-point bg-blue">2</span><span class="step-text">支付</span>
+        	</div>
+    		<div class="step-bar" style="width: 34%;">
+        		<span class="step-point">3</span><span class="step-text">开通成功</span>
+    		</div>
+		</div>
+        <div class="line" style="margin-top:40px;">
+    		<div class="border xs12" style="border: 1px solid #DADADA;" >
+                <div class="line" style="padding:20px 20px 0px 20px;">
+                	<div class="xs11">
+                        <span style="font-size: 18px">订单信息：{{orderNumber}}</span>
+                    </div>
+                    <div class="xs1 margin-bottom" style="text-align: center;">
+                        <span class="text-red" style="font-size: 18px">￥{{totalMoney}}</span>
+                    </div>
+                    <hr style="border-bottom: dashed 1px #d6d6d6;background:none;margin: 0px" />
+                </div>
+                <div class="line" style="border-bottom: 1px solid #DADADA;">
+                    <table id="orderComfirm" style="font-size: 12px" width="100%" border="0" cellpadding="10" cellspacing="0"></table>
+                </div>
+
+                <!-- 余额 -->
+                <div class="line margin-top" style="padding:20px 20px 0px 20px">
+                    <div class="tab xs12">
+                        <div style="background:#eee;height:38px;border-left:3px solid #f60;line-height:38px;">
+                            <div class="line">
+                                <div class="xs11">
+                                    &nbsp;
+                                    <label>
+                                        <input name="amount" ms-duplex-checked="amountFlag" style="vertical-align:middle; margin-top:0;" type="checkbox" value="" />
+                                        <span style="vertical-align:middle;color:#333;">余额支付</span>
+                                    </label>
+                                    <label style="margin-left:5px;">
+                                        <span style="vertical-align:middle;color:#f60;">(当前余额:{{amountMoney}}元)</span>
+                                    </label>
+                                    <label style="margin-left:30px;">
+                                        <span style="vertical-align:middle;color:#333;">支付金额:</span>
+                                        <input id="amountMoney" name="money" style="height:26px;width:80px" ms-disabled="!amountFlag" ms-change="inputAmountValue(this)" class="input text-small radius-none" type="text" ms-value="usedAmountMoney"/>元
+                                    </label>
+                                </div>
+                                <div class="xs1" style="text-align: center;">
+                                    <label>
+                                        <span style="vertical-align:middle;color:#f60;">￥{{usedAmountMoney}}</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="line margin-top" style="padding:20px">
+                    <div class="tab xs12 ">
+                        <div class="tab-head">
+                            <strong><div style="font-weight:100;padding-top:2px;color:#333;">&nbsp;&nbsp;其他支付方式</div></strong><span class="tab-more" style="margin: 10px 28px 0 10px;font-size:14px;color:#f60;">￥{{usedBankMoney}}</span>
+                            <ul class="tab-nav" style="background:#eee;border-left:3px solid #f60">
+                                <li class="active"><a style="border:0px;font-size: 12px;border-top:2px solid #eee;" href="#tab-alipay">支付宝</a></li>
+                                <li><a style="border:0px;font-size: 12px;border-top:2px solid #eee;" href="#tab-internetbank">网银支付</a></li>
+                            </ul>
+                        </div>
+                        <div class="tab-body" style="border:0px">
+                            <div class="tab-panel active" id="tab-alipay">
+                                <form id="alipayForm" >
+                                    <div class="form-group">
+                                        <div class="xs12">
+                                            <div class="xs2 xs1-move">
+                                                <div style="width:210px;height:35px;float: left;">
+                                                    <input id="alipay" name="Fruit" style="float: left;display: inline;width: 13px;height: 13px;margin: 10px 10px 0 0;" type="radio" value="" />
+                                                    <label for="alipay"><span class="bank-alipay"></span></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="tab-panel" id="tab-internetbank" >
+                                <form id="bankForm">
+                                    <div class="form-group">
+                                        <div class="xs12">
+                                            <div class="xs11 xs1-move">
+                                                <div style="width:220px;height:35px;float: left;">
+                                                    <input id="icbc" name="bankType" style="float: left;display: inline;width: 13px;height: 13px;margin: 10px 10px 0 0;" type="radio" value="" />
+                                                    <label for="icbc"><span class="bank-icbc"></span></label>
+                                                </div>
+                                                <div style="width:220px;height:35px;float: left;">
+                                                    <input id="ccb" name="bankType" style="float: left;display: inline;width: 13px;height: 13px;margin: 10px 10px 0 0;" type="radio" value="" />
+                                                    <label for="ccb"><span class="bank-ccb"></span></label>
+                                                </div>
+                                                <div style="width:220px;height:35px;float: left;">
+                                                    <input id="bankcomm" name="bankType" style="float: left;display: inline;width: 13px;height: 13px;margin: 10px 10px 0 0;" type="radio" value="" />
+                                                    <label for="bankcomm"><span class="bank-bankcomm"></span></label>
+                                                </div>
+                                                <div style="width:220px;height:35px;float: left;">
+                                                    <input id="cmbchina" name="bankType" style="float: left;display: inline;width: 13px;height: 13px;margin: 10px 10px 0 0;" type="radio" value="" />
+                                                    <label for="cmbchina"><span class="bank-cmbchina"></span></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+        	    </div>
+            </div>
+        </div>
+        <!-- 支付按钮 -->
+        <div class="line margin-top">
+            <div class="xs12">
+                <div class="xs3 xs9-move text-right " style="margin-top: 20px;">
+                    <button class="button bg-yellow radius-none" type="button" ms-click="toConfirmPay()"> 确认支付 </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	<!-- 3、开通成功 -->
+	<div id="thirdDIV" class="hidden">
+		<div class="step" style="margin-top:20px;">
+    		<div class="step-bar  bg-green" style="width: 33%;">
+        		<span class="step-point bg-green icon-check"></span><span class="step-text">确订订单</span>
+    		</div>
+        	<div class="step-bar  bg-green" style="width: 33%;">
+            	<span class="step-point bg-green icon-check"></span><span class="step-text">支付</span>
+        	</div>
+        	<div class="step-bar  bg-blue" style="width: 34%;">
+           		<span class="step-point bg-blue">3</span><span class="step-text">开通成功</span>
+        	</div>
+	    </div>
+    	 <div class="line  text-center " style="margin-top: 80px;" id="thirdOrder">
+            <div class="text-center text-big">恭喜,开通成功!</div>
+            <div class="text-center margin">你购买的ECS云服务器正在努力创建 中，一般需要1-5分钟，请你耐心等待。</div>
+        	<div class="text-center  margin">
+        		<span class="text-blue text-small">查看订单记录</span>    
+        		<span class="text-blue text-small">管理控制台</span>
+        	</div>
+        </div>
+	</div>
+
+</div>

@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.charge.dao.BillingPricingDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.charge.BillingPricingDetail" >
+    <id column="PRICING_DETAIL_SID" property="pricingDetailSid" jdbcType="BIGINT" />
+    <result column="BILLING_PRICING_SID" property="billingPricingSid" jdbcType="BIGINT" />
+    <result column="SPEC_SID" property="specSid" jdbcType="BIGINT" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="VALUE" property="value" jdbcType="VARCHAR" />
+    <result column="CHARGE_UNIT" property="chargeUnit" jdbcType="VARCHAR" />
+    <result column="UNIT_PRICE" property="unitPrice" jdbcType="REAL" />
+    <result column="IS_MONTH" property="isMonth" jdbcType="BIGINT" />
+    <result column="DISCOUNT" property="discount" jdbcType="REAL" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.billingPricingSid != null" >
+         and BILLING_PRICING_SID = #{condition.billingPricingSid}
+      </if>
+      <if test="condition.specSid != null" >
+         and SPEC_SID = #{condition.specSid}
+      </if>
+      <if test="condition.specSids != null" >
+        and SPEC_SID in
+        <foreach item="item" index="index" collection="condition.specSids" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test="condition.name != null" >
+         and NAME = #{condition.name}
+      </if>
+      <if test="condition.value != null" >
+         and VALUE = #{condition.value}
+      </if>
+      <if test="condition.chargeUnit != null" >
+         and CHARGE_UNIT = #{condition.chargeUnit}
+      </if>
+      <if test="condition.unitPrice != null" >
+         and UNIT_PRICE = #{condition.unitPrice}
+      </if>
+      <if test="condition.isMonth != null" >
+         and IS_MONTH = #{condition.isMonth}
+      </if>
+      <if test="condition.discount != null" >
+         and DISCOUNT = #{condition.discount}
+      </if>
+      <if test="condition.status != null" >
+         and STATUS = #{condition.status}
+      </if>
+      <if test="condition.createdBy != null" >
+         and CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and VERSION = #{condition.version}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    PRICING_DETAIL_SID, BILLING_PRICING_SID, SPEC_SID, NAME, VALUE, CHARGE_UNIT, UNIT_PRICE, 
+    IS_MONTH, DISCOUNT, STATUS, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from billing_pricing_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from billing_pricing_detail
+    where PRICING_DETAIL_SID = #{pricingDetailSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from billing_pricing_detail
+    where PRICING_DETAIL_SID = #{pricingDetailSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from billing_pricing_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingPricingDetail" >
+    <selectKey resultType="java.lang.Long" keyProperty="pricingDetailSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_BILLING_PRICING_DETAIL')
+    </selectKey>
+    insert into billing_pricing_detail (PRICING_DETAIL_SID, BILLING_PRICING_SID, SPEC_SID, NAME, VALUE, 
+      CHARGE_UNIT, UNIT_PRICE, IS_MONTH, DISCOUNT, STATUS, CREATED_BY, 
+      CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION)
+    values (#{pricingDetailSid}, #{billingPricingSid}, #{specSid}, #{name}, #{value}, 
+      #{chargeUnit}, #{unitPrice}, #{isMonth}, #{discount}, #{status}, #{createdBy}, 
+      #{createdDt}, #{updatedBy}, #{updatedDt}, #{version})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingPricingDetail" >
+    <selectKey resultType="java.lang.Long" keyProperty="pricingDetailSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_BILLING_PRICING_DETAIL')
+    </selectKey>
+    insert into billing_pricing_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      PRICING_DETAIL_SID,
+      <if test="billingPricingSid != null" >
+        BILLING_PRICING_SID,
+      </if>
+      <if test="specSid != null" >
+        SPEC_SID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="value != null" >
+        VALUE,
+      </if>
+      <if test="chargeUnit != null" >
+        CHARGE_UNIT,
+      </if>
+      <if test="unitPrice != null" >
+        UNIT_PRICE,
+      </if>
+      <if test="isMonth != null" >
+        IS_MONTH,
+      </if>
+      <if test="discount != null" >
+        DISCOUNT,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{pricingDetailSid},
+      <if test="billingPricingSid != null" >
+        #{billingPricingSid},
+      </if>
+      <if test="specSid != null" >
+        #{specSid},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="value != null" >
+        #{value},
+      </if>
+      <if test="chargeUnit != null" >
+        #{chargeUnit},
+      </if>
+      <if test="unitPrice != null" >
+        #{unitPrice},
+      </if>
+      <if test="isMonth != null" >
+        #{isMonth},
+      </if>
+      <if test="discount != null" >
+        #{discount},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from billing_pricing_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update billing_pricing_detail
+    <set >
+      <if test="record.pricingDetailSid != null" >
+        PRICING_DETAIL_SID = #{record.pricingDetailSid},
+      </if>
+      <if test="record.billingPricingSid != null" >
+        BILLING_PRICING_SID = #{record.billingPricingSid},
+      </if>
+      <if test="record.specSid != null" >
+        SPEC_SID = #{record.specSid},
+      </if>
+      <if test="record.name != null" >
+        NAME = #{record.name},
+      </if>
+      <if test="record.value != null" >
+        VALUE = #{record.value},
+      </if>
+      <if test="record.chargeUnit != null" >
+        CHARGE_UNIT = #{record.chargeUnit},
+      </if>
+      <if test="record.unitPrice != null" >
+        UNIT_PRICE = #{record.unitPrice},
+      </if>
+      <if test="record.isMonth != null" >
+        IS_MONTH = #{record.isMonth},
+      </if>
+      <if test="record.discount != null" >
+        DISCOUNT = #{record.discount},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update billing_pricing_detail
+    set PRICING_DETAIL_SID = #{record.pricingDetailSid},
+      BILLING_PRICING_SID = #{record.billingPricingSid},
+      SPEC_SID = #{record.specSid},
+      NAME = #{record.name},
+      VALUE = #{record.value},
+      CHARGE_UNIT = #{record.chargeUnit},
+      UNIT_PRICE = #{record.unitPrice},
+      IS_MONTH = #{record.isMonth},
+      DISCOUNT = #{record.discount},
+      STATUS = #{record.status},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingPricingDetail" >
+    update billing_pricing_detail
+    <set >
+      <if test="billingPricingSid != null" >
+        BILLING_PRICING_SID = #{billingPricingSid},
+      </if>
+      <if test="specSid != null" >
+        SPEC_SID = #{specSid},
+      </if>
+      <if test="name != null" >
+        NAME = #{name},
+      </if>
+      <if test="value != null" >
+        VALUE = #{value},
+      </if>
+      <if test="chargeUnit != null" >
+        CHARGE_UNIT = #{chargeUnit},
+      </if>
+      <if test="unitPrice != null" >
+        UNIT_PRICE = #{unitPrice},
+      </if>
+      <if test="isMonth != null" >
+        IS_MONTH = #{isMonth},
+      </if>
+      <if test="discount != null" >
+        DISCOUNT = #{discount},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+    </set>
+    where PRICING_DETAIL_SID = #{pricingDetailSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingPricingDetail" >
+    update billing_pricing_detail
+    set BILLING_PRICING_SID = #{billingPricingSid},
+      SPEC_SID = #{specSid},
+      NAME = #{name},
+      VALUE = #{value},
+      CHARGE_UNIT = #{chargeUnit},
+      UNIT_PRICE = #{unitPrice},
+      IS_MONTH = #{isMonth},
+      DISCOUNT = #{discount},
+      STATUS = #{status},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version}
+    where PRICING_DETAIL_SID = #{pricingDetailSid}
+  </update>
+</mapper>

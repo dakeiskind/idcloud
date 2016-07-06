@@ -1,0 +1,687 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.ApproveRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.ApproveRecord" >
+    <id column="APPROVE_RECORD_SID" property="approveRecordSid" jdbcType="BIGINT" />
+    <result column="PROCESS_INSTANCE_ID" property="processInstanceId" jdbcType="VARCHAR" />
+    <result column="PROCESS_OBJECT_ID" property="processObjectId" jdbcType="BIGINT" />
+    <result column="PROCESS_TYPE" property="processType" jdbcType="VARCHAR" />
+    <result column="PROCESS_TYPE_NAME" property="processTypeName" jdbcType="VARCHAR" />
+    <result column="APPROVOR_ID" property="approvorId" jdbcType="VARCHAR" />
+    <result column="APPROVOR_ACTION" property="approvorAction" jdbcType="VARCHAR" />
+    <result column="APPROVOR_ACTION_NAME" property="approvorActionName" jdbcType="VARCHAR" />
+    <result column="APPROVE_STATUS" property="approveStatus" jdbcType="VARCHAR" />
+    <result column="APPROVE_STATUS_NAME" property="approveStatusName" jdbcType="VARCHAR" />
+    <result column="APPROVE_OPINION" property="approveOpinion" jdbcType="VARCHAR" />
+    <result column="APPROVE_DATE" property="approveDate" jdbcType="TIMESTAMP" />
+    <result column="PROPOSE_BY" property="proposeBy" jdbcType="VARCHAR" />
+    <result column="PROPOSE_DT" property="proposeDt" jdbcType="TIMESTAMP" />
+    <result column="ORDER_ID" property="orderId" jdbcType="VARCHAR" />
+    <result column="TANENT_ID" property="tanentId" jdbcType="VARCHAR" />
+    <result column="SERVICE_NAME" property="serviceName" jdbcType="VARCHAR" />
+    <result column="APPROVE_OBJECT" property="approveObject" jdbcType="VARCHAR" />
+    <result column="PROCESS_TARGET_ID" property="processTargetId" jdbcType="BIGINT" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.approveRecordSid != null" >
+         and A.APPROVE_RECORD_SID = #{condition.approveRecordSid}
+      </if>
+      <if test="condition.processInstanceId != null" >
+         and A.PROCESS_INSTANCE_ID = #{condition.processInstanceId}
+      </if>
+      <if test="condition.processObjectId != null" >
+         and A.PROCESS_OBJECT_ID = #{condition.processObjectId}
+      </if>
+      <if test="condition.processType != null" >
+         and A.PROCESS_TYPE = #{condition.processType}
+      </if>
+      <if test="condition.approvorId != null" >
+         and A.APPROVOR_ID = #{condition.approvorId}
+      </if>
+      <if test="condition.approvorIdLike != null" >
+       	 and A.APPROVOR_ID like concat('%', #{condition.approvorIdLike}, '%') 
+      </if>
+      <if test="condition.approvorIdNull != null" >
+         and A.APPROVOR_ID = ''
+      </if>
+      <if test="condition.approvorAction != null" >
+         and A.APPROVOR_ACTION = #{condition.approvorAction}
+      </if>
+      <if test="condition.approveStatus != null" >
+         and A.APPROVE_STATUS = #{condition.approveStatus}
+      </if>
+      <if test="condition.approveOpinion != null" >
+         and A.APPROVE_OPINION = #{condition.approveOpinion}
+      </if>
+      <if test="condition.approveDate != null" >
+         and A.APPROVE_DATE = #{condition.approveDate}
+      </if>
+      <if test="condition.approveFromTime != null" >
+         and A.APPROVE_DATE >= #{condition.approveFromTime}
+      </if>
+      <if test="condition.approveToTime != null" >
+         and A.APPROVE_DATE <![CDATA[ <= #{condition.approveToTime} ]]>
+      </if>
+      <if test="condition.processTargetId != null" >
+         and A.PROCESS_TARGET_ID = #{condition.processTargetId}
+      </if>
+      <if test="condition.proposeByLike != null" >
+         and A.PROPOSE_BY like concat('%', #{condition.proposeByLike}, '%') 
+      </if>
+      <if test="condition.approveObjectLike != null" >
+         and A.APPROVE_OBJECT like concat('%', #{condition.approveObjectLike}, '%') 
+      </if>
+      <if test="condition.proposeBy != null" >
+         and A.PROPOSE_BY = #{condition.proposeBy}
+      </if>
+      <if test="condition.proposeDt != null" >
+         and A.PROPOSE_DT = #{condition.proposeDt}
+      </if>
+       <if test="condition.mgtObjSids != null" >
+         and A.MGT_OBJ_SID in 
+         <foreach item="item" index="index" collection="condition.mgtObjSids"
+                        open="(" separator="," close=")">  
+                       #{item}  
+         </foreach>  
+       </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    A.APPROVE_RECORD_SID, A.PROCESS_INSTANCE_ID, A.PROCESS_OBJECT_ID, A.PROCESS_TYPE, A.APPROVOR_ID, A.APPROVOR_ACTION, A.APPROVE_STATUS, 
+    A.APPROVE_OPINION, A.APPROVE_DATE, A.PROPOSE_BY, A.PROPOSE_DT, A.PROCESS_TARGET_ID, A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, A.UPDATED_DT, A.VERSION
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    G.CODE_DISPLAY AS PROCESS_TYPE_NAME,
+    F.CODE_DISPLAY AS APPROVE_STATUS_NAME,
+    A.APPROVOR_ACTION AS APPROVOR_ACTION_NAME,
+    <include refid="Base_Column_List" />
+    from approve_record A
+    LEFT JOIN SYS_M_CODE F ON (A.APPROVE_STATUS = F.CODE_VALUE AND F.CODE_CATEGORY = 'APPROVE_STATUS' )
+    LEFT JOIN SYS_M_CODE G ON (A.PROCESS_TYPE = G.CODE_VALUE AND G.CODE_CATEGORY = 'PROCESS_TYPE')
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <!--ChengQi start -->
+  <select id="selectByParams2" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    G.CODE_DISPLAY AS PROCESS_TYPE_NAME,
+    F.CODE_DISPLAY AS APPROVE_STATUS_NAME,
+    A.APPROVOR_ACTION AS APPROVOR_ACTION_NAME,
+    A.APPROVE_OBJECT, A.SERVICE_NAME,
+    <include refid="Base_Column_List" />
+	from 
+    (
+	SELECT A.*,
+	CASE 
+	WHEN A.PROCESS_TYPE = '01' THEN (SELECT B.ORDER_ID FROM SERVICE_ORDER B WHERE A.PROCESS_OBJECT_ID = B.ORDER_SID) 
+	WHEN (A.PROCESS_TYPE = '12' or A.PROCESS_TYPE = '02' or A.PROCESS_TYPE = '21')  THEN (SELECT B.INSTANCE_NAME FROM SERVICE_INSTANCE B WHERE A.PROCESS_OBJECT_ID = B.INSTANCE_SID) 
+	WHEN (A.PROCESS_TYPE = '20')  THEN (SELECT B.`NAME` FROM sys_m_mgt_obj B WHERE A.PROCESS_OBJECT_ID = B.MGT_OBJ_SID) 
+	END AS APPROVE_OBJECT,
+	CASE 
+	WHEN A.PROCESS_TYPE = '01' THEN (SELECT B.MGT_OBJ_SID FROM SERVICE_ORDER B WHERE A.PROCESS_OBJECT_ID = B.ORDER_SID) 
+	WHEN (A.PROCESS_TYPE = '12' or A.PROCESS_TYPE = '02' or A.PROCESS_TYPE = '21') THEN (SELECT B.MGT_OBJ_SID FROM SERVICE_INSTANCE B WHERE A.PROCESS_OBJECT_ID = B.INSTANCE_SID) 
+	WHEN (A.PROCESS_TYPE = '20')  THEN A.PROCESS_OBJECT_ID
+	END AS MGT_OBJ_SID,
+	CASE 
+	WHEN A.PROCESS_TYPE = '01' THEN (SELECT E.SERVICE_NAME FROM SERVICE_ORDER_DETAIL C, SERVICE_ORDER D, SERVICE E WHERE A.PROCESS_OBJECT_ID = D.ORDER_SID  AND C.ORDER_ID = D.ORDER_ID AND E.SERVICE_SID = C.SERVICE_SID LIMIT 0, 1) 
+	WHEN (A.PROCESS_TYPE = '12' or A.PROCESS_TYPE = '02')  THEN (SELECT E.SERVICE_NAME FROM SERVICE_INSTANCE C, SERVICE E WHERE A.PROCESS_OBJECT_ID = C.INSTANCE_SID AND E.SERVICE_SID = C.SERVICE_SID) 
+	WHEN (A.PROCESS_TYPE = '20')  THEN "项目经理变更" 
+	WHEN (A.PROCESS_TYPE = '21')  THEN "云主机所属项目变更" 
+	END AS SERVICE_NAME
+	 FROM APPROVE_RECORD A
+	) AS A
+	INNER JOIN
+	(
+	SELECT DISTINCT RES.PROC_INST_ID_ AS PROCESS_INSTANCE_ID FROM ACT_RU_TASK RES 
+	INNER JOIN ACT_RU_IDENTITYLINK I ON I.TASK_ID_ = RES.ID_ 
+	WHERE RES.ASSIGNEE_ IS NULL AND I.TYPE_ = 'candidate' AND ( I.USER_ID_ = #{condition.currentUser} OR I.GROUP_ID_ IN (SELECT G.ID_ FROM ACT_ID_GROUP G, ACT_ID_MEMBERSHIP MEMBERSHIP WHERE G.ID_ = MEMBERSHIP.GROUP_ID_ AND MEMBERSHIP.USER_ID_ = #{condition.currentUser}))
+	) AS B
+	ON A.PROCESS_INSTANCE_ID = B.PROCESS_INSTANCE_ID
+    LEFT JOIN SYS_M_CODE F ON (A.APPROVE_STATUS = F.CODE_VALUE AND F.CODE_CATEGORY = 'APPROVE_STATUS' )
+    LEFT JOIN SYS_M_CODE G ON (A.PROCESS_TYPE = G.CODE_VALUE AND G.CODE_CATEGORY = 'PROCESS_TYPE')
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="countByParams2" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+	select count(1) 
+	from 
+    (
+	SELECT A.*,
+	CASE 
+	WHEN A.PROCESS_TYPE = '01' THEN (SELECT B.ORDER_ID FROM SERVICE_ORDER B WHERE A.PROCESS_OBJECT_ID = B.ORDER_SID) 
+	WHEN (A.PROCESS_TYPE = '12' or A.PROCESS_TYPE = '02' or A.PROCESS_TYPE = '21')  THEN (SELECT B.INSTANCE_NAME FROM SERVICE_INSTANCE B WHERE A.PROCESS_OBJECT_ID = B.INSTANCE_SID) 
+	WHEN (A.PROCESS_TYPE = '20')  THEN (SELECT B.`NAME` FROM sys_m_mgt_obj B WHERE A.PROCESS_OBJECT_ID = B.MGT_OBJ_SID)
+	END AS APPROVE_OBJECT,
+	CASE 
+	WHEN A.PROCESS_TYPE = '01' THEN (SELECT B.MGT_OBJ_SID FROM SERVICE_ORDER B WHERE A.PROCESS_OBJECT_ID = B.ORDER_SID) 
+	WHEN (A.PROCESS_TYPE = '12' or A.PROCESS_TYPE = '02' or A.PROCESS_TYPE = '21')  THEN (SELECT B.BIZ_SID FROM SERVICE_INSTANCE B WHERE A.PROCESS_OBJECT_ID = B.INSTANCE_SID) 
+	WHEN (A.PROCESS_TYPE = '20')  THEN A.PROCESS_OBJECT_ID
+	END AS MGT_OBJ_SID,
+	CASE 
+	WHEN A.PROCESS_TYPE = '01' THEN (SELECT E.SERVICE_NAME FROM SERVICE_ORDER_DETAIL C, SERVICE_ORDER D, SERVICE E WHERE A.PROCESS_OBJECT_ID = D.ORDER_SID  AND C.ORDER_ID = D.ORDER_ID AND E.SERVICE_SID = C.SERVICE_SID LIMIT 0, 1) 
+	WHEN (A.PROCESS_TYPE = '12' or A.PROCESS_TYPE = '02')  THEN (SELECT E.SERVICE_NAME FROM SERVICE_INSTANCE C, SERVICE E WHERE A.PROCESS_OBJECT_ID = C.INSTANCE_SID AND E.SERVICE_SID = C.SERVICE_SID) 
+	WHEN (A.PROCESS_TYPE = '20')  THEN "项目经理变更" 
+	WHEN (A.PROCESS_TYPE = '21')  THEN "云主机所属项目变更"
+	END AS SERVICE_NAME
+	 FROM APPROVE_RECORD A
+	) AS A
+	INNER JOIN
+	(
+	SELECT DISTINCT RES.PROC_INST_ID_ AS PROCESS_INSTANCE_ID FROM ACT_RU_TASK RES 
+	INNER JOIN ACT_RU_IDENTITYLINK I ON I.TASK_ID_ = RES.ID_ 
+	WHERE RES.ASSIGNEE_ IS NULL AND I.TYPE_ = 'candidate' AND ( I.USER_ID_ = #{condition.currentUser} OR I.GROUP_ID_ IN (SELECT G.ID_ FROM ACT_ID_GROUP G, ACT_ID_MEMBERSHIP MEMBERSHIP WHERE G.ID_ = MEMBERSHIP.GROUP_ID_ AND MEMBERSHIP.USER_ID_ = #{condition.currentUser}))
+	) AS B
+	ON A.PROCESS_INSTANCE_ID = B.PROCESS_INSTANCE_ID
+    LEFT JOIN SYS_M_CODE F ON (A.APPROVE_STATUS = F.CODE_VALUE AND F.CODE_CATEGORY = 'APPROVE_STATUS' )
+    LEFT JOIN SYS_M_CODE G ON (A.PROCESS_TYPE = G.CODE_VALUE AND G.CODE_CATEGORY = 'PROCESS_TYPE')
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <!-- ChengQi end -->
+  
+  <select id="selectOrderOpenByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    <!--SELECT DISTINCT A.PROCESS_INSTANCE_ID,
+		C.ORDER_ID AS APPROVE_OBJECT,
+		C.TANENT_ID,
+		C.CREATED_BY,
+		C.CREATED_DT,
+		D.CODE_DISPLAY AS PROCESS_TYPE_NAME,
+		E.SERVICE_NAME,
+		F.CODE_DISPLAY AS APPROVE_STATUS_NAME
+	<if test="condition.unCheckStatus != null " >
+		FROM (SELECT A1.* FROM APPROVE_RECORD A1 WHERE A1.APPROVOR_ID = '') A
+	</if>
+	<if test="condition.checkStatus != null" >
+		,A.APPROVOR_ID
+		,A.APPROVE_STATUS
+		,A.APPROVE_DATE
+		,A.PROCESS_TYPE
+		FROM (SELECT A1.PROCESS_INSTANCE_ID, A1.APPROVOR_ID, A1.APPROVE_STATUS, A1.PROCESS_TYPE, MAX(A1.APPROVE_DATE) APPROVE_DATE FROM APPROVE_RECORD A1 GROUP BY A1.PROCESS_INSTANCE_ID) A
+	</if>
+	INNER JOIN SERVICE_ORDER_DETAIL B ON (A.PROCESS_INSTANCE_ID = B.PROCESS_INSTANCE_ID) 
+	INNER JOIN SERVICE_ORDER C ON (B.ORDER_ID = C.ORDER_ID)
+	LEFT JOIN SYS_M_CODE D ON (A.PROCESS_TYPE = D.CODE_VALUE AND D.CODE_CATEGORY = 'PROCESS_TYPE' )
+	LEFT JOIN SERVICE E ON (B.SERVICE_SID = E.SERVICE_SID)
+	LEFT JOIN SYS_M_CODE F ON (A.APPROVE_STATUS = F.CODE_VALUE AND F.CODE_CATEGORY = 'APPROVE_STATUS' )
+
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" /> -->
+  </select>
+  
+  <!--取得审核对象的流程实例id和类型 -->
+  <select id="selectProcessInstanceIdAndType" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+   <!-- SELECT DISTINCT 
+    	A.PROCESS_INSTANCE_ID,
+    	A.PROCESS_TYPE,
+    	B.CODE_DISPLAY AS PROCESS_TYPE_NAME 
+    FROM APPROVE_RECORD A 
+    LEFT JOIN SYS_M_CODE B ON (A.PROCESS_TYPE = B.CODE_VALUE AND B.CODE_CATEGORY = 'PROCESS_TYPE')
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />-->
+  </select>
+  
+    <!--运营管理审核对象数据-->
+  <select id="selectOperateApproveRecord" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+     <!--SELECT
+	C.CODE_DISPLAY AS APPROVE_STATUS_NAME,
+    <include refid="Base_Column_List" />
+    FROM APPROVE_RECORD A
+	INNER JOIN (SELECT B1.PROCESS_INSTANCE_ID, MAX(B1.APPROVE_DATE) APPROVE_DATE  FROM APPROVE_RECORD B1 GROUP BY B1.PROCESS_INSTANCE_ID) B 
+	ON(A.PROCESS_INSTANCE_ID = B.PROCESS_INSTANCE_ID AND A.APPROVE_DATE = B.APPROVE_DATE)
+    LEFT JOIN SYS_M_CODE C ON (A.APPROVE_STATUS = C.CODE_VALUE AND C.CODE_CATEGORY = 'APPROVE_STATUS' )
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" /> -->
+  </select>
+  
+  <!--已审批对象数据
+  <select id="selectApprovedRecord" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    SELECT
+	C.CODE_DISPLAY AS APPROVE_STATUS_NAME,
+	D.CODE_DISPLAY AS PROCESS_TYPE_NAME,
+	IF(A.APPROVOR_ACTION = 'TenantApprove','租户管理员审批','运营管理员审批') AS APPROVOR_ACTION_NAME,
+    <include refid="Base_Column_List" />
+    FROM APPROVE_RECORD A
+	INNER JOIN (
+		SELECT 
+		B1.PROCESS_INSTANCE_ID,
+		B1.PROCESS_TYPE, 
+		MAX(B1.APPROVE_DATE) APPROVE_DATE 
+		FROM APPROVE_RECORD B1 
+		GROUP BY 
+		B1.PROCESS_INSTANCE_ID) B ON A.APPROVE_DATE = B.APPROVE_DATE
+	LEFT JOIN SYS_M_CODE C ON (A.APPROVE_STATUS = C.CODE_VALUE AND C.CODE_CATEGORY = 'APPROVE_STATUS' )
+	LEFT JOIN SYS_M_CODE D ON (A.PROCESS_TYPE = D.CODE_VALUE AND D.CODE_CATEGORY = 'PROCESS_TYPE')
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>-->
+  
+   <select id="selectApprovedRecord" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    SELECT
+	C.CODE_DISPLAY AS APPROVE_STATUS_NAME,
+	D.CODE_DISPLAY AS PROCESS_TYPE_NAME,
+	(case A.APPROVOR_ACTION when 'TenantApprove' then '租户管理员审核' when 'AutoApprove' then '自动审核' when 'OrderApprove' then '运营管理员审核' else '' end) AS APPROVOR_ACTION_NAME,
+
+    <include refid="Base_Column_List" />
+    FROM APPROVE_RECORD A
+	INNER JOIN (SELECT
+		B1.PROCESS_INSTANCE_ID,
+		B1.APPROVOR_ID,
+		B1.PROCESS_TYPE,
+		MAX(B1.APPROVE_DATE) AS APPROVE_DATE,
+		MAX(B1.APPROVE_RECORD_SID) AS APPROVE_RECORD_SID
+	FROM APPROVE_RECORD B1
+	    GROUP BY B1.PROCESS_INSTANCE_ID,B1.APPROVOR_ID,B1.PROCESS_TYPE
+	) B ON A.APPROVE_RECORD_SID = B.APPROVE_RECORD_SID
+	LEFT JOIN SYS_M_CODE C ON (A.APPROVE_STATUS = C.CODE_VALUE AND C.CODE_CATEGORY = 'APPROVE_STATUS' )
+	LEFT JOIN SYS_M_CODE D ON (A.PROCESS_TYPE = D.CODE_VALUE AND D.CODE_CATEGORY = 'PROCESS_TYPE')
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  
+  <select id="selectApprovedRecord2" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    SELECT
+	C.CODE_DISPLAY AS APPROVE_STATUS_NAME,
+	D.CODE_DISPLAY AS PROCESS_TYPE_NAME,
+	A.APPROVOR_ACTION AS APPROVOR_ACTION_NAME,
+	A.APPROVE_OBJECT, A.SERVICE_NAME,
+    <include refid="Base_Column_List" />
+    from
+    (
+	SELECT A.*,
+	CASE 
+	WHEN A.PROCESS_TYPE = '01' THEN (SELECT B.ORDER_ID FROM SERVICE_ORDER B WHERE A.PROCESS_OBJECT_ID = B.ORDER_SID) 
+	WHEN (A.PROCESS_TYPE = '12' or A.PROCESS_TYPE = '02' or A.PROCESS_TYPE = '21') THEN (SELECT B.INSTANCE_NAME FROM SERVICE_INSTANCE B WHERE A.PROCESS_OBJECT_ID = B.INSTANCE_SID) 
+	WHEN (A.PROCESS_TYPE = '20')  THEN (SELECT B.`NAME` FROM sys_m_mgt_obj B WHERE A.PROCESS_OBJECT_ID = B.MGT_OBJ_SID)
+	END AS APPROVE_OBJECT,
+	CASE 
+	WHEN A.PROCESS_TYPE = '01' THEN (SELECT E.SERVICE_NAME FROM SERVICE_ORDER_DETAIL C, SERVICE_ORDER D, SERVICE E WHERE A.PROCESS_OBJECT_ID = D.ORDER_SID  AND C.ORDER_ID = D.ORDER_ID AND E.SERVICE_SID = C.SERVICE_SID LIMIT 0, 1) 
+	WHEN (A.PROCESS_TYPE = '12' or A.PROCESS_TYPE = '02') THEN (SELECT E.SERVICE_NAME FROM SERVICE_INSTANCE C, SERVICE E WHERE A.PROCESS_OBJECT_ID = C.INSTANCE_SID AND E.SERVICE_SID = C.SERVICE_SID) 
+	WHEN (A.PROCESS_TYPE = '20')  THEN "项目经理变更" 
+	WHEN (A.PROCESS_TYPE = '21')  THEN "云主机所属项目变更" 
+	END AS SERVICE_NAME
+	 FROM APPROVE_RECORD A
+	) AS A
+	LEFT JOIN SYS_M_CODE C ON (A.APPROVE_STATUS = C.CODE_VALUE AND C.CODE_CATEGORY = 'APPROVE_STATUS' )
+	LEFT JOIN SYS_M_CODE D ON (A.PROCESS_TYPE = D.CODE_VALUE AND D.CODE_CATEGORY = 'PROCESS_TYPE')
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="countApprovedRecord2" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+  	select count(1) 
+    from
+    (
+	SELECT A.*,
+	CASE 
+	WHEN A.PROCESS_TYPE = '01' THEN (SELECT B.ORDER_ID FROM SERVICE_ORDER B WHERE A.PROCESS_OBJECT_ID = B.ORDER_SID) 
+	WHEN (A.PROCESS_TYPE = '12' or A.PROCESS_TYPE = '02' or A.PROCESS_TYPE = '21') THEN (SELECT B.INSTANCE_NAME FROM SERVICE_INSTANCE B WHERE A.PROCESS_OBJECT_ID = B.INSTANCE_SID) 
+	WHEN (A.PROCESS_TYPE = '20')  THEN (SELECT B.`NAME` FROM sys_m_mgt_obj B WHERE A.PROCESS_OBJECT_ID = B.MGT_OBJ_SID)
+	END AS APPROVE_OBJECT,
+	CASE 
+	WHEN A.PROCESS_TYPE = '01' THEN (SELECT E.SERVICE_NAME FROM SERVICE_ORDER_DETAIL C, SERVICE_ORDER D, SERVICE E WHERE A.PROCESS_OBJECT_ID = D.ORDER_SID  AND C.ORDER_ID = D.ORDER_ID AND E.SERVICE_SID = C.SERVICE_SID LIMIT 0, 1) 
+	WHEN (A.PROCESS_TYPE = '12' or A.PROCESS_TYPE = '02') THEN (SELECT E.SERVICE_NAME FROM SERVICE_INSTANCE C, SERVICE E WHERE A.PROCESS_OBJECT_ID = C.INSTANCE_SID AND E.SERVICE_SID = C.SERVICE_SID) 
+	WHEN (A.PROCESS_TYPE = '20')  THEN "项目经理变更" 
+	WHEN (A.PROCESS_TYPE = '21')  THEN "云主机所属项目变更" 
+	END AS SERVICE_NAME
+	 FROM APPROVE_RECORD A
+	) AS A
+	LEFT JOIN SYS_M_CODE C ON (A.APPROVE_STATUS = C.CODE_VALUE AND C.CODE_CATEGORY = 'APPROVE_STATUS' )
+	LEFT JOIN SYS_M_CODE D ON (A.PROCESS_TYPE = D.CODE_VALUE AND D.CODE_CATEGORY = 'PROCESS_TYPE')
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    G.CODE_DISPLAY AS PROCESS_TYPE_NAME,
+    F.CODE_DISPLAY AS APPROVE_STATUS_NAME,
+    (case A.APPROVOR_ACTION when 'TenantApprove' then '租户管理员审核' when 'AutoApprove' then '自动审核' when 'OrderApprove' then '运营管理员审核' else '' end) AS APPROVOR_ACTION_NAME,
+
+    <include refid="Base_Column_List" />
+    from approve_record A
+    LEFT JOIN SYS_M_CODE F ON (A.APPROVE_STATUS = F.CODE_VALUE AND F.CODE_CATEGORY = 'APPROVE_STATUS' )
+    LEFT JOIN SYS_M_CODE G ON (A.PROCESS_TYPE = G.CODE_VALUE AND G.CODE_CATEGORY = 'PROCESS_TYPE')
+    where APPROVE_RECORD_SID = #{approveRecordSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from approve_record
+    where APPROVE_RECORD_SID = #{approveRecordSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from approve_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.system.ApproveRecord" >
+    insert into approve_record (APPROVE_RECORD_SID, PROCESS_INSTANCE_ID, PROCESS_OBJECT_ID, PROCESS_TYPE, APPROVOR_ID, APPROVOR_ACTION, 
+      APPROVE_STATUS, APPROVE_OPINION, APPROVE_DATE, PROCESS_TARGET_ID, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATE_DT, VERSION)
+    values (#{approveRecordSid}, #{processInstanceId}, #{processObjectId}, #{processType}, #{approvorId}, #{approvorAction}, 
+      #{approveStatus}, #{approveOpinion}, #{approveDate},#{proposeBy}, #{proposeDt}, #{processTargetId}, #{createdBy}, #{createdDt}, #{updatedBy}, #{updatedDt}, #{version})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.ApproveRecord" >
+   <selectKey resultType="java.lang.Long" keyProperty="approveRecordSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_APPROVE_RECORD')
+    </selectKey>
+    insert into approve_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        APPROVE_RECORD_SID,
+      <if test="processInstanceId != null" >
+        PROCESS_INSTANCE_ID,
+      </if>
+      <if test="processObjectId != null" >
+        PROCESS_OBJECT_ID,
+      </if>
+      <if test="processType != null" >
+        PROCESS_TYPE,
+      </if>
+      <if test="approvorId != null" >
+        APPROVOR_ID,
+      </if>
+      <if test="approvorAction != null" >
+        APPROVOR_ACTION,
+      </if>
+      <if test="approveStatus != null" >
+        APPROVE_STATUS,
+      </if>
+      <if test="approveOpinion != null" >
+        APPROVE_OPINION,
+      </if>
+      <if test="approveDate != null" >
+        APPROVE_DATE,
+      </if>
+      <if test="proposeBy != null" >
+        PROPOSE_BY,
+      </if>
+      <if test="proposeDt != null" >
+        PROPOSE_DT,
+      </if>
+      <if test="processTargetId != null" >
+        PROCESS_TARGET_ID,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{approveRecordSid},
+      <if test="processInstanceId != null" >
+        #{processInstanceId},
+      </if>
+      <if test="processObjectId != null" >
+        #{processObjectId},
+      </if>
+      <if test="processType != null" >
+        #{processType},
+      </if>
+      <if test="approvorId != null" >
+        #{approvorId},
+      </if>
+      <if test="approvorAction != null" >
+        #{approvorAction},
+      </if>
+      <if test="approveStatus != null" >
+        #{approveStatus},
+      </if>
+      <if test="approveOpinion != null" >
+        #{approveOpinion},
+      </if>
+      <if test="approveDate != null" >
+        #{approveDate},
+      </if>
+      <if test="proposeBy != null" >
+        #{proposeBy},
+      </if>
+      <if test="proposeDt != null" >
+        #{proposeDt},
+      </if>
+      <if test="processTargetId != null" >
+        #{processTargetId},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from approve_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update approve_record
+    <set >
+      <if test="record.approveRecordSid != null" >
+        APPROVE_RECORD_SID = #{record.approveRecordSid},
+      </if>
+      <if test="record.processInstanceId != null" >
+        PROCESS_INSTANCE_ID = #{record.processInstanceId},
+      </if>
+      <if test="record.processObjectId != null" >
+        PROCESS_OBJECT_ID = #{record.processObjectId},
+      </if>
+      <if test="record.processType != null" >
+        PROCESS_TYPE = #{record.processType},
+      </if>
+      <if test="record.approvorId != null" >
+        APPROVOR_ID = #{record.approvorId},
+      </if>
+      <if test="record.approvorAction != null" >
+        APPROVOR_ACTION = #{record.approvorAction},
+      </if>
+      <if test="record.approveStatus != null" >
+        APPROVE_STATUS = #{record.approveStatus},
+      </if>
+      <if test="record.approveOpinion != null" >
+        APPROVE_OPINION = #{record.approveOpinion},
+      </if>
+      <if test="record.approveDate != null" >
+        APPROVE_DATE = #{record.approveDate},
+      </if>
+      <if test="record.proposeBy != null" >
+        PROPOSE_BY = #{record.proposeBy},
+      </if>
+      <if test="record.proposeDt != null" >
+        PROPOSE_DT = #{record.proposeDt},
+      </if>
+      <if test="record.processTargetId != null" >
+        PROCESS_TARGET_ID = #{record.processTargetId},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update approve_record
+    set APPROVE_RECORD_SID = #{record.approveRecordSid},
+      PROCESS_INSTANCE_ID = #{record.processInstanceId},
+      PROCESS_OBJECT_ID = #{record.processObjectId},
+      PROCESS_TYPE = #{record.processType},
+      APPROVOR_ID = #{record.approvorId},
+	  APPROVOR_ACTION = #{record.approvorAction},
+      APPROVE_STATUS = #{record.approveStatus},
+      APPROVE_OPINION = #{record.approveOpinion},
+      APPROVE_DATE = #{record.approveDate},
+      PROPOSE_BY = #{record.proposeBy},
+      PROPOSE_DT = #{record.proposeDt},
+      PROCESS_TARGET_ID = #{record.processTargetId},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.ApproveRecord" >
+    update approve_record
+    <set >
+      <if test="processInstanceId != null" >
+        PROCESS_INSTANCE_ID = #{processInstanceId},
+      </if>
+      <if test="processObjectId != null" >
+        PROCESS_OBJECT_ID = #{processObjectId},
+      </if>
+      <if test="processType != null" >
+        PROCESS_TYPE = #{processType},
+      </if>
+      <if test="approvorId != null" >
+        APPROVOR_ID = #{approvorId},
+      </if>
+      <if test="approvorAction != null" >
+        APPROVOR_ACTION = #{approvorAction},
+      </if>
+      <if test="approveStatus != null" >
+        APPROVE_STATUS = #{approveStatus},
+      </if>
+      <if test="approveOpinion != null" >
+        APPROVE_OPINION = #{approveOpinion},
+      </if>
+      <if test="approveDate != null" >
+        APPROVE_DATE = #{approveDate},
+      </if>
+      <if test="proposeBy != null" >
+        PROPOSE_BY = #{proposeBy},
+      </if>
+      <if test="proposeDt != null" >
+        PROPOSE_DT = #{proposeDt},
+      </if>
+      <if test="processTargetId != null" >
+        PROCESS_TARGET_ID = #{processTargetId},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+    </set>
+    where APPROVE_RECORD_SID = #{approveRecordSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.ApproveRecord" >
+    update approve_record
+    set PROCESS_INSTANCE_ID = #{processInstanceId},
+      PROCESS_OBJECT_ID = #{processObjectId},
+      PROCESS_TYPE = #{processType},
+      APPROVOR_ID = #{approvorId},
+      APPROVOR_ACTION = #{approvorAction},
+      APPROVE_STATUS = #{approveStatus},
+      APPROVE_OPINION = #{approveOpinion},
+      APPROVE_DATE = #{approveDate},
+      PROPOSE_BY = #{proposeBy},
+      PROPOSE_DT = #{proposeDt},
+      PROCESS_TARGET_ID = #{processTargetId},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version}
+    where APPROVE_RECORD_SID = #{approveRecordSid}
+  </update>
+</mapper>

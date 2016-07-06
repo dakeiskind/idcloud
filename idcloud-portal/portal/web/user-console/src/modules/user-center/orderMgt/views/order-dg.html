@@ -1,0 +1,409 @@
+<style>
+    #createDefualtNetwork{
+        cursor:pointer;
+        font-size: 12px;
+    }
+    #createDefualtNetwork:hover{
+        background: #F5F5F5;
+    }
+	form{
+		padding-top:10px;
+	}
+
+	.list-media.list-underline li {
+		padding-bottom: 15px;
+		border-bottom: solid 1px gray;
+		line-height: inherit;
+	}
+	#anamite {
+		position: absolute;
+		top: 80px;
+		left: 300px;
+		background: #ccc;
+		width: 550px;
+		height: 600px;
+		z-index: 99999999;
+		opacity: 0.6;
+		display: none;
+	}
+    .ms-controller{
+        visibility: hidden;
+    }
+</style>
+<script type="text/javascript">
+     require(["lib/jquery/pintuer","app-modules/user-center/orderMgt/vmodel/order-dg"],function(pintuer,orderDg){
+            // 初始化数据
+            orderDg.initFormData();
+            // 清空订单数据
+            orderDg.orderHistoryListData = [];
+            orderDg.initMutiSelect(orderDg.subNetData);
+            // 初始化价格
+            //orderDg.billingPrice();
+
+			$("#range0").ionRangeSlider({
+	    		grid: true,
+			    min: 0,
+			    max: 500,
+			    from: 10,
+			    step: 10,
+			    grid_num: 5,
+                hide_min_max:true,
+			    prettify_enabled: false,
+			    onChange: function (data) {
+			    	$("#rangevalue0").val(data.from);
+			    }
+	    	});
+
+            orderDg.initShoppingCart();
+			pintuer.init();
+			avalon.scan();
+
+     });
+     // 删除购物车数据
+     function removeShoppingCartInfo(obj){
+         var divname = $(obj).attr("sid");
+         var orderData = avalon.vmodels.orderDg.orderHistoryListData;
+         if(orderData.length > 0){
+             for(var i=0;i<orderData.length;i++){
+                 if(divname == orderData[i].id){
+                     orderData.splice(i,1);
+                     break;
+                 }
+             }
+         }
+         avalon.vmodels.orderDg.orderHistoryListData = orderData;
+         var sumcount = parseInt($(".shopping-title-count").text());
+         var perCount = $("#"+divname+"div").find(".perCount").val();
+         $(".shopping-title-count").text(sumcount-parseInt(perCount));
+         $("#"+divname+"div").remove();
+         if(0 == (sumcount-1)){
+             $("#submitButton").attr("disabled","disabled");
+         }
+     }
+     function changeDataSliderValue(obj,random){
+         var reg= /^\d+(\.\d{0,5})?$/;
+         if(reg.test($(obj).val())){
+             if(parseInt($(obj).val()) > 500){
+                 $(obj).val(500);
+                 var slider = $("#range"+random).data("ionRangeSlider");
+                 slider.update({
+                     from: 500
+                 });
+             }else if(parseInt($(obj).val()) < 0){
+                 $(obj).val(10);
+                 var slider = $("#range"+random).data("ionRangeSlider");
+                 slider.update({
+                     from: 10
+                 });
+             }else{
+                 var slider = $("#range"+random).data("ionRangeSlider");
+                 slider.update({
+                     from: parseInt($(obj).val())
+                 });
+             }
+         }else{
+             $(obj).val(10);
+             var slider = $("#range"+random).data("ionRangeSlider");
+             slider.update({
+                 from: 10
+             });
+         }
+         // 计算价格
+         avalon.vmodels.orderDg.calculationPrice();
+     }
+    // 删除数据盘
+    function delSlider(id){
+        $("div").remove("#"+id);
+        var length = $(".rangeDiv").length;
+        $("#dataDiskCount").text(4-parseInt(length));
+        if(4-parseInt(length) == 0){
+            $("#addDiskBtn").hide();
+        }else{
+            $("#addDiskBtn").show();
+        }
+        // 计算价格
+        avalon.vmodels.orderDg.calculationPrice();
+    }
+</script>
+
+<div ms-controller="orderDg" class="x12 " class="ms-controller">
+	<div class="line-big" id="orderDg">
+        <div class="xs12 ">
+            <div class="">
+                <form method="post" class="form-x form-auto xs8 border dgForm" id="dgForm" style="margin-left:0px;">
+                   <div class="form-group margin-left text-center margin-top">
+                        <div class="xs2 text-right text-center text-small " style="margin-top:5px;">
+                            <label class=" ">地域分区：</label>
+                        </div>
+                        <div class="text-left" style="">
+                        	<div>
+                        		<span>
+                        		  <select class=" select radius-none " ms-duplex="regionValue" style="width:100px" name="areaBig" id="areaBig">
+                                  <!--<option ms-value=null>全部</option>-->
+								  <option ms-repeat-el="regionData" ms-value='el.resTopologySid'>{{el.resTopologyName}}</option>
+								  </select>
+								</span>
+                        		<span>
+                        			<select class=" select radius-none " ms-duplex="zoneValue" style="width:200px" name="areaSmall" id="areaSmall">
+										<option ms-repeat-el="zoneData" ms-value='el.resTopologySid'>{{el.resTopologyName}}</option>
+									</select>
+								</span>
+						    </div>
+        				</div>
+                    </div>
+                    <hr />
+                    <div class="form-group margin-left" style="margin-top:20px;">
+                        <div class="xs2 text-right text-small" style="margin-top:5px;">
+                            <label>
+                                	主机类型：
+                            </label>
+                        </div>
+                        <div class=" button-group radio radius-none border-blue "  >
+                            <label class="button active radius-none button-small" style="width:100px;text-align:center">
+                                <input name="computerType" ms-change="calculationPrice()" checked="checked" value="idc-N" type="radio">标准型
+                            </label>
+                            <label class="button radius-none button-small" style="width:100px;text-align:center">
+                                <input name="computerType" ms-change="calculationPrice()" value="idc-S" type="radio">高性能型
+                            </label>
+                            <div class="text-gray text-small x12 margin-top">系统I采用Intel Xeon CPU,DDR3的内存。</div>
+                        </div>
+                    </div>
+                    <div class="form-group margin-left">
+                        <div class="xs2 text-right text-small" style="margin-top:5px;">
+                            <label>
+                                	CPU：
+                            </label>
+                        </div>
+                        <div class="button-group radio border-blue "  >
+                            <label class="button active radius-none button-small" style="margin-right:18px;width:70px;text-align:center">
+                                <input name="cpu" ms-change="calculationPrice()" checked="checked" type="radio" value="1">1核
+                            </label>
+                            <label class="button radius-none button-small" style="margin-right:18px;width:70px;text-align:center">
+                                <input name="cpu" ms-change="calculationPrice()" type="radio" value="2">2核
+                            </label>
+                            <label class="button radius-none button-small" style="margin-right:18px;width:70px;text-align:center">
+                                <input name="cpu" ms-change="calculationPrice()" type="radio" value="4">4核
+                            </label>
+                            <label class="button radius-none button-small" style="margin-right:18px;width:70px;text-align:center">
+                                <input name="cpu" ms-change="calculationPrice()" type="radio" value="8">8核
+                            </label>
+                        </div>
+                     </div>
+                     <div class="form-group margin-left ">
+                        <div class="xs2 text-right text-small" style="margin-top:5px;">
+                            <label>
+                                	内存：
+                            </label>
+                        </div>
+                        <div class="button-group radio border-blue " >
+                            <label class="button active radius-none button-small" style="margin-right:18px;width:70px;text-align:center">
+                                <input name="memory" ms-change="calculationPrice()" checked="checked" type="radio" value="1">1GB
+                            </label>
+                            <label class="button radius-none button-small" style="margin-right:18px;width:70px;text-align:center">
+                                <input name="memory" ms-change="calculationPrice()" type="radio" value="2">2GB
+                            </label>
+                            <label class="button radius-none button-small" style="margin-right:18px;width:70px;text-align:center">
+                                <input name="memory" ms-change="calculationPrice()" type="radio" value="4">4GB
+                            </label>
+                            <label class="button radius-none button-small" style="margin-right:18px;width:70px;text-align:center">
+                                <input name="memory" ms-change="calculationPrice()" type="radio" value="8">8GB
+                            </label>
+                            <label class="button radius-none button-small" style="margin-right:18px;width:70px;text-align:center">
+                                <input name="memory" ms-change="calculationPrice()" type="radio" value="16">16GB
+                            </label>
+                        </div>
+                     </div>
+                     <div class="form-group margin-left " style="margin-top:20px;">
+                        <div class="xs2 text-right text-small" style="margin-top:5px;">
+                            <label>
+                                	镜像类型：
+                            </label>
+                        </div>
+                        <div class=" button-group radio radius-none border-blue "  >
+                            <label class="button active radius-none button-small" style="width:100px;text-align:center">
+                                <input name="mirroType" ms-change="calculationPrice()" checked="checked" value="public" type="radio">公共镜像
+                            </label>
+                            <label class="button radius-none button-small" style="width:100px;text-align:center">
+                                <input name="mirroType" ms-change="calculationPrice()" type="radio" value="custom">自定义
+                            </label>
+                        </div>
+                    </div>
+                     <div class="form-group margin-left margin-bottom" style="margin-top:10px;">
+                        <div class="xs2 text-right text-small" style="margin-top:5px;">
+                            <label>操作系统：</label>
+                        </div>
+                        <div>
+                        	<span><select class="select radius-none" ms-duplex="osTypeValue" id="operSystemType"  style=" width:110px;">
+								<option ms-repeat-el="osTypeData" ms-value='el.codeValue'>{{el.codeDisplay}}</option>
+							</select>
+							</span>
+                        	<span><select class="select radius-none" ms-duplex="imageValue"  id="operSystemVersion" style="width:200px;">
+								<option ms-repeat-el="osVersionData" selected="selected" ms-value='el.resImageSid'>{{el.imageName}}</option>
+							</select></span>
+        				</div> 
+                  </div>
+
+                 <div class="form-group margin-left" style="margin-top:10px;">
+                        <div class="xs2 text-right text-small" style="margin-top:5px;">
+                            <label>硬盘类型：</label>
+                        </div>
+
+                        <div class=" button-group radio radius-none border-blue "  >
+                             <label class="button active radius-none button-small" style="width:100px;text-align:center">
+                                 <input name="bsType" checked="checked" value="public" type="radio">普通硬盘
+                             </label>
+                        </div>
+                        <span class="text-small text-gray">普通硬盘向低I/O负载的应用场景，为云主机提供数百IOSPS的I/O性能.</span>
+                  </div>
+
+                  <div class="form-group margin-left">
+                        <div class="x2 text-right text-small" style="margin-top:10px;">
+                            <label>系统盘：</label>
+                        </div>
+                        <div class="text-left x10" style="padding-left:0px;padding-top:10px;font-size: 12px;">
+                        	Linux系统免费赠送20GB，Windows系统免费赠送50GB
+        				</div>
+                   </div>
+
+                   <div class="form-group margin-left" id="dataMain" style="margin-top:6px;">
+                        <div class="x2 text-right text-small" style="margin-top:17px;">
+                            <label>数据盘：</label>
+                        </div>
+                        <div class="text-left x10">
+                            <div id="divRangeData"  style="padding-left:0px;margin-top:-10px;"></div>
+                            <div id="addDiskBtn" class="text-small" style="margin-top:25px;"><span ms-click="addDataDisk()" style="background-color:#F5F5F5;"><a style="cursor: pointer" class="text-blue text-small">+增加一块</a></span>你还可以选配<span id="dataDiskCount" class="text-small">4</span>块</div>
+        				</div>
+
+                   </div>
+
+                   <div class="form-group margin-left " style="margin-top:10px;">
+                        <div class="xs2 text-right text-small" style="margin-top:5px;">
+                            <label>网络：</label>
+                        </div>
+                        <div style="">
+                        	<select class="select radius-none" id="networkType" disabled="disabled"  style=" width:100px;">
+                                <option ms-repeat-el="initData('netType')" ms-value='el.value'>{{el.name}}</option>
+                            </select>
+                            <select ms-if="pnwData.length > 0" class="select radius-none" id="vpcName" ms-duplex="pnValue" id="networkName" style="width:120px;">
+                                <option ms-repeat-el="pnwData" ms-value="el.resVpcSid">{{el.vpcName}}</option>
+                            </select>
+                            <!--私有网络-->
+                            <span id="privateNetwork"></span>
+                            <span class="text-small text-blue" ms-if="pnwData.length <=0">&nbsp;&nbsp;<span id="createDefualtNetwork" ms-click="gotoCreatePrivateNetwork()">您还没有创建私有网络，去创建？>></span></span>
+
+        				</div>
+
+                  </div>
+                  <div class="form-group margin-left" style="margin-top:10px;">
+                        <div class="xs2 text-right text-small" style="margin-top:5px;">
+                            <label>SSH密钥：</label>
+                        </div>
+                        <div >
+                        	<select class="select radius-none " id="sshkey" style="width:200px;">
+                        		<option ms-repeat-el="sshData" ms-value='el.resKeypairsSid'>{{el.keypairsName}}</option>
+							</select>
+						</div>
+                  </div>
+                  <div class="form-group margin-left " style="margin-top:10px;">
+                        <div class="xs2 text-right text-small" style="margin-top:5px;">
+                            <label>付费方式：</label>
+                        </div>
+                      <div class="button-group radio radius-none border-blue">
+                          <label class="button active radius-none button-small billing-type">
+                              <input name="billingType" ms-change="billingType(this)" checked="checked" value="1" type="radio">
+                              <span class="text-small">1<span class='selected-biling-type text-small'>个月</span></span>
+                          </label>
+                          <label class="button radius-none button-small billing-type">
+                              <input name="billingType" ms-change="billingType(this)" value="2" type="radio">
+                              <span class="text-small">2</span>
+                          </label>
+                          <label class="button radius-none button-small billing-type">
+                              <input name="billingType" ms-change="billingType(this)" value="3" type="radio">
+                              <span class="text-small">3</span>
+                          </label>
+                          <label class="button radius-none button-small billing-type">
+                              <input name="billingType" ms-change="billingType(this)" value="4" type="radio">
+                              <span class="text-small">4</span>
+                          </label>
+                          <label class="button radius-none button-small billing-type">
+                              <input name="billingType" ms-change="billingType(this)" value="5" type="radio">
+                              <span class="text-small">5</span>
+                          </label>
+                          <label class="button radius-none button-small billing-type">
+                              <input name="billingType" ms-change="billingType(this)" value="6" type="radio">
+                              <span class="text-small">6</span>
+                          </label>
+                          <label class="button radius-none button-small billing-type">
+                              <input name="billingType" ms-change="billingType(this)" value="7" type="radio">
+                              <span class="text-small">7</span>
+                          </label>
+                          <label class="button radius-none button-small billing-type">
+                              <input name="billingType" ms-change="billingType(this)" value="8" type="radio">
+                              <span class="text-small">8</span>
+                          </label>
+                          <label class="button radius-none button-small billing-type">
+                              <input name="billingType" ms-change="billingType(this)" value="9" type="radio">
+                              <span class="text-small">9</span>
+                          </label>
+                          <label class="button radius-none button-small billing-type">
+                              <input name="billingType" ms-change="billingType(this)" value="12" type="radio">1年
+                          </label>
+                          <label class="button radius-none button-small billing-type">
+                              <input name="billingType" ms-change="billingType(this)" value="24" type="radio">2年
+                          </label>
+                          <label class="button radius-none button-small billing-type">
+                              <input name="billingType" ms-change="billingType(this)" value="36" type="radio">3年
+                          </label>
+
+                      </div>
+                  </div>
+                  <div class="form-group margin-left" style="margin-top:10px;">
+                        <div class="xs2 text-right text-small" style="margin-top:5px;">
+                            <label>购买数量：</label>
+                        </div>
+                        <div class=" x5 text-left" style="padding-left:0px;">
+                            <div class="input-group" style="">
+				            <span ><button class="button bg-blue radius-none button-small" id="decbtn" style="" type="button" ms-click="decCountBtn()">
+                            -</button><input id="orderCount" type="text" value="1" maxlength="2" class="input border-blue text-center text-small" style="" name="orderCount" size="4" ms-change="changeCount()" placeholder="" />
+                                <button id="addbtn" style="margin-left: -5px" type="button" class="button bg-blue radius-none button-small" ms-click="addCountBtn()">
+                                    +</button>
+                            </span>
+                            </div>
+                        </div>
+                  </div>
+                  
+                  <hr />
+                  <div class="form-group margin-left margin-bottom" >
+                        <div class="xs2 text-right text-small" style="margin-top:7px;">
+                            <label>配置费用：</label>
+                        </div>
+                        <div id="productPrice" class="text-dot text-large">
+                        	￥50.00
+						</div>
+                  </div>
+                  <div class="form-group ">
+                       <div class="xs2 text-left "></div>
+                       <div class="margin-bottom" style="margin-top: -5px" >
+                        	<button class="button  bg-yellow radius-none text-small" style="margin-left:6px;width:100px;" type="button" ms-click="nowOrderConfim()"> 立即购买</button>
+                        	<button class="button  border-blue radius-none text-small" style="margin-left:10px;width:110px;"  type="button" ms-click="addToShoppingList()"> 加入选购清单</button>
+                        </div>
+                        <div id="anamite"></div>
+                  </div>
+                </form>
+            </div>
+            <div>
+                <div class="xs3 text-left" id ="shoppingServer" style="padding-left:0px;">
+            </div>
+            <div class="xs3 text-center " id ="" style="padding-top:10px;margin-left:30px;width: 300px;">
+            	<button id="submitButton" class="button bg-yellow radius-none text-small" type="button" disabled="disabled" ms-click="toOrderConfim()"> 确认订单</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="orderConfirm" class="change hidden">
+        <div class="line">
+            <div id="containerOrder" ms-include-src="orderConfirm" ></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1 @@
+for /r ..\ %%i in (start*.bat) do %%i

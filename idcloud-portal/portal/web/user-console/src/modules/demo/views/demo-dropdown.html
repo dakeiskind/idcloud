@@ -1,0 +1,18 @@
+<div ms-controller="dropdownWindow">
+	<!-- <select class="select radius-none " id="netType"  style=" width:100px;">
+		<option ms-repeat-el="demoData" value='el.value'>{{el.name}}</option>
+	</select> -->
+	<select id="netName" style="width: 150px;" multiple="multiple">
+		<!-- <option selected="selected">net1</option> -->
+		<!-- <option value="1">net1</option>
+		<option value="2">net2</option>
+		<option value="3">net3</option> -->
+		
+		<option ms-repeat-el="demoData" ms-value="el.value">&nbsp;{{el.name}}</option>
+	</select>
+	<!--
+	<div>
+		<button  ms-click="getSelectValue()" type="button" ></button>ȡֵ<span id="selectValue"></span>
+	</div>
+	-->
+</div>

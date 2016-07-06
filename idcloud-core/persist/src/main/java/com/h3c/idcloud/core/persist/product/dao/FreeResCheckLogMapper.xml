@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.product.dao.FreeResCheckLogMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.product.FreeResCheckLog" >
+    <id column="FRES_CHECK_LOG_SID" property="fresCheckLogSid" jdbcType="BIGINT" />
+    <result column="FRES_SID" property="fresSid" jdbcType="BIGINT" />
+    <result column="CPU_CORES" property="cpuCores" jdbcType="BIGINT" />
+    <result column="MEMORY" property="memory" jdbcType="DOUBLE" />
+    <result column="STORAGE" property="storage" jdbcType="DOUBLE" />
+    <result column="PUB_IP" property="pubIp" jdbcType="VARCHAR" />
+    <result column="PRIVAGE_IP" property="privageIp" jdbcType="VARCHAR" />
+    <result column="START_NUM" property="startNum" jdbcType="BIGINT" />
+    <result column="STARTER" property="starter" jdbcType="VARCHAR" />
+    <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="CM_SID" jdbcType="BIGINT" property="cmSid" />
+    <result column="BIZ_TEXT" property="bizText" jdbcType="VARCHAR" />
+    <result column="DISK" property="disk" jdbcType="VARCHAR" />
+    <result column="NETWORK" property="network" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.fresSid != null" >
+         and FRES_SID = #{condition.fresSid}
+      </if>
+      <if test="condition.cpuCores != null" >
+         and CPU_CORES = #{condition.cpuCores}
+      </if>
+      <if test="condition.memory != null" >
+         and MEMORY = #{condition.memory}
+      </if>
+      <if test="condition.storage != null" >
+         and STORAGE = #{condition.storage}
+      </if>
+      <if test="condition.pubIp != null" >
+         and PUB_IP = #{condition.pubIp}
+      </if>
+      <if test="condition.privageIp != null" >
+         and PRIVAGE_IP = #{condition.privageIp}
+      </if>
+      <if test="condition.startNum != null" >
+         and START_NUM = #{condition.startNum}
+      </if>
+      <if test="condition.starter != null" >
+         and STARTER = #{condition.starter}
+      </if>
+      <if test="condition.startTime != null" >
+         and START_TIME = #{condition.startTime}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    FRES_CHECK_LOG_SID, FRES_SID, CPU_CORES, MEMORY, STORAGE, DISK, NETWORK, PUB_IP, PRIVAGE_IP, START_NUM, 
+    STARTER, START_TIME,CM_SID
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from free_res_check_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  
+  <select id="selectResByBizForSummary" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+	  select SUM(A.CPU_CORES) as CPU_CORES ,SUM(A.MEMORY) as MEMORY,
+			 SUM(A.`STORAGE`) as `STORAGE`,C.`NAME` as BIZ_TEXT  
+		from free_res_check_log A
+		LEFT JOIN free_res B on B.FRES_SID = A.FRES_SID
+		LEFT JOIN sys_m_biz C on B.FBIZ_SID = C.BIZ_SID
+<!-- 		LEFT JOIN service_change_log D on D.CM_SID = A.CM_SID
+		where D.CM_END_TIME is not NULL -->
+		GROUP BY B.FBIZ_SID
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from free_res_check_log
+    where FRES_CHECK_LOG_SID = #{fresCheckLogSid}
+  </select>
+  
+  <select id="selectByFreeSid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from free_res_check_log
+    where FRES_SID = #{fresSid}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from free_res_check_log
+    where FRES_CHECK_LOG_SID = #{fresCheckLogSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from free_res_check_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.product.FreeResCheckLog" >
+    <selectKey resultType="java.lang.Long" keyProperty="fresCheckLogSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_FREE_RES_CHECK_LOG')
+    </selectKey>
+    insert into free_res_check_log (FRES_CHECK_LOG_SID, FRES_SID, CPU_CORES, MEMORY, STORAGE, DISK, NETWORK, PUB_IP, 
+      PRIVAGE_IP, START_NUM, STARTER, START_TIME,CM_SID)
+    values (#{fresCheckLogSid}, #{fresSid}, #{cpuCores}, #{memory}, #{storage}, #{disk}, #{network}, #{pubIp}, 
+      #{privageIp}, #{startNum}, #{starter}, #{startTime},#{cmSid})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.FreeResCheckLog" >
+    <selectKey resultType="java.lang.Long" keyProperty="fresCheckLogSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_FREE_RES_CHECK_LOG')
+    </selectKey>
+    insert into free_res_check_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      FRES_CHECK_LOG_SID,
+      <if test="fresSid != null" >
+        FRES_SID,
+      </if>
+      <if test="cpuCores != null" >
+        CPU_CORES,
+      </if>
+      <if test="memory != null" >
+        MEMORY,
+      </if>
+      <if test="storage != null" >
+        STORAGE,
+      </if>
+      <if test="disk != null" >
+        DISK,
+      </if>
+      <if test="network != null" >
+        NETWORK,
+      </if>
+      <if test="pubIp != null" >
+        PUB_IP,
+      </if>
+      <if test="privageIp != null" >
+        PRIVAGE_IP,
+      </if>
+      <if test="startNum != null" >
+        START_NUM,
+      </if>
+      <if test="starter != null" >
+        STARTER,
+      </if>
+      <if test="startTime != null" >
+        START_TIME,
+      </if>
+      <if test="cmSid != null" >
+        CM_SID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{fresCheckLogSid},
+      <if test="fresSid != null" >
+        #{fresSid},
+      </if>
+      <if test="cpuCores != null" >
+        #{cpuCores},
+      </if>
+      <if test="memory != null" >
+        #{memory},
+      </if>
+      <if test="storage != null" >
+        #{storage},
+      </if>
+      <if test="disk != null" >
+        #{disk},
+      </if>
+      <if test="network != null" >
+        #{network},
+      </if>
+      <if test="pubIp != null" >
+        #{pubIp},
+      </if>
+      <if test="privageIp != null" >
+        #{privageIp},
+      </if>
+      <if test="startNum != null" >
+        #{startNum},
+      </if>
+      <if test="starter != null" >
+        #{starter},
+      </if>
+      <if test="startTime != null" >
+        #{startTime},
+      </if>
+      <if test="cmSid != null" >
+        #{cmSid},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from free_res_check_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update free_res_check_log
+    <set >
+      <if test="record.fresCheckLogSid != null" >
+        FRES_CHECK_LOG_SID = #{record.fresCheckLogSid},
+      </if>
+      <if test="record.fresSid != null" >
+        FRES_SID = #{record.fresSid},
+      </if>
+      <if test="record.cpuCores != null" >
+        CPU_CORES = #{record.cpuCores},
+      </if>
+      <if test="record.memory != null" >
+        MEMORY = #{record.memory},
+      </if>
+      <if test="record.storage != null" >
+        STORAGE = #{record.storage},
+      </if>
+      <if test="record.disk != null" >
+        DISK = #{record.disk},
+      </if>
+      <if test="record.network != null" >
+        NETWORK = #{record.network},
+      </if>
+      <if test="record.pubIp != null" >
+        PUB_IP = #{record.pubIp},
+      </if>
+      <if test="record.privageIp != null" >
+        PRIVAGE_IP = #{record.privageIp},
+      </if>
+      <if test="record.startNum != null" >
+        START_NUM = #{record.startNum},
+      </if>
+      <if test="record.starter != null" >
+        STARTER = #{record.starter},
+      </if>
+      <if test="record.startTime != null" >
+        START_TIME = #{record.startTime},
+      </if>
+      <if test="record.cmSid != null" >
+        CM_SID = #{record.cmSid},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update free_res_check_log
+    set FRES_CHECK_LOG_SID = #{record.fresCheckLogSid},
+      FRES_SID = #{record.fresSid},
+      CPU_CORES = #{record.cpuCores},
+      MEMORY = #{record.memory},
+      STORAGE = #{record.storage},
+      DISK = #{record.disk},
+      NETWORK = #{record.network},
+      PUB_IP = #{record.pubIp},
+      PRIVAGE_IP = #{record.privageIp},
+      START_NUM = #{record.startNum},
+      STARTER = #{record.starter},
+      START_TIME = #{record.startTime},
+      CM_SID = #{record.cmSid}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.FreeResCheckLog" >
+    update free_res_check_log
+    <set >
+      <if test="fresSid != null" >
+        FRES_SID = #{fresSid},
+      </if>
+      <if test="cpuCores != null" >
+        CPU_CORES = #{cpuCores},
+      </if>
+      <if test="memory != null" >
+        MEMORY = #{memory},
+      </if>
+      <if test="storage != null" >
+        STORAGE = #{storage},
+      </if>
+      <if test="storage != null" >
+        DISK = #{disk},
+      </if>
+      <if test="storage != null" >
+        NETWORK = #{network},
+      </if>
+      <if test="pubIp != null" >
+        PUB_IP = #{pubIp},
+      </if>
+      <if test="privageIp != null" >
+        PRIVAGE_IP = #{privageIp},
+      </if>
+      <if test="startNum != null" >
+        START_NUM = #{startNum},
+      </if>
+      <if test="starter != null" >
+        STARTER = #{starter},
+      </if>
+      <if test="startTime != null" >
+        START_TIME = #{startTime},
+      </if>
+      <if test="cmSid != null" >
+        CM_SID = #{cmSid},
+      </if>
+    </set>
+    where FRES_CHECK_LOG_SID = #{fresCheckLogSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.product.FreeResCheckLog" >
+    update free_res_check_log
+    set FRES_SID = #{fresSid},
+      CPU_CORES = #{cpuCores},
+      MEMORY = #{memory},
+      STORAGE = #{storage},
+      DISK = #{disk},
+      NETWORK = #{network},
+      PUB_IP = #{pubIp},
+      PRIVAGE_IP = #{privageIp},
+      START_NUM = #{startNum},
+      STARTER = #{starter},
+      START_TIME = #{startTime},
+      CM_SID = #{cmSid}
+    where FRES_CHECK_LOG_SID = #{fresCheckLogSid}
+  </update>
+  
+  <select id="selectResByInstIdForCmId" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+		SELECT
+			IFNULL(A.CM_SID, 0)  CM_SID
+		FROM
+			service_change_log A
+		WHERE
+			A.INSTANCE_SID = #{condition.instanceSid}
+		AND A.SPEC_VERSION = (
+			SELECT
+				MAX(B.SPEC_VERSION)
+			FROM
+				service_change_log B
+			WHERE
+				B.INSTANCE_SID = A.INSTANCE_SID
+		)
+  </select>
+</mapper>

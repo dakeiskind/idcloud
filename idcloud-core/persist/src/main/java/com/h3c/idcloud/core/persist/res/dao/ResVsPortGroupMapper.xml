@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResVsPortGroupMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResVsPortGroup">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="RES_VS_SID" property="resVsSid" jdbcType="VARCHAR"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="VLAN_ID" property="vlanId" jdbcType="VARCHAR"/>
+        <result column="TOTAL_PORTS" property="totalPorts" jdbcType="BIGINT"/>
+        <result column="AVAILABLE_PORTS" property="availablePorts" jdbcType="BIGINT"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP"/>
+        <result column="VERSION" property="version" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.resVsSid != null">
+                and RES_VS_SID = #{condition.resVsSid}
+            </if>
+            <if test="condition.name != null">
+                and NAME = #{condition.name}
+            </if>
+            <if test="condition.vlanId != null">
+                and VLAN_ID = #{condition.vlanId}
+            </if>
+            <if test="condition.totalPorts != null">
+                and TOTAL_PORTS = #{condition.totalPorts}
+            </if>
+            <if test="condition.availablePorts != null">
+                and AVAILABLE_PORTS = #{condition.availablePorts}
+            </if>
+            <if test="condition.uuid != null">
+                and UUID = #{condition.uuid}
+            </if>
+            <if test="condition.createdBy != null">
+                and CREATED_BY = #{condition.createdBy}
+            </if>
+            <if test="condition.createdDt != null">
+                and CREATED_DT = #{condition.createdDt}
+            </if>
+            <if test="condition.updatedBy != null">
+                and UPDATED_BY = #{condition.updatedBy}
+            </if>
+            <if test="condition.updatedDt != null">
+                and UPDATED_DT = #{condition.updatedDt}
+            </if>
+            <if test="condition.version != null">
+                and VERSION = #{condition.version}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        ID, RES_VS_SID, NAME, VLAN_ID, TOTAL_PORTS, AVAILABLE_PORTS, UUID, CREATED_BY, CREATED_DT,
+        UPDATED_BY, UPDATED_DT, VERSION
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from res_vs_port_group
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectPortsByHost" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        distinct
+        A.ID,
+        A.RES_VS_SID,
+        A.NAME,
+        A.VLAN_ID,
+        A.TOTAL_PORTS,
+        A.AVAILABLE_PORTS,
+        A.UUID
+        from res_vs_port_group A
+        LEFT JOIN res_vs B ON (A.RES_VS_SID = B.RES_VS_SID)
+        LEFT JOIN res_vs_host C ON (B.RES_VS_SID = C.RES_VS_SID)
+        <if test="_parameter != null">
+
+            <trim prefix="where" prefixOverrides="and|or">
+                <if test="condition.resHostSid != null">
+                    and C.RES_HOST_SID = #{condition.resHostSid}
+                </if>
+                <if test="condition.vlanId != null">
+                    and A.VLAN_ID = #{condition.vlanId}
+                </if>
+                <if test="condition.name != null">
+                    and A.NAME = #{condition.name}
+                </if>
+            </trim>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_vs_port_group
+        where ID = #{id}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_vs_port_group
+        where ID = #{id}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_vs_port_group
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVsPortGroup">
+        <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE">
+            SELECT UUID()
+        </selectKey>
+        insert into res_vs_port_group (ID, RES_VS_SID, NAME, VLAN_ID, TOTAL_PORTS, AVAILABLE_PORTS,
+        UUID, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION)
+        values (#{id}, #{resVsSid}, #{name}, #{vlanId}, #{totalPorts}, #{availablePorts},
+        #{uuid}, #{createdBy}, #{createdDt}, #{updatedBy}, #{updatedDt}, #{version})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVsPortGroup">
+        <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE">
+            SELECT UUID()
+        </selectKey>
+        insert into res_vs_port_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ID,
+            <if test="resVsSid != null">
+                RES_VS_SID,
+            </if>
+            <if test="name != null">
+                NAME,
+            </if>
+            <if test="vlanId != null">
+                VLAN_ID,
+            </if>
+            <if test="totalPorts != null">
+                TOTAL_PORTS,
+            </if>
+            <if test="availablePorts != null">
+                AVAILABLE_PORTS,
+            </if>
+            <if test="uuid != null">
+                UUID,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+            <if test="version != null">
+                VERSION,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id},
+            <if test="resVsSid != null">
+                #{resVsSid},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="vlanId != null">
+                #{vlanId},
+            </if>
+            <if test="totalPorts != null">
+                #{totalPorts},
+            </if>
+            <if test="availablePorts != null">
+                #{availablePorts},
+            </if>
+            <if test="uuid != null">
+                #{uuid},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_vs_port_group
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_vs_port_group
+        <set>
+            <if test="record.id != null">
+                ID = #{record.id},
+            </if>
+            <if test="record.resVsSid != null">
+                RES_VS_SID = #{record.resVsSid},
+            </if>
+            <if test="record.name != null">
+                NAME = #{record.name},
+            </if>
+            <if test="record.vlanId != null">
+                VLAN_ID = #{record.vlanId},
+            </if>
+            <if test="record.totalPorts != null">
+                TOTAL_PORTS = #{record.totalPorts},
+            </if>
+            <if test="record.availablePorts != null">
+                AVAILABLE_PORTS = #{record.availablePorts},
+            </if>
+            <if test="record.uuid != null">
+                UUID = #{record.uuid},
+            </if>
+            <if test="record.createdBy != null">
+                CREATED_BY = #{record.createdBy},
+            </if>
+            <if test="record.createdDt != null">
+                CREATED_DT = #{record.createdDt},
+            </if>
+            <if test="record.updatedBy != null">
+                UPDATED_BY = #{record.updatedBy},
+            </if>
+            <if test="record.updatedDt != null">
+                UPDATED_DT = #{record.updatedDt},
+            </if>
+            <if test="record.version != null">
+                VERSION = #{record.version},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_vs_port_group
+        set ID = #{record.id},
+        RES_VS_SID = #{record.resVsSid},
+        NAME = #{record.name},
+        VLAN_ID = #{record.vlanId},
+        TOTAL_PORTS = #{record.totalPorts},
+        AVAILABLE_PORTS = #{record.availablePorts},
+        UUID = #{record.uuid},
+        CREATED_BY = #{record.createdBy},
+        CREATED_DT = #{record.createdDt},
+        UPDATED_BY = #{record.updatedBy},
+        UPDATED_DT = #{record.updatedDt},
+        VERSION = #{record.version}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVsPortGroup">
+        update res_vs_port_group
+        <set>
+            <if test="resVsSid != null">
+                RES_VS_SID = #{resVsSid},
+            </if>
+            <if test="name != null">
+                NAME = #{name},
+            </if>
+            <if test="vlanId != null">
+                VLAN_ID = #{vlanId},
+            </if>
+            <if test="totalPorts != null">
+                TOTAL_PORTS = #{totalPorts},
+            </if>
+            <if test="availablePorts != null">
+                AVAILABLE_PORTS = #{availablePorts},
+            </if>
+            <if test="uuid != null">
+                UUID = #{uuid},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt},
+            </if>
+            <if test="version != null">
+                VERSION = #{version},
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVsPortGroup">
+        update res_vs_port_group
+        set RES_VS_SID = #{resVsSid},
+        NAME = #{name},
+        VLAN_ID = #{vlanId},
+        TOTAL_PORTS = #{totalPorts},
+        AVAILABLE_PORTS = #{availablePorts},
+        UUID = #{uuid},
+        CREATED_BY = #{createdBy},
+        CREATED_DT = #{createdDt},
+        UPDATED_BY = #{updatedBy},
+        UPDATED_DT = #{updatedDt},
+        VERSION = #{version}
+        where ID = #{id}
+    </update>
+</mapper>

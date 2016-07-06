@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.LogRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.LogRecord" >
+    <id column="LOG_SID" property="logSid" jdbcType="BIGINT" />
+    <result column="ACCOUNT" property="account" jdbcType="VARCHAR" />
+    <result column="ACT_TARGET" property="actTarget" jdbcType="VARCHAR" />
+    <result column="ACT_NAME" property="actName" jdbcType="VARCHAR" />
+    <result column="ACT_LEVEL" property="actLevel" jdbcType="VARCHAR" />
+    <result column="ACT_START_DATE" property="actStartDate" jdbcType="TIMESTAMP" />
+    <result column="ACT_END_DATE" property="actEndDate" jdbcType="TIMESTAMP" />
+    <result column="ACT_RESULT" property="actResult" jdbcType="VARCHAR" />
+    <result column="ACT_FAILURE_REASON" property="actFailureReason" jdbcType="VARCHAR" />
+    <result column="ACT_DETAIL" property="actDetail" jdbcType="VARCHAR" />
+    <result column="OP_IP" property="opIp" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.account != null" >
+         and ACCOUNT = #{condition.account}
+      </if>
+      <if test="condition.actTarget != null" >
+         and ACT_TARGET = #{condition.actTarget}
+      </if>
+      <if test="condition.actName != null" >
+         and ACT_NAME = #{condition.actName}
+      </if>
+      <if test="condition.actLevel != null" >
+         and ACT_LEVEL = #{condition.actLevel}
+      </if>
+      <if test="condition.actStartDate != null" >
+         and ACT_START_DATE = #{condition.actStartDate}
+      </if>
+      <if test="condition.actEndDate != null" >
+         and ACT_END_DATE = #{condition.actEndDate}
+      </if>
+      <if test="condition.actResult != null" >
+         and ACT_RESULT = #{condition.actResult}
+      </if>
+      <if test="condition.actFailureReason != null" >
+         and ACT_FAILURE_REASON = #{condition.actFailureReason}
+      </if>
+      <if test="condition.actDetail != null" >
+         and ACT_DETAIL = #{condition.actDetail}
+      </if>
+      <if test="condition.opIp != null" >
+        and OP_IP = #{condition.opIp}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    LOG_SID, ACCOUNT, ACT_TARGET, ACT_NAME, ACT_LEVEL, ACT_START_DATE, ACT_END_DATE, 
+    ACT_RESULT, ACT_FAILURE_REASON, ACT_DETAIL,OP_IP
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_t_log_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_t_log_record
+    where LOG_SID = #{logSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_t_log_record
+    where LOG_SID = #{logSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from sys_t_log_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.system.LogRecord" >
+    <selectKey resultType="java.lang.Long" keyProperty="logSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SYS_T_LOG_RECORD')
+    </selectKey>
+    insert into sys_t_log_record (LOG_SID, ACCOUNT, ACT_TARGET, ACT_NAME, ACT_LEVEL, ACT_START_DATE, 
+      ACT_END_DATE, ACT_RESULT, ACT_FAILURE_REASON, ACT_DETAIL,OP_IP)
+    values (#{logSid}, #{account}, #{actTarget}, #{actName}, #{actLevel}, #{actStartDate}, 
+      #{actEndDate}, #{actResult}, #{actFailureReason}, #{actDetail}, #{opIp})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.LogRecord" >
+    <selectKey resultType="java.lang.Long" keyProperty="logSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SYS_T_LOG_RECORD')
+    </selectKey>
+    insert into sys_t_log_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      LOG_SID,
+      <if test="account != null" >
+        ACCOUNT,
+      </if>
+      <if test="actTarget != null" >
+        ACT_TARGET,
+      </if>
+      <if test="actName != null" >
+        ACT_NAME,
+      </if>
+      <if test="actLevel != null" >
+        ACT_LEVEL,
+      </if>
+      <if test="actStartDate != null" >
+        ACT_START_DATE,
+      </if>
+      <if test="actEndDate != null" >
+        ACT_END_DATE,
+      </if>
+      <if test="actResult != null" >
+        ACT_RESULT,
+      </if>
+      <if test="actFailureReason != null" >
+        ACT_FAILURE_REASON,
+      </if>
+      <if test="actDetail != null" >
+        ACT_DETAIL,
+      </if>
+      <if test="opIp != null" >
+        OP_IP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{logSid},
+      <if test="account != null" >
+        #{account},
+      </if>
+      <if test="actTarget != null" >
+        #{actTarget},
+      </if>
+      <if test="actName != null" >
+        #{actName},
+      </if>
+      <if test="actLevel != null" >
+        #{actLevel},
+      </if>
+      <if test="actStartDate != null" >
+        #{actStartDate},
+      </if>
+      <if test="actEndDate != null" >
+        #{actEndDate},
+      </if>
+      <if test="actResult != null" >
+        #{actResult},
+      </if>
+      <if test="actFailureReason != null" >
+        #{actFailureReason},
+      </if>
+      <if test="actDetail != null" >
+        #{actDetail},
+      </if>
+      <if test="opIp != null" >
+        #{opIp},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from sys_t_log_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update sys_t_log_record
+    <set >
+      <if test="record.logSid != null" >
+        LOG_SID = #{record.logSid},
+      </if>
+      <if test="record.account != null" >
+        ACCOUNT = #{record.account},
+      </if>
+      <if test="record.actTarget != null" >
+        ACT_TARGET = #{record.actTarget},
+      </if>
+      <if test="record.actName != null" >
+        ACT_NAME = #{record.actName},
+      </if>
+      <if test="record.actLevel != null" >
+        ACT_LEVEL = #{record.actLevel},
+      </if>
+      <if test="record.actStartDate != null" >
+        ACT_START_DATE = #{record.actStartDate},
+      </if>
+      <if test="record.actEndDate != null" >
+        ACT_END_DATE = #{record.actEndDate},
+      </if>
+      <if test="record.actResult != null" >
+        ACT_RESULT = #{record.actResult},
+      </if>
+      <if test="record.actFailureReason != null" >
+        ACT_FAILURE_REASON = #{record.actFailureReason},
+      </if>
+      <if test="record.actDetail != null" >
+        ACT_DETAIL = #{record.actDetail},
+      </if>
+      <if test="record.opIp != null" >
+        OP_IP = #{record.opIp},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update sys_t_log_record
+    set LOG_SID = #{record.logSid},
+      ACCOUNT = #{record.account},
+      ACT_TARGET = #{record.actTarget},
+      ACT_NAME = #{record.actName},
+      ACT_LEVEL = #{record.actLevel},
+      ACT_START_DATE = #{record.actStartDate},
+      ACT_END_DATE = #{record.actEndDate},
+      ACT_RESULT = #{record.actResult},
+      ACT_FAILURE_REASON = #{record.actFailureReason},
+      OP_IP = #{record.opIp},
+      ACT_DETAIL = #{record.actDetail}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.LogRecord" >
+    update sys_t_log_record
+    <set >
+      <if test="account != null" >
+        ACCOUNT = #{account},
+      </if>
+      <if test="actTarget != null" >
+        ACT_TARGET = #{actTarget},
+      </if>
+      <if test="actName != null" >
+        ACT_NAME = #{actName},
+      </if>
+      <if test="actLevel != null" >
+        ACT_LEVEL = #{actLevel},
+      </if>
+      <if test="actStartDate != null" >
+        ACT_START_DATE = #{actStartDate},
+      </if>
+      <if test="actEndDate != null" >
+        ACT_END_DATE = #{actEndDate},
+      </if>
+      <if test="actResult != null" >
+        ACT_RESULT = #{actResult},
+      </if>
+      <if test="actFailureReason != null" >
+        ACT_FAILURE_REASON = #{actFailureReason},
+      </if>
+      <if test="actDetail != null" >
+        ACT_DETAIL = #{actDetail},
+      </if>
+      <if test="opIp != null" >
+        OP_IP = #{opIp},
+      </if>
+    </set>
+    where LOG_SID = #{logSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.LogRecord" >
+    update sys_t_log_record
+    set ACCOUNT = #{account},
+      ACT_TARGET = #{actTarget},
+      ACT_NAME = #{actName},
+      ACT_LEVEL = #{actLevel},
+      ACT_START_DATE = #{actStartDate},
+      ACT_END_DATE = #{actEndDate},
+      ACT_RESULT = #{actResult},
+      ACT_FAILURE_REASON = #{actFailureReason},
+      OP_IP = #{opIp},
+      ACT_DETAIL = #{actDetail}
+    where LOG_SID = #{logSid}
+  </update>
+</mapper>

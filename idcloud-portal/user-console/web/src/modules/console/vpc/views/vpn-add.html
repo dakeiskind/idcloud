@@ -1,0 +1,59 @@
+<form id="addVPNForm" >
+    <table border="0" class="custom-table" ms-controller="vpnAddWindow">
+        <tr>
+            <td class="required">名称：</td>
+            <td>
+                <input id="VPNName" type="text" ms-duplex="addVPNData['VPNName']" name="VPNName" style="width:220px" class="input text-small radius-none">
+            </td>
+        </tr>
+        <tr>
+            <td>描述：</td>
+            <td>
+                <input id="VPNDesc" type="text" ms-duplex="addVPNData['VPNDesc']" name="VPNDesc" style="width:220px" class="input text-small radius-none">
+            </td>
+        </tr>
+        <tr>
+            <td class="required">路由：</td>
+            <td>
+                <input id="VPNRouter" type="text" ms-duplex="addVPNData['VPNRouter']" name="VPNRouter" style="width:220px" class="input text-small radius-none">
+            </td>
+        </tr>
+        <tr>
+            <td class="required">子网：</td>
+            <td>
+                <select class="select radius-none" style="width:220px" name="subNet" ms-duplex="addVPNData['subNet']">
+                    <option selected="selected"  value="">--选择子网--</option>
+                    <option  value="192.168.100.0/24">192.168.100.0/24</option>
+                    <option value="10.0.0.0/24">10.0.0.0/24</option>
+                    <option  value="192.168.9.0/24">192.168.9.0/24</option>
+                    <option  value="192.168.8.0/24">192.168.8.0/24</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>管理员状态：</td>
+            <td>
+                <select class="select radius-none" style="width:220px">
+                    <option selected="selected"  value="online">online</option>
+                    <option  value="off-line">off-line</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+</form>
+
+<script type="text/javascript">
+    require(["app-modules/console/vpc/vmodel/vpn-add"],function(vpnAdd){
+        // 初始化数据
+        vpnAdd.addVPNData = {
+            VPNName:null,
+            VPNDesc:null,
+            publicIP:"",
+            subNet:"",
+            VPNRouter:"",
+            VPNStatus:""
+        };
+        vpnAdd.initValidator();
+        avalon.scan();
+    });
+</script>

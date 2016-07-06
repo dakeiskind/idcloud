@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResPoolVlanMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResPoolVlan">
+        <id column="RES_POOL_SID" property="resPoolSid" jdbcType="VARCHAR"/>
+        <result column="RES_POOL_NAME" property="resPoolName" jdbcType="VARCHAR"/>
+        <result column="VLAN_POOL_TYPE" property="vlanPoolType" jdbcType="VARCHAR"/>
+        <result column="VLAN_POOL_TYPE_NAME" property="vlanPoolTypeName" jdbcType="VARCHAR"/>
+        <result column="START_VALN_ID" property="startValnId" jdbcType="BIGINT"/>
+        <result column="END_VLAN_ID" property="endVlanId" jdbcType="BIGINT"/>
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR"/>
+        <result column="PARENT_TOPOLOGY_SID" property="parentTopologySid" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP"/>
+        <result column="VERSION" property="version" jdbcType="BIGINT"/>
+        <result column="VLAN_COUNT" property="vlanCount" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.resPoolName != null">
+                and A.RES_POOL_NAME = #{condition.resPoolName}
+            </if>
+            <if test="condition.resPoolNameLike != null">
+                and A.RES_POOL_NAME like concat('%', #{condition.resPoolNameLike},'%')
+            </if>
+            <if test="condition.vlanPoolType != null">
+                and A.VLAN_POOL_TYPE = #{condition.vlanPoolType}
+            </if>
+            <if test="condition.startValnId != null">
+                and A.START_VALN_ID = #{condition.startValnId}
+            </if>
+            <if test="condition.endVlanId != null">
+                and A.END_VLAN_ID = #{condition.endVlanId}
+            </if>
+            <if test="condition.description != null">
+                and A.DESCRIPTION = #{condition.description}
+            </if>
+            <if test="condition.parentTopologySid != null">
+                and A.PARENT_TOPOLOGY_SID = #{condition.parentTopologySid}
+            </if>
+            <if test="condition.createdBy != null">
+                and A.CREATED_BY = #{condition.createdBy}
+            </if>
+            <if test="condition.createdDt != null">
+                and A.CREATED_DT = #{condition.createdDt}
+            </if>
+            <if test="condition.updatedBy != null">
+                and A.UPDATED_BY = #{condition.updatedBy}
+            </if>
+            <if test="condition.updatedDt != null">
+                and A.UPDATED_DT = #{condition.updatedDt}
+            </if>
+            <if test="condition.version != null">
+                and A.VERSION = #{condition.version}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        A.RES_POOL_SID, A.RES_POOL_NAME, A.VLAN_POOL_TYPE, A.START_VALN_ID, A.END_VLAN_ID, A.DESCRIPTION,
+        A.PARENT_TOPOLOGY_SID, A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, A.UPDATED_DT, A.VERSION
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        ,B.CODE_DISPLAY AS VLAN_POOL_TYPE_NAME
+        ,COUNT(C.RES_SID) as VLAN_COUNT
+        from res_pool_vlan A
+        left join sys_m_code B on (A.VLAN_POOL_TYPE=B.CODE_VALUE AND B.CODE_CATEGORY='VLAN_TYPE')
+        left join res_vlan C on (C.RES_POOL_SID = A.RES_POOL_SID)
+
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        GROUP BY A.RES_POOL_SID
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_pool_vlan A
+        where A.RES_POOL_SID = #{resPoolSid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_pool_vlan
+        where RES_POOL_SID = #{resPoolSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_pool_vlan
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResPoolVlan">
+        <selectKey resultType="java.lang.String" keyProperty="resPoolSid" order="BEFORE">
+            SELECT UUID()
+        </selectKey>
+        insert into res_pool_vlan (RES_POOL_SID, RES_POOL_NAME, VLAN_POOL_TYPE, START_VALN_ID, END_VLAN_ID,
+        DESCRIPTION, PARENT_TOPOLOGY_SID, CREATED_BY, CREATED_DT, UPDATED_BY,
+        UPDATED_DT, VERSION)
+        values (#{resPoolSid}, #{resPoolName}, #{vlanPoolType}, #{startValnId}, #{endVlanId},
+        #{description}, #{parentTopologySid}, #{createdBy}, #{createdDt}, #{updatedBy},
+        #{updatedDt}, #{version})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResPoolVlan">
+        <selectKey resultType="java.lang.String" keyProperty="resPoolSid" order="BEFORE">
+            SELECT UUID()
+        </selectKey>
+        insert into res_pool_vlan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            RES_POOL_SID,
+            <if test="resPoolName != null">
+                RES_POOL_NAME,
+            </if>
+            <if test="vlanPoolType != null">
+                VLAN_POOL_TYPE,
+            </if>
+            <if test="startValnId != null">
+                START_VALN_ID,
+            </if>
+            <if test="endVlanId != null">
+                END_VLAN_ID,
+            </if>
+            <if test="description != null">
+                DESCRIPTION,
+            </if>
+            <if test="parentTopologySid != null">
+                PARENT_TOPOLOGY_SID,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+            <if test="version != null">
+                VERSION,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{resPoolSid},
+            <if test="resPoolName != null">
+                #{resPoolName},
+            </if>
+            <if test="vlanPoolType != null">
+                #{vlanPoolType},
+            </if>
+            <if test="startValnId != null">
+                #{startValnId},
+            </if>
+            <if test="endVlanId != null">
+                #{endVlanId},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="parentTopologySid != null">
+                #{parentTopologySid},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_pool_vlan
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_pool_vlan
+        <set>
+            <if test="record.resPoolSid != null">
+                RES_POOL_SID = #{record.resPoolSid},
+            </if>
+            <if test="record.resPoolName != null">
+                RES_POOL_NAME = #{record.resPoolName},
+            </if>
+            <if test="record.vlanPoolType != null">
+                VLAN_POOL_TYPE = #{record.vlanPoolType},
+            </if>
+            <if test="record.startValnId != null">
+                START_VALN_ID = #{record.startValnId},
+            </if>
+            <if test="record.endVlanId != null">
+                END_VLAN_ID = #{record.endVlanId},
+            </if>
+            <if test="record.description != null">
+                DESCRIPTION = #{record.description},
+            </if>
+            <if test="record.parentTopologySid != null">
+                PARENT_TOPOLOGY_SID = #{record.parentTopologySid},
+            </if>
+            <if test="record.createdBy != null">
+                CREATED_BY = #{record.createdBy},
+            </if>
+            <if test="record.createdDt != null">
+                CREATED_DT = #{record.createdDt},
+            </if>
+            <if test="record.updatedBy != null">
+                UPDATED_BY = #{record.updatedBy},
+            </if>
+            <if test="record.updatedDt != null">
+                UPDATED_DT = #{record.updatedDt},
+            </if>
+            <if test="record.version != null">
+                VERSION = #{record.version},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_pool_vlan
+        set RES_POOL_SID = #{record.resPoolSid},
+        RES_POOL_NAME = #{record.resPoolName},
+        VLAN_POOL_TYPE = #{record.vlanPoolType},
+        START_VALN_ID = #{record.startValnId},
+        END_VLAN_ID = #{record.endVlanId},
+        DESCRIPTION = #{record.description},
+        PARENT_TOPOLOGY_SID = #{record.parentTopologySid},
+        CREATED_BY = #{record.createdBy},
+        CREATED_DT = #{record.createdDt},
+        UPDATED_BY = #{record.updatedBy},
+        UPDATED_DT = #{record.updatedDt},
+        VERSION = #{record.version}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResPoolVlan">
+        update res_pool_vlan
+        <set>
+            <if test="resPoolName != null">
+                RES_POOL_NAME = #{resPoolName},
+            </if>
+            <if test="vlanPoolType != null">
+                VLAN_POOL_TYPE = #{vlanPoolType},
+            </if>
+            <if test="startValnId != null">
+                START_VALN_ID = #{startValnId},
+            </if>
+            <if test="endVlanId != null">
+                END_VLAN_ID = #{endVlanId},
+            </if>
+            <if test="description != null">
+                DESCRIPTION = #{description},
+            </if>
+            <if test="parentTopologySid != null">
+                PARENT_TOPOLOGY_SID = #{parentTopologySid},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt},
+            </if>
+            <if test="version != null">
+                VERSION = #{version},
+            </if>
+        </set>
+        where RES_POOL_SID = #{resPoolSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResPoolVlan">
+        update res_pool_vlan
+        set RES_POOL_NAME = #{resPoolName},
+        VLAN_POOL_TYPE = #{vlanPoolType},
+        START_VALN_ID = #{startValnId},
+        END_VLAN_ID = #{endVlanId},
+        DESCRIPTION = #{description},
+        PARENT_TOPOLOGY_SID = #{parentTopologySid},
+        CREATED_BY = #{createdBy},
+        CREATED_DT = #{createdDt},
+        UPDATED_BY = #{updatedBy},
+        UPDATED_DT = #{updatedDt},
+        VERSION = #{version}
+        where RES_POOL_SID = #{resPoolSid}
+    </update>
+</mapper>

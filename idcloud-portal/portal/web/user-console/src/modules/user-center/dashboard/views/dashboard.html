@@ -1,0 +1,106 @@
+<div ms-controller="user-dashbaord">
+    <!--<div class="alert alert-blue margin-bottom"><span class="close rotate-hover"></span>-->
+        <!--活动：1.4-1.31ECS续费满3个月就送礼，iPhone6天天有！<a>查看详情>></a>-->
+    <!--</div>-->
+    <!-- 基本信息 -->
+    <div class="line-big">
+        <div class="x8">
+             <!-- 第一行 -->
+             <div class="line-big">
+                <div class="x6">
+                    <div id="userBasicInfo"> 
+                        <div class="pic">
+                            <img src="static/images/user.jpg" style="margin-left:12px;margin-top:36px; " width="56" height="56" class="radius-circle" />
+                        </div>
+                        <div class="content">
+                             <div style="font-size: 16px;margin: 8px;">下午好，
+                                <a class="text-blue" ms-click="gotoMyinfo()" href="javascript:;">{{data.user.realName}}</a>
+                             </div>
+                             <div style="font-size: 18px;padding-left:8px;margin-bottom: 8px;">
+                                 <span id="mobile" class="icon-mobile tips" style="font-size: 24px;color: #00AAEE"
+                                       data-toggle="hover" data-place="bottom" ms-title="您的手机号：{{data.user.mobile}}"></span>&nbsp;&nbsp;
+                                 <span class="icon-envelope-o tips" style="color: #00AAEE"
+                                       data-toggle="hover" data-place="bottom" ms-title="您的邮箱：{{data.user.email}}"></span> &nbsp;
+                                 <span class="icon-user tips" style="color:#00AAEE"
+                                       data-toggle="hover" data-place="bottom" title="实名认证通过"></span>&nbsp;&nbsp;
+                             </div>
+                            <div style="padding-left:8px;">
+                                <span style="font-size: 16px;">余额：<a style="color: red;font-size: 18px;">{{data.user.balance}}元</a></span>&nbsp;&nbsp;
+                            </div>
+                            <div style="margin-left: 8px;margin-top: 12px;">
+                                <span>
+                                    <button ms-click="cz()" class="button bg-yellow button-little radius-none">充值</button>&nbsp;
+                                    <button ms-click="myBill()" class="button border-blue button-little radius-none">我的账单</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="x6">
+                    <div class="custom-panel">
+                        <div class="title">待办事项</div>
+                        <div>
+                             <ul class="allview-ul">
+                                <li ms-click="toCharge()"><span class="float-right badge bg-yellow">{{data.toDo.toCharge}}</span>待续费事项（30天内自动过期）</li>
+                                <li ms-click="toPaidOrder()"><span class="float-right badge bg-yellow">{{data.toDo.toPaidOrder}}</span>待支付的订单</li>
+                                <li ms-click="toProcessedIssue()"><span class="float-right badge bg-yellow">{{data.toDo.toProcessedIssue}}</span>待处理的工单</li>
+                            </ul> 
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <!-- 第二行 -->
+            <div class="line-big">
+                <div class="x12">
+                    <div class="custom-panel" style="height: 280px"> 
+                        <div class="title">日/月消费情况</div> 
+                        <div>
+                            <div class="line">
+                                <div class="x6">
+                                    <div id="dayConsumeCharts" style="height:250px;"></div>
+                                </div>
+                                <div class="x6">
+                                    <div id="monthConsumeCharts" style="height:250px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第三行 -->
+            <div class="line-big">
+                <div class="x12">
+                    <div class="custom-panel" style="margin-top:20px;height: 370px"> 
+                        <div class="title">消费趋势情况</div> 
+                        <div>
+                            <div style="width: 100%;height: 30px;">
+                                <div style="width:30%;height: 30px;float: left;line-height: 40px;"><b>&nbsp;单位:元</b></div>
+                                <div style="width:70%;height: 30px;float: left;text-align: right;">
+                                    <select id="dashboardChart" onchange="onChartChange()" ms-change="onChartChange()" name="dashboardChart" class="select radius-none" style="margin-top: 10px;margin-right: 10px">
+                                            <option value="currentMonth">当月</option>
+                                            <option value="beforeMonth">上个月</option>
+                                        </select>
+                                </div>
+                            </div>
+                            <div id="totalConsumeCharts" style="height:300px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="x4">
+            <div class="custom-panel" style="height: 700px">
+                <div class="title">最近操作</div>
+                <div>
+                    <div id="vertical-timeline" class="vertical-container dark-timeline"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>           

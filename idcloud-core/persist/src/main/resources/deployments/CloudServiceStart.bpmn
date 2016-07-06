@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="CloudServiceStartProcess" name="Cloud服务开通流程" isExecutable="true">
+    <startEvent id="startevent1" name="Start" activiti:initiator="applyUserId"></startEvent>
+    <userTask id="OrderManualStart" name="服务手动开通" activiti:async="true" activiti:candidateGroups="101"></userTask>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <serviceTask id="AutoStartServiceInstanceServiceTask" name="服务自动开通" activiti:async="true" activiti:class="com.hptsic.cloud.activiti.common.serviceopen.launch.AutoStartServiceInstanceServiceTask"></serviceTask>
+    <serviceTask id="CheckServiceInstanceStatusServiceTask" name="查询开通状态" activiti:async="true" activiti:class="com.hptsic.cloud.activiti.common.serviceopen.launch.CheckServiceInstanceStatusServiceTask"></serviceTask>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow41" sourceRef="StartServiceNoticeServiceTask" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow43" sourceRef="CheckServiceInstanceStatusServiceTask" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow44" name="失败" sourceRef="exclusivegateway3" targetRef="OrderManualStart">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${checkOpenStatusNg}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow45" name="成功" sourceRef="exclusivegateway3" targetRef="exclusivegateway5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${checkOpenStatusOk}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow46" sourceRef="startevent1" targetRef="AutoStartServiceInstanceServiceTask"></sequenceFlow>
+    <serviceTask id="StartServiceNoticeServiceTask" name="服务开通通知" activiti:async="true" activiti:class="com.hptsic.cloud.activiti.common.serviceopen.launch.StartServiceNoticeServiceTask"></serviceTask>
+    <sequenceFlow id="flow50" sourceRef="OrderManualStart" targetRef="exclusivegateway5"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow51" name="成功" sourceRef="exclusivegateway4" targetRef="CheckServiceInstanceStatusServiceTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${serviceAutoStartOk}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow52" name="失败" sourceRef="exclusivegateway4" targetRef="OrderManualStart">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${!serviceAutoStartOk}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow53" sourceRef="AutoStartServiceInstanceServiceTask" targetRef="exclusivegateway4"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow54" name="不需邮件通知" sourceRef="exclusivegateway5" targetRef="endevent2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${!mailSend}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow55" name="需邮件通知" sourceRef="exclusivegateway5" targetRef="StartServiceNoticeServiceTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${mailSend}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow56" name="重试" sourceRef="exclusivegateway3" targetRef="CheckServiceInstanceStatusServiceTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${checkOpenStatusRetry}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_CloudServiceStartProcess">
+    <bpmndi:BPMNPlane bpmnElement="CloudServiceStartProcess" id="BPMNPlane_CloudServiceStartProcess">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="10.0" y="142.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="470.0" y="139.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="810.0" y="142.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="AutoStartServiceInstanceServiceTask" id="BPMNShape_AutoStartServiceInstanceServiceTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="100.0" y="132.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="CheckServiceInstanceStatusServiceTask" id="BPMNShape_CheckServiceInstanceStatusServiceTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="350.0" y="132.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="OrderManualStart" id="BPMNShape_OrderManualStart">
+        <omgdc:Bounds height="55.0" width="105.0" x="540.0" y="26.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
+        <omgdc:Bounds height="40.0" width="40.0" x="240.0" y="139.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
+        <omgdc:Bounds height="40.0" width="40.0" x="572.0" y="139.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="StartServiceNoticeServiceTask" id="BPMNShape_StartServiceNoticeServiceTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="650.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="755.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="827.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="827.0" y="177.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
+        <omgdi:waypoint x="455.0" y="159.0"></omgdi:waypoint>
+        <omgdi:waypoint x="470.0" y="159.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
+        <omgdi:waypoint x="490.0" y="139.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="53.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="10.0" y="0.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="510.0" y="159.0"></omgdi:waypoint>
+        <omgdi:waypoint x="572.0" y="159.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="-15.0" y="0.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
+        <omgdi:waypoint x="45.0" y="159.0"></omgdi:waypoint>
+        <omgdi:waypoint x="100.0" y="159.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
+        <omgdi:waypoint x="592.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="592.0" y="139.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
+        <omgdi:waypoint x="280.0" y="159.0"></omgdi:waypoint>
+        <omgdi:waypoint x="350.0" y="159.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="-25.0" y="0.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
+        <omgdi:waypoint x="260.0" y="139.0"></omgdi:waypoint>
+        <omgdi:waypoint x="260.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="53.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="-97.0" y="18.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
+        <omgdi:waypoint x="205.0" y="159.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="159.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
+        <omgdi:waypoint x="612.0" y="159.0"></omgdi:waypoint>
+        <omgdi:waypoint x="810.0" y="159.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="72.0" x="-21.0" y="0.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
+        <omgdi:waypoint x="592.0" y="179.0"></omgdi:waypoint>
+        <omgdi:waypoint x="592.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="650.0" y="227.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="60.0" x="4.0" y="-41.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow56" id="BPMNEdge_flow56">
+        <omgdi:waypoint x="490.0" y="179.0"></omgdi:waypoint>
+        <omgdi:waypoint x="489.0" y="302.0"></omgdi:waypoint>
+        <omgdi:waypoint x="402.0" y="302.0"></omgdi:waypoint>
+        <omgdi:waypoint x="402.0" y="187.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="10.0" y="0.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.CodeCategoryMapper" >
+  <cache type="org.mybatis.caches.ehcache.LoggingEhcache">
+    <property name="timeToIdleSeconds" value="3600"/>
+    <property name="timeToLiveSeconds" value="3600"/>
+    <property name="maxEntriesLocalHeap" value="1000"/>
+    <property name="maxEntriesLocalDisk" value="10000000"/>
+    <property name="memoryStoreEvictionPolicy" value="LRU"/>
+  </cache>
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.CodeCategory" >
+    <id column="CATEGORY_SID" property="categorySid" jdbcType="BIGINT" />
+    <result column="CODE_CATEGORY" property="codeCategory" jdbcType="VARCHAR" />
+    <result column="CODE_CATEGORY_NM" property="codeCategoryNm" jdbcType="VARCHAR" />
+    <result column="STATE" property="state" jdbcType="INTEGER" />
+    <result column="STATE_NAME" property="stateName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.codeCategory != null" >
+         and A.CODE_CATEGORY = #{condition.codeCategory}
+      </if>
+	  <if test="condition.codeCategoryLike != null">
+		  and A.CODE_CATEGORY like concat('%',
+		  #{condition.codeCategoryLike}, '%')
+	  </if>	       
+      <if test="condition.codeCategoryNm != null" >
+         and A.CODE_CATEGORY_NM = #{condition.codeCategoryNm}
+      </if>
+	  <if test="condition.codeCategoryNmLike != null">
+		  and A.CODE_CATEGORY_NM like concat('%',
+		  #{condition.codeCategoryNmLike}, '%')
+	  </if>	          
+      <if test="condition.state != null" >
+         and A.STATE = #{condition.state}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    A.CATEGORY_SID, A.CODE_CATEGORY, A.CODE_CATEGORY_NM, A.STATE
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,B.CODE_DISPLAY AS STATE_NAME
+    from sys_m_code_category A
+    LEFT JOIN SYS_M_CODE B ON(B.CODE_CATEGORY='EDIT_FLAG' AND B.CODE_VALUE=A.STATE)
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_m_code_category A
+    where CATEGORY_SID = #{categorySid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_m_code_category
+    where CATEGORY_SID = #{categorySid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from sys_m_code_category
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.system.CodeCategory" >
+    insert into sys_m_code_category (CATEGORY_SID, CODE_CATEGORY, CODE_CATEGORY_NM, STATE)
+    values (#{categorySid}, #{codeCategory}, #{codeCategoryNm}, #{state})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.CodeCategory" >
+    <selectKey resultType="java.lang.Long" keyProperty="categorySid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SYS_M_CODE_CATEGORY')
+    </selectKey>  	
+    insert into sys_m_code_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="categorySid != null" >
+        CATEGORY_SID,
+      </if>
+      <if test="codeCategory != null" >
+        CODE_CATEGORY,
+      </if>
+      <if test="codeCategoryNm != null" >
+        CODE_CATEGORY_NM,
+      </if>
+      <if test="state != null" >
+        STATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="categorySid != null" >
+        #{categorySid},
+      </if>
+      <if test="codeCategory != null" >
+        #{codeCategory},
+      </if>
+      <if test="codeCategoryNm != null" >
+        #{codeCategoryNm},
+      </if>
+      <if test="state != null" >
+        #{state},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from sys_m_code_category
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update sys_m_code_category
+    <set >
+      <if test="record.categorySid != null" >
+        CATEGORY_SID = #{record.categorySid},
+      </if>
+      <if test="record.codeCategory != null" >
+        CODE_CATEGORY = #{record.codeCategory},
+      </if>
+      <if test="record.codeCategoryNm != null" >
+        CODE_CATEGORY_NM = #{record.codeCategoryNm},
+      </if>
+      <if test="record.state != null" >
+        STATE = #{record.state},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update sys_m_code_category
+    set CATEGORY_SID = #{record.categorySid},
+      CODE_CATEGORY = #{record.codeCategory},
+      CODE_CATEGORY_NM = #{record.codeCategoryNm},
+      STATE = #{record.state}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.CodeCategory" >
+    update sys_m_code_category
+    <set >
+      <if test="codeCategory != null" >
+        CODE_CATEGORY = #{codeCategory},
+      </if>
+      <if test="codeCategoryNm != null" >
+        CODE_CATEGORY_NM = #{codeCategoryNm},
+      </if>
+      <if test="state != null" >
+        STATE = #{state},
+      </if>
+    </set>
+    where CATEGORY_SID = #{categorySid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.CodeCategory" >
+    update sys_m_code_category
+    set CODE_CATEGORY = #{codeCategory},
+      CODE_CATEGORY_NM = #{codeCategoryNm},
+      STATE = #{state}
+    where CATEGORY_SID = #{categorySid}
+  </update>
+</mapper>

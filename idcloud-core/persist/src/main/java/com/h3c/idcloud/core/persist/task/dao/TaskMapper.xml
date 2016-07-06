@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.task.dao.TaskMapper">
+	<resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.task.Task">
+		<id column="TASK_ID" property="taskId" jdbcType="VARCHAR" />
+		<result column="TASK_NAME" property="taskName" jdbcType="VARCHAR" />
+		<result column="TASK_TYPE" property="taskType" jdbcType="VARCHAR" />
+		<result column="TASK_STATUS" property="taskStatus" jdbcType="VARCHAR" />
+		<result column="TASK_START_DATE" property="taskStartDate"
+			jdbcType="TIMESTAMP" />
+		<result column="TASK_END_DATE" property="taskEndDate" jdbcType="TIMESTAMP" />
+		<result column="TASK_CLASS_PATH" property="taskClassPath"
+			jdbcType="VARCHAR" />
+		<result column="TASK_ARG" property="taskArg" jdbcType="VARCHAR" />
+		<result column="UPDATE_CYCLE" property="updateCycle" jdbcType="VARCHAR" />
+		<result column="TASK_FAILURE_REASON" property="taskFailureReason"
+			jdbcType="VARCHAR" />
+		<result column="TASK_DETAIL" property="taskDetail" jdbcType="VARCHAR" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+		<result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+		<result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+		<result column="VERSION" property="version" jdbcType="BIGINT" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.taskName != null">
+				and TASK_NAME = #{condition.taskName}
+			</if>
+			<if test="condition.taskType != null">
+				and TASK_TYPE = #{condition.taskType}
+			</if>
+			<if test="condition.taskStatus != null">
+				and TASK_STATUS = #{condition.taskStatus}
+			</if>
+			<if test="condition.taskStartDate != null">
+				and TASK_START_DATE = #{condition.taskStartDate}
+			</if>
+			<if test="condition.taskEndDate != null">
+				and TASK_END_DATE = #{condition.taskEndDate}
+			</if>
+			<if test="condition.taskClassPath != null">
+				and TASK_CLASS_PATH = #{condition.taskClassPath}
+			</if>
+			<if test="condition.taskArg != null">
+				and TASK_ARG = #{condition.taskArg}
+			</if>
+			<if test="condition.updateCycle != null">
+				and UPDATE_CYCLE = #{condition.updateCycle}
+			</if>
+			<if test="condition.taskFailureReason != null">
+				and TASK_FAILURE_REASON = #{condition.taskFailureReason}
+			</if>
+			<if test="condition.taskDetail != null">
+				and TASK_DETAIL = #{condition.taskDetail}
+			</if>
+			<if test="condition.createdBy != null">
+				and CREATED_BY = #{condition.createdBy}
+			</if>
+			<if test="condition.createdDt != null">
+				and CREATED_DT = #{condition.createdDt}
+			</if>
+			<if test="condition.updatedBy != null">
+				and UPDATED_BY = #{condition.updatedBy}
+			</if>
+			<if test="condition.updatedDt != null">
+				and UPDATED_DT = #{condition.updatedDt}
+			</if>
+			<if test="condition.version != null">
+				and VERSION = #{condition.version}
+			</if>
+		</trim>
+	</sql>
+	<sql id="Base_Column_List">
+		TASK_ID, TASK_NAME, TASK_TYPE, TASK_STATUS,
+		TASK_START_DATE, TASK_END_DATE,
+		TASK_CLASS_PATH,
+		TASK_ARG, UPDATE_CYCLE,
+		TASK_FAILURE_REASON, TASK_DETAIL, CREATED_BY,
+		CREATED_DT,
+		UPDATED_BY,
+		UPDATED_DT, VERSION
+	</sql>
+	<select id="selectByParams" resultMap="BaseResultMap"
+		parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from sys_m_task
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+	<select id="selectTaskStatusByOr" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_m_task
+		where TASK_STATUS=#{param1} or TASK_STATUS=#{param2}
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_m_task
+		where TASK_ID = #{taskId}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		sys_m_task
+		where TASK_ID = #{taskId}
+	</delete>
+	<delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		delete from sys_m_task
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.task.Task">
+		<selectKey resultType="java.lang.String" keyProperty="taskId"
+			order="BEFORE">
+			select uuid()
+		</selectKey>
+		insert into sys_m_task (TASK_ID, TASK_NAME, TASK_TYPE, TASK_STATUS,
+		TASK_START_DATE, TASK_END_DATE,
+		TASK_CLASS_PATH, TASK_ARG,
+		UPDATE_CYCLE, TASK_FAILURE_REASON, TASK_DETAIL,
+		CREATED_BY, CREATED_DT,
+		UPDATED_BY, UPDATED_DT, VERSION)
+		values (#{taskId}, #{taskName},
+		#{taskType}, #{taskStatus},
+		#{taskStartDate}, #{taskEndDate},
+		#{taskClassPath}, #{taskArg}, #{updateCycle}, #{taskFailureReason},
+		#{taskDetail},
+		#{createdBy}, #{createdDt}, #{updatedBy}, #{updatedDt},
+		#{version})
+	</insert>
+	<insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.task.Task">
+		<selectKey resultType="java.lang.String" keyProperty="taskId"
+			order="BEFORE">
+			select uuid()
+		</selectKey>
+		insert into sys_m_task
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			TASK_ID,
+			<if test="taskName != null">
+				TASK_NAME,
+			</if>
+			<if test="taskType != null">
+				TASK_TYPE,
+			</if>
+			<if test="taskStatus != null">
+				TASK_STATUS,
+			</if>
+			<if test="taskStartDate != null">
+				TASK_START_DATE,
+			</if>
+			<if test="taskEndDate != null">
+				TASK_END_DATE,
+			</if>
+			<if test="taskClassPath != null">
+				TASK_CLASS_PATH,
+			</if>
+			<if test="taskArg != null">
+				TASK_ARG,
+			</if>
+			<if test="updateCycle != null">
+				UPDATE_CYCLE,
+			</if>
+			<if test="taskFailureReason != null">
+				TASK_FAILURE_REASON,
+			</if>
+			<if test="taskDetail != null">
+				TASK_DETAIL,
+			</if>
+			<if test="createdBy != null">
+				CREATED_BY,
+			</if>
+			<if test="createdDt != null">
+				CREATED_DT,
+			</if>
+			<if test="updatedBy != null">
+				UPDATED_BY,
+			</if>
+			<if test="updatedDt != null">
+				UPDATED_DT,
+			</if>
+			<if test="version != null">
+				VERSION,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{taskId},
+			<if test="taskName != null">
+				#{taskName},
+			</if>
+			<if test="taskType != null">
+				#{taskType},
+			</if>
+			<if test="taskStatus != null">
+				#{taskStatus},
+			</if>
+			<if test="taskStartDate != null">
+				#{taskStartDate},
+			</if>
+			<if test="taskEndDate != null">
+				#{taskEndDate},
+			</if>
+			<if test="taskClassPath != null">
+				#{taskClassPath},
+			</if>
+			<if test="taskArg != null">
+				#{taskArg},
+			</if>
+			<if test="updateCycle != null">
+				#{updateCycle},
+			</if>
+			<if test="taskFailureReason != null">
+				#{taskFailureReason},
+			</if>
+			<if test="taskDetail != null">
+				#{taskDetail},
+			</if>
+			<if test="createdBy != null">
+				#{createdBy},
+			</if>
+			<if test="createdDt != null">
+				#{createdDt},
+			</if>
+			<if test="updatedBy != null">
+				#{updatedBy},
+			</if>
+			<if test="updatedDt != null">
+				#{updatedDt},
+			</if>
+			<if test="version != null">
+				#{version},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria"
+		resultType="java.lang.Integer">
+		select count(*) from sys_m_task
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByParamsSelective" parameterType="map">
+		update sys_m_task
+		<set>
+			<if test="record.taskId != null">
+				TASK_ID = #{record.taskId},
+			</if>
+			<if test="record.taskName != null">
+				TASK_NAME = #{record.taskName},
+			</if>
+			<if test="record.taskType != null">
+				TASK_TYPE = #{record.taskType},
+			</if>
+			<if test="record.taskStatus != null">
+				TASK_STATUS = #{record.taskStatus},
+			</if>
+			<if test="record.taskStartDate != null">
+				TASK_START_DATE = #{record.taskStartDate},
+			</if>
+			<if test="record.taskEndDate != null">
+				TASK_END_DATE = #{record.taskEndDate},
+			</if>
+			<if test="record.taskClassPath != null">
+				TASK_CLASS_PATH = #{record.taskClassPath},
+			</if>
+			<if test="record.taskArg != null">
+				TASK_ARG = #{record.taskArg},
+			</if>
+			<if test="record.updateCycle != null">
+				UPDATE_CYCLE = #{record.updateCycle},
+			</if>
+			<if test="record.taskFailureReason != null">
+				TASK_FAILURE_REASON = #{record.taskFailureReason},
+			</if>
+			<if test="record.taskDetail != null">
+				TASK_DETAIL = #{record.taskDetail},
+			</if>
+			<if test="record.createdBy != null">
+				CREATED_BY = #{record.createdBy},
+			</if>
+			<if test="record.createdDt != null">
+				CREATED_DT = #{record.createdDt},
+			</if>
+			<if test="record.updatedBy != null">
+				UPDATED_BY = #{record.updatedBy},
+			</if>
+			<if test="record.updatedDt != null">
+				UPDATED_DT = #{record.updatedDt},
+			</if>
+			<if test="record.version != null">
+				VERSION = #{record.version},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByParams" parameterType="map">
+		update sys_m_task
+		set TASK_ID = #{record.taskId},
+		TASK_NAME =
+		#{record.taskName},
+		TASK_TYPE = #{record.taskType},
+		TASK_STATUS =
+		#{record.taskStatus},
+		TASK_START_DATE = #{record.taskStartDate},
+		TASK_END_DATE = #{record.taskEndDate},
+		TASK_CLASS_PATH =
+		#{record.taskClassPath},
+		TASK_ARG = #{record.taskArg},
+		UPDATE_CYCLE =
+		#{record.updateCycle},
+		TASK_FAILURE_REASON =
+		#{record.taskFailureReason},
+		TASK_DETAIL = #{record.taskDetail},
+		CREATED_BY = #{record.createdBy},
+		CREATED_DT = #{record.createdDt},
+		UPDATED_BY = #{record.updatedBy},
+		UPDATED_DT = #{record.updatedDt},
+		VERSION = #{record.version}
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.task.Task">
+		update sys_m_task
+		<set>
+			<if test="taskName != null">
+				TASK_NAME = #{taskName},
+			</if>
+			<if test="taskType != null">
+				TASK_TYPE = #{taskType},
+			</if>
+			<if test="taskStatus != null">
+				TASK_STATUS = #{taskStatus},
+			</if>
+			<if test="taskStartDate != null">
+				TASK_START_DATE = #{taskStartDate},
+			</if>
+			<if test="taskEndDate != null">
+				TASK_END_DATE = #{taskEndDate},
+			</if>
+			<if test="taskClassPath != null">
+				TASK_CLASS_PATH = #{taskClassPath},
+			</if>
+			<if test="taskArg != null">
+				TASK_ARG = #{taskArg},
+			</if>
+			<if test="updateCycle != null">
+				UPDATE_CYCLE = #{updateCycle},
+			</if>
+			<if test="taskFailureReason != null">
+				TASK_FAILURE_REASON = #{taskFailureReason},
+			</if>
+			<if test="taskDetail != null">
+				TASK_DETAIL = #{taskDetail},
+			</if>
+			<if test="createdBy != null">
+				CREATED_BY = #{createdBy},
+			</if>
+			<if test="createdDt != null">
+				CREATED_DT = #{createdDt},
+			</if>
+			<if test="updatedBy != null">
+				UPDATED_BY = #{updatedBy},
+			</if>
+			<if test="updatedDt != null">
+				UPDATED_DT = #{updatedDt},
+			</if>
+			<if test="version != null">
+				VERSION = #{version},
+			</if>
+		</set>
+		where TASK_ID = #{taskId}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.task.Task">
+		update sys_m_task
+		set TASK_NAME = #{taskName},
+		TASK_TYPE = #{taskType},
+		TASK_STATUS =
+		#{taskStatus},
+		TASK_START_DATE = #{taskStartDate},
+		TASK_END_DATE =
+		#{taskEndDate},
+		TASK_CLASS_PATH = #{taskClassPath},
+		TASK_ARG =
+		#{taskArg},
+		UPDATE_CYCLE = #{updateCycle},
+		TASK_FAILURE_REASON =
+		#{taskFailureReason},
+		TASK_DETAIL = #{taskDetail},
+		CREATED_BY =
+		#{createdBy},
+		CREATED_DT = #{createdDt},
+		UPDATED_BY = #{updatedBy},
+		UPDATED_DT = #{updatedDt},
+		VERSION = #{version}
+		where TASK_ID =
+		#{taskId}
+	</update>
+</mapper>

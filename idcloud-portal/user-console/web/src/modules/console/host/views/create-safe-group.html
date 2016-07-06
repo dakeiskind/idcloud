@@ -1,0 +1,28 @@
+<script type="text/javascript">
+    require(["app-modules/console/host/vmodel/create-safe-group"],function(obj){
+        obj.initValidator();
+        obj.data = {
+            sgName:null,
+            sgDescription:null
+        };
+        avalon.scan();
+    });
+</script>
+<form id="createSafeGroupFrom">
+    <table border="0" class="custom-table" ms-controller="createSafeGroup">
+        <tr>
+            <td class="required">安全组名称：</td>
+            <td>
+                <input id="sgName" type="text" ms-duplex="data['sgName']" name="sgName" style="width:220px" class="input text-small radius-none">
+                <p class="description" style="width: 220px">名称为2-32个字符，以大写字母或中文开头，可包含数字，"-"或"_"</p>
+            </td>
+        </tr>
+        <tr>
+            <td align="right" valign="top">描述：</td>
+            <td>
+                <textarea rows="3" id="sgDescription" ms-duplex="data['sgDescription']" name="sgDescription" style="width:220px" class="input text-small radius-none" ></textarea>
+                <p class="description" style="width: 220px">描述可以为空，或填写2-128个中英文字符，不能以http://或https://开头</p>
+            </td>
+        </tr>
+    </table>
+</form>

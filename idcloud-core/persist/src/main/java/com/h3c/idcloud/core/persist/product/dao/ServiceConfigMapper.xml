@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.product.dao.ServiceConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.product.ServiceConfig" >
+    <id column="CONFIG_SID" property="configSid" jdbcType="BIGINT" />
+    <result column="SERVICE_SID" property="serviceSid" jdbcType="BIGINT" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR" />
+    <result column="DATA_TYPE" property="dataType" jdbcType="VARCHAR" />
+    <result column="TAG" property="tag" jdbcType="VARCHAR" />
+    <result column="UNIT" property="unit" jdbcType="VARCHAR" />
+    <result column="VALUE" property="value" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="DATE" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="DATE" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.serviceSid != null" >
+         and SERVICE_SID = #{condition.serviceSid}
+      </if>
+      <if test="condition.name != null" >
+         and NAME = #{condition.name}
+      </if>
+      <if test="condition.description != null" >
+         and DESCRIPTION = #{condition.description}
+      </if>
+      <if test="condition.groupName != null" >
+         and GROUP_NAME = #{condition.groupName}
+      </if>
+      <if test="condition.dataType != null" >
+         and DATA_TYPE = #{condition.dataType}
+      </if>
+      <if test="condition.tag != null" >
+         and TAG = #{condition.tag}
+      </if>
+      <if test="condition.unit != null" >
+         and UNIT = #{condition.unit}
+      </if>
+      <if test="condition.value != null" >
+         and VALUE = #{condition.value}
+      </if>
+      <if test="condition.createdBy != null" >
+         and CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and VERSION = #{condition.version}
+      </if>
+    </trim>
+  </sql>
+   <sql id="Base_Column_List" >
+    CONFIG_SID, SERVICE_SID, NAME, DESCRIPTION, GROUP_NAME, DATA_TYPE, TAG, UNIT, VALUE, 
+    CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from service_config
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from service_config
+    where CONFIG_SID = #{configSid}
+  </select>
+  <select id="selectByServiceSid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from service_config
+    where SERVICE_SID = #{serviceSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from service_config
+    where CONFIG_SID = #{configSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from service_config
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceConfig" >
+    <selectKey resultType="java.lang.Long" keyProperty="configSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SERVICE_CONFIG')
+    </selectKey>
+    insert into service_config (CONFIG_SID, SERVICE_SID, NAME, DESCRIPTION, GROUP_NAME, DATA_TYPE, 
+      TAG, UNIT, VALUE, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, 
+      VERSION)
+    values (#{configSid}, #{serviceSid}, #{name}, #{description}, #{groupName}, #{dataType}, 
+      #{tag}, #{unit}, #{value}, #{createdBy}, #{createdDt}, #{updatedBy}, #{updatedDt}, 
+      #{version})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceConfig" >
+    <selectKey resultType="java.lang.Long" keyProperty="configSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SERVICE_CONFIG')
+    </selectKey>
+    insert into service_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      CONFIG_SID,
+      <if test="serviceSid != null" >
+        SERVICE_SID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+      <if test="groupName != null" >
+        GROUP_NAME,
+      </if>
+      <if test="dataType != null" >
+        DATA_TYPE,
+      </if>
+      <if test="tag != null" >
+        TAG,
+      </if>
+      <if test="unit != null" >
+        UNIT,
+      </if>
+      <if test="value != null" >
+        VALUE,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{configSid},
+      <if test="serviceSid != null" >
+        #{serviceSid},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="description != null" >
+        #{description},
+      </if>
+      <if test="groupName != null" >
+        #{groupName},
+      </if>
+      <if test="dataType != null" >
+        #{dataType},
+      </if>
+      <if test="tag != null" >
+        #{tag},
+      </if>
+      <if test="unit != null" >
+        #{unit},
+      </if>
+      <if test="value != null" >
+        #{value},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from service_config
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update service_config
+    <set >
+      <if test="record.configSid != null" >
+        CONFIG_SID = #{record.configSid},
+      </if>
+      <if test="record.serviceSid != null" >
+        SERVICE_SID = #{record.serviceSid},
+      </if>
+      <if test="record.name != null" >
+        NAME = #{record.name},
+      </if>
+      <if test="record.description != null" >
+        DESCRIPTION = #{record.description},
+      </if>
+      <if test="record.groupName != null" >
+        GROUP_NAME = #{record.groupName},
+      </if>
+      <if test="record.dataType != null" >
+        DATA_TYPE = #{record.dataType},
+      </if>
+      <if test="record.tag != null" >
+        TAG = #{record.tag},
+      </if>
+      <if test="record.unit != null" >
+        UNIT = #{record.unit},
+      </if>
+      <if test="record.value != null" >
+        VALUE = #{record.value},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update service_config
+    set CONFIG_SID = #{record.configSid},
+      SERVICE_SID = #{record.serviceSid},
+      NAME = #{record.name},
+      DESCRIPTION = #{record.description},
+      GROUP_NAME = #{record.groupName},
+      DATA_TYPE = #{record.dataType},
+      TAG = #{record.tag},
+      UNIT = #{record.unit},
+      VALUE = #{record.value},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceConfig" >
+    update service_config
+    <set >
+      <if test="serviceSid != null" >
+        SERVICE_SID = #{serviceSid},
+      </if>
+      <if test="name != null" >
+        NAME = #{name},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description},
+      </if>
+      <if test="groupName != null" >
+        GROUP_NAME = #{groupName},
+      </if>
+      <if test="dataType != null" >
+        DATA_TYPE = #{dataType},
+      </if>
+      <if test="tag != null" >
+        TAG = #{tag},
+      </if>
+      <if test="unit != null" >
+        UNIT = #{unit},
+      </if>
+      <if test="value != null" >
+        VALUE = #{value},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+    </set>
+    where CONFIG_SID = #{configSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceConfig" >
+    update service_config
+    set SERVICE_SID = #{serviceSid},
+      NAME = #{name},
+      DESCRIPTION = #{description},
+      GROUP_NAME = #{groupName},
+      DATA_TYPE = #{dataType},
+      TAG = #{tag},
+      UNIT = #{unit},
+      VALUE = #{value},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version}
+    where CONFIG_SID = #{configSid}
+  </update>
+</mapper>

@@ -1,0 +1,9 @@
+{
+"providerUrl":"${providerUrl}",
+"authUser":"${authUser}",
+"authPass":"${authPass}",
+"name":"${volumeId}",
+"vmname":"${serverId}",
+"dataStore":"${dataStore}",
+"size":"${size}"
+}

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.charge.dao.BillingAccountCdrMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.charge.BillingAccountCdr" >
+    <id column="CDR_SID" property="cdrSid" jdbcType="BIGINT" />
+    <result column="BILLING_ACCOUNT_SID" property="billingAccountSid" jdbcType="BIGINT" />
+    <result column="OP_TYPE" property="opType" jdbcType="VARCHAR" />
+    <result column="TRADE_NO" property="tradeNo" jdbcType="VARCHAR" />
+    <result column="OP_USER" property="opUser" jdbcType="VARCHAR" />
+    <result column="OP_DATE" property="opDate" jdbcType="TIMESTAMP" />
+    <result column="OP_AMOUNT" property="opAmount" jdbcType="DECIMAL" />
+    <result column="BALANCE" property="balance" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+    
+    <result column="OP_TYPE_NAME" property="opTypeName" jdbcType="VARCHAR" />
+    <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingAccountCdr" >
+    insert into BILLING_ACCOUNT_CDR (CDR_SID, BILLING_ACCOUNT_SID,
+      OP_TYPE, TRADE_NO, OP_USER,OP_DATE,OP_AMOUNT,BALANCE,STATUS,
+      CREATED_BY, CREATED_DT, 
+      UPDATED_BY, UPDATED_DT, VERSION)
+    values (#{cdrSid},#{billingAccountSid},
+      #{opType}, #{tradeNo},#{opUser}, #{opDate},#{opAmount},#{balance}, #{status},
+      #{createdBy}, #{createdDt}, 
+      #{updatedBy}, #{updatedDt}, #{version})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingAccountCdr" >
+    <selectKey resultType="java.lang.Long" keyProperty="accountSid" order="BEFORE">
+			SELECT NEXTVAL('SEQ_BILLINGACCOUNTCDR')
+	</selectKey>
+    insert into BILLING_ACCOUNT_CDR
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        CDR_SID,
+      <if test="billingAccountSid != null" >
+        BILLING_ACCOUNT_SID,
+      </if>
+      <if test="opType != null" >
+        OP_TYPE,
+      </if>
+      <if test="tradeNo != null" >
+        TRADE_NO,
+      </if>
+      <if test="opUser != null" >
+        OP_USER,
+      </if>
+      <if test="opDate != null" >
+        OP_DATE,
+      </if>
+      <if test="opAmount != null" >
+        OP_AMOUNT,
+      </if>
+      <if test="balance != null" >
+        BALANCE,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{cdrSid},
+      <if test="billingAccountSid != null" >
+        #{billingAccountSid},
+      </if>
+      <if test="opType != null" >
+        #{opType},
+      </if>
+      <if test="tradeNo != null" >
+        #{tradeNo},
+      </if>
+      <if test="opUser != null" >
+        #{opUser},
+      </if>
+      <if test="opDate != null" >
+        #{opDate},
+      </if>
+      <if test="balance != null" >
+        #{balance},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+    </trim>
+  </insert>
+
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.billingAccountSid != null" >
+         and A.BILLING_ACCOUNT_SID = #{condition.billingAccountSid}
+      </if>
+      <if test="condition.opType != null" >
+         and A.OP_TYPE = #{condition.opType}
+      </if>
+      <if test="condition.tradeNo != null" >
+         and A.TRADE_NO = #{condition.tradeNo}
+      </if>
+      <if test="condition.opUser != null" >
+         and A.OP_USER = #{condition.opUser}
+      </if>
+      <if test="condition.status != null" >
+         and A.STATUS = #{condition.status}
+      </if>
+      <if test="condition.createdBy != null" >
+         and A.CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and A.CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and A.UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and A.UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and A.VERSION = #{condition.version}
+      </if>
+      <if test="condition.tradeNoLike != null" >
+         and A.TRADE_NO like concat('%', #{condition.tradeNoLike},'%')
+      </if>
+      <if test="condition.fromDate != null" >
+         and A.OP_DATE >= #{condition.fromDate}
+      </if>
+      <if test="condition.toDate != null" >
+         and A.OP_DATE <![CDATA[ <= #{condition.toDate} ]]>
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    A.CDR_SID, A.BILLING_ACCOUNT_SID, A.OP_TYPE, A.TRADE_NO, A.OP_USER, A.OP_DATE, A.OP_AMOUNT, A.BALANCE, A.STATUS,
+    A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, A.UPDATED_DT, A.VERSION
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,B.CODE_DISPLAY as STATUS_NAME,
+    C.CODE_DISPLAY as OP_TYPE_NAME 
+    from BILLING_ACCOUNT_CDR A
+    left join SYS_M_CODE B on (A.STATUS = B.CODE_VALUE and B.CODE_CATEGORY = 'BILLING_ACCOUNT_CDR_STATUS')
+    left join SYS_M_CODE C on (A.OP_TYPE = C.CODE_VALUE and C.CODE_CATEGORY = 'ACCOUNT_CDR_OP_TYPE')
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+</mapper>

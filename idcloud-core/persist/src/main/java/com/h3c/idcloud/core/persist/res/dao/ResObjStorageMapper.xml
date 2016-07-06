@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResObjStorageMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResObjStorage">
+        <id column="RES_OS_SID" property="resOsSid" jdbcType="VARCHAR"/>
+        <result column="PARENT_TOPOLOGY_SID" property="parentTopologySid" jdbcType="VARCHAR"/>
+        <result column="RES_POOL_SID" property="resPoolSid" jdbcType="VARCHAR"/>
+        <result column="OS_VISIT_ADDRESS" property="osVisitAddress" jdbcType="VARCHAR"/>
+        <result column="CLIENT_DOWNLOAD_URL" property="clientDownloadUrl" jdbcType="VARCHAR"/>
+        <result column="TOTAL_CAPACITY" property="totalCapacity" jdbcType="BIGINT"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP"/>
+        <result column="VERSION" property="version" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.parentTopologySid != null">
+                and PARENT_TOPOLOGY_SID = #{condition.parentTopologySid}
+            </if>
+            <if test="condition.resPoolSid != null">
+                and RES_POOL_SID = #{condition.resPoolSid}
+            </if>
+            <if test="condition.osVisitAddress != null">
+                and OS_VISIT_ADDRESS = #{condition.osVisitAddress}
+            </if>
+            <if test="condition.clientDownloadUrl != null">
+                and CLIENT_DOWNLOAD_URL = #{condition.clientDownloadUrl}
+            </if>
+            <if test="condition.totalCapacity != null">
+                and TOTAL_CAPACITY = #{condition.totalCapacity}
+            </if>
+            <if test="condition.uuid != null">
+                and UUID = #{condition.uuid}
+            </if>
+            <if test="condition.createdBy != null">
+                and CREATED_BY = #{condition.createdBy}
+            </if>
+            <if test="condition.createdDt != null">
+                and CREATED_DT = #{condition.createdDt}
+            </if>
+            <if test="condition.updatedBy != null">
+                and UPDATED_BY = #{condition.updatedBy}
+            </if>
+            <if test="condition.updatedDt != null">
+                and UPDATED_DT = #{condition.updatedDt}
+            </if>
+            <if test="condition.version != null">
+                and VERSION = #{condition.version}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        RES_OS_SID, PARENT_TOPOLOGY_SID, RES_POOL_SID, OS_VISIT_ADDRESS, CLIENT_DOWNLOAD_URL,
+        TOTAL_CAPACITY, UUID, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from res_obj_storage
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_obj_storage
+        where RES_OS_SID = #{resOsSid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_obj_storage
+        where RES_OS_SID = #{resOsSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_obj_storage
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResObjStorage">
+        <selectKey resultType="java.lang.String" keyProperty="resOsSid" order="BEFORE">
+            SELECT UUID();
+        </selectKey>
+        insert into res_obj_storage (RES_OS_SID, PARENT_TOPOLOGY_SID, RES_POOL_SID, OS_VISIT_ADDRESS,
+        CLIENT_DOWNLOAD_URL,
+        TOTAL_CAPACITY, UUID, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT,
+        VERSION)
+        values (#{resOsSid}, #{parentTopologySid}, #{resPoolSid}, #{osVisitAddress}, #{clientDownloadUrl},
+        #{totalCapacity}, #{uuid}, #{createdBy}, #{createdDt}, #{updatedBy}, #{updatedDt},
+        #{version})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResObjStorage">
+        <selectKey resultType="java.lang.String" keyProperty="resOsSid" order="BEFORE">
+            SELECT UUID();
+        </selectKey>
+        insert into res_obj_storage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            RES_OS_SID,
+            <if test="parentTopologySid != null">
+                PARENT_TOPOLOGY_SID,
+            </if>
+            <if test="resPoolSid != null">
+                RES_POOL_SID,
+            </if>
+            <if test="osVisitAddress != null">
+                OS_VISIT_ADDRESS,
+            </if>
+            <if test="clientDownloadUrl != null">
+                CLIENT_DOWNLOAD_URL,
+            </if>
+            <if test="totalCapacity != null">
+                TOTAL_CAPACITY,
+            </if>
+            <if test="uuid != null">
+                UUID,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+            <if test="version != null">
+                VERSION,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{resOsSid},
+            <if test="parentTopologySid != null">
+                #{parentTopologySid},
+            </if>
+            <if test="resPoolSid != null">
+                #{resPoolSid},
+            </if>
+            <if test="osVisitAddress != null">
+                #{osVisitAddress},
+            </if>
+            <if test="clientDownloadUrl != null">
+                #{clientDownloadUrl},
+            </if>
+            <if test="totalCapacity != null">
+                #{totalCapacity},
+            </if>
+            <if test="uuid != null">
+                #{uuid},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_obj_storage
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_obj_storage
+        <set>
+            <if test="record.resOsSid != null">
+                RES_OS_SID = #{record.resOsSid},
+            </if>
+            <if test="record.parentTopologySid != null">
+                PARENT_TOPOLOGY_SID = #{record.parentTopologySid},
+            </if>
+            <if test="record.resPoolSid != null">
+                RES_POOL_SID = #{record.resPoolSid},
+            </if>
+            <if test="record.osVisitAddress != null">
+                OS_VISIT_ADDRESS = #{record.osVisitAddress},
+            </if>
+            <if test="record.clientDownloadUrl != null">
+                CLIENT_DOWNLOAD_URL = #{record.clientDownloadUrl},
+            </if>
+            <if test="record.totalCapacity != null">
+                TOTAL_CAPACITY = #{record.totalCapacity},
+            </if>
+            <if test="record.uuid != null">
+                UUID = #{record.uuid},
+            </if>
+            <if test="record.createdBy != null">
+                CREATED_BY = #{record.createdBy},
+            </if>
+            <if test="record.createdDt != null">
+                CREATED_DT = #{record.createdDt},
+            </if>
+            <if test="record.updatedBy != null">
+                UPDATED_BY = #{record.updatedBy},
+            </if>
+            <if test="record.updatedDt != null">
+                UPDATED_DT = #{record.updatedDt},
+            </if>
+            <if test="record.version != null">
+                VERSION = #{record.version},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_obj_storage
+        set RES_OS_SID = #{record.resOsSid},
+        PARENT_TOPOLOGY_SID = #{record.parentTopologySid},
+        RES_POOL_SID = #{record.resPoolSid},
+        OS_VISIT_ADDRESS = #{record.osVisitAddress},
+        CLIENT_DOWNLOAD_URL = #{record.clientDownloadUrl},
+        TOTAL_CAPACITY = #{record.totalCapacity},
+        UUID = #{record.uuid},
+        CREATED_BY = #{record.createdBy},
+        CREATED_DT = #{record.createdDt},
+        UPDATED_BY = #{record.updatedBy},
+        UPDATED_DT = #{record.updatedDt},
+        VERSION = #{record.version}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResObjStorage">
+        update res_obj_storage
+        <set>
+            <if test="parentTopologySid != null">
+                PARENT_TOPOLOGY_SID = #{parentTopologySid},
+            </if>
+            <if test="resPoolSid != null">
+                RES_POOL_SID = #{resPoolSid},
+            </if>
+            <if test="osVisitAddress != null">
+                OS_VISIT_ADDRESS = #{osVisitAddress},
+            </if>
+            <if test="clientDownloadUrl != null">
+                CLIENT_DOWNLOAD_URL = #{clientDownloadUrl},
+            </if>
+            <if test="totalCapacity != null">
+                TOTAL_CAPACITY = #{totalCapacity},
+            </if>
+            <if test="uuid != null">
+                UUID = #{uuid},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt},
+            </if>
+            <if test="version != null">
+                VERSION = #{version},
+            </if>
+        </set>
+        where RES_OS_SID = #{resOsSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResObjStorage">
+        update res_obj_storage
+        set PARENT_TOPOLOGY_SID = #{parentTopologySid},
+        RES_POOL_SID = #{resPoolSid},
+        OS_VISIT_ADDRESS = #{osVisitAddress},
+        CLIENT_DOWNLOAD_URL = #{clientDownloadUrl},
+        TOTAL_CAPACITY = #{totalCapacity},
+        UUID = #{uuid},
+        CREATED_BY = #{createdBy},
+        CREATED_DT = #{createdDt},
+        UPDATED_BY = #{updatedBy},
+        UPDATED_DT = #{updatedDt},
+        VERSION = #{version}
+        where RES_OS_SID = #{resOsSid}
+    </update>
+</mapper>

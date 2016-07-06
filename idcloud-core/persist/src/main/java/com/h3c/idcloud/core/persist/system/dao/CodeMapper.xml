@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.CodeMapper" >
+  <cache type="org.mybatis.caches.ehcache.LoggingEhcache">
+    <property name="timeToIdleSeconds" value="3600"/>
+    <property name="timeToLiveSeconds" value="3600"/>
+    <property name="maxEntriesLocalHeap" value="1000"/>
+    <property name="maxEntriesLocalDisk" value="10000000"/>
+    <property name="memoryStoreEvictionPolicy" value="LRU"/>
+  </cache>
+  <!--
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+  -->
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.Code" >
+    <id column="CODE_SID" property="codeSid" jdbcType="BIGINT" />
+    <result column="CODE_CATEGORY" property="codeCategory" jdbcType="VARCHAR" />
+    <result column="CODE_VALUE" property="codeValue" jdbcType="VARCHAR" />
+    <result column="CODE_DISPLAY" property="codeDisplay" jdbcType="VARCHAR" />
+    <result column="PARENT_CODE_VALUE" property="parentCodeValue" jdbcType="VARCHAR" />
+    <result column="ENABLED" property="enabled" jdbcType="VARCHAR" />
+    <result column="ENABLED_NAME" property="enabledName" jdbcType="VARCHAR" />
+    <result column="ATTRIBUTE_1" property="attribute1" jdbcType="VARCHAR" />
+    <result column="ATTRIBUTE_2" property="attribute2" jdbcType="VARCHAR" />
+    <result column="ATTRIBUTE_3" property="attribute3" jdbcType="VARCHAR" />
+    <result column="ATTRIBUTE_4" property="attribute4" jdbcType="VARCHAR" />
+    <result column="ATTRIBUTE_5" property="attribute5" jdbcType="VARCHAR" />
+    <result column="SORT" property="sort" jdbcType="BIGINT" />
+    <result column="SORTNO" property="sortNo" jdbcType="BIGINT" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="DATE" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="DATE" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+    <result column="SOFTWARE_VALUE" property="softWareValue" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.codeCategory != null" >
+        and A.CODE_CATEGORY = #{condition.codeCategory}
+      </if>
+      <if test="condition.codeCategorys == 'codeCategorys'" >
+        and A.CODE_CATEGORY IN ('EQUIPMENT_STATUS','OS_VERSION','CPU_TYPE')
+      </if>
+      <if test="condition.hostStoraegcodeCategorys == 'hostStoraegcodeCategorys'" >
+        and A.CODE_CATEGORY IN ('HOST_STATUS','HARD_DISK_TYPE','STORAGE_CATEGORY','STORAGE_PURPOSE','STORAGE_STATUS','STORAGE_TYPE')
+      </if>
+      <if test="condition.codeValue != null" >
+        and A.CODE_VALUE = #{condition.codeValue}
+      </if>
+      <if test="condition.codeValues != null" >
+        and A.CODE_VALUE in (${condition.codeValues})
+      </if>
+      <if test="condition.codeValuesLike != null" >
+        and A.CODE_VALUE like concat('%', #{condition.codeValuesLike}, '%')
+      </if>
+      <if test="condition.phyCodeValue == 'physical'" >
+        and A.CODE_VALUE in ('PL','CE','NE','SE','H','C','F','S','SW','FW','LB','SAN','RC')
+      </if>
+      <if test="condition.codeDisplay != null" >
+        and A.CODE_DISPLAY = #{condition.codeDisplay}
+      </if>
+      <if test="condition.parentCodeValue != null" >
+        and A.PARENT_CODE_VALUE = #{condition.parentCodeValue}
+      </if>
+      <if test="condition.parentCodeValueLike != null" >
+        and A.PARENT_CODE_VALUE  like concat('%', #{condition.parentCodeValueLike}, '%')
+      </if>
+      <if test="condition.enabled != null" >
+        and A.ENABLED = #{condition.enabled}
+      </if>
+      <if test="condition.attribute1 != null" >
+        and A.ATTRIBUTE_1 = #{condition.attribute1}
+      </if>
+      <if test="condition.attribute2 != null" >
+        and A.ATTRIBUTE_2 = #{condition.attribute2}
+      </if>
+      <if test="condition.attribute3 != null" >
+        and A.ATTRIBUTE_3 like concat('%', #{condition.attribute3},'%')
+      </if>
+      <if test="condition.attribute4 != null" >
+        and A.ATTRIBUTE_4 = #{condition.attribute4}
+      </if>
+      <if test="condition.attribute5 != null" >
+        and A.ATTRIBUTE_5 = #{condition.attribute5}
+      </if>
+      <if test="condition.sort != null" >
+        and A.SORT = #{condition.sort}
+      </if>
+      <if test="condition.createdBy != null" >
+        and A.CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+        and A.CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+        and A.UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+        and A.UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+        and A.VERSION = #{condition.version}
+      </if>
+      <if test="condition.getChildCode != null" >
+        and FIND_IN_SET(A.PARENT_CODE_VALUE,getCodeTopologyChildList(#{condition.getChildCode}))
+      </if>
+      <if test="condition.codeCategory != null" >
+        <if test="condition.codeCategory == 'SOFTWARE_TYPE'" >
+          <if test="condition.softVersionList != null">
+            and C.CODE_VALUE in
+            <foreach item="item" index="index" collection="condition.softVersionList"
+                     open="(" separator="," close=")">
+              #{item}
+            </foreach>
+          </if>
+        </if>
+        <if test="condition.codeCategory == 'SOFTWARE_VERSION'" >
+          <if test="condition.softVersionList != null">
+            and A.CODE_VALUE in
+            <foreach item="item" index="index" collection="condition.softVersionList"
+                     open="(" separator="," close=")">
+              #{item}
+            </foreach>
+          </if>
+        </if>
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    A.CODE_SID, A.CODE_CATEGORY, A.CODE_VALUE, A.CODE_DISPLAY, A.PARENT_CODE_VALUE, A.ENABLED,A.ATTRIBUTE_1, A.ATTRIBUTE_2,A.ATTRIBUTE_3,A.ATTRIBUTE_4,A.ATTRIBUTE_5,A.SORT,
+    A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, A.UPDATED_DT, A.VERSION
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    distinct
+    (CASE WHEN A.ENABLED = 1 THEN "是" ELSE "否" END) as ENABLED_NAME,
+    A.SORT AS SORTNO,
+    <include refid="Base_Column_List" />
+    from SYS_M_CODE A
+    INNER  JOIN SYS_M_CODE_CATEGORY B ON (
+    A.CODE_CATEGORY = B.CODE_CATEGORY
+    )
+    LEFT JOIN sys_m_code C ON (A.CODE_VALUE = C.PARENT_CODE_VALUE)
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    order by A.SORT
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from sys_m_code
+    where CODE_SID = #{codeSid}
+  </select>
+  <select id="findImageSoftWare" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    SELECT
+    a.CODE_VALUE AS SOFTWARE_VALUE,
+    c.*
+    FROM
+    sys_m_code b
+    inner JOIN sys_m_code a ON (a.CODE_VALUE = b.PARENT_CODE_VALUE)
+    inner JOIN sys_m_code c ON (b.CODE_VALUE = c.PARENT_CODE_VALUE)
+    WHERE a.CODE_CATEGORY = #{condition.codeCategory} AND a.ENABLED = #{condition.enabled}
+    ORDER BY c.SORT ASC
+  </select>
+  <select id="findParentCodeByCodeVaule" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    SELECT
+    C.*
+    FROM
+    sys_m_code A
+    LEFT JOIN sys_m_code B ON (a.PARENT_CODE_VALUE = b.CODE_VALUE)
+    LEFT JOIN sys_m_code C ON (B.PARENT_CODE_VALUE = C.CODE_VALUE)
+    WHERE A.CODE_VALUE = #{condition.codeValue}
+  </select>
+  <select id="getParentCodeByCodeVaule" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    SELECT
+    B.*
+    FROM
+    sys_m_code A
+    LEFT JOIN sys_m_code B ON (a.PARENT_CODE_VALUE = b.CODE_VALUE)
+    WHERE A.CODE_VALUE = #{condition.codeValue}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_m_code
+    where CODE_SID = #{codeSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from sys_m_code
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.system.Code" >
+    insert into sys_m_code (CODE_SID, CODE_CATEGORY, CODE_VALUE, CODE_DISPLAY, PARENT_CODE_VALUE,
+    ENABLED,ATTRIBUTE_1, ATTRIBUTE_2, ATTRIBUTE_3, ATTRIBUTE_4, ATTRIBUTE_5, SORT, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION
+    )
+    values (#{codeSid}, #{codeCategory}, #{codeValue}, #{codeDisplay}, #{parentCodeValue},
+    #{enabled},#{attribute1},#{attribute2},#{attribute3},#{attribute4},#{attribute5}, #{sort}, #{createdBy}, #{createdDt}, #{updatedBy}, #{updatedDt}, #{version}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.Code" >
+    <selectKey resultType="java.lang.Long" keyProperty="codeSid"
+               order="BEFORE">
+      SELECT NEXTVAL('SEQ_SYS_M_CODE')
+    </selectKey>
+    insert into sys_m_code
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="codeSid != null" >
+        CODE_SID,
+      </if>
+      <if test="codeCategory != null" >
+        CODE_CATEGORY,
+      </if>
+      <if test="codeValue != null" >
+        CODE_VALUE,
+      </if>
+      <if test="codeDisplay != null" >
+        CODE_DISPLAY,
+      </if>
+      <if test="parentCodeValue != null" >
+        PARENT_CODE_VALUE,
+      </if>
+      <if test="enabled != null" >
+        ENABLED,
+      </if>
+      <if test="attribute1 != null" >
+        ATTRIBUTE_1,
+      </if>
+      <if test="attribute2 != null" >
+        ATTRIBUTE_2,
+      </if>
+      <if test="attribute3 != null" >
+        ATTRIBUTE_3,
+      </if>
+      <if test="attribute4 != null" >
+        ATTRIBUTE_4,
+      </if>
+      <if test="attribute5 != null" >
+        ATTRIBUTE_5,
+      </if>
+      <if test="sort != null" >
+        SORT,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="codeSid != null" >
+        #{codeSid},
+      </if>
+      <if test="codeCategory != null" >
+        #{codeCategory},
+      </if>
+      <if test="codeValue != null" >
+        #{codeValue},
+      </if>
+      <if test="codeDisplay != null" >
+        #{codeDisplay},
+      </if>
+      <if test="parentCodeValue != null" >
+        #{parentCodeValue},
+      </if>
+      <if test="enabled != null" >
+        #{enabled},
+      </if>
+      <if test="attribute1 != null" >
+        #{attribute1},
+      </if>
+      <if test="attribute2 != null" >
+        #{attribute2},
+      </if>
+      <if test="attribute3 != null" >
+        #{attribute3},
+      </if>
+      <if test="attribute4 != null" >
+        #{attribute4},
+      </if>
+      <if test="attribute5 != null" >
+        #{attribute5},
+      </if>
+      <if test="sort != null" >
+        #{sort},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from sys_m_code A
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update sys_m_code
+    <set >
+      <if test="record.codeSid != null" >
+        CODE_SID = #{record.codeSid},
+      </if>
+      <if test="record.codeCategory != null" >
+        CODE_CATEGORY = #{record.codeCategory},
+      </if>
+      <if test="record.codeValue != null" >
+        CODE_VALUE = #{record.codeValue},
+      </if>
+      <if test="record.codeDisplay != null" >
+        CODE_DISPLAY = #{record.codeDisplay},
+      </if>
+      <if test="record.parentCodeValue != null" >
+        PARENT_CODE_VALUE = #{record.parentCodeValue},
+      </if>
+      <if test="record.enabled != null" >
+        ENABLED = #{record.enabled},
+      </if>
+      <if test="record.attribute1 != null" >
+        ATTRIBUTE_1 = #{record.attribute1},
+      </if>
+      <if test="record.attribute2 != null" >
+        ATTRIBUTE_2 = #{record.attribute2},
+      </if>
+      <if test="record.attribute3 != null" >
+        ATTRIBUTE_3 = #{record.attribute3},
+      </if>
+      <if test="record.attribute4 != null" >
+        ATTRIBUTE_4 = #{record.attribute4},
+      </if>
+      <if test="record.attribute5 != null" >
+        ATTRIBUTE_5 = #{record.attribute5},
+      </if>
+      <if test="record.sort != null" >
+        SORT = #{record.sort},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update sys_m_code
+    set CODE_SID = #{record.codeSid},
+    CODE_CATEGORY = #{record.codeCategory},
+    CODE_VALUE = #{record.codeValue},
+    CODE_DISPLAY = #{record.codeDisplay},
+    PARENT_CODE_VALUE = #{record.parentCodeValue},
+    ENABLED = #{record.enabled},
+    ATTRIBUTE_1 = #{record.attribute1},
+    ATTRIBUTE_2 = #{record.attribute2},
+    ATTRIBUTE_3 = #{record.attribute3},
+    ATTRIBUTE_4 = #{record.attribute4},
+    ATTRIBUTE_5 = #{record.attribute5},
+    SORT = #{record.sort},
+    CREATED_BY = #{record.createdBy},
+    CREATED_DT = #{record.createdDt},
+    UPDATED_BY = #{record.updatedBy},
+    UPDATED_DT = #{record.updatedDt},
+    VERSION = #{record.version}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.Code" >
+    update sys_m_code
+    <set >
+      <if test="codeCategory != null" >
+        CODE_CATEGORY = #{codeCategory},
+      </if>
+      <if test="codeValue != null" >
+        CODE_VALUE = #{codeValue},
+      </if>
+      <if test="codeDisplay != null" >
+        CODE_DISPLAY = #{codeDisplay},
+      </if>
+      <if test="parentCodeValue != null" >
+        PARENT_CODE_VALUE = #{parentCodeValue},
+      </if>
+      <if test="enabled != null" >
+        ENABLED = #{enabled},
+      </if>
+      <if test="attribute1 != null" >
+        ATTRIBUTE_1 = #{attribute1},
+      </if>
+      <if test="attribute2 != null" >
+        ATTRIBUTE_2 = #{attribute2},
+      </if>
+      <if test="attribute3 != null" >
+        ATTRIBUTE_3 = #{attribute3},
+      </if>
+      <if test="attribute4 != null" >
+        ATTRIBUTE_4 = #{attribute4},
+      </if>
+      <if test="attribute5 != null" >
+        ATTRIBUTE_5 = #{attribute5},
+      </if>
+      <if test="sort != null" >
+        SORT = #{sort},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+    </set>
+    where CODE_SID = #{codeSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.Code" >
+    update sys_m_code
+    set CODE_CATEGORY = #{codeCategory},
+    CODE_VALUE = #{codeValue},
+    CODE_DISPLAY = #{codeDisplay},
+    PARENT_CODE_VALUE = #{parentCodeValue},
+    ENABLED = #{enabled},
+    ATTRIBUTE_1 = #{attribute1},
+    ATTRIBUTE_2 = #{attribute2},
+    ATTRIBUTE_3 = #{attribute3},
+    ATTRIBUTE_4 = #{attribute4},
+    ATTRIBUTE_5 = #{attribute5},
+    SORT = #{sort},
+    CREATED_BY = #{createdBy},
+    CREATED_DT = #{createdDt},
+    UPDATED_BY = #{updatedBy},
+    UPDATED_DT = #{updatedDt},
+    VERSION = #{version}
+    where CODE_SID = #{codeSid}
+  </update>
+</mapper>

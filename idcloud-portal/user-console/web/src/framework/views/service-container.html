@@ -1,0 +1,34 @@
+<!-- 内容部分 -->
+<div id="container" ms-controller="serviceContainer">
+    
+    <div id="left-nav" class="left-nav">
+        <!-- 导航条 -->
+        <div id="sidebar" class="sidebar">
+            <div class="sidebar-menu nav-collapse">
+                <ul>
+                    <li class="has-sub" ms-class-open="el.moduleUrl == secondNavFlag" ms-repeat-el="navLeft">
+                        <a href="javascript:;" class="" ms-if="el.secondModules.length > 0">
+                            <i ms-class="{{el.moduleIconUrl}}"></i>
+                            <span class="menu-text">{{el.moduleName}}</span>
+                            <span class="sidebar-arrow" ms-class-open="el.moduleUrl == secondNavFlag"></span>
+                        </a>
+                        <a href="javascript:;" class="" ms-if="el.secondModules.length == 0" ms-click="switchConsoleCenterRouter(el.moduleUrl)">
+                            <i ms-class="{{el.moduleIconUrl}}"></i>
+                            <span class="menu-text">{{el.moduleName}}</span>
+                        </a>
+                        <ul class="sub" ms-visible="el.moduleUrl == secondNavFlag" ms-if="el.secondModules.length > 0">
+                            <li ms-repeat-item="el.secondModules"  ms-class="current:navSelectedFlag == item.moduleUrl">
+                                <a ms-click="switchConsoleCenterRouter(item.moduleUrl)">
+                                    <span class="sub-menu-text">{{item.moduleName}}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 右边内容部分 -->
+    <div id="right-mainer" class="right-mainer" ms-view="service-container"></div>    
+</div>
+

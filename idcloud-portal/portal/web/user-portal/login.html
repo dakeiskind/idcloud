@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="renderer" content="webkit">
+    <title>金贸云 - 登录</title>
+    <link rel="icon" href="topfooter/images/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="css/index.css" >
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/slider.css">
+    <link rel="stylesheet" href="css/pintuer.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/jquery.idcode.css">
+
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/public.js"></script>
+    <script type="text/javascript" src="js/pintuer.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/jquery.idcode.js"></script>
+    <script type="text/javascript" src="js/js.cookie.js"></script>
+    <script type="text/javascript" src="js/jquery.base64.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.idcode.setCode();
+
+        });
+
+        function check(){
+            var validator = false;
+            var validator2 = false;
+            $("#loginDiv").find('input[data-validate],textarea[data-validate],select[data-validate]').trigger("blur");
+            $("#loginDiv").find('input[placeholder],textarea[placeholder]').each(function() {
+         
+                if ($("#loginDiv").data("pintuerholder")) {
+                    $("#loginDiv").val("");
+                    $("#loginDiv").css("color", $("#loginDiv").data("pintuerholder"));
+                    $("#loginDiv").removeData("pintuerholder");
+                 }
+            });
+            var numError = $("#loginDiv").find('.check-error').length;
+            if (numError) {
+                $("#loginDiv").find('.check-error').first().find('input[data-validate],textarea[data-validate],select[data-validate]').first().focus().select();
+                validator = false;
+            }else{
+                validator = true;
+            }
+
+            if($.idcode.validateCode()){
+
+                 validator2 = true;
+                 if(validator && validator2){
+                     $("#cheackMsg").html("");
+                     // 提交代码
+                     var user = new Object();
+                     user.account = $("#login-username").val();
+                     user.password = $("#login-password").val();
+                     user.userType = '02';
+                     // 清空
+                     $("#loginMsg").html("");
+                     // 获取服务目录
+                     Core.AjaxRequest({
+                         url: ws_url + "/rest/user/login",
+                         type: "POST",
+                         params: user,
+                         callback: function (data) {
+                             if(data.resultStatus == "false"){
+                                 // 重新生成icode
+                                 $.idcode.setCode();
+                                 // 登录失败
+                                 $("#loginMsg").html(data.data);
+                             }else if(data.resultStatus == "true"){
+                                 // 登录成功
+                                 $.removeCookie('IDC_TOKEN');
+                                 $.removeCookie('USER_SID');
+                                 var timeCount = new Date().getTime()+1800000;
+                                 var deadline = new Date(timeCount); // 过期时间
+
+                                 // token写入cookie
+                                 $.cookie('IDC_TOKEN', data.data.accessToken, { expires:deadline,path: '/'});
+                                 $.cookie('USER_SID', data.data.userSid, { expires: deadline,path: '/'});
+                                 // 获取之前url地址
+                                 if(window.location.search == null || window.location.search == ""){
+                                     window.location.href = "index.html";
+                                 }else{
+                                     var params = window.location.search.split("=")[1];
+                                     var preUrl = $.base64.atob(params, true);
+                                     if(preUrl == null ||preUrl == undefined || preUrl == ""){
+                                         window.location.href = "/";
+                                     }else{
+                                         window.location.href = preUrl;
+                                     }
+                                 }
+                             }
+                         },
+                         failure:function(){}
+                     });
+                 }
+            }else {
+                validator2 = false;
+                $("#loginMsg").html("");
+                $("#cheackMsg").html("<font color='red'>&nbsp;验证码输入错误</font>");
+            }
+        }
+        function checkIcode(){
+            if($.idcode.validateCode()){
+                 $("#cheackMsg").html("");
+            }else {
+                $("#loginMsg").html("");
+                $("#cheackMsg").html("<font color='red'>&nbsp;验证码输入错误</font>");
+            }
+        }
+
+        function useEnterkeyLogin(event){
+            if(event.keyCode==13){
+                check();
+            }
+        }
+    </script>
+</head>
+
+<body style="background-image:url(./images/login_bk.jpg);background-repeat:no-repeat;background-size:100%;">
+    
+    <!-- header部分 -->
+    <div class="top" id="header"></div>
+    <!-- 内容部分 -->
+    <div class="container" style="width: 90%;">
+        <div class="line">
+            <div class="xm9-move" style="margin-top:170px;">
+                <div id="loginDiv">
+                    <div class="panel padding">
+                        <div class="text-center">
+                            <br>
+                           <strong><span style="font-size: 25px">欢迎登陆</span></strong>
+                        </div>
+                        <div class="" style="padding:30px;">
+                            <div class="form-group" style="padding-bottom: 20px;">
+                                <div class="field field-icon-right">
+                                    <input id="login-username" type="text" style="width: 100%"
+                                           class="input radius-none" name="admin" value=""
+                                           placeholder="帐号/邮箱/手机号"
+                                           data-validate="required:请填写帐号"/>
+                                    <span class="icon icon-user"></span>
+                                </div>
+                            </div>
+                            <div class="form-group" style="padding-bottom: 20px;">
+                                <div class="field field-icon-right">
+                                    <input id="login-password" type="password" onkeydown="useEnterkeyLogin(event)"  style="width: 100%;" class="input radius-none" name="password" value=""
+                                           placeholder="密码" data-validate="required:请填写密码"
+                                    />
+                                    <span class="icon icon-key"></span>
+                                </div>
+                            </div>
+                            <div class="form-group" style="padding-bottom: 20px;">
+                                <div class="field">
+                                    <input id="Txtidcode" type="text" onblur="checkIcode()" onkeydown="useEnterkeyLogin(event)" style="width: 45%" class="input radius-none" name="veryCode"
+                                           placeholder="验证码"/>
+                                    <span id="idcode"></span>
+                                </div>
+                                <h5 id="cheackMsg"></h5>
+                            </div>
+                             <div class="form-group" style="">
+                                <div class="field">
+                                    <span id="loginMsg" style="color: red"></span>
+                                </div>
+                            </div>
+                            <div class="form-group" style="padding-bottom: 20px;">
+                                <div class="field">
+                                    <button id="submit" class="radius-none button button-block bg-blue text-big" onclick="check()">
+                                        立即登录
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group" style="padding-bottom: 20px;">
+                                <div class="field text-center">
+                                    <p class="text-muted text-center"><a class="" href="resetpwd.html">
+                                        忘记密码了？
+                                    </a> | <a class="" href="register.html">注册新账号</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- footer部分 -->
+    <div class="footer" style="margin-top: 80px;" id="footer"></div>
+</body>
+
+</html>

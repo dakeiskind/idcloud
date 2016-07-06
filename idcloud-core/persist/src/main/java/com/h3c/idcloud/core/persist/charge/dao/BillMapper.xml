@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.charge.dao.BillMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.charge.Bill" >
+    <id column="BILL_SID" property="billSid" jdbcType="BIGINT" />
+    <result column="BILL_NAME" property="billName" jdbcType="VARCHAR" />
+    <result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+    <result column="TENANT_NAME" property="tenantName" jdbcType="VARCHAR" />
+    <result column="BILL_CREATE_TIME" property="billCreateTime" jdbcType="TIMESTAMP" />
+    <result column="BILL_PAYOFF_TIME" property="billPayoffTime" jdbcType="TIMESTAMP" />
+    <result column="MONEY" property="money" jdbcType="DECIMAL" />
+    <result column="PAYMENT_TIME" property="paymentTime" jdbcType="TIMESTAMP" />
+    <result column="PAYMENT_AMOUNT" property="paymentAmount" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.billingStartTime != null" >
+         and A.BILLING_START_TIME = #{condition.billingStartTime}
+      </if>
+      <if test="condition.billingEndTime != null" >
+         and A.BILLING_END_TIME = #{condition.billingEndTime}
+      </if>
+      <if test="condition.chargeTimeFromDate != null" >
+         and A.BILLING_START_TIME <![CDATA[ >=str_to_date(#{condition.chargeTimeFromDate},'%Y-%m-%d %H:%i')]]>
+      </if>
+      <if test="condition.chargeTimeToDate != null" >
+         and A.BILLING_END_TIME <![CDATA[ <=str_to_date(#{condition.chargeTimeToDate} ,'%Y-%m-%d %H:%i')]]>
+      </if>
+      <if test="condition.tenantId != null" >
+         and A.TENANT_ID = #{condition.tenantId}
+      </if>
+      <if test="condition.tenantNameLike != null" >
+         and T.TENANT_NAME like concat('%', #{condition.tenantNameLike}, '%') 
+      </if>
+      <if test="condition.chargeOffTime != null" >
+         and A.CHARGE_OFF_TIME = #{condition.chargeOffTime}
+      </if>
+      <if test="condition.days != null" >
+         and A.DAYS = #{condition.days}
+      </if>
+      <if test="condition.money != null" >
+         and A.MONEY = #{condition.money}
+      </if>
+      <if test="condition.payEndDays != null" >
+         and A.PAY_END_DAYS = #{condition.payEndDays}
+      </if>
+      <if test="condition.paymentDays != null" >
+         and A.PAYMENT_DAYS = #{condition.paymentDays}
+      </if>
+      <if test="condition.status != null" >
+         and A.STATUS = #{condition.status}
+      </if>
+      <if test="condition.createdBy != null" >
+         and A.CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and A.CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and A.UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and A.UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and A.VERSION = #{condition.version}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    A.BILL_SID, A.BILL_NAME, A.BILL_CREATE_TIME, A.BILL_PAYOFF_TIME, A.TENANT_ID, A.PAYMENT_TIME, A.MONEY, A.PAYMENT_AMOUNT,  
+    A.STATUS, A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, A.UPDATED_DT, A.VERSION
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    T.NAME AS TENANT_NAME,
+    B.CODE_DISPLAY AS STATUS_NAME,
+    <include refid="Base_Column_List" />
+    from bill A
+    left join sys_m_code B ON
+    (A.STATUS = B.CODE_VALUE AND B.CODE_CATEGORY = 'BILL_STATUS' )
+    left join sys_m_mgt_obj T on (A.TENANT_ID = T.MGT_OBJ_SID)
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    B.CODE_DISPLAY AS STATUS_NAME,
+    <include refid="Base_Column_List" />
+    from bill A
+    left join sys_m_code B ON
+    (A.STATUS = B.CODE_VALUE AND B.CODE_CATEGORY = 'BILL_STATUS' )
+    where A.BILL_SID = #{billSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from bill
+    where BILL_SID = #{billSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from bill
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.charge.Bill" >
+    insert into bill (BILL_SID, BILLING_START_TIME, BILLING_END_TIME, TENANT_ID, CHARGE_OFF_TIME, 
+      DAYS, MONEY, PAY_END_DAYS, PAYMENT_DAYS, STATUS, CREATED_BY, CREATED_DT, 
+      UPDATED_BY, UPDATED_DT, VERSION)
+    values (#{billSid}, #{billingStartTime}, #{billingEndTime}, #{tenantId}, #{chargeOffTime}, 
+      #{days}, #{money}, #{payEndDays}, #{paymentDays}, #{status}, #{createdBy}, #{createdDt}, 
+      #{updatedBy}, #{updatedDt}, #{version})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.charge.Bill" >
+    <selectKey resultType="java.lang.Long" keyProperty="billSid" order="BEFORE">
+			SELECT NEXTVAL('SEQ_BILL')
+	</selectKey>
+    insert into bill
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        BILL_SID,
+      <if test="billName != null" >
+        BILL_NAME,
+      </if>  
+      <if test="tenantId != null" >
+        TENANT_ID,
+      </if>
+      <if test="billCreateTime != null" >
+        BILL_CREATE_TIME,
+      </if>
+      <if test="billPayoffTime != null" >
+        BILL_PAYOFF_TIME,
+      </if>
+      <if test="money != null" >
+        MONEY,
+      </if>
+      <if test="paymentTime != null" >
+        PAYMENT_TIME,
+      </if>
+      <if test="paymentAmount != null" >
+        PAYMENT_AMOUNT,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{billSid},
+      <if test="billName != null" >
+        #{billName},
+      </if>  
+      <if test="tenantId != null" >
+        #{tenantId},
+      </if>
+      <if test="billCreateTime != null" >
+        #{billCreateTime},
+      </if>
+      <if test="billPayoffTime != null" >
+        #{billPayoffTime},
+      </if>
+      <if test="money != null" >
+        #{money},
+      </if>
+      <if test="paymentTime != null" >
+        #{paymentTime},
+      </if>
+      <if test="paymentAmount != null" >
+        #{paymentAmount},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from bill
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update bill
+    <set >
+      <if test="record.billSid != null" >
+        BILL_SID = #{record.billSid},
+      </if>
+      <if test="record.billName != null" >
+        BILL_NAME = #{record.billName},
+      </if>
+      <if test="record.billingStartTime != null" >
+        BILLING_START_TIME = #{record.billingStartTime},
+      </if>
+      <if test="record.billingEndTime != null" >
+        BILLING_END_TIME = #{record.billingEndTime},
+      </if>
+      <if test="record.tenantId != null" >
+        TENANT_ID = #{record.tenantId},
+      </if>
+      <if test="record.chargeOffTime != null" >
+        CHARGE_OFF_TIME = #{record.chargeOffTime},
+      </if>
+      <if test="record.days != null" >
+        DAYS = #{record.days},
+      </if>
+      <if test="record.money != null" >
+        MONEY = #{record.money},
+      </if>
+      <if test="record.payEndDays != null" >
+        PAY_END_DAYS = #{record.payEndDays},
+      </if>
+      <if test="record.paymentDays != null" >
+        PAYMENT_DAYS = #{record.paymentDays},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update bill
+    set BILL_SID = #{record.billSid},
+      BILLING_START_TIME = #{record.billingStartTime},
+      BILLING_END_TIME = #{record.billingEndTime},
+      TENANT_ID = #{record.tenantId},
+      CHARGE_OFF_TIME = #{record.chargeOffTime},
+      DAYS = #{record.days},
+      MONEY = #{record.money},
+      PAY_END_DAYS = #{record.payEndDays},
+      PAYMENT_DAYS = #{record.paymentDays},
+      STATUS = #{record.status},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.charge.Bill" >
+    update bill
+    <set >
+      <if test="tenantId != null" >
+        TENANT_ID = #{tenantId},
+      </if>
+      <if test="billName != null" >
+        BILL_NAME = #{billName},
+      </if>
+      <if test="billCreateTime != null" >
+        BILL_CREATE_TIME = #{billCreateTime},
+      </if>
+      <if test="billPayoffTime != null" >
+        BILL_PAYOFF_TIME = #{billPayoffTime},
+      </if>
+      <if test="money != null" >
+        MONEY = #{money},
+      </if>
+      <if test="paymentTime != null" >
+        PAYMENT_TIME = #{paymentTime},
+      </if>
+      <if test="paymentAmount != null" >
+        PAYMENT_AMOUNT = #{paymentAmount},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+    </set>
+    where BILL_SID = #{billSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.charge.Bill" >
+    update bill
+    set BILLING_START_TIME = #{billingStartTime},
+      BILLING_END_TIME = #{billingEndTime},
+      TENANT_ID = #{tenantId},
+      CHARGE_OFF_TIME = #{chargeOffTime},
+      DAYS = #{days},
+      MONEY = #{money},
+      PAY_END_DAYS = #{payEndDays},
+      PAYMENT_DAYS = #{paymentDays},
+      STATUS = #{status},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version}
+    where BILL_SID = #{billSid}
+  </update>
+</mapper>

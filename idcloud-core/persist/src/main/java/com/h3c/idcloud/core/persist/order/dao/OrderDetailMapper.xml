@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.order.dao.OrderDetailMapper" >
+
+  <resultMap id="BaseVoResultMap" type="com.h3c.idcloud.core.pojo.vo.order.UserOrderDetailVo">
+    <result column="SERVICE_NAME" property="serviceName" jdbcType="VARCHAR" />
+    <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+    <result column="BILLING_TYPE_NAME" property="billingTypeName" jdbcType="VARCHAR" />
+    <result column="BILLING_TYPE_YM_NAME" property="billingTypeYmName" jdbcType="VARCHAR" />
+    <result column="EXPECTED_TIME" property="expectedTime" jdbcType="TIMESTAMP" />
+    <result column="EXPIRING_DATE" property="expiringDate" jdbcType="TIMESTAMP" />
+    <result column="PURCHASE_LONG_TIME" property="purchaseLongTime" jdbcType="TIMESTAMP" />
+    <result column="QUANTITY" property="quantity" jdbcType="INTEGER" />
+    <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+    <result column="SPECIFICATION_DESC" property="specificationDesc" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.order.OrderDetail" >
+    <id column="DETAIL_SID" property="detailSid" jdbcType="BIGINT" />
+    <result column="ORDER_ID" property="orderId" jdbcType="VARCHAR" />
+    <result column="SERVICE_SID" property="serviceSid" jdbcType="BIGINT" />
+    <result column="SERVICE_NAME" property="serviceName" jdbcType="VARCHAR" />
+    <result column="TEMPLATE_SID" property="templateSid" jdbcType="BIGINT" />
+    <result column="QUANTITY" property="quantity" jdbcType="INTEGER" />
+    <result column="BILLING_TYPE" property="billingType" jdbcType="VARCHAR" />
+    <result column="BILLING_TYPE_NAME" property="billingTypeName" jdbcType="VARCHAR" />
+    <result column="PURCHASE_LONG_TIME" property="purchaseLongTime" jdbcType="VARCHAR" />
+    <result column="BUY_LENGTH" property="buyLength" jdbcType="BIGINT" />
+    <result column="PROCESS_INSTANCE_ID" property="processInstanceId" jdbcType="VARCHAR" />
+    <result column="EXPECTED_TIME" property="expectedTime" jdbcType="TIMESTAMP" />
+    <result column="EXPIRING_DATE" property="expiringDate" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+    <result column="SPECIFICATION_DESC" property="specificationDesc" jdbcType="BIGINT" />
+	<result column="TENANT_NAME" property="tenantName" jdbcType="VARCHAR" />
+	<result column="OWNER_NAME" property="ownerName" jdbcType="VARCHAR" />
+	<result column="BILLING_TYPE_YM_NAME" property="billingTypeYmName" jdbcType="VARCHAR" />
+	<result column="SERVICE_DREDGE_DATE" property="serviceDredgeDate" jdbcType="TIMESTAMP" />
+	<result column="SERVICE_EXPIRING_DATE" property="serviceExpiringDate" jdbcType="TIMESTAMP" />
+
+	<result column="SPECIFICATION" property="specification" jdbcType="VARCHAR" />
+	
+	<result column="INSTANCE_NAME" property="instanceName" jdbcType="VARCHAR" />
+	<result column="VM_INSTANCE_SID" property="vmServiceInstanceSid" jdbcType="BIGINT" />
+    <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+    <result column="INSTANCE_SID" property="instanceSid" jdbcType="BIGINT" />
+    <result column="SERVICE_CODE" property="serviceCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.orderId != null" >
+         and A.ORDER_ID = #{condition.orderId}
+      </if>
+      <if test="condition.serviceSid != null" >
+         and A.SERVICE_SID = #{condition.serviceSid}
+      </if>
+      <if test="condition.templateSid != null" >
+         and A.TEMPLATE_SID = #{condition.templateSid}
+      </if>
+      <if test="condition.quantity != null" >
+         and A.QUANTITY = #{condition.quantity}
+      </if>
+      <if test="condition.billingType != null" >
+         and A.BILLING_TYPE = #{condition.billingType}
+      </if>
+      <if test="condition.buyLength != null" >
+         and A.BUY_LENGTH = #{condition.buyLength}
+      </if>
+      <if test="condition.processInstanceId != null" >
+         and A.PROCESS_INSTANCE_ID = #{condition.processInstanceId}
+      </if>
+      <if test="condition.expectedTime != null" >
+         and A.EXPECTED_TIME = #{condition.expectedTime}
+      </if>
+      <if test="condition.expiringDate != null" >
+         and A.EXPIRING_DATE = #{condition.expiringDate}
+      </if>
+      <if test="condition.status != null" >
+         and A.STATUS = #{condition.status}
+      </if>
+      <if test="condition.createdBy != null" >
+         and A.CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and A.CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and A.UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and A.UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and A.VERSION = #{condition.version}
+      </if>
+      <if test="condition.specificationDesc != null" >
+         and A.SPECIFICATION_DESC = #{condition.specificationDesc}
+      </if>
+      <if test="condition.tenantId != null" >
+         and E.TANENT_ID = #{condition.tenantId}
+      </if>
+      <if test="condition.ownerId != null" >
+         and E.OWNER_ID = #{condition.ownerId}
+      </if>
+      <if test="condition.amount != null" >
+        and A.AMOUNT = #{condition.amount}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Example_Where_Clause2" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.orderId != null" >
+         and ORDER_ID = #{condition.orderId}
+      </if>
+      <if test="condition.serviceSid != null" >
+         and SERVICE_SID = #{condition.serviceSid}
+      </if>
+      <if test="condition.templateSid != null" >
+         and TEMPLATE_SID = #{condition.templateSid}
+      </if>
+      <if test="condition.quantity != null" >
+         and QUANTITY = #{condition.quantity}
+      </if>
+      <if test="condition.billingType != null" >
+         and BILLING_TYPE = #{condition.billingType}
+      </if>
+      <if test="condition.amount != null" >
+        and AMOUNT = #{condition.amount}
+      </if>
+      <if test="condition.buyLength != null" >
+         and BUY_LENGTH = #{condition.buyLength}
+      </if>
+      <if test="condition.processInstanceId != null" >
+         and PROCESS_INSTANCE_ID = #{condition.processInstanceId}
+      </if>
+      <if test="condition.expectedTime != null" >
+         and EXPECTED_TIME = #{condition.expectedTime}
+      </if>
+      <if test="condition.expiringDate != null" >
+         and EXPIRING_DATE = #{condition.expiringDate}
+      </if>
+      <if test="condition.status != null" >
+         and STATUS = #{condition.status}
+      </if>
+      <if test="condition.createdBy != null" >
+         and CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and VERSION = #{condition.version}
+      </if>
+      <if test="condition.specificationDesc != null" >
+         and SPECIFICATION_DESC = #{condition.specificationDesc}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    A.DETAIL_SID, A.ORDER_ID, A.SERVICE_SID, A.TEMPLATE_SID, A.QUANTITY, A.BILLING_TYPE, A.BUY_LENGTH, 
+    A.PROCESS_INSTANCE_ID, A.EXPECTED_TIME, A.EXPIRING_DATE, A.STATUS, A.CREATED_BY, A.CREATED_DT, 
+    A.UPDATED_BY, A.UPDATED_DT, A.VERSION,A.SPECIFICATION_DESC,A.SPECIFICATION,A.AMOUNT
+  </sql>
+
+  <select id="selectOrderDetailsByOrderId" resultMap="BaseVoResultMap" parameterType="java.lang.String">
+    SELECT
+    D.SERVICE_NAME AS SERVICE_NAME,
+    A.AMOUNT,
+    B.BILLING_TYPE_NAME,
+    I.CODE_DISPLAY AS BILLING_TYPE_YM_NAME,
+    A.EXPECTED_TIME,
+    A.EXPIRING_DATE,
+    A.QUANTITY,
+    A.SPECIFICATION_DESC,
+    CASE WHEN A.BUY_LENGTH = 99 THEN '永久' ELSE Concat(CONVERT(A.BUY_LENGTH,char),B.UNIT) END AS	PURCHASE_LONG_TIME
+    from service_order_detail A
+    left join billing_type B ON(A.BILLING_TYPE = B.BILLING_TYPE)
+    left join service D ON (A.SERVICE_SID = D.SERVICE_SID)
+    left join SYS_M_CODE I on(I.CODE_CATEGORY = 'BILLING_TYPE_YM'and A.BILLING_TYPE = I.CODE_VALUE)
+    where A.ORDER_ID =  #{condition.orderId}
+  </select>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+      distinct
+    B.BILLING_TYPE_NAME AS BILLING_TYPE_NAME,
+    C.CODE_DISPLAY AS STATUS_NAME,
+    D.SERVICE_NAME AS SERVICE_NAME,
+    D.SERVICE_CODE AS SERVICE_CODE,
+ 	CASE WHEN A.BUY_LENGTH = 99 THEN '永久' ELSE Concat(CONVERT(A.BUY_LENGTH,char),B.UNIT) END AS	PURCHASE_LONG_TIME,
+	G.`NAME` AS TENANT_NAME,
+	H.REAL_NAME AS OWNER_NAME,
+	I.CODE_DISPLAY AS BILLING_TYPE_YM_NAME,
+    SI.INSTANCE_SID as INSTANCE_SID,
+    <include refid="Base_Column_List" />
+    from service_order_detail A
+    inner join service_order E ON (A.ORDER_ID = E.ORDER_ID)
+    left join billing_type B ON(A.BILLING_TYPE = B.BILLING_TYPE)
+    left join sys_m_code C ON (E.STATUS = C.CODE_VALUE AND C.CODE_CATEGORY = 'ORDER_STATUS' )
+    left join service D ON (A.SERVICE_SID = D.SERVICE_SID)
+    LEFT JOIN SYS_M_MGT_OBJ G ON (E.MGT_OBJ_SID = G.MGT_OBJ_SID)
+    LEFT JOIN sys_m_user H ON ( E.OWNER_ID = H.ACCOUNT)
+    left join SYS_M_CODE I on(I.CODE_CATEGORY = 'BILLING_TYPE_YM'and A.BILLING_TYPE = I.CODE_VALUE)
+    LEFT JOIN service_instance SI on(SI.DETAIL_SID = A.DETAIL_SID)
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    C.CODE_DISPLAY AS STATUS_NAME,
+    D.SERVICE_NAME AS SERVICE_NAME,
+    <include refid="Base_Column_List" />
+    from service_order_detail A
+    left join sys_m_code C ON
+    (A.STATUS = C.CODE_VALUE AND C.CODE_CATEGORY = 'ORDER_STATUS' )
+    left join service D ON
+    (A.SERVICE_SID = D.SERVICE_SID)
+    where DETAIL_SID = #{detailSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from service_order_detail
+    where DETAIL_SID = #{detailSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from service_order_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause2" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.order.OrderDetail" >
+    insert into service_order_detail (DETAIL_SID, ORDER_ID, SERVICE_SID, TEMPLATE_SID, QUANTITY, BILLING_TYPE, 
+      BUY_LENGTH, PROCESS_INSTANCE_ID, EXPECTED_TIME, EXPIRING_DATE, STATUS,SPECIFICATION, 
+      CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION,SPECIFICATION_DESC,AMOUNT)
+    values (#{detailSid}, #{orderId}, #{serviceSid}, #{templateSid}, #{quantity}, #{billingType}, 
+      #{buyLength}, #{processInstanceId}, #{expectedTime}, #{expiringDate}, #{status}, #{specification},
+      #{createdBy}, #{createdDt}, #{updatedBy}, #{updatedDt}, #{version},#{specificationDesc},#{amount})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.order.OrderDetail" >
+    <selectKey resultType="java.lang.Long" keyProperty="detailSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SERVICE_ORDER_DETAIL')
+    </selectKey>
+    
+    insert into service_order_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="detailSid != null" >
+        DETAIL_SID,
+      </if>
+      <if test="orderId != null" >
+        ORDER_ID,
+      </if>
+      <if test="serviceSid != null" >
+        SERVICE_SID,
+      </if>
+      <if test="templateSid != null" >
+        TEMPLATE_SID,
+      </if>
+      <if test="quantity != null" >
+        QUANTITY,
+      </if>
+      <if test="billingType != null" >
+        BILLING_TYPE,
+      </if>
+      <if test="buyLength != null" >
+        BUY_LENGTH,
+      </if>
+      <if test="processInstanceId != null" >
+        PROCESS_INSTANCE_ID,
+      </if>
+      <if test="expectedTime != null" >
+        EXPECTED_TIME,
+      </if>
+      <if test="expiringDate != null" >
+        EXPIRING_DATE,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+      <if test="specificationDesc != null" >
+        SPECIFICATION_DESC,
+      </if>
+      <if test="specification != null" >
+        SPECIFICATION,
+      </if>
+      <if test="amount != null" >
+        AMOUNT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="detailSid != null" >
+        #{detailSid},
+      </if>
+      <if test="orderId != null" >
+        #{orderId},
+      </if>
+      <if test="serviceSid != null" >
+        #{serviceSid},
+      </if>
+      <if test="templateSid != null" >
+        #{templateSid},
+      </if>
+      <if test="quantity != null" >
+        #{quantity},
+      </if>
+      <if test="billingType != null" >
+        #{billingType},
+      </if>
+      <if test="buyLength != null" >
+        #{buyLength},
+      </if>
+      <if test="processInstanceId != null" >
+        #{processInstanceId},
+      </if>
+      <if test="expectedTime != null" >
+        #{expectedTime},
+      </if>
+      <if test="expiringDate != null" >
+        #{expiringDate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+      <if test="specificationDesc != null" >
+        #{specificationDesc},
+      </if>
+      <if test="specification != null" >
+        #{specification},
+      </if>
+      <if test="amount != null" >
+        #{amount},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from service_order_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update service_order_detail
+    <set >
+      <if test="record.detailSid != null" >
+        DETAIL_SID = #{record.detailSid},
+      </if>
+      <if test="record.orderId != null" >
+        ORDER_ID = #{record.orderId},
+      </if>
+      <if test="record.serviceSid != null" >
+        SERVICE_SID = #{record.serviceSid},
+      </if>
+      <if test="record.templateSid != null" >
+        TEMPLATE_SID = #{record.templateSid},
+      </if>
+      <if test="record.quantity != null" >
+        QUANTITY = #{record.quantity},
+      </if>
+      <if test="record.billingType != null" >
+        BILLING_TYPE = #{record.billingType},
+      </if>
+      <if test="record.buyLength != null" >
+        BUY_LENGTH = #{record.buyLength},
+      </if>
+      <if test="record.processInstanceId != null" >
+        PROCESS_INSTANCE_ID = #{record.processInstanceId},
+      </if>
+      <if test="record.expectedTime != null" >
+        EXPECTED_TIME = #{record.expectedTime},
+      </if>
+      <if test="record.expiringDate != null" >
+        EXPIRING_DATE = #{record.expiringDate},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+      <if test="record.specificationDesc != null" >
+        SPECIFICATION_DESC = #{record.specificationDesc},
+      </if>
+      <if test="record.specification != null" >
+        SPECIFICATION = #{record.specification},
+      </if>
+      <if test="record.amount != null" >
+        AMOUNT = #{record.amount},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update service_order_detail
+    set DETAIL_SID = #{record.detailSid},
+      ORDER_ID = #{record.orderId},
+      SERVICE_SID = #{record.serviceSid},
+      TEMPLATE_SID = #{record.templateSid},
+      QUANTITY = #{record.quantity},
+      BILLING_TYPE = #{record.billingType},
+      BUY_LENGTH = #{record.buyLength},
+      PROCESS_INSTANCE_ID = #{record.processInstanceId},
+      EXPECTED_TIME = #{record.expectedTime},
+      EXPIRING_DATE = #{record.expiringDate},
+      STATUS = #{record.status},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version},
+      SPECIFICATION_DESC = #{record.specificationDesc},
+    AMOUNT = #{record.amount},
+      SPECIFICATION = #{record.specification}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.order.OrderDetail" >
+    update service_order_detail
+    <set >
+      <if test="orderId != null" >
+        ORDER_ID = #{orderId},
+      </if>
+      <if test="serviceSid != null" >
+        SERVICE_SID = #{serviceSid},
+      </if>
+      <if test="templateSid != null" >
+        TEMPLATE_SID = #{templateSid},
+      </if>
+      <if test="quantity != null" >
+        QUANTITY = #{quantity},
+      </if>
+      <if test="billingType != null" >
+        BILLING_TYPE = #{billingType},
+      </if>
+      <if test="buyLength != null" >
+        BUY_LENGTH = #{buyLength},
+      </if>
+      <if test="processInstanceId != null" >
+        PROCESS_INSTANCE_ID = #{processInstanceId},
+      </if>
+      <if test="expectedTime != null" >
+        EXPECTED_TIME = #{expectedTime},
+      </if>
+      <if test="expiringDate != null" >
+        EXPIRING_DATE = #{expiringDate},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+      <if test="specificationDesc != null" >
+        SPECIFICATION_DESC = #{specificationDesc},
+      </if>
+      <if test="specification != null" >
+        SPECIFICATION = #{specification},
+      </if>
+      <if test="amount != null" >
+        AMOUNT = #{amount},
+      </if>
+    </set>
+    where DETAIL_SID = #{detailSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.order.OrderDetail" >
+    update service_order_detail
+    set ORDER_ID = #{orderId},
+      SERVICE_SID = #{serviceSid},
+      TEMPLATE_SID = #{templateSid},
+      QUANTITY = #{quantity},
+      BILLING_TYPE = #{billingType},
+      BUY_LENGTH = #{buyLength},
+      PROCESS_INSTANCE_ID = #{processInstanceId},
+      EXPECTED_TIME = #{expectedTime},
+      EXPIRING_DATE = #{expiringDate},
+      STATUS = #{status},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version},
+      SPECIFICATION_DESC = #{specificationDesc},
+      AMOUNT = #{amount},
+      SPECIFICATION = #{specification}
+    where DETAIL_SID = #{detailSid}
+  </update>
+</mapper>

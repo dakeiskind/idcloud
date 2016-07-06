@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.marketing.dao.GiftCardMapper">
+    <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />-->
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.marketing.GiftCard">
+        <id column="CARD_SID" property="cardSid" jdbcType="BIGINT"/>
+        <result column="BATCH_SID" property="batchSid" jdbcType="BIGINT"/>
+        <result column="BATCH_NO" property="batchNo" jdbcType="VARCHAR"/>
+        <result column="CARD_NAME" property="cardName" jdbcType="VARCHAR"/>
+        <result column="CARD_NO" property="cardNo" jdbcType="VARCHAR"/>
+        <result column="CARD_PASSWORD" property="cardPassword" jdbcType="VARCHAR"/>
+        <result column="VALID_START" property="validStart" jdbcType="TIMESTAMP"/>
+        <result column="VALID_TO" property="validTo" jdbcType="TIMESTAMP"/>
+        <result column="FACE_VALUE" property="faceValue" jdbcType="DECIMAL"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR" />
+        <result column="ACTIVATED_TIME" property="activatedTime" jdbcType="TIMESTAMP"/>
+        <result column="ACTIVATED_USER_SID" property="activatedUserSid" jdbcType="BIGINT"/>
+        <result column="CHARGE_ACCOUNT" property="chargeAccountSid" jdbcType="VARCHAR"/>
+        <result column="CHARGE_TIME" property="chargeTime" jdbcType="TIMESTAMP"/>
+        <result column="CHARGE_OPER_USER_SID" property="chargeOperUserSid" jdbcType="BIGINT"/>
+        <result column="DISTRIBUTE_USER_SID" property="distributeUserSid" jdbcType="BIGINT"/>
+        <result column="DIS_OWNER" property="disOwner" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP"/>
+        <result column="VERSION" property="version" jdbcType="BIGINT"/>
+        <!--<association property="chargeUser" column="CHARGE_OPER_USER_SID" select="com.h3c.idcloud.core.persist.user.dao.UserMapper.selectByPrimaryKey" />-->
+        <!--<association property="distributeUser" column="DISTRIBUTE_USER_SID" select="com.h3c.idcloud.core.persist.user.dao.UserMapper.selectByPrimaryKey" />-->
+        <!--<association property="chargeAccount" column="CHARGE_ACCOUNT" select="com.h3c.idcloud.core.persist.user.dao.AccountMapper.selectByPrimaryKey" />-->
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.cardSid != null">
+                and CARD_SID = #{condition.cardSid}
+            </if>
+            <if test="condition.batchSid != null">
+                and BATCH_SID = #{condition.batchSid}
+            </if>
+            <if test="condition.batchNo != null">
+                and BATCH_NO like concat('%',#{condition.batchNo}, '%')
+            </if>
+            <if test="condition.cardName != null">
+                and CARD_NAME like concat('%',#{condition.cardName}, '%')
+            </if>
+            <if test="condition.cardNo != null">
+                and CARD_NO like concat('%',#{condition.cardNo}, '%')
+            </if>
+            <if test="condition.cardNoEqual != null">
+                and CARD_NO = #{condition.cardNoEqual}
+            </if>
+            <if test="condition.cardPassword != null">
+                and CARD_PASSWORD = #{condition.cardPassword}
+            </if>
+            <if test="condition.validStart != null">
+                <![CDATA[ and TIME >= #{condition.validStart}]]>
+            </if>
+            <if test="condition.validTo != null">
+                <![CDATA[ and TIME >= #{condition.validTo}]]>
+            </if>
+            <if test="condition.faceValue != null">
+                and FACE_VALUE = #{condition.faceValue}
+            </if>
+            <if test="condition.status != null">
+                and STATUS = #{condition.status}
+            </if>
+            <if test="condition.activatedTime != null">
+                and ACTIVATED_TIME = #{condition.activatedTime}
+            </if>
+            <if test="condition.activatedUserSid != null">
+                and ACTIVATED_USER_SID = #{condition.activatedUserSid}
+            </if>
+            <if test="condition.chargeAccountSid != null">
+                and CHARGE_ACCOUNT = #{condition.chargeAccountSid}
+            </if>
+            <if test="condition.chargeTime != null">
+                and CHARGE_TIME = #{condition.chargeTime}
+            </if>
+            <if test="condition.chargeOperUserSid != null">
+                and CHARGE_OPER_USER_SID = #{condition.chargeOperUserSid}
+            </if>
+            <if test="condition.distributeUserSid != null">
+                and DISTRIBUTE_USER_SID = #{condition.distributeUserSid}
+            </if>
+            <if test="condition.disOwner != null">
+                and DIS_OWNER = #{condition.disOwner}
+            </if>
+            <if test="condition.createdBy != null">
+                and CREATED_BY = #{condition.createdBy}
+            </if>
+            <if test="condition.createdDt != null">
+                and CREATED_DT = #{condition.createdDt}
+            </if>
+            <if test="condition.updatedBy != null">
+                and UPDATED_BY = #{condition.updatedBy}
+            </if>
+            <if test="condition.updatedDt != null">
+                and UPDATED_DT = #{condition.updatedDt}
+            </if>
+            <if test="condition.version != null">
+                and VERSION = #{condition.version}
+            </if>
+            <if test="condition.notExpire != null">
+                and (VALID_TO is null or VALID_TO > now())
+            </if>
+            <if test="condition.validStartDt != null">
+                and CHARGE_TIME
+                <![CDATA[ >=str_to_date(#{condition.validStartDt},'%Y-%m-%d %H:%i:%S')]]>
+            </if>
+            <if test="condition.validToDt != null">
+                and CHARGE_TIME
+                <![CDATA[ <=str_to_date(#{condition.validToDt} ,'%Y-%m-%d %H:%i:%S')]]>
+            </if>
+            <if test="condition.userClient != null">
+                and DISTRIBUTE_USER_SID in (select USER_SID from SYS_M_USER where NICKNAME like
+                concat('%',#{condition.userClient}, '%') or REAL_NAME like
+                concat('%',#{condition.userClient}, '%'))
+            </if>
+            <if test="condition.chargeAccount != null">
+                and CHARGE_ACCOUNT in (select ACCOUNT_SID from sys_m_account where ACCOUNT_NAME like
+                concat('%',#{condition.chargeAccount}, '%'))
+            </if>
+            <if test="condition.cardSids != null">
+                and card_sid in
+                <foreach item="item" index="index" collection="condition.cardSids" open="("
+                         separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+    CARD_SID, BATCH_SID, BATCH_NO, CARD_NAME, CARD_NO, CARD_PASSWORD, VALID_START, VALID_TO, FACE_VALUE,
+    STATUS, ACTIVATED_TIME, ACTIVATED_USER_SID, CHARGE_ACCOUNT, CHARGE_TIME, CHARGE_OPER_USER_SID, 
+    CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION,DISTRIBUTE_USER_SID,DIS_OWNER
+  </sql>
+    <select id="selectByParams" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        SELECT
+          A.CARD_SID,
+          A.BATCH_SID,
+          A.BATCH_NO,
+          A.CARD_NAME,
+          A.CARD_NO,
+          A.CARD_PASSWORD,
+          A.VALID_START,
+          A.VALID_TO,
+          A.FACE_VALUE,
+          C.CODE_DISPLAY AS STATUS_NAME,
+          A.CHARGE_TIME
+          FROM billing_gift_card A
+          LEFT JOIN sys_m_code C ON (A.STATUS = C.CODE_VALUE AND C.CODE_CATEGORY = 'GIFT_CARD_STAUS' )
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <include refid="common.Mysql_Pagination_Limit" />
+        <!--select-->
+        <!--<if test="distinct">-->
+            <!--distinct-->
+        <!--</if>-->
+        <!--<include refid="Base_Column_List"/>-->
+        <!--from billing_gift_card-->
+
+        <!--<if test="_parameter != null">-->
+            <!--<include refid="Example_Where_Clause"/>-->
+        <!--</if>-->
+        <!--&lt;!&ndash;<if test="orderByClause != null" >&ndash;&gt;-->
+        <!--&lt;!&ndash;order by ${orderByClause}&ndash;&gt;-->
+        <!--&lt;!&ndash;</if>&ndash;&gt;-->
+        <!--<include refid="common.Mysql_Pagination_Limit"/>-->
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from billing_gift_card
+        where CARD_SID = #{cardSid}
+    </select>
+    <select id="findListBySids" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <include refid="Base_Column_List"/>
+        from billing_gift_card
+        where card_sid in
+        <foreach item="item" index="index" collection="condition.sids" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from billing_gift_card
+    where CARD_SID = #{cardSid}
+  </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from billing_gift_card
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.marketing.GiftCard">
+        <selectKey resultType="java.lang.Long" keyProperty="cardSid" order="BEFORE">
+            SELECT NEXTVAL('SEQ_BILLING_GIFT_CARD')
+        </selectKey>
+        insert into billing_gift_card (CARD_SID, BATCH_SID,BATCH_NO, CARD_NAME, CARD_NO,
+        CARD_PASSWORD, VALID_START,
+        VALID_TO, FACE_VALUE, STATUS, ACTIVATED_TIME, ACTIVATED_USER_SID, CHARGE_ACCOUNT,
+        CHARGE_TIME, CHARGE_OPER_USER_SID, CREATED_BY, CREATED_DT, UPDATED_BY,
+        UPDATED_DT, VERSION,DISTRIBUTE_USER_SID,DIS_OWNER)
+        values (#{cardSid}, #{batchSid}, #{batchNo}, #{cardName}, #{cardNo}, #{cardPassword},
+        #{validStart},
+        #{validTo}, #{faceValue}, #{status}, #{activatedTime}, #{activatedUserSid},
+        #{chargeAccountSid},
+        #{chargeTime}, #{chargeOperUserSid}, #{createdBy}, #{createdDt}, #{updatedBy},
+        #{updatedDt}, #{version}, #{distributeUserSid},#{disOwner})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.marketing.GiftCard">
+        <selectKey resultType="java.lang.Long" keyProperty="cardSid" order="BEFORE">
+            SELECT NEXTVAL('SEQ_BILLING_GIFT_CARD')
+        </selectKey>
+        insert into billing_gift_card
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            CARD_SID,
+            <if test="batchSid != null">
+                BATCH_SID,
+            </if>
+            <if test="batchNo != null">
+                BATCH_NO,
+            </if>
+            <if test="cardName != null">
+                CARD_NAME,
+            </if>
+            <if test="cardNo != null">
+                CARD_NO,
+            </if>
+            <if test="cardPassword != null">
+                CARD_PASSWORD,
+            </if>
+            <if test="validStart != null">
+                VALID_START,
+            </if>
+            <if test="validTo != null">
+                VALID_TO,
+            </if>
+            <if test="faceValue != null">
+                FACE_VALUE,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="activatedTime != null">
+                ACTIVATED_TIME,
+            </if>
+            <if test="activatedUserSid != null">
+                ACTIVATED_USER_SID,
+            </if>
+            <if test="chargeAccountSid != null">
+                CHARGE_ACCOUNT,
+            </if>
+            <if test="chargeTime != null">
+                CHARGE_TIME,
+            </if>
+            <if test="chargeOperUserSid != null">
+                CHARGE_OPER_USER_SID,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+            <if test="version != null">
+                VERSION,
+            </if>
+            <if test="distributeUserSid != null">
+                DISTRIBUTE_USER_SID,
+            </if>
+            <if test="disOwner != null">
+                DIS_OWNER,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{cardSid},
+            <if test="batchSid != null">
+                #{batchSid},
+            </if>
+            <if test="batchNo != null">
+                #{batchNo},
+            </if>
+            <if test="cardName != null">
+                #{cardName},
+            </if>
+            <if test="cardNo != null">
+                #{cardNo},
+            </if>
+            <if test="cardPassword != null">
+                #{cardPassword},
+            </if>
+            <if test="validStart != null">
+                #{validStart},
+            </if>
+            <if test="validTo != null">
+                #{validTo},
+            </if>
+            <if test="faceValue != null">
+                #{faceValue},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="activatedTime != null">
+                #{activatedTime},
+            </if>
+            <if test="activatedUserSid != null">
+                #{activatedUserSid},
+            </if>
+            <if test="chargeAccountSid != null">
+                #{chargeAccountSid},
+            </if>
+            <if test="chargeTime != null">
+                #{chargeTime},
+            </if>
+            <if test="chargeOperUserSid != null">
+                #{chargeOperUserSid},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+            <if test="distributeUserSid != null">
+                #{distributeUserSid},
+            </if>
+            <if test="disOwner != null">
+                #{disOwner},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertAll" parameterType="java.util.List">
+        <!--selectKey resultType="java.lang.Long"  keyProperty="cardSid" order="BEFORE">
+          SELECT NEXTVAL('SEQ_BILLING_GIFT_CARD')
+        </selectKey-->
+        insert into billing_gift_card (CARD_SID, BATCH_SID,BATCH_NO, CARD_NAME, CARD_NO,
+        CARD_PASSWORD, VALID_START,
+        VALID_TO, FACE_VALUE, STATUS, ACTIVATED_TIME, ACTIVATED_USER_SID, CHARGE_ACCOUNT,
+        CHARGE_TIME, CHARGE_OPER_USER_SID, CREATED_BY, CREATED_DT, UPDATED_BY,
+        UPDATED_DT, VERSION,DISTRIBUTE_USER_SID,DIS_OWNER)
+        values
+        <foreach collection="list" index="index" separator="," item="item">
+            (
+            (SELECT NEXTVAL('SEQ_BILLING_GIFT_CARD')), #{item.batchSid}, #{item.batchNo},
+            #{item.cardName}, #{item.cardNo}, #{item.cardPassword}, #{item.validStart},
+            #{item.validTo}, #{item.faceValue}, #{item.status}, #{item.activatedTime},
+            #{item.activatedUserSid}, #{item.chargeAccountSid},
+            #{item.chargeTime}, #{item.chargeOperUserSid}, #{item.createdBy}, #{item.createdDt},
+            #{item.updatedBy},
+            #{item.updatedDt}, #{item.version}, #{item.distributeUserSid}, #{item.disOwner}
+            )
+        </foreach>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria"
+            resultType="java.lang.Integer">
+        select count(*) from billing_gift_card
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <select id="countForBatchInactive" parameterType="java.lang.Long"
+            resultType="java.lang.Integer">
+    select count(`card_sid`) from billing_gift_card where BATCH_SID=#{batchSid} and `STATUS`=0
+  </select>
+    <update id="updateByCardSids"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+    update billing_gift_card set dis_owner = #{condition.disOwner}, status='4',
+    DISTRIBUTE_USER_SID= #{condition.distributeUserSid}   where
+    card_sid in(${condition.cardSid});
+  </update>
+    <update id="updateByParamsSelective" parameterType="map">
+        update billing_gift_card
+        <set>
+            <if test="record.cardSid != null">
+                CARD_SID = #{record.cardSid},
+            </if>
+            <if test="record.batchSid != null">
+                BATCH_SID = #{record.batchSid},
+            </if>
+            <if test="record.batchNo != null">
+                BATCH_NO = #{record.batchNo},
+            </if>
+            <if test="record.cardName != null">
+                CARD_NAME = #{record.cardName},
+            </if>
+            <if test="record.cardNo != null">
+                CARD_NO = #{record.cardNo},
+            </if>
+            <if test="record.cardPassword != null">
+                CARD_PASSWORD = #{record.cardPassword},
+            </if>
+            <if test="record.validStart != null">
+                VALID_START = #{record.validStart},
+            </if>
+            <if test="record.validTo != null">
+                VALID_TO = #{record.validTo},
+            </if>
+            <if test="record.faceValue != null">
+                FACE_VALUE = #{record.faceValue},
+            </if>
+            <if test="record.status != null">
+                STATUS = #{record.status},
+            </if>
+            <if test="record.activatedTime != null">
+                ACTIVATED_TIME = #{record.activatedTime},
+            </if>
+            <if test="record.activatedUserSid != null">
+                ACTIVATED_USER_SID = #{record.activatedUserSid},
+            </if>
+            <if test="record.chargeAccountSid != null">
+                CHARGE_ACCOUNT = #{record.chargeAccountSid},
+            </if>
+            <if test="record.chargeTime != null">
+                CHARGE_TIME = #{record.chargeTime},
+            </if>
+            <if test="record.chargeOperUserSid != null">
+                CHARGE_OPER_USER_SID = #{record.chargeOperUserSid},
+            </if>
+            <if test="record.createdBy != null">
+                CREATED_BY = #{record.createdBy},
+            </if>
+            <if test="record.createdDt != null">
+                CREATED_DT = #{record.createdDt},
+            </if>
+            <if test="record.updatedBy != null">
+                UPDATED_BY = #{record.updatedBy},
+            </if>
+            <if test="record.updatedDt != null">
+                UPDATED_DT = #{record.updatedDt},
+            </if>
+            <if test="record.version != null">
+                VERSION = #{record.version},
+            </if>
+            <if test="record.distributeUserSid != null">
+                DISTRIBUTE_USER_SID = #{record.distributeUserSid},
+            </if>
+            <if test="record.disOwner != null">
+                DIS_OWNER = #{record.disOwner},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update billing_gift_card
+        set CARD_SID = #{record.cardSid},
+        BATCH_SID = #{record.batchSid},
+        BATCH_NO = #{record.batchNo},
+        CARD_NAME = #{record.cardName},
+        CARD_NO = #{record.cardNo},
+        CARD_PASSWORD = #{record.cardPassword},
+        VALID_START = #{record.validStart},
+        VALID_TO = #{record.validTo},
+        FACE_VALUE = #{record.faceValue},
+        STATUS = #{record.status},
+        ACTIVATED_TIME = #{record.activatedTime},
+        ACTIVATED_USER_SID = #{record.activatedUserSid},
+        CHARGE_ACCOUNT = #{record.chargeAccountSid},
+        CHARGE_TIME = #{record.chargeTime},
+        CHARGE_OPER_USER_SID = #{record.chargeOperUserSid},
+        CREATED_BY = #{record.createdBy},
+        CREATED_DT = #{record.createdDt},
+        UPDATED_BY = #{record.updatedBy},
+        UPDATED_DT = #{record.updatedDt},
+        VERSION = #{record.version},
+        DISTRIBUTE_USER_SID = #{record.distributeUserSid},
+        DIS_OWNER = #{record.disOwner}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.h3c.idcloud.core.pojo.dto.marketing.GiftCard">
+        update billing_gift_card
+        <set>
+            <if test="batchSid != null">
+                BATCH_SID = #{batchSid},
+            </if>
+            <if test="batchNo != null">
+                BATCH_NO = #{batchNo},
+            </if>
+            <if test="cardName != null">
+                CARD_NAME = #{cardName},
+            </if>
+            <if test="cardNo != null">
+                CARD_NO = #{cardNo},
+            </if>
+            <if test="cardPassword != null">
+                CARD_PASSWORD = #{cardPassword},
+            </if>
+            <if test="validStart != null">
+                VALID_START = #{validStart},
+            </if>
+            <if test="validTo != null">
+                VALID_TO = #{validTo},
+            </if>
+            <if test="faceValue != null">
+                FACE_VALUE = #{faceValue},
+            </if>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+            <if test="activatedTime != null">
+                ACTIVATED_TIME = #{activatedTime},
+            </if>
+            <if test="activatedUserSid != null">
+                ACTIVATED_USER_SID = #{activatedUserSid},
+            </if>
+            <if test="chargeAccountSid != null">
+                CHARGE_ACCOUNT = #{chargeAccountSid},
+            </if>
+            <if test="chargeTime != null">
+                CHARGE_TIME = #{chargeTime},
+            </if>
+            <if test="chargeOperUserSid != null">
+                CHARGE_OPER_USER_SID = #{chargeOperUserSid},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt},
+            </if>
+            <if test="version != null">
+                VERSION = #{version},
+            </if>
+            <if test="distributeUserSid != null">
+                DISTRIBUTE_USER_SID = #{distributeUserSid},
+            </if>
+            <if test="disOwner != null">
+                DIS_OWNER = #{disOwner},
+            </if>
+        </set>
+        where CARD_SID = #{cardSid}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="com.h3c.idcloud.core.pojo.dto.marketing.GiftCard">
+    update billing_gift_card
+    set BATCH_SID = #{batchSid},
+      BATCH_NO = #{batchNo},
+      CARD_NAME = #{cardName},
+      CARD_NO = #{cardNo},
+      CARD_PASSWORD = #{cardPassword},
+      VALID_START = #{validStart},
+      VALID_TO = #{validTo},
+      FACE_VALUE = #{faceValue},
+      STATUS = #{status},
+      ACTIVATED_TIME = #{activatedTime},
+      ACTIVATED_USER_SID = #{activatedUserSid},
+      CHARGE_ACCOUNT = #{chargeAccountSid},
+      CHARGE_TIME = #{chargeTime},
+      CHARGE_OPER_USER_SID = #{chargeOperUserSid},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version},
+      DISTRIBUTE_USER_SID = #{distributeUserSid},
+       DIS_OWNER = #{disOwner}
+    where CARD_SID = #{cardSid}
+  </update>
+    <select id="getAvailableGiftCards" resultMap="BaseResultMap">
+    SELECT
+    *
+    FROM
+    billing_gift_card
+    WHERE
+    STATUS = 1
+    ORDER BY
+    created_dt DESC;
+  </select>
+</mapper>

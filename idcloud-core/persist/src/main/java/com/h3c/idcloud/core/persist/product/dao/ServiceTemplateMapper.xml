@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.product.dao.ServiceTemplateMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.product.ServiceTemplate" >
+    <id column="TEMPLATE_SID" property="templateSid" jdbcType="BIGINT" />
+    <result column="TEMPLATE_NAME" property="templateName" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="SERVICE_SID" property="serviceSid" jdbcType="BIGINT" />
+    <result column="EXPIRING_DATE" property="expiringDate" jdbcType="TIMESTAMP" />
+    <result column="IMAGE_PATH" property="imagePath" jdbcType="VARCHAR" />
+    <result column="PRICING_SID" property="pricingSid" jdbcType="BIGINT" />
+    <result column="TEMPLATE_STATUS" property="templateStatus" jdbcType="VARCHAR" />
+    <result column="TEMPLATE_STATUS_NAME" property="templateStatusName" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.templateName != null" >
+         and TEMPLATE_NAME = #{condition.templateName}
+      </if>
+      <if test="condition.description != null" >
+         and DESCRIPTION = #{condition.description}
+      </if>
+      <if test="condition.serviceSid != null" >
+         and SERVICE_SID = #{condition.serviceSid}
+      </if>
+      <if test="condition.expiringDate != null" >
+         and EXPIRING_DATE = #{condition.expiringDate}
+      </if>
+      <if test="condition.imagePath != null" >
+         and IMAGE_PATH = #{condition.imagePath}
+      </if>
+      <if test="condition.pricingSid != null" >
+         and PRICING_SID = #{condition.pricingSid}
+      </if>
+      <if test="condition.templateStatus != null" >
+         and TEMPLATE_STATUS = #{condition.templateStatus}
+      </if>
+      <if test="condition.createdBy != null" >
+         and CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and VERSION = #{condition.version}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    A.TEMPLATE_SID, A.TEMPLATE_NAME, A.DESCRIPTION, A.SERVICE_SID, A.EXPIRING_DATE, A.IMAGE_PATH, 
+    A.PRICING_SID, A.TEMPLATE_STATUS, A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, A.UPDATED_DT, A.VERSION
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from service_template A
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+  	*
+    from service_template
+    where TEMPLATE_SID = #{templateSid}
+  </select>
+   <select id="selectByServiceSid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    , B.CODE_DISPLAY as TEMPLATE_STATUS_NAME
+    from service_template A
+    left join SYS_M_CODE B on (B.CODE_CATEGORY = 'SERVICE_TEMPLATE_STATUS' and A.TEMPLATE_STATUS = B.CODE_VALUE)
+    where SERVICE_SID = #{serviceSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from service_template
+    where TEMPLATE_SID = #{templateSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from service_template
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceTemplate" >
+    <selectKey resultType="java.lang.Long" keyProperty="templateSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SERVICE_TEMPLATE')
+    </selectKey>
+    insert into service_template (TEMPLATE_SID, TEMPLATE_NAME, DESCRIPTION, SERVICE_SID, EXPIRING_DATE, 
+      IMAGE_PATH, PRICING_SID, TEMPLATE_STATUS, CREATED_BY, CREATED_DT, UPDATED_BY, 
+      UPDATED_DT, VERSION)
+    values (#{templateSid}, #{templateName}, #{description}, #{serviceSid}, #{expiringDate}, 
+      #{imagePath}, #{pricingSid}, #{templateStatus}, #{createdBy}, #{createdDt}, #{updatedBy}, 
+      #{updatedDt}, #{version})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceTemplate" >
+    <selectKey resultType="java.lang.Long" keyProperty="templateSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SERVICE_TEMPLATE')
+    </selectKey>
+    insert into service_template
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      TEMPLATE_SID,
+      <if test="templateName != null" >
+        TEMPLATE_NAME,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+      <if test="serviceSid != null" >
+        SERVICE_SID,
+      </if>
+      <if test="expiringDate != null" >
+        EXPIRING_DATE,
+      </if>
+      <if test="imagePath != null" >
+        IMAGE_PATH,
+      </if>
+      <if test="pricingSid != null" >
+        PRICING_SID,
+      </if>
+      <if test="templateStatus != null" >
+        TEMPLATE_STATUS,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{templateSid},
+      <if test="templateName != null" >
+        #{templateName},
+      </if>
+      <if test="description != null" >
+        #{description},
+      </if>
+      <if test="serviceSid != null" >
+        #{serviceSid},
+      </if>
+      <if test="expiringDate != null" >
+        #{expiringDate},
+      </if>
+      <if test="imagePath != null" >
+        #{imagePath},
+      </if>
+      <if test="pricingSid != null" >
+        #{pricingSid},
+      </if>
+      <if test="templateStatus != null" >
+        #{templateStatus},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from service_template
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update service_template
+    <set >
+      <if test="record.templateSid != null" >
+        TEMPLATE_SID = #{record.templateSid},
+      </if>
+      <if test="record.templateName != null" >
+        TEMPLATE_NAME = #{record.templateName},
+      </if>
+      <if test="record.description != null" >
+        DESCRIPTION = #{record.description},
+      </if>
+      <if test="record.serviceSid != null" >
+        SERVICE_SID = #{record.serviceSid},
+      </if>
+      <if test="record.expiringDate != null" >
+        EXPIRING_DATE = #{record.expiringDate},
+      </if>
+      <if test="record.imagePath != null" >
+        IMAGE_PATH = #{record.imagePath},
+      </if>
+      <if test="record.pricingSid != null" >
+        PRICING_SID = #{record.pricingSid},
+      </if>
+      <if test="record.templateStatus != null" >
+        TEMPLATE_STATUS = #{record.templateStatus},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update service_template
+    set TEMPLATE_SID = #{record.templateSid},
+      TEMPLATE_NAME = #{record.templateName},
+      DESCRIPTION = #{record.description},
+      SERVICE_SID = #{record.serviceSid},
+      EXPIRING_DATE = #{record.expiringDate},
+      IMAGE_PATH = #{record.imagePath},
+      PRICING_SID = #{record.pricingSid},
+      TEMPLATE_STATUS = #{record.templateStatus},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceTemplate" >
+    update service_template
+    <set >
+      <if test="templateName != null" >
+        TEMPLATE_NAME = #{templateName},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description},
+      </if>
+      <if test="serviceSid != null" >
+        SERVICE_SID = #{serviceSid},
+      </if>
+      <if test="expiringDate != null" >
+        EXPIRING_DATE = #{expiringDate},
+      </if>
+      <if test="imagePath != null" >
+        IMAGE_PATH = #{imagePath},
+      </if>
+      <if test="pricingSid != null" >
+        PRICING_SID = #{pricingSid},
+      </if>
+      <if test="templateStatus != null" >
+        TEMPLATE_STATUS = #{templateStatus},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+    </set>
+    where TEMPLATE_SID = #{templateSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceTemplate" >
+    update service_template
+    set TEMPLATE_NAME = #{templateName},
+      DESCRIPTION = #{description},
+      SERVICE_SID = #{serviceSid},
+      EXPIRING_DATE = #{expiringDate},
+      IMAGE_PATH = #{imagePath},
+      PRICING_SID = #{pricingSid},
+      TEMPLATE_STATUS = #{templateStatus},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version}
+    where TEMPLATE_SID = #{templateSid}
+  </update>
+</mapper>

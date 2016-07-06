@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.TopicMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.Topic" >
+    <id column="TOPIC_SID" property="topicSid" jdbcType="BIGINT" />
+    <result column="TOPIC_NAME" property="topicName" jdbcType="VARCHAR" />
+    <result column="TOPIC_URL" property="topicUrl" jdbcType="VARCHAR" />
+    <result column="DISPLAY_FLAG" property="displayFlag" jdbcType="INTEGER" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+    <result column="SORT_RANK" property="sortRank" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.topicName != null" >
+         and TOPIC_NAME = #{condition.topicName}
+      </if>
+      <if test="condition.topicUrl != null" >
+         and TOPIC_URL = #{condition.topicUrl}
+      </if>
+      <if test="condition.displayFlag != null" >
+         and DISPLAY_FLAG = #{condition.displayFlag}
+      </if>
+      <if test="condition.createdBy != null" >
+         and CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and VERSION = #{condition.version}
+      </if>
+      <if test="condition.userSid != null" >
+         and USER_SID = #{condition.userSid}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    TOPIC_SID, TOPIC_NAME, TOPIC_URL, DISPLAY_FLAG, CREATED_BY, CREATED_DT, UPDATED_BY, 
+    UPDATED_DT, VERSION
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_m_topic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  
+  <select id="selectTopicByUser" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select A.TOPIC_SID,A.TOPIC_NAME,A.TOPIC_URL,A.DISPLAY_FLAG,B.SORT_RANK
+	from sys_m_topic A 
+	LEFT JOIN sys_m_user_topic B on B.TOPIC_SID = A.TOPIC_SID
+	<if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+	ORDER BY B.SORT_RANK ASC
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_m_topic
+    where TOPIC_SID = #{topicSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_m_topic
+    where TOPIC_SID = #{topicSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from sys_m_topic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.system.Topic" >
+    <selectKey resultType="java.lang.Long" keyProperty="topicSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SYS_M_TOPIC')
+    </selectKey>
+    insert into sys_m_topic (TOPIC_SID, TOPIC_NAME, TOPIC_URL, DISPLAY_FLAG, CREATED_BY, CREATED_DT, 
+      UPDATED_BY, UPDATED_DT, VERSION)
+    values (#{topicSid}, #{topicName}, #{topicUrl}, #{displayFlag}, #{createdBy}, #{createdDt}, 
+      #{updatedBy}, #{updatedDt}, #{version})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.Topic" >
+    <selectKey resultType="java.lang.Long" keyProperty="topicSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SYS_M_TOPIC')
+    </selectKey>
+    insert into sys_m_topic
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      TOPIC_SID,
+      <if test="topicName != null" >
+        TOPIC_NAME,
+      </if>
+      <if test="topicUrl != null" >
+        TOPIC_URL,
+      </if>
+      <if test="displayFlag != null" >
+        DISPLAY_FLAG,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{topicSid},
+      <if test="topicName != null" >
+        #{topicName},
+      </if>
+      <if test="topicUrl != null" >
+        #{topicUrl},
+      </if>
+      <if test="displayFlag != null" >
+        #{displayFlag},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from sys_m_topic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update sys_m_topic
+    <set >
+      <if test="record.topicSid != null" >
+        TOPIC_SID = #{record.topicSid},
+      </if>
+      <if test="record.topicName != null" >
+        TOPIC_NAME = #{record.topicName},
+      </if>
+      <if test="record.topicUrl != null" >
+        TOPIC_URL = #{record.topicUrl},
+      </if>
+      <if test="record.displayFlag != null" >
+        DISPLAY_FLAG = #{record.displayFlag},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update sys_m_topic
+    set TOPIC_SID = #{record.topicSid},
+      TOPIC_NAME = #{record.topicName},
+      TOPIC_URL = #{record.topicUrl},
+      DISPLAY_FLAG = #{record.displayFlag},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.Topic" >
+    update sys_m_topic
+    <set >
+      <if test="topicName != null" >
+        TOPIC_NAME = #{topicName},
+      </if>
+      <if test="topicUrl != null" >
+        TOPIC_URL = #{topicUrl},
+      </if>
+      <if test="displayFlag != null" >
+        DISPLAY_FLAG = #{displayFlag},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+    </set>
+    where TOPIC_SID = #{topicSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.Topic" >
+    update sys_m_topic
+    set TOPIC_NAME = #{topicName},
+      TOPIC_URL = #{topicUrl},
+      DISPLAY_FLAG = #{displayFlag},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version}
+    where TOPIC_SID = #{topicSid}
+  </update>
+</mapper>

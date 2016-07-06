@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.order.dao.OrderApvRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.order.OrderApvRecord" >
+    <id column="APV_RECORD_SID" property="apvRecordSid" jdbcType="BIGINT" />
+    <result column="ORDER_ID" property="orderId" jdbcType="VARCHAR" />
+    <result column="SERVICE_SID" property="serviceSid" jdbcType="BIGINT" />
+    <result column="DETAIL_SID" property="detailSid" jdbcType="BIGINT" />
+    <result column="APPROVOR_ID" property="approvorId" jdbcType="VARCHAR" />
+    <result column="APPROVE_STATUS" property="approveStatus" jdbcType="VARCHAR" />
+    <result column="APPROVE_OPINION" property="approveOpinion" jdbcType="VARCHAR" />
+    <result column="APPROVE_DATE" property="approveDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.orderId != null" >
+         and ORDER_ID = #{condition.orderId}
+      </if>
+      <if test="condition.serviceSid != null" >
+         and SERVICE_SID = #{condition.serviceSid}
+      </if>
+      <if test="condition.detailSid != null" >
+         and DETAIL_SID = #{condition.detailSid}
+      </if>
+      <if test="condition.approvorId != null" >
+         and APPROVOR_ID = #{condition.approvorId}
+      </if>
+      <if test="condition.approveStatus != null" >
+         and APPROVE_STATUS = #{condition.approveStatus}
+      </if>
+      <if test="condition.approveOpinion != null" >
+         and APPROVE_OPINION = #{condition.approveOpinion}
+      </if>
+      <if test="condition.approveDate != null" >
+         and APPROVE_DATE = #{condition.approveDate}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    APV_RECORD_SID, ORDER_ID, SERVICE_SID, DETAIL_SID, APPROVOR_ID, APPROVE_STATUS, APPROVE_OPINION, 
+    APPROVE_DATE
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from service_order_apv_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from service_order_apv_record
+    where APV_RECORD_SID = #{apvRecordSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from service_order_apv_record
+    where APV_RECORD_SID = #{apvRecordSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from service_order_apv_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.order.OrderApvRecord" >
+    insert into service_order_apv_record (APV_RECORD_SID, ORDER_ID, SERVICE_SID, DETAIL_SID, APPROVOR_ID, 
+      APPROVE_STATUS, APPROVE_OPINION, APPROVE_DATE)
+    values (#{apvRecordSid}, #{orderId}, #{serviceSid}, #{detailSid}, #{approvorId}, 
+      #{approveStatus}, #{approveOpinion}, #{approveDate})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.order.OrderApvRecord" >
+  	<selectKey resultType="java.lang.Long" keyProperty="apvRecordSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SERVICE_ORDER_APV_RECORD')
+    </selectKey>
+    insert into service_order_apv_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        APV_RECORD_SID,
+      <if test="orderId != null" >
+        ORDER_ID,
+      </if>
+      <if test="serviceSid != null" >
+        SERVICE_SID,
+      </if>
+      <if test="detailSid != null" >
+        DETAIL_SID,
+      </if>
+      <if test="approvorId != null" >
+        APPROVOR_ID,
+      </if>
+      <if test="approveStatus != null" >
+        APPROVE_STATUS,
+      </if>
+      <if test="approveOpinion != null" >
+        APPROVE_OPINION,
+      </if>
+      <if test="approveDate != null" >
+        APPROVE_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{apvRecordSid},
+      <if test="orderId != null" >
+        #{orderId},
+      </if>
+      <if test="serviceSid != null" >
+        #{serviceSid},
+      </if>
+      <if test="detailSid != null" >
+        #{detailSid},
+      </if>
+      <if test="approvorId != null" >
+        #{approvorId},
+      </if>
+      <if test="approveStatus != null" >
+        #{approveStatus},
+      </if>
+      <if test="approveOpinion != null" >
+        #{approveOpinion},
+      </if>
+      <if test="approveDate != null" >
+        #{approveDate},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from service_order_apv_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update service_order_apv_record
+    <set >
+      <if test="record.apvRecordSid != null" >
+        APV_RECORD_SID = #{record.apvRecordSid},
+      </if>
+      <if test="record.orderId != null" >
+        ORDER_ID = #{record.orderId},
+      </if>
+      <if test="record.serviceSid != null" >
+        SERVICE_SID = #{record.serviceSid},
+      </if>
+      <if test="record.detailSid != null" >
+        DETAIL_SID = #{record.detailSid},
+      </if>
+      <if test="record.approvorId != null" >
+        APPROVOR_ID = #{record.approvorId},
+      </if>
+      <if test="record.approveStatus != null" >
+        APPROVE_STATUS = #{record.approveStatus},
+      </if>
+      <if test="record.approveOpinion != null" >
+        APPROVE_OPINION = #{record.approveOpinion},
+      </if>
+      <if test="record.approveDate != null" >
+        APPROVE_DATE = #{record.approveDate},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update service_order_apv_record
+    set APV_RECORD_SID = #{record.apvRecordSid},
+      ORDER_ID = #{record.orderId},
+      SERVICE_SID = #{record.serviceSid},
+      DETAIL_SID = #{record.detailSid},
+      APPROVOR_ID = #{record.approvorId},
+      APPROVE_STATUS = #{record.approveStatus},
+      APPROVE_OPINION = #{record.approveOpinion},
+      APPROVE_DATE = #{record.approveDate}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.order.OrderApvRecord" >
+    update service_order_apv_record
+    <set >
+      <if test="orderId != null" >
+        ORDER_ID = #{orderId},
+      </if>
+      <if test="serviceSid != null" >
+        SERVICE_SID = #{serviceSid},
+      </if>
+      <if test="detailSid != null" >
+        DETAIL_SID = #{detailSid},
+      </if>
+      <if test="approvorId != null" >
+        APPROVOR_ID = #{approvorId},
+      </if>
+      <if test="approveStatus != null" >
+        APPROVE_STATUS = #{approveStatus},
+      </if>
+      <if test="approveOpinion != null" >
+        APPROVE_OPINION = #{approveOpinion},
+      </if>
+      <if test="approveDate != null" >
+        APPROVE_DATE = #{approveDate},
+      </if>
+    </set>
+    where APV_RECORD_SID = #{apvRecordSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.order.OrderApvRecord" >
+    update service_order_apv_record
+    set ORDER_ID = #{orderId},
+      SERVICE_SID = #{serviceSid},
+      DETAIL_SID = #{detailSid},
+      APPROVOR_ID = #{approvorId},
+      APPROVE_STATUS = #{approveStatus},
+      APPROVE_OPINION = #{approveOpinion},
+      APPROVE_DATE = #{approveDate}
+    where APV_RECORD_SID = #{apvRecordSid}
+  </update>
+</mapper>

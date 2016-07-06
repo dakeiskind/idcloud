@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.BizMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.Biz" >
+    <id column="BIZ_SID" property="bizSid" jdbcType="BIGINT" />
+    <result column="PARENT_BIZ_SID" property="parentBizSid" jdbcType="BIGINT" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="OWNER" property="owner" jdbcType="VARCHAR" />
+    <result column="OWNER_TEL" property="ownerTel" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+    <result column="NETWORKTYPE" property="networktype" jdbcType="BIGINT" />
+    <result column="FWPORT" property="fwport" jdbcType="BIGINT" />
+    <result column="ISBIZCONT" property="isbizcont" jdbcType="BIGINT" />
+    <result column="ISPRONO" property="isprono" jdbcType="BIGINT" />
+    <result column="ISPROATTACH" property="isproattach" jdbcType="BIGINT" />
+    <result column="LEVEL" property="level" jdbcType="BIGINT" />
+    <result column="ORG_SID" property="orgSid" jdbcType="BIGINT" />
+    <result column="BIZ_TYPE_TEXT" property="bizTypeText" jdbcType="VARCHAR" />
+    <result column="BIZ_TYPE_VALUE" property="bizTypeValue" jdbcType="VARCHAR" />
+    <result column="PARENT_BIZ_NAME" property="parentBizName" jdbcType="VARCHAR" />
+    <result column="PM" property="pm" jdbcType="VARCHAR" />
+    <result column="PM_TEL" property="pmTel" jdbcType="VARCHAR" />
+    <result column="PM_EMAIL" property="pmEmail" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="CUSTOMER_ID" property="customerId" jdbcType="VARCHAR" />
+    
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      
+      <if test="condition.bizNameLike != null" >
+         and A.NAME like concat('%', #{condition.bizNameLike},'%')
+      </if>
+      <if test="condition.parentBizNameLike != null" >
+         and B.NAME like concat('%', #{condition.parentBizNameLike},'%')
+      </if>
+      
+      <if test="condition.parentBizSid != null" >
+         and PARENT_BIZ_SID = #{condition.parentBizSid}
+      </if>
+      <if test="condition.bizSid != null" >
+         and BIZ_SID = #{condition.bizSid}
+      </if>
+      <if test="condition.name != null" >
+         and NAME = #{condition.name}
+      </if>
+      <if test="condition.owner != null" >
+         and OWNER = #{condition.owner}
+      </if>
+      <if test="condition.ownerTel != null" >
+         and OWNER_TEL = #{condition.ownerTel}
+      </if>
+      <if test="condition.description != null" >
+         and DESCRIPTION = #{condition.description}
+      </if>
+      <if test="condition.createdBy != null" >
+         and CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and VERSION = #{condition.version}
+      </if>
+      <if test="condition.networktype != null" >
+         and NETWORKTYPE = #{condition.networktype}
+      </if>
+      <if test="condition.fwport != null" >
+         and FWPORT = #{condition.fwport}
+      </if>
+      <if test="condition.isbizcont != null" >
+         and ISBIZCONT = #{condition.isbizcont}
+      </if>
+      <if test="condition.isprono != null" >
+         and ISPRONO = #{condition.isprono}
+      </if>
+      <if test="condition.isproattach != null" >
+         and ISPROATTACH = #{condition.isproattach}
+      </if>
+      <if test="condition.level != null" >
+         and LEVEL = #{condition.level}
+      </if>
+      <if test="condition.status =='01' " >
+         and (STATUS = #{condition.status} or STATUS IS NULL)
+      </if>
+      <if test="condition.status =='02' " >
+         and STATUS = #{condition.status}
+      </if>
+      <if test="condition.parentBizSids != null" >
+         and FIND_IN_SET(A.BIZ_SID,getResBizChildList(#{condition.parentBizSids}))
+      </if>
+    </trim>
+  </sql>
+  <sql id="Example_Where_Clause2" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      
+      <if test="condition.bizNameLike != null" >
+         and A.NAME like concat('%', #{condition.bizNameLike},'%')
+      </if>
+      <if test="condition.parentBizNameLike != null" >
+         and B.NAME like concat('%', #{condition.parentBizNameLike},'%')
+      </if>
+      
+      <if test="condition.parentBizSid != null" >
+         and A.PARENT_BIZ_SID = #{condition.parentBizSid}
+      </if>
+      <if test="condition.notParentBizSid != null" >
+         and A.PARENT_BIZ_SID != #{condition.notParentBizSid}
+      </if>
+      <if test="condition.bizSid != null" >
+         and A.BIZ_SID = #{condition.bizSid}
+      </if>
+      <if test="condition.name != null" >
+         and A.NAME = #{condition.name}
+      </if>
+      <if test="condition.owner != null" >
+         and A.OWNER = #{condition.owner}
+      </if>
+      <if test="condition.ownerTel != null" >
+         and A.OWNER_TEL = #{condition.ownerTel}
+      </if>
+      <if test="condition.description != null" >
+         and A.DESCRIPTION = #{condition.description}
+      </if>
+      <if test="condition.createdBy != null" >
+         and A.CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and A.CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and A.UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and A.UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and A.VERSION = #{condition.version}
+      </if>
+      <if test="condition.networktype != null" >
+         and A.NETWORKTYPE = #{condition.networktype}
+      </if>
+      <if test="condition.fwport != null" >
+         and A.FWPORT = #{condition.fwport}
+      </if>
+      <if test="condition.isbizcont != null" >
+         and A.ISBIZCONT = #{condition.isbizcont}
+      </if>
+      <if test="condition.isprono != null" >
+         and A.ISPRONO = #{condition.isprono}
+      </if>
+      <if test="condition.isproattach != null" >
+         and A.ISPROATTACH = #{condition.isproattach}
+      </if>
+      <if test="condition.level != null" >
+         and A.LEVEL = #{condition.level}
+      </if>
+      <if test="condition.status =='01' " >
+         and (A.STATUS = #{condition.status} or A.STATUS IS NULL)
+      </if>
+      <if test="condition.status =='02' " >
+         and A.STATUS = #{condition.status}
+      </if>
+      <if test="condition.parentBizSids != null" >
+         and FIND_IN_SET(A.BIZ_SID,getResBizChildList(#{condition.parentBizSids}))
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    A.BIZ_SID, A.PARENT_BIZ_SID, A.NAME, A.OWNER, A.OWNER_TEL, A.STATUS, A.DESCRIPTION, A.CREATED_BY, A.CREATED_DT, A.CUSTOMER_ID,
+    A.UPDATED_BY, A.UPDATED_DT, A.VERSION, A.NETWORKTYPE, A.FWPORT, A.ISBIZCONT, A.ISPRONO, A.ISPROATTACH, A.LEVEL, A.PM, A.PM_TEL, A.PM_EMAIL
+  </sql>
+  <sql id="Base_Column_List2" >
+    BIZ_SID, PARENT_BIZ_SID, NAME, OWNER, OWNER_TEL,STATUS, DESCRIPTION, CREATED_BY, CREATED_DT, 
+    UPDATED_BY, UPDATED_DT, VERSION, NETWORKTYPE, FWPORT, ISBIZCONT, ISPRONO, ISPROATTACH, LEVEL, PM, PM_TEL, PM_EMAIL
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    A.NAME as BIZ_TYPE_TEXT,
+    A.NAME as BIZ_TYPE_VALUE,
+    IFNULL(B.NAME,"") as PARENT_BIZ_NAME,
+    <include refid="Base_Column_List" />
+    from SYS_M_BIZ A
+    LEFT JOIN SYS_M_BIZ B ON (A.PARENT_BIZ_SID = B.BIZ_SID)
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause2" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByParams2" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from SYS_M_BIZ A
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause2" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select> 
+  
+   <select id="selectFbizByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    A.NAME as BIZ_TYPE_TEXT,
+    A.NAME as BIZ_TYPE_VALUE,
+    <include refid="Base_Column_List" />
+    from SYS_M_BIZ A
+    where A.PARENT_BIZ_SID in (
+    	select B.BIZ_SID from SYS_M_BIZ B where B.PARENT_BIZ_SID is null
+    ) and (A.`STATUS`='01' or A.`STATUS` is NULL)
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    A.NAME as BIZ_TYPE_TEXT,
+    A.NAME as BIZ_TYPE_VALUE,
+    IFNULL(B.NAME,"") as PARENT_BIZ_NAME,
+    <include refid="Base_Column_List" />
+    from SYS_M_BIZ A
+    LEFT JOIN SYS_M_BIZ B ON (A.PARENT_BIZ_SID = B.BIZ_SID)
+    WHERE A.BIZ_SID = #{bizSid}
+  </select>
+  
+  <select id="selectForOrgbiz" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    SELECT 
+    B.ORG_SID,
+    <include refid="Base_Column_List" />
+    FROM SYS_M_ORG_BIZ B 
+    LEFT JOIN SYS_M_BIZ A ON A.BIZ_SID = B.BIZ_SID 
+    WHERE A.BIZ_SID= #{bizSid}
+    AND B.ORG_SID IS NOT NULL
+  </select>
+  
+  <select id="selectForQuota" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_M_BIZ A
+    LEFT JOIN sys_m_quota b on b.QUOTA_OBJ_SID = A.BIZ_SID
+    WHERE A.PARENT_BIZ_SID = #{bizSid}
+    and b.QUOTA_SID is not null
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from SYS_M_BIZ
+    where BIZ_SID = #{bizSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from SYS_M_BIZ
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.system.Biz" >
+    <selectKey resultType="java.lang.Long" keyProperty="bizSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SYS_M_BIZ')
+    </selectKey>
+    insert into SYS_M_BIZ (BIZ_SID, PARENT_BIZ_SID, NAME, OWNER, OWNER_TEL, DESCRIPTION, 
+      CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION, NETWORKTYPE, 
+      FWPORT, ISBIZCONT, ISPRONO, ISPROATTACH, LEVEL)
+    values (#{bizSid}, #{parentBizSid}, #{name}, #{owner}, #{ownerTel}, #{description}, 
+      #{createdBy}, #{createdDt}, #{updatedBy}, #{updatedDt}, #{version}, #{networktype}, 
+      #{fwport}, #{isbizcont}, #{isprono}, #{isproattach}, #{level})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.Biz" >
+    <selectKey resultType="java.lang.Long" keyProperty="bizSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SYS_M_BIZ')
+    </selectKey>
+    insert into SYS_M_BIZ
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bizSid != null" >
+        BIZ_SID,
+      </if>
+      <if test="parentBizSid != null" >
+        PARENT_BIZ_SID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="owner != null" >
+        OWNER,
+      </if>
+      <if test="ownerTel != null" >
+        OWNER_TEL,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+      <if test="networktype != null" >
+        NETWORKTYPE,
+      </if>
+      <if test="fwport != null" >
+        FWPORT,
+      </if>
+      <if test="isbizcont != null" >
+        ISBIZCONT,
+      </if>
+      <if test="isprono != null" >
+        ISPRONO,
+      </if>
+      <if test="isproattach != null" >
+        ISPROATTACH,
+      </if>
+      <if test="level != null" >
+        LEVEL,
+      </if>
+      <if test="pm != null" >
+        PM,
+      </if>
+      <if test="pmTel != null" >
+        PM_TEL,
+      </if>
+      <if test="pmEmail != null" >
+        PM_EMAIL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bizSid != null" >
+        #{bizSid},
+      </if>
+      <if test="parentBizSid != null" >
+        #{parentBizSid},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="owner != null" >
+        #{owner},
+      </if>
+      <if test="ownerTel != null" >
+        #{ownerTel},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="description != null" >
+        #{description},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+      <if test="networktype != null" >
+        #{networktype},
+      </if>
+      <if test="fwport != null" >
+        #{fwport},
+      </if>
+      <if test="isbizcont != null" >
+        #{isbizcont},
+      </if>
+      <if test="isprono != null" >
+        #{isprono},
+      </if>
+      <if test="isproattach != null" >
+        #{isproattach},
+      </if>
+      <if test="level != null" >
+        #{level},
+      </if>
+      <if test="pm != null" >
+        #{pm},
+      </if>
+      <if test="pmTel != null" >
+        #{pmTel},
+      </if>
+      <if test="pmEmail != null" >
+        #{pmEmail},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from SYS_M_BIZ
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update SYS_M_BIZ
+    <set >
+      <if test="record.bizSid != null" >
+        BIZ_SID = #{record.bizSid},
+      </if>
+      <if test="record.parentBizSid != null" >
+        PARENT_BIZ_SID = #{record.parentBizSid},
+      </if>
+      <if test="record.name != null" >
+        NAME = #{record.name},
+      </if>
+      <if test="record.owner != null" >
+        OWNER = #{record.owner},
+      </if>
+      <if test="record.ownerTel != null" >
+        OWNER_TEL = #{record.ownerTel},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status},
+      </if>
+      <if test="record.description != null" >
+        DESCRIPTION = #{record.description},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+      <if test="record.networktype != null" >
+        NETWORKTYPE = #{record.networktype},
+      </if>
+      <if test="record.fwport != null" >
+        FWPORT = #{record.fwport},
+      </if>
+      <if test="record.isbizcont != null" >
+        ISBIZCONT = #{record.isbizcont},
+      </if>
+      <if test="record.isprono != null" >
+        ISPRONO = #{record.isprono},
+      </if>
+      <if test="record.isproattach != null" >
+        ISPROATTACH = #{record.isproattach},
+      </if>
+      <if test="record.level != null" >
+        LEVEL = #{record.level},
+      </if>
+      <if test="record.pm != null" >
+        PM = #{record.pm},
+      </if>
+      <if test="record.pmTel != null" >
+        PM_TEL = #{record.pmTel},
+      </if>
+      <if test="record.pmEmail != null" >
+        PM_EMAIL = #{record.pmEmail},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update SYS_M_BIZ
+    set BIZ_SID = #{record.bizSid},
+      PARENT_BIZ_SID = #{record.parentBizSid},
+      NAME = #{record.name},
+      OWNER = #{record.owner},
+      OWNER_TEL = #{record.ownerTel},
+      STATUS = #{record.status},
+      DESCRIPTION = #{record.description},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version},
+      NETWORKTYPE = #{record.networktype},
+      FWPORT = #{record.fwport},
+      ISBIZCONT = #{record.isbizcont},
+      ISPRONO = #{record.isprono},
+      ISPROATTACH = #{record.isproattach},
+      LEVEL = #{record.level},
+      PM = #{record.pm},
+      PM_TEL = #{record.pmTel},
+      PM_EMAIL = #{record.pmEmail},
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.Biz" >
+    update SYS_M_BIZ
+    <set >
+      <if test="parentBizSid != null" >
+        PARENT_BIZ_SID = #{parentBizSid},
+      </if>
+      <if test="name != null" >
+        NAME = #{name},
+      </if>
+       <if test="customerId != null" >
+        CUSTOMER_ID = #{customerId},
+      </if>
+      <if test="owner != null" >
+        OWNER = #{owner},
+      </if>
+      <if test="ownerTel != null" >
+        OWNER_TEL = #{ownerTel},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+      <if test="networktype != null" >
+        NETWORKTYPE = #{networktype},
+      </if>
+      <if test="fwport != null" >
+        FWPORT = #{fwport},
+      </if>
+      <if test="isbizcont != null" >
+        ISBIZCONT = #{isbizcont},
+      </if>
+      <if test="isprono != null" >
+        ISPRONO = #{isprono},
+      </if>
+      <if test="isproattach != null" >
+        ISPROATTACH = #{isproattach},
+      </if>
+      <if test="level != null" >
+        LEVEL = #{level},
+      </if>
+      <if test="pm != null" >
+        PM = #{pm},
+      </if>
+      <if test="pmTel != null" >
+        PM_TEL = #{pmTel},
+      </if>
+      <if test="pmEmail != null" >
+        PM_EMAIL = #{pmEmail},
+      </if>
+    </set>
+    where BIZ_SID = #{bizSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.Biz" >
+    update SYS_M_BIZ
+    set PARENT_BIZ_SID = #{parentBizSid},
+      NAME = #{name},
+      OWNER = #{owner},
+      OWNER_TEL = #{ownerTel},
+      STATUS = #{status},
+      DESCRIPTION = #{description},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version},
+      NETWORKTYPE = #{networktype},
+      FWPORT = #{fwport},
+      ISBIZCONT = #{isbizcont},
+      ISPRONO = #{isprono},
+      ISPROATTACH = #{isproattach},
+      LEVEL = #{level},
+      PM = #{record.pm},
+      PM_TEL = #{record.pmTel},
+      PM_EMAIL = #{record.pmEmail}
+    where BIZ_SID = #{bizSid}
+  </update>
+</mapper>

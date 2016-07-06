@@ -1,0 +1,320 @@
+<div ms-controller="userSec">
+    <div id="user-sec">
+        <div class="xs12 margin-small-bottom top-height">
+            <div class="xs8">
+                <div class="float-left text-large">{{title}}</div>
+            </div>
+        </div>
+        <table class="table margin-top">
+            <tr style="line-height: 40px;font-size: 12px;">
+                <td><span class="icon-check" style="color: #00aa00"></span>&nbsp;&nbsp;<b>登录邮箱</b></td>
+                <td>您的登录邮箱：<a class="text-green" id="user_email" style="font-size: 12px;">{{email}}</a></td>
+                <td style="text-align: center"><a class="text-blue icon-edit " style="font-size: 12px;"
+                                                  ms-click="edit_email()"
+                                                  href="javascript:;">修改</a></td>
+            </tr>
+            <tr style="line-height: 40px;font-size: 12px;">
+                <td><span class="icon-check" style="color: #00aa00"></span>&nbsp;&nbsp;<b>登录密码</b></td>
+                <td>互联网帐号存在被盗风险，建议您定期更改密码，以确保帐号安全</td>
+                <td style="text-align: center"><a class="text-blue   icon-edit" style="font-size: 12px;" ms-click="modify_pwd()"
+                                                  href="javascript:;">修改</a></td>
+            </tr>
+            <tr style="line-height: 40px;font-size: 12px;">
+                <td><span class="icon-check" style="color: #00aa00"></span>&nbsp;&nbsp;<b>手机绑定</b></td>
+                <td>您已绑定手机：<a class="text-green" style="font-size: 12px;" id="user_phone_num">{{mobile}}</a></td>
+                <td style="text-align: center"><a class="text-blue  icon-edit" style="font-size: 12px;" ms-click="change_phone_num()"
+                                                  href="javascript:;">修改</a></td>
+            </tr>
+        </table>
+        <hr/>
+    </div>
+
+    <!-- 更换用户邮箱 -->
+    <div id="change_email" class="change fadein-right hidden">
+        <div class="xs12 margin-small-bottom top-height">
+            <div class="xs8">
+                <i class="icon-arrow-left float-left margin-right" style="font-size: 20px;color: #0099D7; cursor: pointer;" ms-click="return_sec()"></i>
+                <div class="float-left text-large">{{change_email_title}}</div>
+            </div>
+        </div>
+        <hr/>
+        <!--步骤条-->
+        <div class="step margin-top">
+            <div class="step-bar active" style="width: 33%;">
+                <span class="step-point">1</span><span class="step-text">身份验证</span>
+            </div>
+            <div class="step-bar" style="width: 34%;">
+                <span class="step-point">2</span><span class="step-text">新登录邮箱验证</span>
+            </div>
+            <div class="step-bar" style="width: 33%;">
+                <span class="step-point">3</span><span class="step-text">完成</span>
+            </div>
+        </div>
+
+        <form id="changeEmailForm" class="form form-block" style="margin-top: 60px;">
+            <!--第一步-->
+            <div class="xs12 xs3-move step_one fadein-right">
+                <table class="custom-table" border="0">
+                    <tr>
+                        <td>您的邮箱：</td>
+                        <td style="width: 600px;">
+                            <span id="change_user_email"></span>
+                            <!--<button type="button" class="button button-small bg-blue radius-none margin-left text-green" ms-click="send_check_code()">发送验证码</button>-->
+                        </td>
+                    </tr>
+                    <!--<tr>-->
+                        <!--<td class="required">输入验证码：</td>-->
+                        <!--<td>-->
+                            <!--<div class="form-group">-->
+                                <!--<div class="field">-->
+                                    <!--<input type="text" class="input radius-none check_code cancel_warning margin-top" name="check_code">-->
+                                           <!--&lt;!&ndash;data-validate="required:必填,length#>=6:请输入6位验证码,length#<=6:请输入6位验证码"/>&ndash;&gt;-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--&lt;!&ndash;<input type="text" class="input radius-none check_code cancel_warning" name="check_code" />&ndash;&gt;-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="button" class="button bg-blue radius-none" ms-click="next_step()">下一步</button>
+                            <button type="button" class="button bg-gray radius-none margin-left" ms-click="return_sec()">取消</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!--第二步-->
+            <div class="xs12 xs4-move step_two fadein-right hidden">
+                <table class="custom-table" border="0">
+                    <tr>
+                        <td class="required">输入新邮箱：</td>
+                        <td style="width: 150px;">
+                            <div class="form-group">
+                                <div class="field">
+                                    <input type="text" class="input radius-none cancel_warning" id="new_email" name="new_email"
+                                           data-validate="required:必填,email:请输入正确的邮箱地址"/>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <!--<button type="button" class="button button-small bg-blue radius-none" ms-click="send_check_code()">发送验证码</button>-->
+                        </td>
+                    </tr>
+                    <tr>
+                        <!--<td class="required">输入验证码：</td>-->
+                        <td>
+                            <div class="form-group">
+                                <div class="field">
+                                    <!--<input type="text" class="input radius-none check_code cancel_warning" name="new_email_check_code" />-->
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="button" class="button bg-blue radius-none" ms-click="save_new_email()">保存</button>
+                            <button type="button" class="button bg-gray radius-none margin-left" ms-click="return_sec()">取消</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!--第三步-->
+            <div class="xs5 xs5-move step_three fadein-right hidden">
+                <table>
+                    <tr>
+                        <td style="font-size: 16px;padding-left: 40px;">更换邮箱成功</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 30px;font-size: 12px;text-align: center">新邮箱地址：<span class="text-green" id="new_email_address"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 30px;text-align: center">
+                            <!--<button type="button" class="button bg-blue radius-none" ms-click="return_home()">去首页</button>-->
+                            <button type="button" class="button bg-blue radius-none" ms-click="return_sec()">返回</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+    <!-- 修改用户登录密码 -->
+    <div id="change_pwd" class="change hidden">
+        <div class="xs12 margin-small-bottom top-height">
+            <div class="xs8">
+                <i class="icon-arrow-left float-left margin-right" style="font-size: 20px;color: #0099D7; cursor: pointer;" ms-click="return_sec()"></i>
+                <div class="float-left text-large">{{change_password}}</div>
+            </div>
+        </div>
+        <hr/>
+        <form id="changePasswordForm" class="form form-block" style="margin-top: 60px;">
+            <!--第一步-->
+            <div class="xs5 xs4-move step_one fadein-right">
+                <table  class="custom-table" border="0">
+                    <!--<tr>-->
+                        <!--<td class="required">当前登录密码：</td>-->
+                        <!--<td style="width: 350px;">-->
+                            <!--<div class="form-group">-->
+                                <!--<div class="field">-->
+                                    <!--&lt;!&ndash;<input type="password" class="input radius-none cancel_warning"&ndash;&gt;-->
+                                           <!--&lt;!&ndash;id="old_password" name="old_password" style="width: 200px;"&ndash;&gt;-->
+                                             <!--&lt;!&ndash;/>&ndash;&gt;-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <tr>
+                        <td class="required">输入新密码：</td>
+                        <td>
+                            <div class="form-group">
+                                <div class="field">
+                                    <input type="password" class="input radius-none cancel_warning" id="new_password"  name="new_password" style="width: 200px;"
+                                           data-validate="required:必填,length#>=6:请输入6~16密码,length#<=16:请输入6~16密码"/>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="required">确认新密码：</td>
+                        <td>
+                            <div class="form-group">
+                                <div class="field">
+                                    <input type="password" class="input radius-none cancel_warning" id="again_new_password" name="again_new_password" style="width: 200px;"
+                                           data-validate="required:必填,repeat#new_password:两次输入的密码不一致"/>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="button" class="button bg-blue radius-none" ms-click="save_password()">保存</button>
+                            <button type="button" class="button bg-gray radius-none margin-left" ms-click="return_sec()">取消</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!--第二步-->
+            <div class="xs5 xs5-move step_two fadein-right hidden">
+                <table>
+                    <tr>
+                        <td style="font-size: 16px;text-align: center">更换密码成功</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 30px;">
+                            <!--<button type="button" class="button bg-blue radius-none" ms-click="return_home()">去首页</button>-->
+                            <button type="button" class="button bg-blue radius-none" ms-click="return_sec()">返回</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+    <!-- 更换用户手机号码 -->
+    <div id="change_phone_num" class="change fadein-right hidden">
+        <div class="xs12 margin-small-bottom top-height">
+            <div class="xs8">
+                <i class="icon-arrow-left float-left margin-right" style="font-size: 20px;color: #0099D7; cursor: pointer;" ms-click="return_sec()"></i>
+                <div class="float-left text-large">{{change_phone_num_title}}</div>
+            </div>
+        </div>
+        <hr/>
+        <!--步骤条-->
+        <div class="step">
+            <div class="step-bar active" style="width: 33%;">
+                <span class="step-point icon-check"></span><span class="step-text">身份验证</span>
+            </div>
+            <div class="step-bar" style="width: 34%;">
+                <span class="step-point">2</span><span class="step-text">更换手机号码</span>
+            </div>
+            <div class="step-bar" style="width: 33%;">
+                <span class="step-point">3</span><span class="step-text">完成</span>
+            </div>
+        </div>
+        <form id="changePhoneForm" class="form form-block" style="margin-top: 60px;">
+            <!--第一步-->
+            <div class="xs12 xs3-move step_one fadein-right">
+                <table class="custom-table" border="0">
+                    <tr>
+                        <td>您的手机：</td>
+                        <td style="width: 600px;">
+                            <span id="change_user_phone"></span>
+                            <!--<button type="button" class="button button-small bg-blue radius-none margin-left" ms-click="send_check_code()">发送验证码</button>-->
+                        </td>
+                    </tr>
+                    <!--<tr>-->
+                        <!--<td class="required">输入验证码：</td>-->
+                        <!--<td>-->
+                            <!--<div class="form-group">-->
+                                <!--<div class="field">-->
+                                    <!--<input type="text" class="input radius-none check_code cancel_warning margin-top" name="check_code">-->
+                                    <!--&lt;!&ndash;data-validate="required:必填,length#>=6:请输入6位验证码,length#<=6:请输入6位验证码"/>&ndash;&gt;-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="button" class="button bg-blue radius-none" ms-click="next_step()">下一步</button>
+                            <button type="button" class="button bg-gray radius-none margin-left" ms-click="return_sec()">取消</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!--第二步-->
+            <div class="xs12 xs4-move step_two fadein-right hidden">
+                <table class="custom-table" border="0">
+                    <tr>
+                        <td class="required">输入新手机号码：</td>
+                        <td style="width: 150px;">
+                            <div class="form-group">
+                                <div class="field">
+                                    <input type="text" class="input radius-none cancel_warning" id="new_phone_num" name="new_phone_num"
+                                           data-validate="required:必填,mobile:请输入正确的手机号码"/>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <!--<button type="button" class="button button-small bg-blue radius-none" ms-click="send_check_code()">发送验证码</button>-->
+                        </td>
+                    </tr>
+                    <tr>
+                        <!--<td class="required">输入验证码：</td>-->
+                        <!--<td>-->
+                            <!--<div class="form-group">-->
+                                <!--<div class="field">-->
+                                    <!--<input type="text" class="input radius-none check_code cancel_warning" name="new_phone_check_code" />-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</td>-->
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="button" class="button bg-blue radius-none" ms-click="save_new_phone()">保存</button>
+                            <button type="button" class="button bg-gray radius-none margin-left" ms-click="return_sec()">取消</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!--第三步-->
+            <div class="xs5 xs5-move step_three fadein-right hidden">
+                <table>
+                    <tr>
+                        <td style="font-size: 16px;padding-left: 40px;">更换手机号码成功</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 30px;">新手机号码：<span class="text-green" id="new_phone"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 30px;">
+                            <!--<button type="button" class="button bg-blue radius-none" ms-click="return_home()">去首页</button>-->
+                            <button type="button" class="button bg-blue radius-none" ms-click="return_sec()">返回</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+</div>

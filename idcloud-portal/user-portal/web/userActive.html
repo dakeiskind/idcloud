@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>金贸云 - 注册</title>
+    <link rel="icon" href="topfooter/images/favicon.ico" type="image/x-icon" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="css/pintuer.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link href="css/index.css" rel="stylesheet" type="text/css">
+    <link href="css/custom.css" rel="stylesheet" type="text/css">
+    <link href="css/slider.css" rel="stylesheet">
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/public.js"></script>
+    <script type="text/javascript" src="js/pintuer.js"></script>
+    <script type="text/javascript" src="js/register.js"></script>
+    <script type="text/javascript" src="js/js.cookie.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/jquery.base64.js"></script>
+    <script>
+        var userSid = getUrlParam('id');
+        var key = getUrlParam('securityKey');
+        if(userSid!=null && key!=null){
+            Core.AjaxRequest({
+             url :ws_url + "/rest/user/activate?id="+userSid+"&securityKey="+key,
+             type:"get",
+             callback : function (data) {
+                 $("#title").html("尊敬的用户，您的账号已成功激活，欢迎您使用!")
+             },
+             failure : function(data){
+                 $("#title").html("该帐号已被激活,请勿重复激活!");
+                 $("#backbutoon").addClass("hidden")
+             }
+         });
+        }
+        function getUrlParam(name) {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r!=null) return unescape(r[2]);
+            return null;
+        }
+        function backlogin() {
+            window.location.href = "login.html";
+        }
+    </script>
+</head>
+<body>
+<div class="top" id="header">
+</div>
+<div class="line-big" id="complete">
+    <!-- 基本信息 -->
+    <div class="xs8 xs2-move" style="margin-top: 110px">
+        <p><font size="5">用户注册</font></p>
+        <br>
+
+        <div class="step">
+            <div class="step-bar bg-green " style="width: 25%;">
+                <span class="step-point icon-check bg-green"></span><span class="step-text">账号信息</span></span>
+            </div>
+            <div class="step-bar bg-green" style="width: 25%;">
+                <span class="step-point icon-check bg-green"></span><span class="step-text">完善资料</span>
+            </div>
+            <div class="step-bar bg-green" style="width: 25%;">
+                <span class="step-point bg-green icon-check"></span><span class="step-text">激活账号</span>
+            </div>
+            <div class="step-bar bg-blue" style="width: 25%;">
+                <span class="step-point bg-blue">4</span><span class="step-text">完成</span>
+            </div>
+        </div>
+        <hr style="margin-top: 40px">
+        <br>
+        <br>
+
+        <div class="line-big text-center">
+            <div class="xs8 xs2-move text-center">
+                <form method="post" class="form-x form-auto ">
+                    <p id="title" class="text-large">尊敬的用户，您的账号已成功激活，欢迎您使用!</p>
+                    <br>
+                    <br>
+
+                    <div  class="text-center" >
+                        <button id="backbutoon" class="button radius-none bg-blue dialogs" onclick="backlogin()" type="button">
+                            返回登录
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer" style="margin-top: 20px;" id="footer"></div>
+</body>
+</html>

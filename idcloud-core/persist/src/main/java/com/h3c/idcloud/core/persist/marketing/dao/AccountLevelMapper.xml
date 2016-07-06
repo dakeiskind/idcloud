@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.marketing.dao.AccountLevelMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.marketing.AccountLevel" >
+    <id column="LEVEL_SID" property="levelSid" jdbcType="BIGINT" />
+    <result column="LEVEL_NAME" property="levelName" jdbcType="VARCHAR" />
+    <result column="DISCOUNT" property="discount" jdbcType="DECIMAL" />
+    <result column="LEVEL_LIMIT" property="levelLimit" jdbcType="BIGINT" />
+    <result column="PRIOR" property="prior" jdbcType="INTEGER" />
+    <result column="LEVEL_DESCRIPTION" property="levelDescription" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+    <result column="IS_ALLOW_PRERENDER" property="isAllowPrerender" jdbcType="INTEGER" />
+    <result column="IS_ALLOW_CREATE_MOVIE" property="isAllowCreateMovie" jdbcType="INTEGER" />
+    <result column="IS_ALLOW_SCENE_ANALYSIS" property="isAllowSceneAnalysis" jdbcType="INTEGER" />
+    <result column="IS_ALLOW_CREATE_THUMBNAIL" property="isAllowCreateThumbnail" jdbcType="INTEGER" />
+    <result column="MAX_ALLOWED_FRAMECOUNT" property="maxAllowedFrameCount" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.levelName != null" >
+         and LEVEL_NAME = #{condition.levelName}
+      </if>
+	  <if test="condition.levelNameLike != null">
+		  and LEVEL_NAME like concat('%', #{condition.levelNameLike},
+		  '%')
+	  </if>      
+      <if test="condition.discount != null" >
+         and DISCOUNT = #{condition.discount}
+      </if>
+      <if test="condition.levelLimit != null" >
+         and LEVEL_LIMIT = #{condition.levelLimit}
+      </if>
+      <if test="condition.prior != null" >
+         and PRIOR = #{condition.prior}
+      </if>
+      <if test="condition.levelDescription != null" >
+         and LEVEL_DESCRIPTION = #{condition.levelDescription}
+      </if>
+      <if test="condition.createdBy != null" >
+         and CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and VERSION = #{condition.version}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    LEVEL_SID, LEVEL_NAME, DISCOUNT, LEVEL_LIMIT, PRIOR, LEVEL_DESCRIPTION, CREATED_BY, 
+    CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION,IS_ALLOW_PRERENDER,IS_ALLOW_CREATE_MOVIE,
+    IS_ALLOW_SCENE_ANALYSIS,IS_ALLOW_CREATE_THUMBNAIL,MAX_ALLOWED_FRAMECOUNT
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_m_account_level
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_m_account_level
+    where LEVEL_SID = #{levelSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_m_account_level
+    where LEVEL_SID = #{levelSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from sys_m_account_level
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.marketing.AccountLevel" >
+    <selectKey resultType="java.lang.Long" keyProperty="levelSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SYS_M_ACCOUNT_LEVEL')
+    </selectKey>
+    insert into sys_m_account_level (LEVEL_SID, LEVEL_NAME, DISCOUNT, LEVEL_LIMIT, PRIOR, LEVEL_DESCRIPTION, 
+      CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION,IS_ALLOW_PRERENDER,IS_ALLOW_CREATE_MOVIE,
+    IS_ALLOW_SCENE_ANALYSIS,IS_ALLOW_CREATE_THUMBNAIL,MAX_ALLOWED_FRAMECOUNT)
+    values (#{levelSid}, #{levelName}, #{discount}, #{levelLimit}, #{prior}, #{levelDescription}, 
+      #{createdBy}, #{createdDt}, #{updatedBy}, #{updatedDt}, #{version},#{isAllowPrerender},
+      #{isAllowCreateMovie},
+      #{isAllowSceneAnalysis},
+      #{isAllowCreateThumbnail},
+      #{maxAllowedFrameCount})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.marketing.AccountLevel" >
+    <selectKey resultType="java.lang.Long" keyProperty="levelSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SYS_M_ACCOUNT_LEVEL')
+    </selectKey>
+    insert into sys_m_account_level
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      LEVEL_SID,
+      <if test="levelName != null" >
+        LEVEL_NAME,
+      </if>
+      <if test="discount != null" >
+        DISCOUNT,
+      </if>
+      <if test="levelLimit != null" >
+        LEVEL_LIMIT,
+      </if>
+      <if test="prior != null" >
+        PRIOR,
+      </if>
+      <if test="levelDescription != null" >
+        LEVEL_DESCRIPTION,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+      <if test="isAllowPrerender != null" >
+      IS_ALLOW_PRERENDER,
+      </if>
+      <if test="isAllowCreateMovie != null" >
+      IS_ALLOW_CREATE_MOVIE,
+      </if>
+      <if test="isAllowSceneAnalysis != null" >
+      IS_ALLOW_SCENE_ANALYSIS,
+      </if>
+      <if test="isAllowCreateThumbnail != null" >
+      IS_ALLOW_CREATE_THUMBNAIL,
+      </if>
+      <if test="maxAllowedFrameCount != null" >
+      MAX_ALLOWED_FRAMECOUNT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{levelSid},
+      <if test="levelName != null" >
+        #{levelName},
+      </if>
+      <if test="discount != null" >
+        #{discount},
+      </if>
+      <if test="levelLimit != null" >
+        #{levelLimit},
+      </if>
+      <if test="prior != null" >
+        #{prior},
+      </if>
+      <if test="levelDescription != null" >
+        #{levelDescription},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+      <if test="isAllowPrerender != null" >
+     #{isAllowPrerender},
+      </if>
+      <if test="isAllowCreateMovie != null" >
+      #{isAllowCreateMovie},
+      </if>
+      <if test="isAllowSceneAnalysis != null" >
+      #{isAllowSceneAnalysis},
+      </if>
+      <if test="isAllowCreateThumbnail != null" >
+      #{isAllowCreateThumbnail},
+      </if>
+      <if test="maxAllowedFrameCount != null" >
+      #{maxAllowedFrameCount},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from sys_m_account_level
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update sys_m_account_level
+    <set >
+      <if test="record.levelSid != null" >
+        LEVEL_SID = #{record.levelSid},
+      </if>
+      <if test="record.levelName != null" >
+        LEVEL_NAME = #{record.levelName},
+      </if>
+      <if test="record.discount != null" >
+        DISCOUNT = #{record.discount},
+      </if>
+      <if test="record.levelLimit != null" >
+        LEVEL_LIMIT = #{record.levelLimit},
+      </if>
+      <if test="record.prior != null" >
+        PRIOR = #{record.prior},
+      </if>
+      <if test="record.levelDescription != null" >
+        LEVEL_DESCRIPTION = #{record.levelDescription},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+      <if test="record.isAllowPrerender != null" >
+      IS_ALLOW_PRERENDER=#{record.isAllowPrerender},
+      </if>
+      <if test="record.isAllowCreateMovie != null" >
+      IS_ALLOW_CREATE_MOVIE=#{record.isAllowCreateMovie},
+      </if>
+      <if test="record.isAllowSceneAnalysis != null" >
+      IS_ALLOW_SCENE_ANALYSIS=#{record.isAllowSceneAnalysis},
+      </if>
+      <if test="record.isAllowCreateThumbnail != null" >
+      IS_ALLOW_CREATE_THUMBNAIL=#{record.isAllowCreateThumbnail},
+      </if>
+      <if test="record.maxAllowedFrameCount != null" >
+      MAX_ALLOWED_FRAMECOUNT=#{record.maxAllowedFrameCount},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update sys_m_account_level
+    set LEVEL_SID = #{record.levelSid},
+      LEVEL_NAME = #{record.levelName},
+      DISCOUNT = #{record.discount},
+      LEVEL_LIMIT = #{record.levelLimit},
+      PRIOR = #{record.prior},
+      LEVEL_DESCRIPTION = #{record.levelDescription},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version},
+      IS_ALLOW_PRERENDER=#{record.isAllowPrerender},
+      IS_ALLOW_CREATE_MOVIE=#{record.isAllowCreateMovie},
+      IS_ALLOW_SCENE_ANALYSIS=#{record.isAllowSceneAnalysis},
+      IS_ALLOW_CREATE_THUMBNAIL=#{record.isAllowCreateThumbnail},
+      MAX_ALLOWED_FRAMECOUNT=#{record.maxAllowedFrameCount}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.marketing.AccountLevel" >
+    update sys_m_account_level
+    <set >
+      <if test="levelName != null" >
+        LEVEL_NAME = #{levelName},
+      </if>
+      <if test="discount != null" >
+        DISCOUNT = #{discount},
+      </if>
+      <if test="levelLimit != null" >
+        LEVEL_LIMIT = #{levelLimit},
+      </if>
+      <if test="prior != null" >
+        PRIOR = #{prior},
+      </if>
+      <if test="levelDescription != null" >
+        LEVEL_DESCRIPTION = #{levelDescription},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+      <if test="isAllowPrerender != null" >
+      IS_ALLOW_PRERENDER=#{isAllowPrerender},
+      </if>
+      <if test="isAllowCreateMovie != null" >
+      IS_ALLOW_CREATE_MOVIE=#{isAllowCreateMovie},
+      </if>
+      <if test="isAllowSceneAnalysis != null" >
+      IS_ALLOW_SCENE_ANALYSIS=#{isAllowSceneAnalysis},
+      </if>
+      <if test="isAllowCreateThumbnail != null" >
+      IS_ALLOW_CREATE_THUMBNAIL=#{isAllowCreateThumbnail},
+      </if>
+      <if test="maxAllowedFrameCount != null" >
+      MAX_ALLOWED_FRAMECOUNT=#{maxAllowedFrameCount},
+      </if>
+    </set>
+    where LEVEL_SID = #{levelSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.marketing.AccountLevel" >
+    update sys_m_account_level
+    set LEVEL_NAME = #{levelName},
+      DISCOUNT = #{discount},
+      LEVEL_LIMIT = #{levelLimit},
+      PRIOR = #{prior},
+      LEVEL_DESCRIPTION = #{levelDescription},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+       IS_ALLOW_PRERENDER=#{isAllowPrerender},
+      IS_ALLOW_CREATE_MOVIE=#{isAllowCreateMovie},
+      IS_ALLOW_SCENE_ANALYSIS=#{isAllowSceneAnalysis},
+      IS_ALLOW_CREATE_THUMBNAIL=#{isAllowCreateThumbnail},
+      MAX_ALLOWED_FRAMECOUNT=#{maxAllowedFrameCount},
+      VERSION = #{version}
+    where LEVEL_SID = #{levelSid}
+  </update>
+</mapper>

@@ -1,0 +1,97 @@
+<div ms-controller="userInfo">
+    <div class="line">
+        <div class="xs12 margin-small-bottom top-height">
+            <div class="xs8">
+                <div class="float-left text-large">用户资料</div>
+            </div>
+            <div class="xs4"></div>
+        </div>
+        <hr>
+        <!-- 账户信息展示 -->
+        <div class="xs12 margin-bottom">
+            <div class="xs12 padding-bottom padding-left text-big">
+                账户信息
+            </div>
+            <hr>
+            <div class="xs12 padding-big-left text-default">
+                <table class="custom-table" border="0">
+                    <tr>
+                        <td>登录帐号：</td>
+                        <td>{{userData.account}}</td>
+                    </tr>
+                    <tr>
+                        <td>手机号码：</td>
+                        <td>{{userData.mobile}}</td>
+                    </tr>
+                </table>
+                <table  style="margin-left: 75px">
+                    <tr>
+                        <td></td>
+                        <td>
+                            <a class="text-blue" ms-click="toSecure()" href="javascript:;">修改邮箱</a> |
+                            <a class="text-blue" ms-click="toSecure()" href="javascript:;">修改手机</a> |
+                            <a class="text-blue" ms-click="toSecure()" href="javascript:;">修改密码</a> |
+                            <a class="text-blue" ms-click=" toAuth()" href="javascript:;">实名认证</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!-- 用户信息展示 -->
+        <div class="xs12">
+            <div class="xs12 padding-bottom padding-left text-big">
+                用户信息
+            </div>
+            <hr>
+            <div class="xs12 padding-big-left text-default">
+                <form method="post" id="infoForm">
+                    <table class="custom-table " border="0">
+                        <tr>
+                            <td>会员类型：</td>
+                            <td>{{addressData.tenantType}}</td>
+                        </tr>
+                        <tr class="form-group">
+                            <td class="required" for="username " >称呼：</td>
+                            <td class="field">
+                                <input id="username" class="input text-small radius-none" type="text" ms-duplex="userData['realName']">
+                            </td>
+                        </tr>
+                        <tr id="comn" class="form-group">
+                            <td class="required" >公司名称：</td>
+                            <td class="field">
+                                <input id="comname" class="input text-small radius-none" type="text" ms-duplex="addressData['tenantName']">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>所属行业：</td>
+                            <td>
+                                <select id="industry" ms-duplex="addressData['Industry']" class="select radius-none" ></select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="required">地址：</td>
+                            <td>
+                                <select id="selProvince" ms-duplex="addressData['selProvince']" ms-click="provinceSwitch(this)" class="select radius-none" style="width: 80px"></select>
+                                <select id="selCity" ms-duplex="addressData['selCity']" ms-click="citySwitch(this)" class="select radius-none" style="width: 80px"></select>
+                                <select id="selArea" ms-duplex="addressData['selArea']" class="select radius-none" style="width: 80px"></select>
+                            </td>
+                        </tr>
+                        <tr class="form-group">
+                            <td></td>
+                            <td class="field">
+                                <input class="input text-small radius-none" type="text" ms-duplex="addressData['addressmsg']" id="addressmsg" size="26">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button class="button bg-blue radius-none" ms-click="modify()" type="button">确认修改</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+<form id="createAlarmContactsGroupFrom">
+    <table border="0" class="custom-table" ms-controller="createAlarmContactsGroup">
+        <tr>
+            <td class="required">联系组名：</td>
+            <td>
+                <input id="groupName" type="text" ms-duplex="data['groupName']" name="groupName" style="width:220px" class="input text-small radius-none">
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">备注：</td>
+            <td>
+                <textarea id="groupDes" ms-duplex="data['groupDes']" name="groupDes" style="width:280px;height:90px;" class="input text-small radius-none"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">选择联系人：</td>
+            <td>
+                <div class="float-left xs5">
+                    <div class="xs12">
+                        <span class="float-left text-little">已有联系人（新建联系人）</span>
+                        <span class="float-right text-little">全选</span>
+                    </div>
+                    <div class="xs12 margin-little-top">
+                        <input type="text" class="input input-small radius-none" style="width:180px;border: none;"/>
+                        <i class="icon-search"></i>
+                    </div>
+                    <div class="xs12 border text-center margin-little-top" style="height: 140px;">
+                        <span style="line-height: 30px;">
+                            未找到联系人
+                        </span>
+                    </div>
+                </div>
+                <div class="float-left xs1 text-center">
+                    <div style="margin-top: 60px;">
+                        <button type="button" class="button button-little bg-blue radius-none">
+                            <span class="icon-arrow-right"></span>
+                        </button>
+                    </div>
+                    <div class="margin-top">
+                        <button type="button" class="button button-little radius-none">
+                            <span class="icon-arrow-left"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="float-left xs5">
+                    <div class="xs12">
+                        <span class="float-left text-little">已选联系人</span>
+                        <span class="float-right text-little">全选</span>
+                    </div>
+                    <div class="xs12 border text-center margin-little-top" style="height: 170px;">
+                        <span style="line-height: 30px;">
+                            暂无关联主机
+                        </span>
+                    </div>
+                </div>
+                <div class="float-left xs1"></div>
+            </td>
+        </tr>
+    </table>
+</form>
+<script type="text/javascript">
+    require(["app-modules/console/cloudwatch/vmodel/alarm-contacts-group-add"],function(obj){
+        obj.initValidator();
+        if(avalon.vmodels.alarmContacts.editData!=null){
+            obj.data = avalon.vmodels.alarmContacts.editData;
+        }else{
+            obj.data = {
+                groupName:"",
+                groupDes:""
+            };
+        }
+        avalon.scan();
+    });
+</script>

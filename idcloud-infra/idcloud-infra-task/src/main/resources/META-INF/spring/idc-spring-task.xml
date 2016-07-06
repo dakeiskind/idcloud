@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="configLocation" value="classpath:quartz.properties"/>
+        <property name="applicationContextSchedulerContextKey" value="applicationContext"/>
+        <property name="jobFactory">
+            <bean class="com.h3c.idcloud.infra.task.SpringBeanJobFactory"/>
+        </property>
+    </bean>
+
+    <bean id="quartzManager" class="com.h3c.idcloud.infra.task.QuartzManager">
+        <property name="scheduler" ref="scheduler"/>
+    </bean>
+
+    <bean id="taskInitializer" class="com.h3c.idcloud.infra.task.TaskInitializer"
+          init-method="init" destroy-method="destory" lazy-init="true"/>
+
+</beans>

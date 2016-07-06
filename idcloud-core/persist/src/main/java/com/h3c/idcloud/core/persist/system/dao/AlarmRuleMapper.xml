@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.AlarmRuleMapper" >
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.AlarmRule" >
+        <id column="ALARM_RULE_SID" property="alarmRuleSid" jdbcType="BIGINT" />
+        <result column="ALARM_KPI" property="alarmKpi" jdbcType="VARCHAR" />
+        <result column="ALARM_KPI_NAME" property="alarmKpiName" jdbcType="VARCHAR" />
+        <result column="ALARM_LEVEL" property="alarmLevel" jdbcType="VARCHAR" />
+        <result column="ALARM_LEVEL_NAME" property="alarmLevelName" jdbcType="VARCHAR" />
+        <result column="ALARM_TYPE" property="alarmType" jdbcType="VARCHAR" />
+        <result column="ALARM_TYPE_NAME" property="alarmTypeName" jdbcType="VARCHAR" />
+        <result column="CHECK_OPTR" property="checkOptr" jdbcType="VARCHAR" />
+        <result column="CHECK_OPTR_NAME" property="checkOptrName" jdbcType="VARCHAR" />
+        <result column="ACCUMULATE_COUNT" property="accumulateCount" jdbcType="VARCHAR" />
+        <result column="ALARM_THRESHOLD" property="alarmThreshold" jdbcType="VARCHAR" />
+        <result column="TITLE" property="title" jdbcType="VARCHAR" />
+        <result column="CONTENT" property="content" jdbcType="VARCHAR" />
+        <result column="PLATFORM_TYPE" property="platformType" jdbcType="VARCHAR" />
+        <result column="PLATFORM_TYPE_NAME" property="platformTypeName" jdbcType="VARCHAR" />
+        <result column="OPERATOR" property="operator" jdbcType="VARCHAR" />
+        <result column="INSTANCE_ID" property="instanceId" jdbcType="VARCHAR" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+        <result column="VERSION" property="version" jdbcType="BIGINT" />
+    </resultMap>
+    <sql id="Example_Where_Clause" >
+        <trim prefix="where" prefixOverrides="and|or" >
+            <if test="condition.alarmKpi != null" >
+                and ALARM_KPI = #{condition.alarmKpi}
+            </if>
+            <if test="condition.alarmLevel != null" >
+                and ALARM_LEVEL = #{condition.alarmLevel}
+            </if>
+            <if test="condition.alarmType != null" >
+                and ALARM_TYPE = #{condition.alarmType}
+            </if>
+            <if test="condition.checkOptr != null" >
+                and CHECK_OPTR = #{condition.checkOptr}
+            </if>
+            <if test="condition.accumulateCount != null" >
+                and ACCUMULATE_COUNT = #{condition.accumulateCount}
+            </if>
+            <if test="condition.alarmThreshold != null" >
+                and ALARM_THRESHOLD = #{condition.alarmThreshold}
+            </if>
+            <if test="condition.title != null" >
+                and TITLE = #{condition.title}
+            </if>
+            <if test="condition.content != null" >
+                and CONTENT = #{condition.content}
+            </if>
+            <if test="condition.createdBy != null" >
+                and CREATED_BY = #{condition.createdBy}
+            </if>
+            <if test="condition.createdDt != null" >
+                and CREATED_DT = #{condition.createdDt}
+            </if>
+            <if test="condition.updatedBy != null" >
+                and UPDATED_BY = #{condition.updatedBy}
+            </if>
+            <if test="condition.updatedDt != null" >
+                and UPDATED_DT = #{condition.updatedDt}
+            </if>
+            <if test="condition.version != null" >
+                and VERSION = #{condition.version}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List" >
+        A.ALARM_RULE_SID, A.ALARM_KPI, A.ALARM_LEVEL, A.ALARM_TYPE, A.CHECK_OPTR, A.ACCUMULATE_COUNT,
+        A.ALARM_THRESHOLD, A.TITLE,A.OPERATOR, A.CONTENT, A.PLATFORM_TYPE ,A.INSTANCE_ID,A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, A.UPDATED_DT,
+        A.VERSION
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        B.CODE_DISPLAY AS ALARM_LEVEL_NAME,
+        C.CODE_DISPLAY AS ALARM_TYPE_NAME,
+        D.CODE_DISPLAY AS ALARM_KPI_NAME,
+        E.CODE_DISPLAY AS CHECK_OPTR_NAME,
+        F.CODE_DISPLAY AS PLATFORM_TYPE_NAME,
+        <include refid="Base_Column_List" />
+        from alarm_rule A
+        left join sys_m_code B ON
+        (A.ALARM_LEVEL = B.CODE_VALUE AND B.CODE_CATEGORY = 'ALARM_LEVEL' )
+        left join sys_m_code C ON
+        (A.ALARM_TYPE = C.CODE_VALUE AND C.CODE_CATEGORY = 'ALARM_TYPE' )
+        left join sys_m_code D ON
+        (A.ALARM_KPI = D.CODE_VALUE AND D.CODE_CATEGORY = 'ALARM_KPI' )
+        left join sys_m_code E ON
+        (A.OPERATOR = E.CODE_VALUE AND E.CODE_CATEGORY = 'CHECK_OPTR' )
+        left join sys_m_code F ON
+        (A.PLATFORM_TYPE = F.CODE_VALUE AND F.CODE_CATEGORY = 'ALARM_PLATFORM_TYPE' )
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit" />
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from alarm_rule A
+        where A.ALARM_RULE_SID = #{alarmRuleSid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from alarm_rule
+        where ALARM_RULE_SID = #{alarmRuleSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+        delete from alarm_rule
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.system.AlarmRule" >
+        insert into alarm_rule (ALARM_RULE_SID, ALARM_KPI, ALARM_LEVEL, ALARM_TYPE, CHECK_OPTR,
+        ACCUMULATE_COUNT, ALARM_THRESHOLD, TITLE, CONTENT, CREATED_BY, CREATED_DT,
+        UPDATED_BY, UPDATED_DT, VERSION)
+        values (#{alarmRuleSid}, #{alarmKpi}, #{alarmLevel}, #{alarmType}, #{checkOptr},
+        #{accumulateCount}, #{alarmThreshold}, #{title}, #{content}, #{createdBy}, #{createdDt},
+        #{updatedBy}, #{updatedDt}, #{version})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.AlarmRule" >
+        <selectKey resultType="java.lang.Long" keyProperty="alarmRuleSid" order="BEFORE" >
+            SELECT NEXTVAL('SEQ_ALARM_RULE')
+        </selectKey>
+        insert into alarm_rule
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            ALARM_RULE_SID,
+            <if test="alarmKpi != null" >
+                ALARM_KPI,
+            </if>
+            <if test="alarmLevel != null" >
+                ALARM_LEVEL,
+            </if>
+            <if test="alarmType != null" >
+                ALARM_TYPE,
+            </if>
+            <if test="checkOptr != null" >
+                CHECK_OPTR,
+            </if>
+            <if test="operator != null" >
+                OPERATOR,
+            </if>
+            <if test="accumulateCount != null" >
+                ACCUMULATE_COUNT,
+            </if>
+            <if test="alarmThreshold != null" >
+                ALARM_THRESHOLD,
+            </if>
+            <if test="title != null" >
+                TITLE,
+            </if>
+            <if test="content != null" >
+                CONTENT,
+            </if>
+            <if test="platformType != null" >
+                PLATFORM_TYPE,
+            </if>
+            <if test="instanceId != null" >
+                INSTANCE_ID,
+            </if>
+            <if test="createdBy != null" >
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null" >
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null" >
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null" >
+                UPDATED_DT,
+            </if>
+            <if test="version != null" >
+                VERSION,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            #{alarmRuleSid},
+            <if test="alarmKpi != null" >
+                #{alarmKpi},
+            </if>
+            <if test="alarmLevel != null" >
+                #{alarmLevel},
+            </if>
+            <if test="alarmType != null" >
+                #{alarmType},
+            </if>
+            <if test="checkOptr != null" >
+                #{checkOptr},
+            </if>
+            <if test="operator != null" >
+                #{operator},
+            </if>
+            <if test="accumulateCount != null" >
+                #{accumulateCount},
+            </if>
+            <if test="alarmThreshold != null" >
+                #{alarmThreshold},
+            </if>
+            <if test="title != null" >
+                #{title},
+            </if>
+            <if test="content != null" >
+                #{content},
+            </if>
+            <if test="platformType != null" >
+                #{platformType},
+            </if>
+            <if test="instanceId != null" >
+                #{instanceId},
+            </if>
+            <if test="createdBy != null" >
+                #{createdBy},
+            </if>
+            <if test="createdDt != null" >
+                #{createdDt},
+            </if>
+            <if test="updatedBy != null" >
+                #{updatedBy},
+            </if>
+            <if test="updatedDt != null" >
+                #{updatedDt},
+            </if>
+            <if test="version != null" >
+                #{version},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+        select count(*) from alarm_rule
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map" >
+        update alarm_rule
+        <set >
+            <if test="record.alarmRuleSid != null" >
+                ALARM_RULE_SID = #{record.alarmRuleSid},
+            </if>
+            <if test="record.alarmKpi != null" >
+                ALARM_KPI = #{record.alarmKpi},
+            </if>
+            <if test="record.alarmLevel != null" >
+                ALARM_LEVEL = #{record.alarmLevel},
+            </if>
+            <if test="record.alarmType != null" >
+                ALARM_TYPE = #{record.alarmType},
+            </if>
+            <if test="record.checkOptr != null" >
+                CHECK_OPTR = #{record.checkOptr},
+            </if>
+            <if test="record.accumulateCount != null" >
+                ACCUMULATE_COUNT = #{record.accumulateCount},
+            </if>
+            <if test="record.alarmThreshold != null" >
+                ALARM_THRESHOLD = #{record.alarmThreshold},
+            </if>
+            <if test="record.title != null" >
+                TITLE = #{record.title},
+            </if>
+            <if test="record.content != null" >
+                CONTENT = #{record.content},
+            </if>
+            <if test="record.createdBy != null" >
+                CREATED_BY = #{record.createdBy},
+            </if>
+            <if test="record.createdDt != null" >
+                CREATED_DT = #{record.createdDt},
+            </if>
+            <if test="record.updatedBy != null" >
+                UPDATED_BY = #{record.updatedBy},
+            </if>
+            <if test="record.updatedDt != null" >
+                UPDATED_DT = #{record.updatedDt},
+            </if>
+            <if test="record.version != null" >
+                VERSION = #{record.version},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map" >
+        update alarm_rule
+        set ALARM_RULE_SID = #{record.alarmRuleSid},
+        ALARM_KPI = #{record.alarmKpi},
+        ALARM_LEVEL = #{record.alarmLevel},
+        ALARM_TYPE = #{record.alarmType},
+        CHECK_OPTR = #{record.checkOptr},
+        ACCUMULATE_COUNT = #{record.accumulateCount},
+        ALARM_THRESHOLD = #{record.alarmThreshold},
+        TITLE = #{record.title},
+        CONTENT = #{record.content},
+        CREATED_BY = #{record.createdBy},
+        CREATED_DT = #{record.createdDt},
+        UPDATED_BY = #{record.updatedBy},
+        UPDATED_DT = #{record.updatedDt},
+        VERSION = #{record.version}
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.AlarmRule" >
+        update alarm_rule
+        <set >
+            <if test="alarmKpi != null" >
+                ALARM_KPI = #{alarmKpi},
+            </if>
+            <if test="alarmLevel != null" >
+                ALARM_LEVEL = #{alarmLevel},
+            </if>
+            <if test="alarmType != null" >
+                ALARM_TYPE = #{alarmType},
+            </if>
+            <if test="checkOptr != null" >
+                CHECK_OPTR = #{checkOptr},
+            </if>
+            <if test="accumulateCount != null" >
+                ACCUMULATE_COUNT = #{accumulateCount},
+            </if>
+            <if test="alarmThreshold != null" >
+                ALARM_THRESHOLD = #{alarmThreshold},
+            </if>
+            <if test="title != null" >
+                TITLE = #{title},
+            </if>
+            <if test="content != null" >
+                CONTENT = #{content},
+            </if>
+            <if test="platformType != null" >
+                PLATFORM_TYPE = #{platformType},
+            </if>
+            <if test="operator != null" >
+                OPERATOR = #{operator},
+            </if>
+
+            <if test="createdBy != null" >
+                CREATED_BY = #{createdBy},
+            </if>
+            <if test="createdDt != null" >
+                CREATED_DT = #{createdDt},
+            </if>
+            <if test="updatedBy != null" >
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="updatedDt != null" >
+                UPDATED_DT = #{updatedDt},
+            </if>
+            <if test="version != null" >
+                VERSION = #{version},
+            </if>
+        </set>
+        where ALARM_RULE_SID = #{alarmRuleSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.AlarmRule" >
+        update alarm_rule
+        set ALARM_KPI = #{alarmKpi},
+        ALARM_LEVEL = #{alarmLevel},
+        ALARM_TYPE = #{alarmType},
+        CHECK_OPTR = #{checkOptr},
+        ACCUMULATE_COUNT = #{accumulateCount},
+        ALARM_THRESHOLD = #{alarmThreshold},
+        TITLE = #{title},
+        CONTENT = #{content},
+        CREATED_BY = #{createdBy},
+        CREATED_DT = #{createdDt},
+        UPDATED_BY = #{updatedBy},
+        UPDATED_DT = #{updatedDt},
+        VERSION = #{version}
+        where ALARM_RULE_SID = #{alarmRuleSid}
+    </update>
+</mapper>

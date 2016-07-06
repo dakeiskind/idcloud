@@ -1,0 +1,76 @@
+<form id="editNodeForm" >
+    <table border="0" class="custom-table" ms-controller="nodeEditWindow">
+        <tr>
+            <td class="required">名称：</td>
+            <td>
+                <input id="ipsNodeName" type="text" ms-duplex="addNodeData['ipsNodeName']" name="ipsNodeName" style="width:220px" class="input text-small radius-none">
+            </td>
+        </tr>
+        <tr>
+            <td>描述：</td>
+            <td>
+                <input id="nodeDesc" type="text" ms-duplex="addNodeData['nodeDesc']" name="nodeDesc" style="width:220px" class="input text-small radius-none">
+            </td>
+        </tr>
+        <tr>
+            <td>VPN服务已经与此链接关联：</td>
+            <td>
+                <select class="select radius-none" style="width:220px" name="vpnName" ms-duplex="addNodeData['vpnName']">
+                    <option selected="selected" value="">-- 选择VPN服务 --</option>
+                    <option  value="VPN_test">VPN_test</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>IKE策略已经与此链接关联：</td>
+            <td>
+                <select class="select radius-none" style="width:220px" name="nodeIKE" ms-duplex="addNodeData['nodeIKE']">
+                    <option selected="selected" value="">-- 选择IKE策略 --</option>
+                    <option value="liuyang">liuyang</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>IPSec策略已经与此链接关联：</td>
+            <td>
+                <select class="select radius-none" style="width:220px">
+                    <option selected="selected"  value="">-- 选择IPSec策略 --</option>
+                    <option  value="NO Ping">NO Ping</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>伙伴网关公共IPv4/IPv6地址或FQDN：</td>
+            <td>
+                <input id="getWay" type="text"  name="getWay" style="width:220px" class="input text-small radius-none">
+            </td>
+        </tr>
+        <tr>
+            <td>用于认证的伙伴路由器身份 (伙伴ID)：</td>
+            <td>
+                <input type="text"   style="width:220px" class="input text-small radius-none">
+            </td>
+        </tr>
+        <tr>
+            <td>远程对等子网(可能多个)：</td>
+            <td>
+                <input type="text"   style="width:220px" class="input text-small radius-none">
+            </td>
+        </tr>
+        <tr>
+            <td>Pre-Shared Key (PSK) 字符串：</td>
+            <td>
+                <input type="text"   style="width:220px" class="input text-small radius-none">
+            </td>
+        </tr>
+    </table>
+</form>
+
+<script type="text/javascript">
+    require(["app-modules/console/vpc/vmodel/node-edit"],function(nodeEdit){
+        // 初始化数据
+        nodeEdit.addNodeData = avalon.vmodels.VPNMgt.editNodeData;
+        nodeEdit.initValidator();
+        avalon.scan();
+    });
+</script>

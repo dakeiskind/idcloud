@@ -1,0 +1,270 @@
+<div ms-controller="console-dashbaord">
+    <!-- 基本信息 -->
+    <div class="line-big">
+        <div class="x8">
+             <!-- 第一行 -->
+             <div class="line-big">
+                <div class="x12">
+                    <div style="width: 100%;height:80px;"> 
+                        <div class="line">
+                            <div class="x3">
+                                <div class="dashboard-panel"> 
+                                    <div class="service-icon"><i class="icon-desktop"></i></div>
+                                    <div class="service-content"> 
+                                        <div class="title"><a style="color: #0099d7" href="javascript:;"
+                                                              ms-click="gotoHost()">{{data.vm.vmNum}}
+                                        </a>&nbsp;&nbsp;云主机</div>
+                                        <div class="content">
+                                            <i class="icon-power-off text-gray"></i>&nbsp;{{data.vm.stopVmNum}}&nbsp;
+                                            <i class="icon-play-circle text-blue"></i>&nbsp;{{data.vm.startVmNum}}&nbsp;
+                                            <i class="icon-exclamation-circle text-red"></i>&nbsp;{{data.vm.badVmNum}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="x3">
+                                <div class="dashboard-panel"> 
+                                    <div class="service-icon"><i class="icon-tasks"></i></div>
+                                    <div class="service-content">
+                                        <div class="title"><a style="color: #0099d7" href="javascript:;"
+                              ms-click="gotoStorage()">{{data.storage.storageNum}}</a>&nbsp;&nbsp;云硬盘</div>
+                                        <div class="content">
+                                            <i class="icon-power-off text-gray"></i>&nbsp;{{data.storage.stopStorageNum}}&nbsp;
+                                            <i class="icon-play-circle text-blue"></i>&nbsp;{{data.storage.startStorageNum}}&nbsp;
+                                            <i class="icon-exclamation-circle text-red"></i>&nbsp;{{data.storage.badStorageNum}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="x3">
+                                <div class="dashboard-panel"> 
+                                    <div class="service-icon"><i class="icon-puzzle-piece"></i></div>
+                                    <div class="service-content">
+                                        <div class="title"><a style="color: #0099d7" href="javascript:;" ms-click="gotoFloatingIp()">{{data.public.publicNum}}</a>&nbsp;&nbsp;公网IP</div>
+                                        <div class="content">
+                                            <i class="icon-power-off text-gray"></i>&nbsp;{{data.public.stopPublicNum}}&nbsp;
+                                            <i class="icon-play-circle text-blue"></i>&nbsp;{{data.public.startPublicNum}}
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="x3">
+                                <div class="dashboard-panel"> 
+                                    <div class="service-icon"><i class="icon-rss"></i></div>
+                                    <div class="service-content">
+                                        <div class="title"><a style="color: #0099d7" href="javascript:;"
+                                                              ms-click="gotoVirNetwork()">0</a>&nbsp;&nbsp;虚拟网络</div>
+                                        <div class="content">
+                                            <i class="icon-play-circle text-blue"></i>&nbsp;0
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <!-- 第二行 -->
+            <div class="line-big">
+                <div class="x12">
+                   <div class="custom-panel" style="height: 480px">
+                        <div class="title" style="font-size: 14px;height: 30px;">资源配额使用情况</div>
+                        <div>
+                            <div style="float: left;width: 50%;height: 180px;">
+                               <div class="resUsedDivTitle" >计算</div>
+                               <div>
+                                    <table border="0" width="85%" style="margin-left:15px;font-size: 12px;" cellpadding="5" cellspacing="10">
+                                        <tr>
+                                            <td width="120px" height="30px" align="left"><span style="font-size: 12px;">主机(个)</span></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-blue"
+                                                         style="width: 0%;">0/0</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="120px" height="30px" align="left"><span style="font-size: 12px;">CPU(核)</span></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-blue"
+                                                         style="width: 0%;">0/0</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="120px" height="30px" align="left"><span style="font-size: 12px;">内存(GB)</span></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-blue"
+                                                         style="width: 0%;">0/0</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td width="120px" height="30px" align="left"><span style="font-size: 12px;">映像(个)</span></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-blue"
+                                                         style="width: 0%;">0/0</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                               </div>
+                            </div>
+                            <div style="float: left;width: 50%;height: 180px;">
+                               <div class="resUsedDivTitle" >存储</div>
+                               <div>
+                                   <table border="0" width="85%" style="margin-left:15px;font-size: 12px;" cellpadding="5" cellspacing="10">
+                                        <tr>
+                                            <td width="120px" height="30px" align="left"><span style="font-size: 12px;">云硬盘(块)</span></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-blue"
+                                                         style="width: 0%;">0/0</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="120px" height="30px" align="left"><span style="font-size: 12px;">云硬盘容量(GB)</span></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-blue"
+                                                         style="width: 0%;">0/0</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                               </div>
+                            </div>
+
+                            <div style="float: left;width: 50%;height: 270px;">
+                                <div class="resUsedDivTitle" >网络</div>
+                                <div>
+                                    <table border="0" width="85%" style="margin-left:15px;font-size: 12px;" cellpadding="5" cellspacing="10">
+                                        <tr>
+                                            <td width="120px" height="30px" align="left"><span style="font-size: 12px;">私有网络(个)</span></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-blue"
+                                                         style="width: 0%;">0/0</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="120px" height="30px" align="left"><span style="font-size: 12px;">路由器(个)</span></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-blue"
+                                                         style="width: 0%;">0/0</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="120px" height="30px" align="left"><span style="font-size: 12px;">负载均衡器(个)</span></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-blue"
+                                                         style="width: 0%;">0/0</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="120px" height="30px" align="left"><span style="font-size: 12px;">IpSec策略(个)</span></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-blue"
+                                                         style="width: 0%;">0/0</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="120px" height="30px" align="left"><span style="font-size: 12px;">IpSec连接(个)</span></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-blue"
+                                                         style="width: 0%;">0/0</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="120px" height="30px" align="left"><span style="font-size: 12px;">公网IP(个)</span></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-blue"
+                                                         style="width: 0%;">0/0</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="120px" height="30px" align="left"><span style="font-size: 12px;">VPN服务(个)</span></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-blue"
+                                                         style="width: 0%;">0/0</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>                            
+                            </div>
+
+                            <div style="float: left;width: 50%;height: 180px;margin-top:-80px;">
+                               <div class="resUsedDivTitle" >安全</div>
+                               <div>
+                                   <table border="0" width="85%" style="margin-left:15px;font-size: 12px;" cellpadding="5" cellspacing="10">
+                                        <tr>
+                                            <td width="120px" height="30px" align="left"><span style="font-size: 12px;">安全组(个)</span></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-blue"
+                                                         style="width: 0%;">0/0</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="120px" height="30px" align="left"><span style="font-size: 12px;">安全组规则(GB)</span></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-blue"
+                                                         style="width: 0%;">0/0</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="120px" height="30px" align="left"><span style="font-size: 12px;">SSH秘钥(个)</span></td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-blue"
+                                                         style="width: 0%;">0/0</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                               </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="x4">
+            <div class="custom-panel" style="height: 600px">
+                <div class="title">最近操作</div>
+                <div>
+                    <div id="vertical-timeline" class="vertical-container dark-timeline">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>           

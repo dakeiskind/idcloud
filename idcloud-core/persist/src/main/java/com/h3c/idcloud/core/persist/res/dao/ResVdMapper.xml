@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResVdMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResVd">
+        <id column="RES_VD_SID" property="resVdSid" jdbcType="VARCHAR"/>
+        <result column="VD_NAME" property="vdName" jdbcType="VARCHAR"/>
+        <result column="ALLOCATE_DISK_SIZE" property="allocateDiskSize" jdbcType="BIGINT"/>
+        <result column="USE_DISK_SIZE" property="useDiskSize" jdbcType="BIGINT"/>
+        <result column="ALLOCATE_RES_STORAGE_SID" property="allocateResStorageSid" jdbcType="VARCHAR"/>
+        <result column="RES_VM_SID" property="resVmSid" jdbcType="VARCHAR"/>
+        <result column="STORAGE_PURPOSE" property="storagePurpose" jdbcType="VARCHAR"/>
+        <result column="STORAGE_PURPOSE_NAME" property="storagePurposeName" jdbcType="VARCHAR"/>
+        <result column="DEVICE_NAME" property="deviceName" jdbcType="VARCHAR"/>
+        <result column="DISK_MODE" property="diskMode" jdbcType="VARCHAR"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR"/>
+        <result column="ZONE" property="zone" jdbcType="VARCHAR"/>
+        <result column="RELEASE_MODE" property="releaseMode" jdbcType="VARCHAR"/>
+        <result column="STORAGE_PATH" property="storagePath" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP"/>
+        <result column="VERSION" property="version" jdbcType="BIGINT"/>
+        <result column="MGT_OBJ_SID" property="mgtObjSid" jdbcType="BIGINT"/>
+        <result column="DEVICE_PATH" property="path" jdbcType="VARCHAR"/>
+
+        <result column="MOUNT_POINT" property="mountPoint" jdbcType="VARCHAR"/>
+        <result column="FILE_SYSTEM_TYPE" property="fileSystemType" jdbcType="VARCHAR"/>
+        <result column="LOGIC_VOLUME" property="logicVolume" jdbcType="VARCHAR"/>
+
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.vdName != null">
+                and VD_NAME = #{condition.vdName}
+            </if>
+            <if test="condition.allocateDiskSize != null">
+                and ALLOCATE_DISK_SIZE = #{condition.allocateDiskSize}
+            </if>
+            <if test="condition.useDiskSize != null">
+                and USE_DISK_SIZE = #{condition.useDiskSize}
+            </if>
+            <if test="condition.allocateResStorageSid != null">
+                and ALLOCATE_RES_STORAGE_SID = #{condition.allocateResStorageSid}
+            </if>
+            <if test="condition.resVmSid != null">
+                and RES_VM_SID = #{condition.resVmSid}
+            </if>
+            <if test="condition.zone != null">
+                and A.ZONE = #{condition.zone}
+            </if>
+            <if test="condition.storagePurpose != null">
+                and STORAGE_PURPOSE = #{condition.storagePurpose}
+            </if>
+            <if test="condition.deviceName != null">
+                and DEVICE_NAME = #{condition.deviceName}
+            </if>
+            <if test="condition.diskMode != null">
+                and DISK_MODE = #{condition.diskMode}
+            </if>
+            <if test="condition.uuid != null">
+                and UUID = #{condition.uuid}
+            </if>
+            <if test="condition.releaseMode != null">
+                and RELEASE_MODE = #{condition.releaseMode}
+            </if>
+            <if test="condition.path != null">
+                and DEVICE_PATH = #{condition.path}
+            </if>
+            <if test="condition.status != null">
+                and STATUS = #{condition.status}
+            </if>
+            <if test="condition.statusNotIn != null">
+                and STATUS NOT IN (${condition.statusNotIn})
+            </if>
+            <if test="condition.createdBy != null">
+                and CREATED_BY = #{condition.createdBy}
+            </if>
+            <if test="condition.createdDt != null">
+                and CREATED_DT = #{condition.createdDt}
+            </if>
+            <if test="condition.updatedBy != null">
+                and UPDATED_BY = #{condition.updatedBy}
+            </if>
+            <if test="condition.updatedDt != null">
+                and UPDATED_DT = #{condition.updatedDt}
+            </if>
+            <if test="condition.version != null">
+                and VERSION = #{condition.version}
+            </if>
+            <if test="condition.mgtObjSid != null">
+                and MGT_OBJ_SID = #{condition.mgtObjSid}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Example_Where_Clause_Alias">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.vdName != null">
+                and A.VD_NAME = #{condition.vdName}
+            </if>
+            <if test="condition.allocateDiskSize != null">
+                and A.ALLOCATE_DISK_SIZE = #{condition.allocateDiskSize}
+            </if>
+            <if test="condition.zone != null">
+                and A.ZONE = #{condition.zone}
+            </if>
+            <if test="condition.useDiskSize != null">
+                and A.USE_DISK_SIZE = #{condition.useDiskSize}
+            </if>
+            <if test="condition.allocateResStorageSid != null">
+                and A.ALLOCATE_RES_STORAGE_SID = #{condition.allocateResStorageSid}
+            </if>
+            <if test="condition.resVmSid != null">
+                and A.RES_VM_SID = #{condition.resVmSid}
+            </if>
+            <if test="condition.storagePurpose != null">
+                and A.STORAGE_PURPOSE = #{condition.storagePurpose}
+            </if>
+            <if test="condition.deviceName != null">
+                and A.DEVICE_NAME = #{condition.deviceName}
+            </if>
+            <if test="condition.diskMode != null">
+                and A.DISK_MODE = #{condition.diskMode}
+            </if>
+            <if test="condition.uuid != null">
+                and A.UUID = #{condition.uuid}
+            </if>
+            <if test="condition.releaseMode != null">
+                and RELEASE_MODE = #{condition.releaseMode}
+            </if>
+            <if test="condition.path != null">
+                and A.DEVICE_PATH = #{condition.path}
+            </if>
+            <if test="condition.status != null">
+                and A.STATUS = #{condition.status}
+            </if>
+            <if test="condition.mgtObjSid != null">
+                and A.MGT_OBJ_SID = #{condition.mgtObjSid}
+            </if>
+            <if test="condition.statusNotIn != null">
+                and A.STATUS NOT IN (${condition.statusNotIn})
+            </if>
+            <if test="condition.createdBy != null">
+                and A.CREATED_BY = #{condition.createdBy}
+            </if>
+            <if test="condition.createdDt != null">
+                and A.CREATED_DT = #{condition.createdDt}
+            </if>
+            <if test="condition.updatedBy != null">
+                and A.UPDATED_BY = #{condition.updatedBy}
+            </if>
+            <if test="condition.updatedDt != null">
+                and A.UPDATED_DT = #{condition.updatedDt}
+            </if>
+            <if test="condition.version != null">
+                and A.VERSION = #{condition.version}
+            </if>
+            <if test="condition.parentTopologySid != null">
+                and B.PARENT_TOPOLOGY_SID = #{condition.parentTopologySid}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        A.RES_VD_SID, A.VD_NAME, A.ALLOCATE_DISK_SIZE, A.USE_DISK_SIZE, A.ALLOCATE_RES_STORAGE_SID,
+        A.RES_VM_SID, A.STORAGE_PURPOSE, A.DEVICE_NAME, A.DISK_MODE, A.UUID, A.DEVICE_PATH, A.STATUS, A.CREATED_BY,
+        A.CREATED_DT,A.MGT_OBJ_SID,A.RELEASE_MODE, A.ZONE,
+        A.UPDATED_BY, A.UPDATED_DT, A.VERSION, A.MOUNT_POINT, A.FILE_SYSTEM_TYPE, A.LOGIC_VOLUME
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        B.CODE_DISPLAY as STORAGE_PURPOSE_NAME,
+        C.UUID as STORAGE_PATH,
+        <include refid="Base_Column_List"/>
+        from res_vd A
+        left join sys_m_code B on (A.STORAGE_PURPOSE = B.CODE_VALUE AND B.CODE_CATEGORY='STORAGE_PURPOSE')
+        left join res_storage C on (A.ALLOCATE_RES_STORAGE_SID = C.RES_STORAGE_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause_Alias"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <select id="selectByPowerVe" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        SELECT
+        A.*
+        FROM
+        RES_VD A
+        INNER JOIN RES_VM B ON A.RES_VM_SID = B.RES_VM_SID
+        INNER JOIN RES_VIOS C ON B.ALLOCATE_RES_HOST_SID = C.RES_HOST_SID
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.resViosSid != null">
+                AND C.RES_VIOS_SID = #{condition.resViosSid}
+            </if>
+            <if test="condition.storagePurpose != null">
+                AND A.STORAGE_PURPOSE = #{condition.storagePurpose}
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_vd A
+        where A.RES_VD_SID = #{resVdSid}
+    </select>
+
+    <select id="selectByVdUUID" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        res_vd A
+        WHERE A.uuid = #{uuid}
+    </select>
+
+    <select id="selectVdResSum" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select IFNULL(SUM(A.ALLOCATE_DISK_SIZE),0) as ALLOCATE_DISK_SIZE
+        from res_vd A
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+
+    <select id="selectVdResSumByType" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select SUM(B.ALLOCATE_DISK_SIZE) as ALLOCATE_DISK_SIZE
+        from res_vd B
+        INNER JOIN res_vm RV ON (B.RES_VM_SID = RV.RES_VM_SID)
+        where B.ALLOCATE_RES_STORAGE_SID in (
+        select A.RES_STORAGE_SID
+        from res_storage A
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.storageType != null">
+                and A.STORAGE_TYPE = #{condition.storageType}
+            </if>
+        </trim>
+        )
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_vd
+        where RES_VD_SID = #{resVdSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_vd
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVd">
+        insert into res_vd (RES_VD_SID, VD_NAME, ALLOCATE_DISK_SIZE, USE_DISK_SIZE, ALLOCATE_RES_STORAGE_SID,
+        RES_VM_SID, STORAGE_PURPOSE, DEVICE_NAME, DISK_MODE, UUID, STATUS,MGT_OBJ_SID,RELEASE_MODE,
+        CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION,DEVICE_PATH, ZONE)
+        values (#{resVdSid}, #{vdName}, #{allocateDiskSize}, #{useDiskSize}, #{allocateResStorageSid},
+        #{resVmSid}, #{storagePurpose}, #{deviceName}, #{diskMode}, #{uuid}, #{status},#{mgtObjSid},#{releaseMode},
+        #{createdBy}, #{createdDt}, #{updatedBy}, #{updatedDt}, #{version},#{path}, #{zone})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVd">
+        <selectKey resultType="java.lang.String" keyProperty="resVdSid" order="BEFORE">
+            SELECT UUID()
+        </selectKey>
+        insert into res_vd
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            RES_VD_SID,
+            <if test="vdName != null">
+                VD_NAME,
+            </if>
+            <if test="allocateDiskSize != null">
+                ALLOCATE_DISK_SIZE,
+            </if>
+            <if test="useDiskSize != null">
+                USE_DISK_SIZE,
+            </if>
+            <if test="allocateResStorageSid != null">
+                ALLOCATE_RES_STORAGE_SID,
+            </if>
+            <if test="resVmSid != null">
+                RES_VM_SID,
+            </if>
+            <if test="storagePurpose != null">
+                STORAGE_PURPOSE,
+            </if>
+            <if test="deviceName != null">
+                DEVICE_NAME,
+            </if>
+            <if test="diskMode != null">
+                DISK_MODE,
+            </if>
+            <if test="mountPoint != null">
+                MOUNT_POINT,
+            </if>
+            <if test="fileSystemType != null">
+                FILE_SYSTEM_TYPE,
+            </if>
+            <if test="logicVolume != null">
+                LOGIC_VOLUME,
+            </if>
+            <if test="mgtObjSid != null">
+                MGT_OBJ_SID,
+            </if>
+            <if test="uuid != null">
+                UUID,
+            </if>
+            <if test="zone != null">
+                ZONE,
+            </if>
+            <if test="releaseMode != null">
+                RELEASE_MODE,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+            <if test="version != null">
+                VERSION,
+            </if>
+            <if test="path != null">
+                DEVICE_PATH,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{resVdSid},
+            <if test="vdName != null">
+                #{vdName},
+            </if>
+            <if test="allocateDiskSize != null">
+                #{allocateDiskSize},
+            </if>
+            <if test="useDiskSize != null">
+                #{useDiskSize},
+            </if>
+            <if test="allocateResStorageSid != null">
+                #{allocateResStorageSid},
+            </if>
+            <if test="resVmSid != null">
+                #{resVmSid},
+            </if>
+            <if test="storagePurpose != null">
+                #{storagePurpose},
+            </if>
+            <if test="deviceName != null">
+                #{deviceName},
+            </if>
+            <if test="diskMode != null">
+                #{diskMode},
+            </if>
+            <if test="mountPoint != null">
+                #{mountPoint},
+            </if>
+            <if test="fileSystemType != null">
+                #{fileSystemType},
+            </if>
+            <if test="logicVolume != null">
+                #{logicVolume},
+            </if>
+            <if test="mgtObjSid != null">
+                #{mgtObjSid},
+            </if>
+            <if test="uuid != null">
+                #{uuid},
+            </if>
+            <if test="zone != null">
+                #{zone},
+            </if>
+            <if test="releaseMode != null">
+                #{releaseMode},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+            <if test="path != null">
+                #{path},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_vd
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_vd
+        <set>
+            <if test="record.resVdSid != null">
+                RES_VD_SID = #{record.resVdSid},
+            </if>
+            <if test="record.vdName != null">
+                VD_NAME = #{record.vdName},
+            </if>
+            <if test="record.allocateDiskSize != null">
+                ALLOCATE_DISK_SIZE = #{record.allocateDiskSize},
+            </if>
+            <if test="record.useDiskSize != null">
+                USE_DISK_SIZE = #{record.useDiskSize},
+            </if>
+            <if test="record.allocateResStorageSid != null">
+                ALLOCATE_RES_STORAGE_SID = #{record.allocateResStorageSid},
+            </if>
+            <if test="record.resVmSid != null">
+                RES_VM_SID = #{record.resVmSid},
+            </if>
+            <if test="record.storagePurpose != null">
+                STORAGE_PURPOSE = #{record.storagePurpose},
+            </if>
+            <if test="record.deviceName != null">
+                DEVICE_NAME = #{record.deviceName},
+            </if>
+            <if test="record.diskMode != null">
+                DISK_MODE = #{record.diskMode},
+            </if>
+            <if test="record.mountPoint != null">
+                MOUNT_POINT = #{record.mountPoint},
+            </if>
+            <if test="record.fileSystemType != null">
+                FILE_SYSTEM_TYPE = #{record.fileSystemType},
+            </if>
+            <if test="record.logicVolume != null">
+                LOGIC_VOLUME = #{record.logicVolume},
+            </if>
+            <if test="record.mgtObjSid != null">
+                MGT_OBJ_SID = #{record.mgtObjSid},
+            </if>
+            <if test="record.uuid != null">
+                UUID = #{record.uuid},
+            </if>
+            <if test="record.zone != null">
+                A.ZONE = #{record.zone},
+            </if>
+            <if test="record.releaseMode != null">
+                RELEASE_MODE = #{record.releaseMode},
+            </if>
+            <if test="record.status != null">
+                STATUS = #{record.status},
+            </if>
+            <if test="record.createdBy != null">
+                CREATED_BY = #{record.createdBy},
+            </if>
+            <if test="record.createdDt != null">
+                CREATED_DT = #{record.createdDt},
+            </if>
+            <if test="record.updatedBy != null">
+                UPDATED_BY = #{record.updatedBy},
+            </if>
+            <if test="record.updatedDt != null">
+                UPDATED_DT = #{record.updatedDt},
+            </if>
+            <if test="record.version != null">
+                VERSION = #{record.version},
+            </if>
+            <if test="record.path != null">
+                DEVICE_PATH = #{record.path},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_vd
+        set RES_VD_SID = #{record.resVdSid},
+        VD_NAME = #{record.vdName},
+        ALLOCATE_DISK_SIZE = #{record.allocateDiskSize},
+        USE_DISK_SIZE = #{record.useDiskSize},
+        ALLOCATE_RES_STORAGE_SID = #{record.allocateResStorageSid},
+        RES_VM_SID = #{record.resVmSid},
+        STORAGE_PURPOSE = #{record.storagePurpose},
+        DEVICE_NAME = #{record.deviceName},
+        DISK_MODE = #{record.diskMode},
+        MGT_OBJ_SID = #{record.mgtObjSid},
+        UUID = #{record.uuid},
+        ZONE = #{record.zone},
+        RELEASE_MODE = #{record.releaseMode},
+        STATUS = #{record.status},
+        CREATED_BY = #{record.createdBy},
+        CREATED_DT = #{record.createdDt},
+        UPDATED_BY = #{record.updatedBy},
+        UPDATED_DT = #{record.updatedDt},
+        VERSION = #{record.version},
+        DEVICE_PATH = #{record.path}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVd">
+        update res_vd
+        <set>
+            <if test="vdName != null">
+                VD_NAME = #{vdName},
+            </if>
+            <if test="allocateDiskSize != null">
+                ALLOCATE_DISK_SIZE = #{allocateDiskSize},
+            </if>
+            <if test="useDiskSize != null">
+                USE_DISK_SIZE = #{useDiskSize},
+            </if>
+            <if test="allocateResStorageSid != null">
+                ALLOCATE_RES_STORAGE_SID = #{allocateResStorageSid},
+            </if>
+            <if test="resVmSid != null">
+                RES_VM_SID = #{resVmSid},
+            </if>
+            <if test="storagePurpose != null">
+                STORAGE_PURPOSE = #{storagePurpose},
+            </if>
+            <if test="deviceName != null">
+                DEVICE_NAME = #{deviceName},
+            </if>
+            <if test="diskMode != null">
+                DISK_MODE = #{diskMode},
+            </if>
+            <if test="mountPoint != null">
+                MOUNT_POINT = #{mountPoint},
+            </if>
+            <if test="fileSystemType != null">
+                FILE_SYSTEM_TYPE = #{fileSystemType},
+            </if>
+            <if test="logicVolume != null">
+                LOGIC_VOLUME = #{logicVolume},
+            </if>
+            <if test="mgtObjSid != null">
+                MGT_OBJ_SID = #{mgtObjSid},
+            </if>
+            <if test="uuid != null">
+                UUID = #{uuid},
+            </if>
+            <if test="zone != null">
+                ZONE = #{zone},
+            </if>
+            <if test="releaseMode != null">
+                RELEASE_MODE = #{releaseMode},
+            </if>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt},
+            </if>
+            <if test="version != null">
+                VERSION = #{version},
+            </if>
+            <if test="path != null">
+                DEVICE_PATH = #{path},
+            </if>
+        </set>
+        where RES_VD_SID = #{resVdSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVd">
+        update res_vd
+        set VD_NAME = #{vdName},
+        ALLOCATE_DISK_SIZE = #{allocateDiskSize},
+        USE_DISK_SIZE = #{useDiskSize},
+        ALLOCATE_RES_STORAGE_SID = #{allocateResStorageSid},
+        RES_VM_SID = #{resVmSid},
+        STORAGE_PURPOSE = #{storagePurpose},
+        DEVICE_NAME = #{deviceName},
+        DISK_MODE = #{diskMode},
+        MGT_OBJ_SID = #{mgtObjSid},
+        UUID = #{uuid},
+        ZONE = #{zone},
+        RELEASE_MODE = #{releaseMode},
+        STATUS = #{status},
+        CREATED_BY = #{createdBy},
+        CREATED_DT = #{createdDt},
+        UPDATED_BY = #{updatedBy},
+        UPDATED_DT = #{updatedDt},
+        VERSION = #{version},
+        DEVICE_PATH = #{path}
+        where RES_VD_SID = #{resVdSid}
+    </update>
+</mapper>

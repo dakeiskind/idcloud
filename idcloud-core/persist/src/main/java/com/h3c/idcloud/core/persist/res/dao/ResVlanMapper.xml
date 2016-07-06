@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResVlanMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResVlan">
+        <id column="RES_SID" property="resSid" jdbcType="VARCHAR"/>
+        <result column="RES_POOL_SID" property="resPoolSid" jdbcType="VARCHAR"/>
+        <result column="VLAN_ID" property="vlanId" jdbcType="VARCHAR"/>
+        <result column="TAG" property="tag" jdbcType="VARCHAR"/>
+        <result column="USAGE_STATUS" property="usageStatus" jdbcType="VARCHAR"/>
+        <result column="USAGE_STATUS_NAME" property="usageStatusName" jdbcType="VARCHAR"/>
+        <result column="RES_VS_SID" property="resVsSid" jdbcType="VARCHAR"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR"/>
+        <result column="USED_COUNT" property="usedCount" jdbcType="VARCHAR"/>
+        <result column="UNUSED_COUNT" property="unusedCount" jdbcType="VARCHAR"/>
+        <result column="TOTAL_COUNT" property="totalCount" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.resPoolSid != null">
+                and A.RES_POOL_SID = #{condition.resPoolSid}
+            </if>
+            <!--       <if test="condition.resPoolSidIsNull != null" > -->
+            <!--          and A.RES_POOL_SID = '' -->
+            <!--       </if> -->
+            <if test="condition.deleteResPoolSid != null">
+                and RES_POOL_SID = #{condition.deleteResPoolSid}
+            </if>
+            <if test="condition.vlanId != null">
+                and A.VLAN_ID = #{condition.vlanId}
+            </if>
+            <if test="condition.tag != null">
+                and A.TAG = #{condition.tag}
+            </if>
+            <if test="condition.resVsSid != null">
+                and A.RES_VS_SID = #{condition.resVsSid}
+            </if>
+            <if test="condition.uuid != null">
+                and A.UUID = #{condition.uuid}
+            </if>
+            <if test="condition.resVsSidDelete != null">
+                and RES_VS_SID = #{condition.resVsSidDelete}
+            </if>
+            <if test="condition.resPoolSidDelete != null">
+                and RES_POOL_SID = #{condition.resPoolSidDelete}
+            </if>
+            <if test="condition.uuidDelete != null">
+                and UUID = #{condition.uuidDelete}
+            </if>
+            <if test="condition.unused != null">
+                and A.VLAN_ID NOT IN (SELECT DISTINCT VLAN_ID FROM res_network )
+            </if>
+            <if test="condition.poolType != null">
+                and B.VLAN_POOL_TYPE = #{condition.poolType}
+            </if>
+            <if test="condition.parentTopologySid != null">
+                and B.PARENT_TOPOLOGY_SID = #{condition.parentTopologySid}
+            </if>
+            <if test="condition.findVlanInZone != null">
+                and FIND_IN_SET(B.PARENT_TOPOLOGY_SID,getResTopologyChildList(#{condition.findVlanInZone}))
+            </if>
+            <if test="condition.usageStatus == '01'">
+                and A.VLAN_ID IN (SELECT DISTINCT VLAN_ID FROM res_network )
+            </if>
+            <if test="condition.usageStatus == '02'">
+                and A.VLAN_ID NOT IN (SELECT DISTINCT VLAN_ID FROM res_network where VLAN_ID is not NULL)
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        A.RES_SID, A.RES_POOL_SID, A.VLAN_ID, A.TAG, A.RES_VS_SID,A.UUID
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        , IF(ISNULL(C.RES_NETWORK_SID) ,'02','01') as USAGE_STATUS
+        , IF(ISNULL(C.RES_NETWORK_SID) ,'未使用','已使用') as USAGE_STATUS_NAME
+        from res_vlan A
+        LEFT JOIN res_pool_vlan B ON (A.RES_POOL_SID = B.RES_POOL_SID )
+        LEFT JOIN res_network C ON (A.VLAN_ID = C.VLAN_ID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <select id="statisticsVlanInPn" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        COUNT(A.RES_SID) as TOTAL_COUNT,
+        SUM(IF(ISNULL(C.RES_NETWORK_SID),0,1)) as USED_COUNT,
+        SUM(IF(!ISNULL(C.RES_NETWORK_SID),0,1)) as UNUSED_COUNT
+        FROM
+        res_vlan A
+        LEFT JOIN res_network C ON (A.VLAN_ID = C.VLAN_ID)
+        WHERE A.RES_POOL_SID IN (
+        SELECT
+        P.RES_POOL_SID
+        FROM
+        res_pool_vlan P
+        WHERE P.PARENT_TOPOLOGY_SID = #{resTopologySid}
+        )
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_vlan
+        where RES_SID = #{resSid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_vlan
+        where RES_SID = #{resSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_vlan
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVlan">
+        <selectKey resultType="java.lang.Long" keyProperty="resSid" order="BEFORE">
+            select UUID()
+        </selectKey>
+        insert into res_vlan (RES_SID, RES_POOL_SID, VLAN_ID, TAG)
+        values (#{resSid}, #{resPoolSid}, #{vlanId}, #{tag})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVlan">
+        <selectKey resultType="java.lang.String" keyProperty="resSid" order="BEFORE">
+            select UUID()
+        </selectKey>
+        insert into res_vlan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            RES_SID,
+            <if test="resPoolSid != null">
+                RES_POOL_SID,
+            </if>
+            <if test="vlanId != null">
+                VLAN_ID,
+            </if>
+            <if test="tag != null">
+                TAG,
+            </if>
+            <if test="resVsSid != null">
+                RES_VS_SID,
+            </if>
+            <if test="uuid != null">
+                UUID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{resSid},
+            <if test="resPoolSid != null">
+                #{resPoolSid},
+            </if>
+            <if test="vlanId != null">
+                #{vlanId},
+            </if>
+            <if test="tag != null">
+                #{tag},
+            </if>
+            <if test="resVsSid != null">
+                #{resVsSid},
+            </if>
+            <if test="uuid != null">
+                #{uuid},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_vlan
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_vlan
+        <set>
+            <if test="record.resSid != null">
+                RES_SID = #{record.resSid},
+            </if>
+            <if test="record.resPoolSid != null">
+                RES_POOL_SID = #{record.resPoolSid},
+            </if>
+            <if test="record.vlanId != null">
+                VLAN_ID = #{record.vlanId},
+            </if>
+            <if test="record.tag != null">
+                TAG = #{record.tag},
+            </if>
+            <if test="record.resVsSid != null">
+                RES_VS_SID = #{record.resVsSid},
+            </if>
+            <if test="record.uuid != null">
+                UUID = #{record.uuid}
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_vlan
+        set RES_SID = #{record.resSid},
+        RES_POOL_SID = #{record.resPoolSid},
+        VLAN_ID = #{record.vlanId},
+        TAG = #{record.tag}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVlan">
+        update res_vlan
+        <set>
+            <if test="resPoolSid != null">
+                RES_POOL_SID = #{resPoolSid},
+            </if>
+            <if test="vlanId != null">
+                VLAN_ID = #{vlanId},
+            </if>
+            <if test="tag != null">
+                TAG = #{tag},
+            </if>
+            <if test="resVsSid != null">
+                RES_VS_SID = #{resVsSid},
+            </if>
+            <if test="uuid != null">
+                UUID = #{uuid},
+            </if>
+        </set>
+        where RES_SID = #{resSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVlan">
+        update res_vlan
+        set RES_POOL_SID = #{resPoolSid},
+        VLAN_ID = #{vlanId},
+        TAG = #{tag}
+        where RES_SID = #{resSid}
+    </update>
+</mapper>

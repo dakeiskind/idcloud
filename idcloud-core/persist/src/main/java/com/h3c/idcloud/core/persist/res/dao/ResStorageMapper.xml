@@ -1,0 +1,1431 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResStorageMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResStorage">
+        <!--  <id column="RES_STORAGE_SID" property="resStorageSid" jdbcType="BIGINT" />-->
+        <id column="RES_STORAGE_SID" property="resStorageSid" jdbcType="VARCHAR"/>
+        <result column="PARENT_TOPOLOGY_SID" property="parentTopologySid" jdbcType="VARCHAR"/>
+        <result column="RES_POOL_SID" property="resPoolSid" jdbcType="VARCHAR"/>
+        <result column="RES_STORAGE_CLASS_SID" property="resStorageClassSid" jdbcType="VARCHAR"/>
+        <!--    <result column="VOLUME_NAME" property="volumeName" jdbcType="VARCHAR" />
+          <result column="VOLUME_TYPE" property="volumeType" jdbcType="VARCHAR" />-->
+        <result column="STORAGE_TYPE" property="storageType" jdbcType="VARCHAR"/>
+        <result column="STORAGE_TYPE_NAME" property="storageTypeName" jdbcType="VARCHAR"/>
+        <result column="STORAGE_NAME" property="storageName" jdbcType="VARCHAR"/>
+        <result column="MGT_OBJ_NAME" property="mgtObjName" jdbcType="VARCHAR"/>
+        <result column="STORAGE_TAG" property="storageTag" jdbcType="VARCHAR"/>
+        <result column="STORAGE_UNIT_NO" property="storageUnitNo" jdbcType="BIGINT"/>
+        <result column="STORAGE_USAGE" property="storageUsage" jdbcType="VARCHAR"/>
+        <result column="STORAGE_RATE" property="storageRate" jdbcType="VARCHAR"/>
+        <result column="AVAILABLE_CAPACITY" property="availableCapacity" jdbcType="BIGINT"/>
+        <result column="HARD_DISK_TYPE" property="hardDiskType" jdbcType="VARCHAR"/>
+        <result column="HARD_DISK_TYPE_NAME" property="hardDiskTypeName" jdbcType="VARCHAR"/>
+        <result column="STORAGE_CATEGORY" property="storageCategory" jdbcType="VARCHAR"/>
+        <result column="STORAGE_CATEGORY_NAME" property="storageCategoryName" jdbcType="VARCHAR"/>
+        <result column="STORAGE_PURPOSE" property="storagePurpose" jdbcType="VARCHAR"/>
+        <result column="STORAGE_PURPOSE_NAME" property="storagePurposeName" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP"/>
+        <result column="VERSION" property="version" jdbcType="BIGINT"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR"/>
+        <result column="STORAGE_STATUS" property="storageStatus" jdbcType="VARCHAR"/>
+        <result column="RES_TOPOLOGY_NAME" property="resTopologyName" jdbcType="VARCHAR"/>
+        <result column="USAGE_STATUS" property="usageStatus" jdbcType="VARCHAR"/>
+        <result column="USAGE_STATUS_NAME" property="usageStatusName" jdbcType="VARCHAR"/>
+        <result column="LUN_NO" property="lunNo" jdbcType="VARCHAR"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR"/>
+        <result column="PROVISIONED_CAPACITY" property="provisionCapacity" jdbcType="BIGINT"/>
+        <result column="HAD_USED_CAPACITY" property="hadUsedCapacity" jdbcType="BIGINT"/>
+        <result column="STORAGE_CLASSIFY" property="storageClassify" jdbcType="VARCHAR"/>
+        <result column="OWNER_HOST" property="ownerHost" jdbcType="VARCHAR"/>
+        <result column="OWNER_CLUSTER" property="ownerCluster" jdbcType="VARCHAR"/>
+
+        <result column="PROVISIONED_CAPACITY" property="provisionCapacity" jdbcType="BIGINT"/>
+        <result column="LOCAL_PROVISIONED_CAPACITY" property="localProvisionCapacity" jdbcType="BIGINT"/>
+        <result column="SHARE_PROVISIONED_CAPACITY" property="shareProvisionCapacity" jdbcType="BIGINT"/>
+
+        <result column="TOTAL_CAPACITY" property="totalCapacity" jdbcType="BIGINT"/>
+        <result column="LOCAL_TOTAL_CAPACITY" property="localTotalCapacity" jdbcType="BIGINT"/>
+        <result column="SHARE_TOTAL_CAPACITY" property="shareTotalCapacity" jdbcType="BIGINT"/>
+
+        <result column="STA_TOTAL_STORAGE" property="staTotalStorage" jdbcType="INTEGER"/>
+        <result column="STA_USABLE_STORAGE" property="staUsableStorage" jdbcType="INTEGER"/>
+        <result column="STA_FAULT_STORAGE" property="staFaultStorage" jdbcType="INTEGER"/>
+        <result column="STA_UNUSABLE_STORAGE" property="staUnusableStorage" jdbcType="INTEGER"/>
+
+        <result column="ALLOT_CAPACITY" property="allotCapacity" jdbcType="BIGINT"/>
+        <result column="LOCAL_ALLOT_CAPACITY" property="localAllotCapacity" jdbcType="BIGINT"/>
+        <result column="SHARE_ALLOT_CAPACITY" property="shareAllotCapacity" jdbcType="BIGINT"/>
+
+        <result column="ALLOT_RATE" property="allotRate" jdbcType="VARCHAR"/>
+        <result column="LOCAL_ALLOT_RATE" property="localAllotRate" jdbcType="VARCHAR"/>
+        <result column="SHARE_ALLOT_RATE" property="shareAllotRate" jdbcType="VARCHAR"/>
+        <result column="POWER_CLUSTER_NAME" property="powerClusterName" jdbcType="VARCHAR"/>
+        <result column="RES_EQUIP_STORAGE_SID" property="resEquipStorageSid" jdbcType="VARCHAR"/>
+        <result column="RES_HOST_SID" property="resHostSid" jdbcType="VARCHAR"/>
+        <result column="ZONE" property="zone" jdbcType="VARCHAR"/>
+
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.parentTopologySid != null">
+                and A.PARENT_TOPOLOGY_SID = #{condition.parentTopologySid}
+            </if>
+            <if test="condition.resPcTopologySid != null">
+                and (A.RES_POOL_SID IS NULL or A.RES_POOL_SID = '')
+            </if>
+            <if test="condition.resPoolSid != null">
+                and A.RES_POOL_SID = #{condition.resPoolSid}
+            </if>
+            <if test="condition.storageNameLike != null">
+                and A.STORAGE_NAME like concat('%', #{condition.storageNameLike},'%')
+            </if>
+            <if test="condition.bizNameLike != null">
+                and BIZ.MGT_OBJ_NAME like concat('%', #{condition.bizNameLike},'%')
+            </if>
+            <if test="condition.notExistResPoolSid == 'none'">
+                and (A.RES_POOL_SID is null or A.RES_POOL_SID = '')
+            </if>
+            <if test="condition.findCanAddToRsc == 'yes'">
+                and (A.RES_STORAGE_CLASS_SID is null or A.RES_STORAGE_CLASS_SID = '')
+            </if>
+            <if test="condition.resEquipStorageSid != null">
+                and A.RES_EQUIP_STORAGE_SID = #{condition.resEquipStorageSid}
+            </if>
+            <if test="condition.storageName != null">
+                and A.STORAGE_NAME = #{condition.storageName}
+            </if>
+            <if test="condition.storageType != null">
+                and A.STORAGE_TYPE = #{condition.storageType}
+            </if>
+            <if test="condition.storageTag != null">
+                and A.STORAGE_TAG = #{condition.storageTag}
+            </if>
+            <if test="condition.storageUnitNo != null">
+                and A.STORAGE_UNIT_NO = #{condition.storageUnitNo}
+            </if>
+            <if test="condition.resStorageClassSid != null">
+                and A.RES_STORAGE_CLASS_SID = #{condition.resStorageClassSid}
+            </if>
+            <if test="condition.availableCapacity != null">
+                and A.AVAILABLE_CAPACITY = #{condition.availableCapacity}
+            </if>
+            <if test="condition.hardDiskType != null">
+                and A.HARD_DISK_TYPE = #{condition.hardDiskType}
+            </if>
+            <if test="condition.storageCategory != null">
+                and A.STORAGE_CATEGORY = #{condition.storageCategory}
+            </if>
+            <if test="condition.storagePurpose != null">
+                and A.STORAGE_PURPOSE = #{condition.storagePurpose}
+            </if>
+            <if test="condition.resHostSid != null">
+                and B.RES_HOST_SID = #{condition.resHostSid}
+            </if>
+            <if test="condition.zone != null">
+                and A.ZONE = #{condition.zone}
+            </if>
+            <if test="condition.clusterSidCollection != null">
+                and A.RES_STORAGE_SID IN (SELECT B.RES_STORAGE_SID FROM res_host A RIGHT JOIN res_host_storage B ON
+                (A.RES_HOST_SID = B.RES_HOST_SID) WHERE A.PARENT_TOPOLOGY_SID in (${condition.clusterSidCollection}))
+            </if>
+            <if test="condition.status != null">
+                and A.STATUS = #{condition.status}
+            </if>
+            <if test="condition.instanceStatuParams != null">
+                and SI.STATUS in (${condition.instanceStatuParams})
+            </if>
+            <if test="condition.resDcTopolofySid != null">
+                and FIND_IN_SET(A.PARENT_TOPOLOGY_SID,getResTopologyChildList(#{condition.resDcTopolofySid}))
+            </if>
+            <if test="condition.resTopologySid != null and condition.resTopologyType != 'RZ' and condition.resTopologyType != 'VC'">
+                and FIND_IN_SET(A.PARENT_TOPOLOGY_SID,getResTopologyChildList(#{condition.resTopologySid}))
+            </if>
+            <!--       <if test="condition.resTopologySid != null and (condition.resTopologyType == 'RZ' or condition.resTopologyType == 'VC')" > -->
+            <!--          and FIND_IN_SET(A.PARENT_TOPOLOGY_SID,getResTopologyChildList(#{condition.resTopologySid})) -->
+            <!--       </if> -->
+            <if test="condition.resBizSid != null">
+                and FIND_IN_SET(A.RES_STORAGE_SID,getResBizChildList(#{condition.resBizSid}))
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        A.RES_STORAGE_SID, A.PARENT_TOPOLOGY_SID, A.RES_POOL_SID,A.STATUS, A.STORAGE_NAME, A.STORAGE_TYPE,
+        A.STORAGE_TAG, A.RES_EQUIP_STORAGE_SID, A.ZONE,
+        A.STORAGE_UNIT_NO, A.LUN_NO, A.AVAILABLE_CAPACITY, A.TOTAL_CAPACITY,A.HARD_DISK_TYPE, A.STORAGE_CATEGORY,
+        A.STORAGE_PURPOSE,A.UUID, A.PROVISIONED_CAPACITY,A.RES_STORAGE_CLASS_SID,A.POWER_CLUSTER_NAME
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        SELECT
+        B.RES_TOPOLOGY_NAME AS RES_TOPOLOGY_NAME,
+        A.RES_EQUIP_STORAGE_SID AS RES_EQUIP_STORAGE_SID,
+        A.RES_STORAGE_SID AS RES_STORAGE_SID,
+        A.PARENT_TOPOLOGY_SID AS PARENT_TOPOLOGY_SID,
+        A.RES_POOL_SID AS RES_POOL_SID,
+        A.STORAGE_NAME AS STORAGE_NAME,
+        A.STORAGE_TAG AS STORAGE_TAG,
+        A.STORAGE_UNIT_NO AS STORAGE_UNIT_NO,
+        A.AVAILABLE_CAPACITY AS AVAILABLE_CAPACITY,
+        A.TOTAL_CAPACITY AS TOTAL_CAPACITY,
+        A.CREATED_BY AS CREATED_BY,
+        A.CREATED_DT AS CREATED_DT,
+        A.UPDATED_BY AS UPDATED_BY,
+        A.UPDATED_DT AS UPDATED_DT,
+        A.STORAGE_TYPE AS STORAGE_TYPE,
+        A.VERSION AS VERSION,
+        A.STORAGE_CATEGORY,
+        A.STATUS,
+        A.PROVISIONED_CAPACITY AS PROVISIONED_CAPACITY,
+        A.UUID,
+        (A.TOTAL_CAPACITY - A.AVAILABLE_CAPACITY) as HAD_USED_CAPACITY,
+        C.CODE_VALUE AS HARD_DISK_TYPE,
+        C.CODE_DISPLAY AS HARD_DISK_TYPE_NAME,
+        D.CODE_DISPLAY AS STORAGE_CATEGORY_NAME,
+        E.CODE_VALUE AS STORAGE_PURPOSE,
+        E.CODE_DISPLAY AS STORAGE_PURPOSE_NAME,
+        F.CODE_DISPLAY AS STATUS_NAME,
+        G.CODE_DISPLAY AS STORAGE_TYPE_NAME,
+        CONCAT(IFNULL(ROUND((A.TOTAL_CAPACITY - A.AVAILABLE_CAPACITY) / A.TOTAL_CAPACITY * 100,2),'0.00'),'%') AS
+        STORAGE_USAGE,
+        IF (
+        COUNT(H.RES_VD_SID) > 0 OR COUNT(I.RES_VM_SID) > 0,
+        '02',
+        '01'
+        ) AS USAGE_STATUS,
+
+        IF (
+        COUNT(H.RES_VD_SID) > 0 OR COUNT(I.RES_VM_SID) > 0,
+        '未使用',
+        '已使用'
+        ) AS USAGE_STATUS_NAME,
+        J.RES_TOPOLOGY_NAME AS STORAGE_CLASSIFY,
+
+        CONCAT(IFNULL(ROUND(H.ALLOCATE_DISK_SIZE/A.TOTAL_CAPACITY * 100,2),'0.00'),'%')as STORAGE_RATE,
+        IFNULL(H.ALLOCATE_DISK_SIZE,'0') as ALLOT_CAPACITY
+
+        FROM
+        RES_STORAGE A
+        INNER JOIN RES_TOPOLOGY B ON (
+        A.PARENT_TOPOLOGY_SID = B.RES_TOPOLOGY_SID
+        )
+        LEFT JOIN SYS_M_CODE C ON (
+        A.HARD_DISK_TYPE = C.CODE_VALUE
+        AND C.CODE_CATEGORY = 'HARD_DISK_TYPE'
+        )
+        LEFT JOIN SYS_M_CODE D ON (
+        A.STORAGE_CATEGORY = D.CODE_VALUE
+        AND D.CODE_CATEGORY = 'STORAGE_CATEGORY'
+        )
+        LEFT JOIN SYS_M_CODE E ON (
+        A.STORAGE_PURPOSE = E.CODE_VALUE
+        AND E.CODE_CATEGORY = 'STORAGE_PURPOSE'
+        )
+        LEFT JOIN SYS_M_CODE F ON (
+        A. STATUS = F.CODE_VALUE
+        AND F.CODE_CATEGORY IN ('STORAGE_STATUS','STORAGE_OPER_STATUS')
+        )
+        LEFT JOIN SYS_M_CODE G ON (
+        A.STORAGE_TYPE = G.CODE_VALUE
+        AND G.CODE_CATEGORY = 'STORAGE_TYPE'
+        )
+        LEFT JOIN (
+        SELECT
+        sum(A.ALLOCATE_DISK_SIZE) as ALLOCATE_DISK_SIZE,
+        A.ALLOCATE_RES_STORAGE_SID as ALLOCATE_RES_STORAGE_SID,
+        A.RES_VD_SID as RES_VD_SID
+        from
+        (SELECT
+        DISTINCT
+        B.ALLOCATE_RES_STORAGE_SID,
+        B.UUID,
+        B.ALLOCATE_DISK_SIZE,
+        B.RES_VD_SID
+        from
+        res_vd B
+        GROUP BY B.UUID
+        ) A
+        GROUP BY A.ALLOCATE_RES_STORAGE_SID
+        ) H ON (
+        A.RES_STORAGE_SID = H.ALLOCATE_RES_STORAGE_SID
+        )
+        LEFT JOIN RES_VM I ON (
+        A.RES_STORAGE_SID = I.ALLOCATE_RES_STORAGE_SID
+        )
+        LEFT JOIN RES_TOPOLOGY J ON (
+        A.RES_STORAGE_CLASS_SID = J.RES_TOPOLOGY_SID
+        )
+        <if test="condition.resTopologySid != null and condition.resTopologyType == 'VC'">
+            INNER JOIN (
+            SELECT
+            DISTINCT
+            S.RES_STORAGE_SID
+            FROM
+            res_host_storage S
+            LEFT JOIN res_host H ON(S.RES_HOST_SID = H.RES_HOST_SID)
+            where FIND_IN_SET(H.PARENT_TOPOLOGY_SID,getResTopologyChildList(#{condition.resTopologySid}))
+            ) K ON (
+            A.RES_STORAGE_SID = K.RES_STORAGE_SID
+            )
+        </if>
+        <if test="condition.resTopologySid != null and condition.resTopologyType == 'RZ'">
+            INNER JOIN (
+            SELECT
+            DISTINCT
+            S.RES_STORAGE_SID
+            FROM
+            res_host_storage S
+            LEFT JOIN res_host H ON(S.RES_HOST_SID = H.RES_HOST_SID)
+            where FIND_IN_SET(H.RES_POOL_SID,getResTopologyChildList(#{condition.resTopologySid}))
+            ) K ON (
+            A.RES_STORAGE_SID = K.RES_STORAGE_SID
+            )
+        </if>
+
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        GROUP BY A.RES_STORAGE_SID
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <select id="selectBaseInfoByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        SELECT
+          <include refid="Base_Column_List"/>
+        FROM res_storage A
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+
+    <select id="selectByBizParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <include refid="Base_Column_List"/>,
+        C.CODE_DISPLAY AS HARD_DISK_TYPE_NAME,
+        D.CODE_DISPLAY AS STORAGE_CATEGORY_NAME,
+        E.CODE_DISPLAY AS STORAGE_PURPOSE_NAME,
+        F.CODE_DISPLAY AS STATUS_NAME,
+        G.CODE_DISPLAY AS STORAGE_TYPE_NAME,
+        GROUP_CONCAT(DISTINCT BIZ.MGT_OBJ_NAME) as MGT_OBJ_NAME,
+        CONCAT(ROUND((A.TOTAL_CAPACITY - A.AVAILABLE_CAPACITY) / A.TOTAL_CAPACITY * 100,2),'%') AS STORAGE_USAGE,
+        IF (
+        COUNT(H.RES_VD_SID) > 0 OR COUNT(I.RES_VM_SID) > 0,
+        '02',
+        '01'
+        ) AS USAGE_STATUS,
+        IF (
+        COUNT(H.RES_VD_SID) > 0 OR COUNT(I.RES_VM_SID) > 0,
+        '未使用',
+        '已使用'
+        ) AS USAGE_STATUS_NAME,
+        J.RES_TOPOLOGY_NAME AS STORAGE_CLASSIFY,
+        CONCAT(ROUND(H.ALLOCATE_DISK_SIZE/A.TOTAL_CAPACITY * 100,2),'%')as STORAGE_RATE,
+        H.ALLOCATE_DISK_SIZE as ALLOT_CAPACITY
+        from
+        view_sys_biz_res_storage BIZ
+        INNER JOIN res_storage A ON (BIZ.RES_SID = A.RES_STORAGE_SID)
+        LEFT JOIN SYS_M_CODE C ON (A.HARD_DISK_TYPE = C.CODE_VALUE AND C.CODE_CATEGORY = 'HARD_DISK_TYPE')
+        LEFT JOIN SYS_M_CODE D ON (A.STORAGE_CATEGORY = D.CODE_VALUE AND D.CODE_CATEGORY = 'STORAGE_CATEGORY')
+        LEFT JOIN SYS_M_CODE E ON (A.STORAGE_PURPOSE = E.CODE_VALUE AND E.CODE_CATEGORY = 'STORAGE_PURPOSE')
+        LEFT JOIN SYS_M_CODE F ON (A. STATUS = F.CODE_VALUE AND F.CODE_CATEGORY = 'STORAGE_STATUS')
+        LEFT JOIN SYS_M_CODE G ON (A.STORAGE_TYPE = G.CODE_VALUE AND G.CODE_CATEGORY = 'STORAGE_TYPE')
+        LEFT JOIN (
+        SELECT
+        sum(A.ALLOCATE_DISK_SIZE) as ALLOCATE_DISK_SIZE,
+        A.ALLOCATE_RES_STORAGE_SID as ALLOCATE_RES_STORAGE_SID,
+        A.RES_VD_SID as RES_VD_SID
+        from
+        (SELECT
+        DISTINCT
+        B.ALLOCATE_RES_STORAGE_SID,
+        B.UUID,
+        B.ALLOCATE_DISK_SIZE,
+        B.RES_VD_SID
+        from
+        res_vd B
+        GROUP BY B.UUID
+        ) A
+        GROUP BY A.ALLOCATE_RES_STORAGE_SID
+        ) H ON (A.RES_STORAGE_SID = H.ALLOCATE_RES_STORAGE_SID)
+        LEFT JOIN RES_VM I ON (A.RES_STORAGE_SID = I.ALLOCATE_RES_STORAGE_SID)
+        LEFT JOIN RES_TOPOLOGY J ON (A.RES_STORAGE_CLASS_SID = J.RES_TOPOLOGY_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        GROUP BY A.RES_STORAGE_SID
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <!-- 统计出topology下的存储个数,适用于数据中心、虚拟化环境 -->
+    <select id="statisticalTopologyOfStorage" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        COUNT(A.RES_STORAGE_SID) as STA_TOTAL_STORAGE,
+        sum(IF(A.`STATUS` = '01',1,0)) as STA_USABLE_STORAGE,
+        sum(IF(A.`STATUS` = '02',1,0)) as STA_FAULT_STORAGE,
+        sum(IF(A.`STATUS` = '03',1,0)) as STA_UNUSABLE_STORAGE
+        FROM
+        res_storage A
+        where FIND_IN_SET(A.PARENT_TOPOLOGY_SID,getResTopologyChildList(#{resTopologySid}))
+    </select>
+    <!-- 统计出topology下的存储容量,适用于数据中心、虚拟化环境 -->
+    <select id="statisticalTopologyOfStorageVolume" resultMap="BaseResultMap" parameterType="java.lang.String">
+
+        SELECT
+        IFNULL(SUM(A.TOTAL_CAPACITY),0) as TOTAL_CAPACITY,
+        IFNULL(SUM(A.AVAILABLE_CAPACITY),0) as AVAILABLE_CAPACITY,
+        IFNULL(SUM(A.TOTAL_CAPACITY - A.AVAILABLE_CAPACITY),0) as HAD_USED_CAPACITY
+        FROM
+        res_storage A
+        where FIND_IN_SET(A.PARENT_TOPOLOGY_SID,getResTopologyChildList(#{resTopologySid})) and A.STORAGE_CATEGORY='02'
+    </select>
+    <!-- 统计出Rz下的存储个数,适用于数据中心、虚拟化环境 -->
+    <select id="statisticalRzOfStorage" resultMap="BaseResultMap" parameterType="java.lang.String">
+
+        SELECT
+        COUNT(A.RES_STORAGE_SID) as STA_TOTAL_STORAGE,
+        sum(IF(A.`STATUS` = '01',1,0)) as STA_USABLE_STORAGE,
+        sum(IF(A.`STATUS` = '02',1,0)) as STA_FAULT_STORAGE,
+        sum(IF(A.`STATUS` = '03',1,0)) as STA_UNUSABLE_STORAGE
+        FROM
+        res_storage A
+        where FIND_IN_SET(A.RES_POOL_SID,getResTopologyChildList(#{resTopologySid}))
+    </select>
+    <!-- 统计出Rz下的存储容量,适用于数据中心、虚拟化环境 -->
+    <select id="statisticalVolumeRzOfStorage" resultMap="BaseResultMap" parameterType="java.lang.String">
+
+        SELECT
+        IFNULL(SUM(A.TOTAL_CAPACITY),0) as TOTAL_CAPACITY,
+        IFNULL(SUM(A.AVAILABLE_CAPACITY),0) as AVAILABLE_CAPACITY,
+        IFNULL(SUM(A.TOTAL_CAPACITY - A.AVAILABLE_CAPACITY),0) as HAD_USED_CAPACITY
+        FROM
+        res_storage A
+        where FIND_IN_SET(A.RES_POOL_SID,getResTopologyChildList(#{resTopologySid})) and A.STORAGE_CATEGORY='02'
+    </select>
+    <!-- 统计出topology下的存储个数,适用于数据中心、虚拟化环境 -->
+    <select id="statisticalTopologyOfStorageAllotInfo" resultMap="BaseResultMap" parameterType="java.lang.String">
+
+        SELECT
+        SUM(A.TOTAL_CAPACITY) as TOTAL_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '01',A.TOTAL_CAPACITY,0)) as LOCAL_TOTAL_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '02',A.TOTAL_CAPACITY,0)) as SHARE_TOTAL_CAPACITY,
+
+        SUM(A.PROVISIONED_CAPACITY) as PROVISIONED_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '01',A.PROVISIONED_CAPACITY,0)) as LOCAL_PROVISIONED_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '02',A.PROVISIONED_CAPACITY,0)) as SHARE_PROVISIONED_CAPACITY,
+
+        SUM(C.ALLOCATE_DISK_SIZE) as ALLOT_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '01',C.ALLOCATE_DISK_SIZE,0)) as LOCAL_ALLOT_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '02',C.ALLOCATE_DISK_SIZE,0)) as SHARE_ALLOT_CAPACITY,
+
+        ROUND(C.ALLOCATE_DISK_SIZE/sum(A.TOTAL_CAPACITY)*100,2) as ALLOT_RATE,
+        ROUND(SUM(IF(A.STORAGE_CATEGORY = '01',C.ALLOCATE_DISK_SIZE,0))/SUM(IF(A.STORAGE_CATEGORY =
+        '01',A.TOTAL_CAPACITY,0))*100,2) as LOCAL_ALLOT_RATE,
+        ROUND(SUM(IF(A.STORAGE_CATEGORY = '02',C.ALLOCATE_DISK_SIZE,0))/SUM(IF(A.STORAGE_CATEGORY =
+        '02',A.TOTAL_CAPACITY,0))*100,2) as SHARE_ALLOT_RATE
+        FROM
+        res_storage A
+        LEFT JOIN (
+        SELECT
+        sum(A.ALLOCATE_DISK_SIZE) as ALLOCATE_DISK_SIZE,
+        A.ALLOCATE_RES_STORAGE_SID as ALLOCATE_RES_STORAGE_SID,
+        A.RES_VD_SID as RES_VD_SID
+        from
+        (SELECT
+        DISTINCT
+        B.ALLOCATE_RES_STORAGE_SID,
+        B.UUID,
+        B.ALLOCATE_DISK_SIZE,
+        B.RES_VD_SID
+        from
+        res_vd B
+        GROUP BY B.UUID
+        ) A
+        GROUP BY A.ALLOCATE_RES_STORAGE_SID
+        )C on(A.RES_STORAGE_SID = C.ALLOCATE_RES_STORAGE_SID)
+
+        where FIND_IN_SET(A.PARENT_TOPOLOGY_SID,getResTopologyChildList(#{resTopologySid}))
+    </select>
+    <!-- 统计出RZ下的存储容量 -->
+    <select id="statisticalRzOfStorageAllotInfo" resultMap="BaseResultMap" parameterType="java.lang.String">
+
+        SELECT
+        SUM(A.TOTAL_CAPACITY) as TOTAL_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '01',A.TOTAL_CAPACITY,0)) as LOCAL_TOTAL_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '02',A.TOTAL_CAPACITY,0)) as SHARE_TOTAL_CAPACITY,
+
+        SUM(A.PROVISIONED_CAPACITY) as PROVISIONED_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '01',A.PROVISIONED_CAPACITY,0)) as LOCAL_PROVISIONED_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '02',A.PROVISIONED_CAPACITY,0)) as SHARE_PROVISIONED_CAPACITY,
+
+        C.ALLOCATE_DISK_SIZE as ALLOT_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '01',C.ALLOCATE_DISK_SIZE,0)) as LOCAL_ALLOT_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '02',C.ALLOCATE_DISK_SIZE,0)) as SHARE_ALLOT_CAPACITY,
+
+        ROUND(C.ALLOCATE_DISK_SIZE/sum(A.TOTAL_CAPACITY)*100,2) as ALLOT_RATE,
+        ROUND(SUM(IF(A.STORAGE_CATEGORY = '01',C.ALLOCATE_DISK_SIZE,0))/SUM(IF(A.STORAGE_CATEGORY =
+        '01',A.TOTAL_CAPACITY,0))*100,2) as LOCAL_ALLOT_RATE,
+        ROUND(SUM(IF(A.STORAGE_CATEGORY = '02',C.ALLOCATE_DISK_SIZE,0))/SUM(IF(A.STORAGE_CATEGORY =
+        '02',A.TOTAL_CAPACITY,0))*100,2) as SHARE_ALLOT_RATE
+        FROM
+        res_storage A
+        LEFT JOIN (
+        SELECT
+        sum(A.ALLOCATE_DISK_SIZE) as ALLOCATE_DISK_SIZE,
+        A.ALLOCATE_RES_STORAGE_SID as ALLOCATE_RES_STORAGE_SID,
+        A.RES_VD_SID as RES_VD_SID
+        from
+        (SELECT
+        DISTINCT
+        B.ALLOCATE_RES_STORAGE_SID,
+        B.UUID,
+        B.ALLOCATE_DISK_SIZE,
+        B.RES_VD_SID
+        from
+        res_vd B
+        GROUP BY B.UUID
+        ) A
+        GROUP BY A.ALLOCATE_RES_STORAGE_SID
+        )C on(A.RES_STORAGE_SID = C.ALLOCATE_RES_STORAGE_SID)
+        where FIND_IN_SET(A.RES_POOL_SID,getResTopologyChildList(#{resTopologySid}))
+    </select>
+
+    <!-- 统计出存储分类下存储的信息-->
+    <select id="statisticalRscOfStorage" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        COUNT(A.RES_STORAGE_SID) as STA_TOTAL_STORAGE,
+        sum(IF(A.`STATUS` = '01',1,0)) as STA_USABLE_STORAGE,
+        sum(IF(A.`STATUS` = '02',1,0)) as STA_FAULT_STORAGE,
+        sum(IF(A.`STATUS` = '03',1,0)) as STA_UNUSABLE_STORAGE
+        FROM
+        res_storage A
+        WHERE A.RES_STORAGE_CLASS_SID = #{resRscSid}
+
+    </select>
+
+    <select id="statisticalBizOfStorage" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+
+        select
+        COUNT(A.RES_STORAGE_SID) as STA_TOTAL_STORAGE,
+        sum(IF(A.`STATUS` = '01',1,0)) as STA_USABLE_STORAGE,
+        sum(IF(A.`STATUS` = '02',1,0)) as STA_FAULT_STORAGE,
+        sum(IF(A.`STATUS` = '03',1,0)) as STA_UNUSABLE_STORAGE,
+        SUM(A.TOTAL_CAPACITY) as TOTAL_CAPACITY,
+        C.ALLOCATE_DISK_SIZE as ALLOT_CAPACITY
+        from
+        (
+        SELECT
+        S.RES_STORAGE_SID as RES_STORAGE_SID ,
+        S.`STATUS` as STATUS,
+        BIZ.MGT_OBJ_SID AS MGT_OBJ_SID,
+        S.TOTAL_CAPACITY as TOTAL_CAPACITY
+        FROM
+        res_storage S
+        INNER JOIN view_sys_biz_res_storage BIZ ON (S.RES_STORAGE_SID = BIZ.RES_SID)
+        INNER JOIN tmp_resbizchildlist TMP ON (BIZ.MGT_OBJ_SID = TMP.MGT_OBJ_SID)
+        GROUP BY S.RES_STORAGE_SID
+        ) A
+        LEFT JOIN (
+        SELECT
+        sum(A.ALLOCATE_DISK_SIZE) as ALLOCATE_DISK_SIZE,
+        A.ALLOCATE_RES_STORAGE_SID as ALLOCATE_RES_STORAGE_SID,
+        A.RES_VD_SID as RES_VD_SID
+        from
+        (SELECT
+        DISTINCT
+        B.ALLOCATE_RES_STORAGE_SID,
+        B.UUID,
+        B.ALLOCATE_DISK_SIZE,
+        B.RES_VD_SID
+        from
+        res_vd B
+        GROUP BY B.UUID
+        ) A
+        GROUP BY A.ALLOCATE_RES_STORAGE_SID
+        )C on(A.RES_STORAGE_SID = C.ALLOCATE_RES_STORAGE_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+
+    <!-- 统计出集群下存储的信息-->
+    <select id="statisticalClusterOfStorage" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        COUNT(A.RES_STORAGE_SID) as STA_TOTAL_STORAGE,
+        sum(IF(A.`STATUS` = '01',1,0)) as STA_USABLE_STORAGE,
+        sum(IF(A.`STATUS` = '02',1,0)) as STA_FAULT_STORAGE,
+        sum(IF(A.`STATUS` = '03',1,0)) as STA_UNUSABLE_STORAGE
+        FROM
+        res_storage A
+        INNER JOIN (
+        SELECT
+        DISTINCT
+        RHS.RES_STORAGE_SID
+        FROM
+        res_host_storage RHS
+        INNER JOIN res_host RH ON (RHS.RES_HOST_SID = RH.RES_HOST_SID and RH.PARENT_TOPOLOGY_SID = #{resVcSid})
+        )B ON (A.RES_STORAGE_SID = B.RES_STORAGE_SID)
+
+    </select>
+
+    <!-- 统计出集群下存储的容量信息-->
+    <select id="statisticalClusterOfStorageVolume" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        IFNULL(SUM(A.TOTAL_CAPACITY),0) as TOTAL_CAPACITY,
+        IFNULL(SUM(A.AVAILABLE_CAPACITY),0) as AVAILABLE_CAPACITY,
+        IFNULL(SUM(A.TOTAL_CAPACITY - A.AVAILABLE_CAPACITY),0) as HAD_USED_CAPACITY
+        FROM
+        res_storage A
+        INNER JOIN (
+        SELECT
+        DISTINCT
+        RHS.RES_STORAGE_SID
+        FROM
+        res_host_storage RHS
+        INNER JOIN res_host RH ON (RHS.RES_HOST_SID = RH.RES_HOST_SID and RH.PARENT_TOPOLOGY_SID = #{resVcSid})
+        )B ON (A.RES_STORAGE_SID = B.RES_STORAGE_SID)
+
+        where A.STORAGE_CATEGORY = '02'
+
+    </select>
+
+    <select id="statisticalClusterOfStorageAllotInfo" resultMap="BaseResultMap" parameterType="java.lang.String">
+
+        SELECT
+        SUM(A.TOTAL_CAPACITY) as TOTAL_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '01',A.TOTAL_CAPACITY,0)) as LOCAL_TOTAL_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '02',A.TOTAL_CAPACITY,0)) as SHARE_TOTAL_CAPACITY,
+
+        SUM(A.PROVISIONED_CAPACITY) as PROVISIONED_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '01',A.PROVISIONED_CAPACITY,0)) as LOCAL_PROVISIONED_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '02',A.PROVISIONED_CAPACITY,0)) as SHARE_PROVISIONED_CAPACITY,
+
+        C.ALLOCATE_DISK_SIZE as ALLOT_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '01',C.ALLOCATE_DISK_SIZE,0)) as LOCAL_ALLOT_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '02',C.ALLOCATE_DISK_SIZE,0)) as SHARE_ALLOT_CAPACITY,
+
+        ROUND(C.ALLOCATE_DISK_SIZE/sum(A.TOTAL_CAPACITY)*100,2) as ALLOT_RATE,
+        ROUND(SUM(IF(A.STORAGE_CATEGORY = '01',C.ALLOCATE_DISK_SIZE,0))/SUM(IF(A.STORAGE_CATEGORY =
+        '01',A.TOTAL_CAPACITY,0))*100,2) as LOCAL_ALLOT_RATE,
+        ROUND(SUM(IF(A.STORAGE_CATEGORY = '02',C.ALLOCATE_DISK_SIZE,0))/SUM(IF(A.STORAGE_CATEGORY =
+        '02',A.TOTAL_CAPACITY,0))*100,2) as SHARE_ALLOT_RATE
+        FROM
+        res_storage A
+        INNER JOIN (
+        SELECT
+        DISTINCT
+        RHS.RES_STORAGE_SID
+        FROM
+        res_host_storage RHS
+        INNER JOIN res_host RH ON (RHS.RES_HOST_SID = RH.RES_HOST_SID and RH.PARENT_TOPOLOGY_SID = #{resVcSid}))B ON
+        (A.RES_STORAGE_SID = B.RES_STORAGE_SID)
+
+        LEFT JOIN (
+        SELECT
+        sum(A.ALLOCATE_DISK_SIZE) as ALLOCATE_DISK_SIZE,
+        A.ALLOCATE_RES_STORAGE_SID as ALLOCATE_RES_STORAGE_SID,
+        A.RES_VD_SID as RES_VD_SID
+        from
+        (SELECT
+        DISTINCT
+        B.ALLOCATE_RES_STORAGE_SID,
+        B.UUID,
+        B.ALLOCATE_DISK_SIZE,
+        B.RES_VD_SID
+        from
+        res_vd B
+        GROUP BY B.UUID
+        ) A
+        GROUP BY A.ALLOCATE_RES_STORAGE_SID
+        )C on(A.RES_STORAGE_SID = C.ALLOCATE_RES_STORAGE_SID)
+    </select>
+
+
+    <!-- 统计出主机下存储的信息-->
+    <select id="statisticalHostOfStorage" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        COUNT(A.RES_STORAGE_SID) as STA_TOTAL_STORAGE,
+        sum(IF(A.`STATUS` = '01',1,0)) as STA_USABLE_STORAGE,
+        sum(IF(A.`STATUS` = '02',1,0)) as STA_FAULT_STORAGE,
+        sum(IF(A.`STATUS` = '03',1,0)) as STA_UNUSABLE_STORAGE
+        FROM
+        res_storage A
+        INNER JOIN res_host_storage B ON (A.RES_STORAGE_SID = B.RES_STORAGE_SID and B.RES_HOST_SID = #{resHostSid} )
+    </select>
+
+    <!-- 统计出主机下存储的容量信息-->
+    <select id="statisticalHostOfStorageVolume" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        IFNULL(SUM(A.TOTAL_CAPACITY),0) as TOTAL_CAPACITY,
+        IFNULL(SUM(A.AVAILABLE_CAPACITY),0) as AVAILABLE_CAPACITY,
+        IFNULL(SUM(A.TOTAL_CAPACITY - A.AVAILABLE_CAPACITY),0) as HAD_USED_CAPACITY
+        FROM
+        res_storage A
+        INNER JOIN res_host_storage B ON (A.RES_STORAGE_SID = B.RES_STORAGE_SID and B.RES_HOST_SID = #{resHostSid} )
+        where A.STORAGE_CATEGORY = '02'
+    </select>
+
+    <!-- 统计出主机下存储分配的信息-->
+    <select id="statisticalHostOfStorageAllotInfo" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        SUM(A.TOTAL_CAPACITY) as TOTAL_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '01',A.TOTAL_CAPACITY,0)) as LOCAL_TOTAL_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '02',A.TOTAL_CAPACITY,0)) as SHARE_TOTAL_CAPACITY,
+
+        SUM(A.PROVISIONED_CAPACITY) as PROVISIONED_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '01',A.PROVISIONED_CAPACITY,0)) as LOCAL_PROVISIONED_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '02',A.PROVISIONED_CAPACITY,0)) as SHARE_PROVISIONED_CAPACITY,
+
+        C.ALLOCATE_DISK_SIZE as ALLOT_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '01',C.ALLOCATE_DISK_SIZE,0)) as LOCAL_ALLOT_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '02',C.ALLOCATE_DISK_SIZE,0)) as SHARE_ALLOT_CAPACITY,
+
+        ROUND(C.ALLOCATE_DISK_SIZE/sum(A.TOTAL_CAPACITY)*100,2) as ALLOT_RATE,
+        ROUND(SUM(IF(A.STORAGE_CATEGORY = '01',C.ALLOCATE_DISK_SIZE,0))/SUM(IF(A.STORAGE_CATEGORY =
+        '01',A.TOTAL_CAPACITY,0))*100,2) as LOCAL_ALLOT_RATE,
+        ROUND(SUM(IF(A.STORAGE_CATEGORY = '02',C.ALLOCATE_DISK_SIZE,0))/SUM(IF(A.STORAGE_CATEGORY =
+        '02',A.TOTAL_CAPACITY,0))*100,2) as SHARE_ALLOT_RATE
+
+        FROM
+        res_storage A
+        INNER JOIN res_host_storage B ON (A.RES_STORAGE_SID = B.RES_STORAGE_SID and B.RES_HOST_SID = #{resHostSid} )
+        LEFT JOIN (
+        SELECT
+        sum(A.ALLOCATE_DISK_SIZE) as ALLOCATE_DISK_SIZE,
+        A.ALLOCATE_RES_STORAGE_SID as ALLOCATE_RES_STORAGE_SID,
+        A.RES_VD_SID as RES_VD_SID
+        from
+        (SELECT
+        DISTINCT
+        B.ALLOCATE_RES_STORAGE_SID,
+        B.UUID,
+        B.ALLOCATE_DISK_SIZE,
+        B.RES_VD_SID
+        from
+        res_vd B
+        GROUP BY B.UUID
+        ) A
+        GROUP BY A.ALLOCATE_RES_STORAGE_SID
+        )C on(A.RES_STORAGE_SID = C.ALLOCATE_RES_STORAGE_SID)
+    </select>
+
+    <!-- 查询计算资源池下还可以关联的存储 -->
+    <select id="selectRelativeableStorageByResTopologySid" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        SELECT
+        DISTINCT
+        B.RES_TOPOLOGY_NAME as OWNER_CLUSTER,
+        B.HOST_NAME as OWNER_HOST,
+        C.CODE_DISPLAY AS STATUS_NAME,
+        (A.TOTAL_CAPACITY - A.AVAILABLE_CAPACITY) as HAD_USED_CAPACITY,
+        D.CODE_DISPLAY AS STORAGE_CATEGORY_NAME,
+        <include refid="Base_Column_List"/>
+        FROM
+        res_storage A
+
+        LEFT JOIN (
+        SELECT
+        DISTINCT
+        H.HOST_NAME,
+        HS.RES_STORAGE_SID,
+        T.RES_TOPOLOGY_NAME
+        FROM
+        res_host H
+        INNER JOIN res_topology T ON (H.PARENT_TOPOLOGY_SID = T.RES_TOPOLOGY_SID)
+        LEFT JOIN res_vc V ON (T.RES_TOPOLOGY_SID = V.RES_TOPOLOGY_SID)
+        INNER JOIN res_host_storage HS ON (H.RES_HOST_SID = HS.RES_HOST_SID)
+
+        WHERE H.RES_POOL_SID in(${condition.resPcTopologySids}) or V.RES_POOL_SID in(${condition.resPcTopologySids})
+        ) B ON (A.RES_STORAGE_SID = B.RES_STORAGE_SID)
+
+        LEFT JOIN SYS_M_CODE C ON ( A.STATUS = C.CODE_VALUE AND C.CODE_CATEGORY = 'STORAGE_STATUS')
+        LEFT JOIN SYS_M_CODE D ON (A.STORAGE_CATEGORY = D.CODE_VALUE AND D.CODE_CATEGORY = 'STORAGE_CATEGORY')
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        GROUP BY A.STORAGE_NAME
+    </select>
+
+    <select id="selectStorageResSum" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select sum(A.TOTAL_CAPACITY) as TOTAL_CAPACITY
+        from res_storage A
+        <!--     INNER JOIN res_host_storage B ON (A.RES_STORAGE_SID = B.RES_STORAGE_SID) -->
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+
+    <select id="selectStorageResSumByRel" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select sum(A.TOTAL_CAPACITY - A.AVAILABLE_CAPACITY) as TOTAL_CAPACITY
+        from res_storage A
+        <!-- 	INNER JOIN service_inst_res SIR ON (A.RES_STORAGE_SID = SIR.RES_ID AND SIR.RES_TYPE = "RES-STORAGE") -->
+        <!-- 	LEFT JOIN service_instance SI ON (SI.INSTANCE_SID = SIR.INSTANCE_SID) -->
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        D.CODE_DISPLAY AS STORAGE_CATEGORY_NAME,
+        B.CODE_DISPLAY AS STATUS_NAME,
+        H.ALLOCATE_DISK_SIZE as ALLOT_CAPACITY,
+        E.CODE_DISPLAY AS STORAGE_TYPE_NAME,
+        (A.TOTAL_CAPACITY - A.AVAILABLE_CAPACITY) as HAD_USED_CAPACITY,
+        F.CODE_DISPLAY AS HARD_DISK_TYPE_NAME,
+        G.CODE_DISPLAY AS STORAGE_PURPOSE_NAME,
+        ROUND(H.ALLOCATE_DISK_SIZE/A.TOTAL_CAPACITY * 100,2)as STORAGE_RATE,
+        <include refid="Base_Column_List"/>
+        from res_storage A
+        LEFT JOIN SYS_M_CODE B ON ( A.STATUS = B.CODE_VALUE AND B.CODE_CATEGORY = 'STORAGE_STATUS')
+        LEFT JOIN SYS_M_CODE D ON ( A.STORAGE_CATEGORY = D.CODE_VALUE AND D.CODE_CATEGORY = 'STORAGE_CATEGORY')
+        LEFT JOIN SYS_M_CODE E ON ( A.STORAGE_TYPE = E.CODE_VALUE AND E.CODE_CATEGORY = 'STORAGE_TYPE')
+        LEFT JOIN SYS_M_CODE F ON ( A.HARD_DISK_TYPE = F.CODE_VALUE AND F.CODE_CATEGORY = 'HARD_DISK_TYPE')
+        LEFT JOIN SYS_M_CODE G ON ( A.STORAGE_PURPOSE = G.CODE_VALUE AND G.CODE_CATEGORY = 'STORAGE_PURPOSE')
+        LEFT JOIN (
+        SELECT
+        sum(A.ALLOCATE_DISK_SIZE) as ALLOCATE_DISK_SIZE,
+        A.ALLOCATE_RES_STORAGE_SID as ALLOCATE_RES_STORAGE_SID,
+        A.RES_VD_SID as RES_VD_SID
+        from
+        (SELECT
+        DISTINCT
+        B.ALLOCATE_RES_STORAGE_SID,
+        B.UUID,
+        B.ALLOCATE_DISK_SIZE,
+        B.RES_VD_SID
+        from
+        res_vd B
+        GROUP BY B.UUID
+        ) A
+        GROUP BY A.ALLOCATE_RES_STORAGE_SID
+        ) H ON (A.RES_STORAGE_SID = H.ALLOCATE_RES_STORAGE_SID)
+        where A.RES_STORAGE_SID = #{resStorageSid}
+    </select>
+
+    <select id="selectPrimaryKeyByUUID" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        D.CODE_DISPLAY AS STORAGE_CATEGORY_NAME,
+        B.CODE_DISPLAY AS STATUS_NAME,
+        SUM(H.ALLOCATE_DISK_SIZE) as ALLOT_CAPACITY,
+        ROUND(SUM(H.ALLOCATE_DISK_SIZE)/A.TOTAL_CAPACITY * 100,2)as STORAGE_RATE,
+        <include refid="Base_Column_List"/>
+        from res_storage A
+        LEFT JOIN SYS_M_CODE B ON ( A.STATUS = B.CODE_VALUE AND B.CODE_CATEGORY = 'STORAGE_STATUS')
+        LEFT JOIN SYS_M_CODE D ON ( A.STORAGE_CATEGORY = D.CODE_VALUE AND D.CODE_CATEGORY = 'STORAGE_CATEGORY')
+        LEFT JOIN RES_VD H ON (A.RES_STORAGE_SID = H.ALLOCATE_RES_STORAGE_SID)
+        where A.UUID = #{condition.uuid}
+    </select>
+
+    <select id="selectStorageByHostSid" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        SELECT
+        <include refid="Base_Column_List"/>
+        ,B.RES_HOST_SID
+        ,C.CODE_DISPLAY AS HARD_DISK_TYPE_NAME
+        ,D.CODE_DISPLAY AS STORAGE_CATEGORY_NAME
+        ,E.CODE_DISPLAY AS STORAGE_PURPOSE_NAME
+        ,F.CODE_DISPLAY AS STATUS_NAME
+        ,(A.TOTAL_CAPACITY - A.AVAILABLE_CAPACITY) as HAD_USED_CAPACITY
+        ,G.CODE_DISPLAY AS STORAGE_TYPE_NAME
+        ,ROUND((A.TOTAL_CAPACITY - A.AVAILABLE_CAPACITY) / A.TOTAL_CAPACITY * 100,2) AS STORAGE_USAGE
+        ,IF (
+        COUNT(H.RES_VD_SID) > 0 OR COUNT(I.RES_VM_SID) > 0,
+        '02',
+        '01'
+        ) AS USAGE_STATUS
+        ,IF (
+        COUNT(H.RES_VD_SID) > 0 OR COUNT(I.RES_VM_SID) > 0,
+        '未使用',
+        '已使用'
+        ) AS USAGE_STATUS_NAME
+        ,J.RES_TOPOLOGY_NAME AS STORAGE_CLASSIFY
+        ,ROUND(H.ALLOCATE_DISK_SIZE/A.TOTAL_CAPACITY * 100,2)as STORAGE_RATE
+        ,H.ALLOCATE_DISK_SIZE as ALLOT_CAPACITY
+        FROM
+        res_storage A
+        INNER JOIN res_host_storage B ON (A.RES_STORAGE_SID = B.RES_STORAGE_SID)
+        LEFT JOIN SYS_M_CODE C ON (A.HARD_DISK_TYPE = C.CODE_VALUE AND C.CODE_CATEGORY = 'HARD_DISK_TYPE')
+        LEFT JOIN SYS_M_CODE D ON (A.STORAGE_CATEGORY = D.CODE_VALUE AND D.CODE_CATEGORY = 'STORAGE_CATEGORY')
+        LEFT JOIN SYS_M_CODE E ON (A.STORAGE_PURPOSE = E.CODE_VALUE AND E.CODE_CATEGORY = 'STORAGE_PURPOSE')
+        LEFT JOIN SYS_M_CODE F ON (A.STATUS = F.CODE_VALUE AND F.CODE_CATEGORY = 'STORAGE_STATUS')
+        LEFT JOIN SYS_M_CODE G ON (A.STORAGE_TYPE = G.CODE_VALUE AND G.CODE_CATEGORY = 'STORAGE_TYPE')
+        LEFT JOIN (
+        SELECT
+        sum(A.ALLOCATE_DISK_SIZE) as ALLOCATE_DISK_SIZE,
+        A.ALLOCATE_RES_STORAGE_SID as ALLOCATE_RES_STORAGE_SID,
+        A.RES_VD_SID as RES_VD_SID
+        from
+        (SELECT
+        DISTINCT
+        B.ALLOCATE_RES_STORAGE_SID,
+        B.UUID,
+        B.ALLOCATE_DISK_SIZE,
+        B.RES_VD_SID
+        from
+        res_vd B
+        GROUP BY B.UUID
+        ) A
+        GROUP BY A.ALLOCATE_RES_STORAGE_SID
+        ) H ON (A.RES_STORAGE_SID = H.ALLOCATE_RES_STORAGE_SID)
+        LEFT JOIN RES_VM I ON (A.RES_STORAGE_SID = I.ALLOCATE_RES_STORAGE_SID)
+        LEFT JOIN RES_TOPOLOGY J ON (A.RES_STORAGE_CLASS_SID = J.RES_TOPOLOGY_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        GROUP BY A.RES_STORAGE_SID
+    </select>
+
+    <select id="selectAllocateStoByHostSid" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        (A.TOTAL_CAPACITY - A.AVAILABLE_CAPACITY) as HAD_USED_CAPACITY,
+        <include refid="Base_Column_List"/>
+        FROM
+        res_storage A
+        INNER JOIN res_host_storage B ON (
+        A.RES_STORAGE_SID = B.RES_STORAGE_SID
+        )INNER JOIN res_host C ON(
+        B.RES_HOST_SID=C.RES_HOST_SID
+        ) INNER JOIN res_topology D ON(
+        C.RES_POOL_SID=D.RES_TOPOLOGY_SID
+        )INNER JOIN res_topology E ON(
+        D.PARENT_TOPOLOGY_SID=E.RES_TOPOLOGY_SID
+        )INNER JOIN res_topology F ON(
+        E.RES_TOPOLOGY_SID=F.PARENT_TOPOLOGY_SID AND F.RES_TOPOLOGY_TYPE='PS' AND F.RES_TOPOLOGY_SID=A.RES_POOL_SID
+        )
+        WHERE B.RES_HOST_SID =#{resHostSid}
+        and A.STATUS='01'
+        ORDER BY A.STORAGE_NAME
+    </select>
+
+    <select id="selectStoByHostSid" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        (A.TOTAL_CAPACITY - A.AVAILABLE_CAPACITY) as HAD_USED_CAPACITY,
+        <include refid="Base_Column_List"/>
+        FROM
+        res_storage A
+        INNER JOIN res_host_storage B ON (
+        A.RES_STORAGE_SID = B.RES_STORAGE_SID
+        )INNER JOIN res_host C ON(
+        B.RES_HOST_SID=C.RES_HOST_SID
+        )
+        WHERE B.RES_HOST_SID =#{resHostSid}
+        ORDER BY A.STORAGE_NAME
+    </select>
+
+    <!-- 查询power主机下的所有存储 -->
+    <select id="selectViosStorageByPowerHostSid" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        (A.TOTAL_CAPACITY - A.AVAILABLE_CAPACITY) as HAD_USED_CAPACITY,
+        <include refid="Base_Column_List"/>
+        from
+        res_storage A
+        INNER JOIN (
+        SELECT
+        REL.RES_STORAGE_SID
+        from
+        res_vios VIOS
+        INNER JOIN res_storage_vios_rel REL on (VIOS.RES_VIOS_ID = REL.RES_VIOS_ID)
+        where VIOS.RES_HOST_SID = #{resHostSid}
+        GROUP BY REL.RES_STORAGE_SID
+        ) B ON(A.RES_STORAGE_SID = B.RES_STORAGE_SID)
+
+        GROUP BY A.RES_STORAGE_SID
+
+    </select>
+
+    <!-- 根据VIOS查询关联的可用存储 -->
+    <select id="selectAvaliableStorageByVios" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT * FROM res_storage A LEFT JOIN res_storage_vios_rel B ON(
+        A.RES_STORAGE_SID=B.RES_STORAGE_SID
+        )WHERE A.`STATUS`='01' AND B.RES_VIOS_SID=#{resViosSid}
+    </select>
+
+    <select id="selectStoByHostWithStoName" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        RES_STORAGE A
+        INNER JOIN RES_HOST_STORAGE B ON A.RES_STORAGE_SID = B.RES_STORAGE_SID
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_storage
+        where RES_STORAGE_SID = #{resStorageSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_storage
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResStorage">
+        <selectKey resultType="java.lang.Long" keyProperty="resStorageSid" order="BEFORE">
+            select UUID()
+        </selectKey>
+        insert into res_storage (RES_STORAGE_SID, PARENT_TOPOLOGY_SID, RES_POOL_SID, ZONE, STORAGE_NAME, STORAGE_TYPE,
+        STORAGE_TAG, STORAGE_UNIT_NO, AVAILABLE_CAPACITY, HARD_DISK_TYPE, STORAGE_CATEGORY,
+        STORAGE_PURPOSE,UUID,PROVISIONED_CAPACITY,POWER_CLUSTER_NAME,RES_EQUIP_STORAGE_SID,CREATED_BY, CREATED_DT,
+        UPDATED_BY, UPDATED_DT,
+        VERSION)
+        values (#{resStorageSid}, #{parentTopologySid}, #{resPoolSid}, #{zone}, #{storageName}, #{storageType},
+        #{storageTag}, #{storageUnitNo}, #{availableCapacity}, #{hardDiskType}, #{storageCategory},
+        #{storagePurpose}, #{uuid},#{provisionCapacity},#{powerClusterName},#{resEquipStorageSid},#{createdBy},
+        #{createdDt}, #{updatedBy}, #{updatedDt},
+        #{version})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResStorage">
+        <selectKey resultType="java.lang.String" keyProperty="resStorageSid" order="BEFORE">
+            select UUID();
+        </selectKey>
+        insert into res_storage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            RES_STORAGE_SID,
+            <if test="parentTopologySid != null">
+                PARENT_TOPOLOGY_SID,
+            </if>
+            <if test="resPoolSid != null">
+                RES_POOL_SID,
+            </if>
+            <if test="zone != null">
+                ZONE,
+            </if>
+            <if test="storageName != null">
+                STORAGE_NAME,
+            </if>
+            <if test="storageType != null">
+                STORAGE_TYPE,
+            </if>
+            <if test="storageTag != null">
+                STORAGE_TAG,
+            </if>
+            <if test="storageUnitNo != null">
+                STORAGE_UNIT_NO,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="availableCapacity != null">
+                AVAILABLE_CAPACITY,
+            </if>
+            <if test="totalCapacity != null">
+                TOTAL_CAPACITY,
+            </if>
+            <if test="hardDiskType != null">
+                HARD_DISK_TYPE,
+            </if>
+            <if test="storageCategory != null">
+                STORAGE_CATEGORY,
+            </if>
+            <if test="storagePurpose != null">
+                STORAGE_PURPOSE,
+            </if>
+            <if test="lunNo != null">
+                LUN_NO,
+            </if>
+            <if test="uuid != null">
+                UUID,
+            </if>
+            <if test="provisionCapacity != null">
+                PROVISIONED_CAPACITY,
+            </if>
+            <if test="powerClusterName != null">
+                POWER_CLUSTER_NAME,
+            </if>
+            <if test="resEquipStorageSid != null">
+                RES_EQUIP_STORAGE_SID,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+            <if test="version != null">
+                VERSION,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{resStorageSid},
+            <if test="parentTopologySid != null">
+                #{parentTopologySid},
+            </if>
+            <if test="resPoolSid != null">
+                #{resPoolSid},
+            </if>
+            <if test="zone != null">
+                #{zone},
+            </if>
+            <if test="storageName != null">
+                #{storageName},
+            </if>
+            <if test="storageType != null">
+                #{storageType},
+            </if>
+            <if test="storageTag != null">
+                #{storageTag},
+            </if>
+            <if test="storageUnitNo != null">
+                #{storageUnitNo},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="availableCapacity != null">
+                #{availableCapacity},
+            </if>
+            <if test="totalCapacity != null">
+                #{totalCapacity},
+            </if>
+            <if test="hardDiskType != null">
+                #{hardDiskType},
+            </if>
+            <if test="storageCategory != null">
+                #{storageCategory},
+            </if>
+            <if test="storagePurpose != null">
+                #{storagePurpose},
+            </if>
+            <if test="lunNo != null">
+                #{lunNo},
+            </if>
+            <if test="uuid != null">
+                #{uuid},
+            </if>
+            <if test="provisionCapacity != null">
+                #{provisionCapacity},
+            </if>
+            <if test="powerClusterName != null">
+                #{powerClusterName},
+            </if>
+            <if test="resEquipStorageSid != null">
+                #{resEquipStorageSid},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByBizParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+
+        select
+        COUNT(DISTINCT A.RES_STORAGE_SID)
+        from
+        view_sys_biz_res_storage BIZ
+        INNER JOIN res_storage A ON (BIZ.RES_SID = A.RES_STORAGE_SID)
+        INNER JOIN tmp_resbizchildlist TMP ON (BIZ.MGT_OBJ_SID = TMP.MGT_OBJ_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+
+        select count(DISTINCT A.RES_STORAGE_SID) from res_storage A
+        <if test="condition.resTopologySid != null and condition.resTopologyType == 'RZ'">
+            INNER JOIN (
+            SELECT
+            DISTINCT
+            S.RES_STORAGE_SID
+            FROM
+            res_host_storage S
+            LEFT JOIN res_host H ON(S.RES_HOST_SID = H.RES_HOST_SID)
+            where FIND_IN_SET(H.RES_POOL_SID,getResTopologyChildList(#{condition.resTopologySid}))
+            ) B ON(
+            A.RES_STORAGE_SID = B.RES_STORAGE_SID
+            )
+        </if>
+        <if test="condition.resTopologySid != null and condition.resTopologyType == 'VC'">
+            INNER JOIN (
+            SELECT
+            DISTINCT
+            S.RES_STORAGE_SID
+            FROM
+            res_host_storage S
+            LEFT JOIN res_host H ON(S.RES_HOST_SID = H.RES_HOST_SID)
+            where FIND_IN_SET(H.PARENT_TOPOLOGY_SID,getResTopologyChildList(#{condition.resTopologySid}))
+            ) B ON(
+            A.RES_STORAGE_SID = B.RES_STORAGE_SID
+            )
+        </if>
+
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_storage
+        <set>
+            <if test="record.resStorageSid != null">
+                RES_STORAGE_SID = #{record.resStorageSid},
+            </if>
+            <if test="record.parentTopologySid != null">
+                PARENT_TOPOLOGY_SID = #{record.parentTopologySid},
+            </if>
+            <if test="record.resPoolSid != null">
+                RES_POOL_SID = #{record.resPoolSid},
+            </if>
+            <if test="record.zone != null">
+                ZONE = #{record.zone},
+            </if>
+            <if test="record.storageName != null">
+                STORAGE_NAME = #{record.storageName},
+            </if>
+            <if test="record.storageType != null">
+                STORAGE_TYPE = #{record.storageType},
+            </if>
+            <if test="record.storageTag != null">
+                STORAGE_TAG = #{record.storageTag},
+            </if>
+            <if test="record.storageUnitNo != null">
+                STORAGE_UNIT_NO = #{record.storageUnitNo},
+            </if>
+            <if test="record.status != null">
+                STATUS = #{record.status},
+            </if>
+            <if test="record.availableCapacity != null">
+                AVAILABLE_CAPACITY = #{record.availableCapacity},
+            </if>
+            <if test="record.hardDiskType != null">
+                HARD_DISK_TYPE = #{record.hardDiskType},
+            </if>
+            <if test="record.storageCategory != null">
+                STORAGE_CATEGORY = #{record.storageCategory},
+            </if>
+            <if test="record.storagePurpose != null">
+                STORAGE_PURPOSE = #{record.storagePurpose},
+            </if>
+            <if test="record.lunNo != null">
+                LUN_NO = #{record.lunNo},
+            </if>
+            <if test="record.uuid != null">
+                UUID = #{record.uuid},
+            </if>
+            <if test="record.provisionCapacity != null">
+                PROVISIONED_CAPACITY = #{record.provisionCapacity},
+            </if>
+            <if test="record.powerClusterName != null">
+                POWER_CLUSTER_NAME = #{record.powerClusterName},
+            </if>
+            <if test="record.resEquipStorageSid != null">
+                RES_EQUIP_STORAGE_SID = #{record.resEquipStorageSid},
+            </if>
+            <if test="record.createdBy != null">
+                CREATED_BY = #{record.createdBy},
+            </if>
+            <if test="record.createdDt != null">
+                CREATED_DT = #{record.createdDt},
+            </if>
+            <if test="record.updatedBy != null">
+                UPDATED_BY = #{record.updatedBy},
+            </if>
+            <if test="record.updatedDt != null">
+                UPDATED_DT = #{record.updatedDt},
+            </if>
+            <if test="record.version != null">
+                VERSION = #{record.version},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_storage
+        set RES_STORAGE_SID = #{record.resStorageSid},
+        PARENT_TOPOLOGY_SID = #{record.parentTopologySid},
+        RES_POOL_SID = #{record.resPoolSid},
+        ZONE = #{record.zone},
+        STORAGE_NAME = #{record.storageName},
+        STORAGE_TYPE = #{record.storageType},
+        STORAGE_TAG = #{record.storageTag},
+        STORAGE_UNIT_NO = #{record.storageUnitNo},
+        STATUS = #{record.status},
+        AVAILABLE_CAPACITY = #{record.availableCapacity},
+        HARD_DISK_TYPE = #{record.hardDiskType},
+        STORAGE_CATEGORY = #{record.storageCategory},
+        STORAGE_PURPOSE = #{record.storagePurpose},
+        UUID = #{record.uuid},
+        PROVISIONED_CAPACITY = #{record.provisionCapacity},
+        POWER_CLUSTER_NAME = #{record.powerClusterName},
+        RES_EQUIP_STORAGE_SID = #{record.resEquipStorageSid},
+        CREATED_BY = #{record.createdBy},
+        CREATED_DT = #{record.createdDt},
+        UPDATED_BY = #{record.updatedBy},
+        UPDATED_DT = #{record.updatedDt},
+        VERSION = #{record.version}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResStorage">
+        update res_storage
+        <set>
+            <if test="parentTopologySid != null">
+                PARENT_TOPOLOGY_SID = #{parentTopologySid},
+            </if>
+            <if test="resPoolSid != null">
+                RES_POOL_SID = #{resPoolSid},
+            </if>
+            <if test="resPoolSid == ''">
+                RES_POOL_SID = '',
+            </if>
+            <if test="resStorageClassSid != null">
+                RES_STORAGE_CLASS_SID = #{resStorageClassSid},
+            </if>
+            <if test="resStorageClassSid == ''">
+                RES_STORAGE_CLASS_SID = '',
+            </if>
+            <if test="zone != null">
+                ZONE = #{zone},
+            </if>
+            <if test="storageName != null">
+                STORAGE_NAME = #{storageName},
+            </if>
+            <if test="storageType != null">
+                STORAGE_TYPE = #{storageType},
+            </if>
+            <if test="storageTag != null">
+                STORAGE_TAG = #{storageTag},
+            </if>
+            <if test="storageUnitNo != null">
+                STORAGE_UNIT_NO = #{storageUnitNo},
+            </if>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+            <if test="availableCapacity != null">
+                AVAILABLE_CAPACITY = #{availableCapacity},
+            </if>
+            <if test="hardDiskType != null">
+                HARD_DISK_TYPE = #{hardDiskType},
+            </if>
+            <if test="storageCategory != null">
+                STORAGE_CATEGORY = #{storageCategory},
+            </if>
+            <if test="storagePurpose != null">
+                STORAGE_PURPOSE = #{storagePurpose},
+            </if>
+            <if test="lunNo != null">
+                LUN_NO = #{lunNo},
+            </if>
+            <if test="uuid != null">
+                UUID = #{uuid},
+            </if>
+            <if test="provisionCapacity != null">
+                PROVISIONED_CAPACITY = #{provisionCapacity},
+            </if>
+            <if test="totalCapacity != null">
+                TOTAL_CAPACITY = #{totalCapacity},
+            </if>
+            <if test="powerClusterName != null">
+                POWER_CLUSTER_NAME = #{powerClusterName},
+            </if>
+            <if test="resEquipStorageSid != null">
+                RES_EQUIP_STORAGE_SID = #{resEquipStorageSid},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt},
+            </if>
+            <if test="version != null">
+                VERSION = #{version},
+            </if>
+        </set>
+        where RES_STORAGE_SID = #{resStorageSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResStorage">
+        update res_storage
+        set PARENT_TOPOLOGY_SID = #{parentTopologySid},
+        RES_POOL_SID = #{resPoolSid},
+        ZONE = #{zone},
+        STORAGE_NAME = #{storageName},
+        STORAGE_TYPE = #{storageType},
+        STORAGE_TAG = #{storageTag},
+        STORAGE_UNIT_NO = #{storageUnitNo},
+        STATUS = #{status},
+        AVAILABLE_CAPACITY = #{availableCapacity},
+        HARD_DISK_TYPE = #{hardDiskType},
+        STORAGE_CATEGORY = #{storageCategory},
+        STORAGE_PURPOSE = #{storagePurpose},
+        UUID = #{uuid},
+        RES_STORAGE_CLASS_SID = #{resStorageClassSid},
+        PROVISIONED_CAPACITY = #{provisionCapacity},
+        POWER_CLUSTER_NAME = #{powerClusterName},
+        RES_EQUIP_STORAGE_SID = #{resEquipStorageSid}
+        where RES_STORAGE_SID = #{resStorageSid}
+    </update>
+    <select id="statisticalStoragePoolOfRz" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        SELECT
+        <include refid="Base_Column_List"/>,
+        D.ALLOCATE_DISK_SIZE as ALLOT_CAPACITY
+        FROM
+        res_storage A
+        INNER JOIN (
+        SELECT
+        B.RES_TOPOLOGY_SID
+        FROM
+        res_topology B
+        WHERE B.RES_TOPOLOGY_TYPE = 'PS' AND B.PARENT_TOPOLOGY_SID = #{condition.parentTopologySid}
+        ) C ON (C.RES_TOPOLOGY_SID = A.RES_POOL_SID)
+        LEFT JOIN (
+        SELECT
+        sum(A.ALLOCATE_DISK_SIZE) as ALLOCATE_DISK_SIZE,
+        A.ALLOCATE_RES_STORAGE_SID as ALLOCATE_RES_STORAGE_SID,
+        A.RES_VD_SID as RES_VD_SID
+        from
+        (SELECT
+        DISTINCT
+        B.ALLOCATE_RES_STORAGE_SID,
+        B.UUID,
+        B.ALLOCATE_DISK_SIZE,
+        B.RES_VD_SID
+        from
+        res_vd B
+        GROUP BY B.UUID
+        ) A
+        GROUP BY A.ALLOCATE_RES_STORAGE_SID
+        ) D ON (A.RES_STORAGE_SID = D.ALLOCATE_RES_STORAGE_SID)
+        where A.STORAGE_CATEGORY='02'
+    </select>
+</mapper>

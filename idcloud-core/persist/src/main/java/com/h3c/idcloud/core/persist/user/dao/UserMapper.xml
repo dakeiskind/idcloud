@@ -1,0 +1,943 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.user.dao.UserMapper" >
+	<resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.user.User">
+		<id column="USER_SID" property="userSid" jdbcType="BIGINT" />
+		<result column="ACCOUNT" property="account" jdbcType="VARCHAR" />
+		<result column="ACCOUNT_NAME" property="accountName" jdbcType="VARCHAR" />
+		<result column="PROJECT_NAME" property="projectName" jdbcType="VARCHAR" />
+		<result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+		<result column="PASSWORD64" property="password64" jdbcType="VARCHAR" />
+		<result column="REAL_NAME" property="realName" jdbcType="VARCHAR" />
+		<result column="USER_TYPE" property="userType" jdbcType="VARCHAR" />
+		<result column="ALLOCTED_EMAIL_ACCOUNT" property="alloctedEmailAccount" jdbcType="VARCHAR" />
+		<result column="USER_TYPE_NAME" property="userTypeName"
+				jdbcType="VARCHAR" />
+		<result column="SEX" property="sex" jdbcType="INTEGER" />
+		<result column="SEX_NAME" property="sexName" jdbcType="VARCHAR" />
+		<result column="EMAIL" property="email" jdbcType="VARCHAR" />
+		<result column="UUID" property="uuid" jdbcType="VARCHAR" />
+		<result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+		<result column="DEP_NAME" property="depName" jdbcType="VARCHAR" />
+		<result column="FBIZ_SID" property="fbizSid" jdbcType="BIGINT" />
+		<result column="BIZ_TEXT" property="bizText" jdbcType="VARCHAR" />
+		<result column="FBIZ_TEXT" property="fbizText" jdbcType="VARCHAR" />
+		<result column="PM_NAME" property="pmName" jdbcType="VARCHAR" />
+		<result column="PM_TEL" property="pmTel" jdbcType="VARCHAR" />
+		<result column="PM_EMAIL" property="pmEmail" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="BIGINT" />
+		<result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		<result column="ERROR_COUNT" property="errorCount" jdbcType="INTEGER" />
+		<result column="LAST_LOGIN_TIME" property="lastLoginTime"
+				jdbcType="DATE" />
+		<result column="LAST_LOGIN_IP" property="lastLoginIp" jdbcType="VARCHAR" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+		<result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+		<result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+		<result column="VERSION" property="version" jdbcType="BIGINT" />
+		<result column="ORG_SID" jdbcType="BIGINT" property="orgSid" />
+		<result column="TENANT_SID" jdbcType="BIGINT" property="tenantSid" />
+		<result column="TENANT_NAME" jdbcType="VARCHAR" property="tenantName" />
+		<result column="APPLY_REASON" property="applyReason" jdbcType="VARCHAR" />
+		<result column="SERVICE_LIMIT_QUANTITY" jdbcType="INTEGER"
+				property="serviceLimitQuantity" />
+		<result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+		<result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+		<result column="USER_MGT_OBJ" property="userMgtObj" jdbcType="VARCHAR" />
+		<result column="NAME" property="userMgtObj" jdbcType="VARCHAR" />
+		<result column="MGT_OBJ_SID" property="mgtObjSid" jdbcType="BIGINT" />
+		<result column="BALANCE" property="balance" jdbcType="DECIMAL" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.userSid != null">
+				and A.USER_SID = #{condition.userSid}
+			</if>
+			<if test="condition.userByMgtobjSid != null">
+				and E.USER_SID = #{condition.userByMgtobjSid}
+			</if>
+			<if test="condition.account != null">
+				and binary A.ACCOUNT = #{condition.account}
+			</if>
+			<if test="condition.loginAccount != null">
+				and (A.ACCOUNT = #{condition.loginAccount} or A.EMAIL = #{condition.loginAccount} or A.MOBILE = #{condition.loginAccount})
+			</if>
+			<if test="condition.projectNameLike != null">
+				and G.PROJECT_NAME like concat('%', #{condition.projectNameLike},'%')
+			</if>
+			<if test="condition.tenantTextLike != null">
+				and smb.`NAME` like concat('%', #{condition.tenantTextLike},'%')
+			</if>
+			<if test="condition.accountLike != null">
+				and A.ACCOUNT like concat('%', #{condition.accountLike},
+				'%')
+			</if>
+			<if test="condition.bizTextLike != null">
+				and CONCAT(smb1.NAME,'/',smb.NAME) like concat('%', #{condition.bizTextLike},'%')
+			</if>
+			<if test="condition.password != null">
+				and A.PASSWORD = #{condition.password}
+			</if>
+			<if test="condition.password64 != null">
+				and A.PASSWORD64 = #{condition.password64}
+			</if>
+			<if test="condition.realName != null">
+				and A.REAL_NAME = #{condition.realName}
+			</if>
+			<if test="condition.userType != null">
+				and A.USER_TYPE = #{condition.userType}
+			</if>
+			<if test="condition.realNameLike != null">
+				and A.REAL_NAME like concat('%',
+				#{condition.realNameLike}, '%')
+			</if>
+			<if test="condition.sex != null">
+				and A.SEX = #{condition.sex}
+			</if>
+			<if test="condition.email != null">
+				and A.EMAIL = #{condition.email}
+			</if>
+			<if test="condition.mobile != null">
+				and A.MOBILE = #{condition.mobile}
+			</if>
+			<if test="condition.depName != null">
+				and A.DEP_NAME = #{condition.depName}
+			</if>
+			<if test="condition.mgtObjSid != null">
+				and A.MGT_OBJ_SID = #{condition.mgtObjSid}
+			</if>
+			<!--<if test="condition.userMgtObjSid != null">-->
+				<!--and G.MGT_OBJ_SID = #{condition.userMgtObjSid}-->
+			<!--</if>-->
+			<if test="condition.pmName != null">
+				and A.PM_NAME = #{condition.pmName}
+			</if>
+			<if test="condition.pmTel != null">
+				and A.PM_TEL = #{condition.pmTel}
+			</if>
+			<if test="condition.pmEmail != null">
+				and A.PM_EMAIL = #{condition.pmEmail}
+			</if>
+			<if test="condition.status != null">
+				and A.STATUS = #{condition.status}
+			</if>
+			<if test="condition.orgSid != null">
+				and A.ORG_SID = #{condition.orgSid}
+			</if>
+			<if test="condition.statusIn != null">
+				and A.STATUS IN (${condition.statusIn})
+			</if>
+			<if test="condition.statusNotIn != null">
+				and A.STATUS NOT IN (${condition.statusNotIn})
+			</if>
+			<if test="condition.remark != null">
+				and A.REMARK = #{condition.remark}
+			</if>
+			<if test="condition.errorCount != null">
+				and A.ERROR_COUNT = #{condition.errorCount}
+			</if>
+			<if test="condition.lastLoginTime != null">
+				and A.LAST_LOGIN_TIME = #{condition.lastLoginTime}
+			</if>
+			<if test="condition.lastLoginIp != null">
+				and A.LAST_LOGIN_IP = #{condition.lastLoginIp}
+			</if>
+			<if test="condition.serviceLimitQuantity != null">
+				and A.SERVICE_LIMIT_QUANTITY =
+				#{condition.serviceLimitQuantity}
+			</if>
+			<if test="condition.applyReason != null">
+				and A.APPLY_REASON = #{condition.applyReason}
+			</if>
+			<if test="condition.createdBy != null">
+				and A.CREATED_BY = #{condition.createdBy}
+			</if>
+			<if test="condition.createdDt != null">
+				and A.CREATED_DT = #{condition.createdDt}
+			</if>
+			<if test="condition.updatedBy != null">
+				and A.UPDATED_BY = #{condition.updatedBy}
+			</if>
+			<if test="condition.updatedDt != null">
+				and A.UPDATED_DT = #{condition.updatedDt}
+			</if>
+			<if test="condition.version != null">
+				and A.VERSION = #{condition.version}
+			</if>
+			<if test="condition.tenantSid != null">
+				and A.TENANT_SID = #{condition.tenantSid}
+			</if>
+			<if test="condition.tenantId != null">
+				and exists (select T1.RES_INSTANCE_SID from resource_instance_exchange_ac T1 where A.ACCOUNT = T1.ALLOCATE_USER_ACCOUNT and T1.RES_INSTANCE_SID = D.RES_INSTANCE_SID)
+				and A.TENANT_SID = #{condition.tenantId}
+			</if>
+			<if test="condition.serviceSid != null">
+				and B.SERVICE_SID = #{condition.serviceSid}
+			</if>
+			<if test="condition.roleSid != null">
+				and F.ROLE_SID = #{condition.roleSid}
+			</if>
+			<if test="condition.roleList != null">
+				and F.ROLE_SID in
+				<foreach item="item" index="index" collection="condition.roleList"
+						 open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="condition.accountPriject != null">
+				and F.ACCOUNT like concat('%', #{condition.accountPriject},'%')
+			</if>
+			<if test="condition.realNameProject != null">
+				and F.REAL_NAME like concat('%', #{condition.realNameProject},'%')
+			</if>
+			<if test="condition.statusProject != null">
+				and F.STATUS like concat('%', #{condition.statusProject},'%')
+			</if>
+			<!--<if test="condition.mgtObjSid != null">-->
+				<!--and A.MGT_OBJ_SID = #{condition.mgtObjSid}-->
+			<!--</if>-->
+		</trim>
+	</sql>
+	<sql id="Base_Column_List">
+		A.USER_SID, A.ACCOUNT, A.PASSWORD, A.PASSWORD64, A.REAL_NAME, A.SEX,A.UUID,
+		A.EMAIL, A.MOBILE,
+		A.DEP_NAME, A.PM_NAME, A.PM_TEL, A.PM_EMAIL, A.STATUS, A.ORG_SID, A.REMARK, A.ERROR_COUNT,
+		A.LAST_LOGIN_TIME,
+		A.LAST_LOGIN_IP,A.SERVICE_LIMIT_QUANTITY,A.APPLY_REASON, A.CREATED_BY,
+		A.CREATED_DT, A.UPDATED_BY,
+		A.UPDATED_DT, A.VERSION,
+		A.TENANT_SID,A.USER_TYPE,A.ORG_SID,A.MGT_OBJ_SID
+	</sql>
+	<select id="selectByParams" resultMap="BaseResultMap"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		,G.PROJECT_NAME
+		,E.ROLE_NAME
+		,if(SEX=1,'女','男') as SEX_NAME
+		,B.CODE_DISPLAY AS
+		STATUS_NAME
+		,C.CODE_DISPLAY AS USER_TYPE_NAME
+		,smo.ORG_NAME as ORG_NAME
+		,I.BALANCE
+		from SYS_M_USER A
+		LEFT JOIN sys_m_code B ON (
+		A.STATUS=B.CODE_VALUE AND
+		B.CODE_CATEGORY='USER_STATUS'
+		)
+		LEFT JOIN sys_m_org smo ON (
+		A.ORG_SID=smo.ORG_SID
+		)
+		LEFT JOIN
+		sys_m_code C ON (
+		A.USER_TYPE=C.CODE_VALUE AND
+		C.CODE_CATEGORY='USER_TYPE'
+		)
+		LEFT JOIN (SELECT
+		E2.USER_SID,GROUP_CONCAT(E1.ROLE_NAME) AS ROLE_NAME FROM sys_m_role E1
+		LEFT JOIN sys_m_user_role E2 ON(
+		E1.ROLE_SID = E2.ROLE_SID) GROUP BY
+		E2.USER_SID ) E ON(
+		A.USER_SID = E.USER_SID
+		)
+		INNER JOIN SYS_M_USER_ROLE F ON(A.USER_SID = F.USER_SID)
+		LEFT JOIN(SELECT G1.MGT_OBJ_SID,G3.USER_SID,G3.ACCOUNT,G1.`NAME`,GROUP_CONCAT(G1.`NAME`) AS PROJECT_NAME FROM sys_m_mgt_obj G1
+		LEFT JOIN sys_m_user_mgt_obj G2 ON (G1.MGT_OBJ_SID = G2.MGT_OBJ_SID)
+		LEFT JOIN sys_m_user G3 ON (G2.USER_SID = G3.USER_SID)GROUP BY G3.USER_SID) G ON (A.USER_SID = G.USER_SID)
+		LEFT JOIN billing_account_mgt_obj H on H.MGT_OBJ_SID = A.MGT_OBJ_SID
+		LEFT JOIN billing_account I on I.ACCOUNT_SID = H.ACCOUNT_SID
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		GROUP BY A.USER_SID
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+
+	<select id="findUsersByMgtObjSid" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+		select
+		<if test="distinct" >
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from sys_m_user A
+		LEFT JOIN sys_m_user_mgt_obj B ON (B.USER_SID = A.USER_SID)
+		INNER JOIN sys_m_user_role C ON (B.USER_SID = C.USER_SID)
+		INNER JOIN sys_m_user D ON (C.USER_SID = D.USER_SID and c.ROLE_SID = '205')
+		LEFT JOIN sys_m_mgt_obj E ON (B.MGT_OBJ_SID = E.MGT_OBJ_SID)
+		LEFT JOIN sys_m_user_mgt_obj F ON(F.MGT_OBJ_SID = E.MGT_OBJ_SID)
+		WHERE E.MGT_OBJ_SID = #{condition.mgtObjSid}
+		<if test="orderByClause != null" >
+			order by ${orderByClause}
+		</if>
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+	<select id="findUsersByProjectMaster" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+		SELECT
+		DISTINCT
+		E.*
+		FROM sys_m_user A
+		LEFT JOIN sys_m_user_mgt_obj B ON (A.USER_SID = B.USER_SID)
+		LEFT JOIN sys_m_user_mgt_obj C ON (B.MGT_OBJ_SID = C.MGT_OBJ_SID)
+		INNER JOIN sys_m_user_role D ON (C.USER_SID = D.USER_SID AND D.ROLE_SID = '205')
+		LEFT JOIN sys_m_user E ON (D.USER_SID = E.USER_SID)
+		WHERE A.ACCOUNT = #{condition.account}
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+
+	<select id="selectAllocatedUserByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select
+		<include refid="Base_Column_List" />
+		,CONCAT(A.ACCOUNT,"@",C.`VALUE`) as ALLOCTED_EMAIL_ACCOUNT
+		from sys_m_user A
+		inner join service_instance B on(A.TENANT_SID = B.TANENT_ID and B.`STATUS`='03')
+		inner join  service_instance_spec C on(B.INSTANCE_SID = C.INSTANCE_SID and C.NAME = "DOMAIN")
+		INNER JOIN resource_instance D ON (B.INSTANCE_SID = D.SERVICE_INSTANCE_SID)
+
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+			parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		,B.CODE_DISPLAY AS USER_TYPE_NAME
+		,if(SEX=1,'女','男') as SEX_NAME
+		,C.CODE_DISPLAY AS STATUS_NAME
+		from
+		sys_m_user A
+		LEFT JOIN sys_m_code B ON (
+		A.USER_TYPE=B.CODE_VALUE AND
+		B.CODE_CATEGORY='USER_TYPE'
+		)
+		LEFT JOIN sys_m_code C ON (
+		A.STATUS=C.CODE_VALUE AND
+		C.CODE_CATEGORY='USER_STATUS'
+		)
+		where USER_SID =
+		#{userSid}
+	</select>
+
+	<select id="selectTUserByTenantSid" resultMap="BaseResultMap"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select
+		<include refid="Base_Column_List" />
+		,C.CODE_DISPLAY AS STATUS_NAME
+		,D.NAME AS TENANT_NAME
+		from
+		sys_m_user A
+		INNER JOIN sys_m_user_role B ON (
+		A.USER_SID = B.USER_SID
+		AND B.ROLE_SID!='205'
+		)
+		LEFT JOIN sys_m_code C ON(A.STATUS=C.CODE_VALUE
+		AND C.CODE_CATEGORY='USER_STATUS'
+		)
+		LEFT JOIN sys_m_mgt_obj D on (D.MGT_OBJ_SID = A.MGT_OBJ_SID)
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<select id="selectUserByProjectSid" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT
+		DISTINCT
+		A.ACCOUNT AS ACCOUNT_NAME,
+		F.CODE_DISPLAY AS STATUS_NAME,
+		C.NAME AS PROJECT_NAME,
+		C.MGT_OBJ_SID AS USER_MGT_OBJ,
+		A.*
+		FROM
+		sys_m_user A
+		LEFT JOIN sys_m_user_mgt_obj B ON (A.USER_SID = B.USER_SID)
+		LEFT JOIN sys_m_mgt_obj C ON (C.MGT_OBJ_SID = B.MGT_OBJ_SID)
+		INNER JOIN sys_m_user_role D ON (a.USER_SID = d.USER_SID AND d.ROLE_SID = '104')
+		LEFT JOIN sys_m_user_mgt_obj E ON (C.MGT_OBJ_SID = E.MGT_OBJ_SID)
+		LEFT JOIN sys_m_code F ON(A.STATUS=F.CODE_VALUE AND F.CODE_CATEGORY='USER_STATUS')
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<select id="selectEmailByServiceInstanceSid" resultMap="BaseResultMap"
+			parameterType="java.lang.Long">
+		select
+		B.REAL_NAME AS REAL_NAME,
+		B.EMAIL AS EMAIL
+		from
+		SERVICE_INSTANCE A
+		INNER JOIN sys_m_user B on (
+		A.TANENT_ID=
+		B.TENANT_SID
+		)
+		INNER JOIN sys_m_user_role D on (
+		D.USER_SID = B.USER_SID
+		and D.ROLE_SID = 103
+		)
+		where
+		A.INSTANCE_SID = #{serviceInstanceSid}
+	</select>
+	<select id="selectBizByAccount" resultMap="BaseResultMap"
+			parameterType="java.lang.String">
+		select
+		A.*,
+		smb.NAME as BIZ_TEXT,
+		smb2.NAME as FBIZ_TEXT
+		from
+		sys_m_user A
+		LEFT JOIN sys_m_mgt_obj smb ON (
+		A.MGT_OBJ_SID=smb.MGT_OBJ_SID
+		)
+		LEFT JOIN sys_m_mgt_obj smb2 ON (
+		smb2.MGT_OBJ_SID = smb.PARENT_ID
+		)
+		where A.ACCOUNT = #{account}
+	</select>
+
+	<select id="findAllUsersByMgtObj"  resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select
+		<include refid="Base_Column_List" />
+		from sys_m_user A
+		LEFT JOIN sys_m_user_mgt_obj B ON (B.USER_SID = A.USER_SID)
+		WHERE B.MGT_OBJ_SID = #{condition.mgtObjSid}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		sys_m_user
+		where USER_SID = #{userSid}
+	</delete>
+	<delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		delete from sys_m_user A
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.user.User">
+		<selectKey resultType="java.lang.Long" keyProperty="userSid"
+				   order="BEFORE">
+			SELECT NEXTVAL('SEQ_SYS_M_USER')
+		</selectKey>
+		insert into sys_m_user (USER_SID, ACCOUNT, PASSWORD, PASSWORD64, REAL_NAME, SEX,
+		EMAIL, MOBILE,
+		DEP_NAME,PM_NAME,PM_TEL,PM_EMAIL,REMARK, ERROR_COUNT, LAST_LOGIN_TIME,
+		LAST_LOGIN_IP, CREATED_BY,
+		CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION,
+		TENANT_SID，USER_TYPE,STATUS,ORG_SID,UUID)
+		values (#{userSid}, #{account},
+		#{password}, #{password64}, #{realName}, #{sex},
+		#{email}, #{mobile},
+		#{depName},
+		#{remark}, #{errorCount}, #{lastLoginTime}, #{lastLoginIp},
+		#{serviceLimitQuantity}, #{applyReason},
+		#{createdBy},
+		#{createdDt},
+		#{updatedBy}, #{updatedDt}, #{version},
+		#{tenantSid},#{userType},#{status},#{orgSid},#{uuid})
+	</insert>
+	<insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.user.User">
+		<selectKey resultType="java.lang.Long" keyProperty="userSid"
+				   order="BEFORE">
+			SELECT NEXTVAL('SEQ_SYS_M_USER')
+		</selectKey>
+		insert into sys_m_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			USER_SID,
+			<if test="account != null">
+				ACCOUNT,
+			</if>
+			<if test="password != null">
+				PASSWORD,
+			</if>
+			<if test="password64 != null">
+				PASSWORD64,
+			</if>
+			<if test="realName != null">
+				REAL_NAME,
+			</if>
+			<if test="userType != null">
+				USER_TYPE,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="orgSid != null">
+				ORG_SID,
+			</if>
+			<if test="sex != null">
+				SEX,
+			</if>
+			<if test="email != null">
+				EMAIL,
+			</if>
+			<if test="mobile != null">
+				MOBILE,
+			</if>
+			<if test="depName != null">
+				DEP_NAME,
+			</if>
+			<if test="pmName != null">
+				PM_NAME,
+			</if>
+			<if test="mgtObjSid != null">
+				MGT_OBJ_SID,
+			</if>
+			<if test="pmTel != null">
+				PM_TEL,
+			</if>
+			<if test="pmEmail != null">
+				PM_EMAIL,
+			</if>
+			<if test="remark != null">
+				REMARK,
+			</if>
+			<if test="errorCount != null">
+				ERROR_COUNT,
+			</if>
+			<if test="lastLoginTime != null">
+				LAST_LOGIN_TIME,
+			</if>
+			<if test="lastLoginIp != null">
+				LAST_LOGIN_IP,
+			</if>
+			<if test="serviceLimitQuantity != null">
+				SERVICE_LIMIT_QUANTITY,
+			</if>
+			<if test="applyReason != null">
+				APPLY_REASON,
+			</if>
+			<if test="createdBy != null">
+				CREATED_BY,
+			</if>
+			<if test="createdDt != null">
+				CREATED_DT,
+			</if>
+			<if test="updatedBy != null">
+				UPDATED_BY,
+			</if>
+			<if test="updatedDt != null">
+				UPDATED_DT,
+			</if>
+			<if test="version != null">
+				VERSION,
+			</if>
+			<if test="tenantSid != null">
+				TENANT_SID,
+			</if>
+			<if test="uuid != null">
+				UUID,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{userSid},
+			<if test="account != null">
+				#{account},
+			</if>
+			<if test="password != null">
+				#{password},
+			</if>
+			<if test="password64 != null">
+				#{password64},
+			</if>
+			<if test="realName != null">
+				#{realName},
+			</if>
+			<if test="userType != null">
+				#{userType},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="orgSid != null">
+				#{orgSid},
+			</if>
+			<if test="sex != null">
+				#{sex},
+			</if>
+			<if test="email != null">
+				#{email},
+			</if>
+			<if test="mobile != null">
+				#{mobile},
+			</if>
+			<if test="depName != null">
+				#{depName},
+			</if>
+			<if test="mgtObjSid != null">
+				#{mgtObjSid},
+			</if>
+			<if test="pmName != null">
+				#{pmName},
+			</if>
+			<if test="pmTel != null">
+				#{pmTel},
+			</if>
+			<if test="pmEmail != null">
+				#{pmEmail},
+			</if>
+			<if test="remark != null">
+				#{remark},
+			</if>
+			<if test="errorCount != null">
+				#{errorCount},
+			</if>
+			<if test="lastLoginTime != null">
+				#{lastLoginTime},
+			</if>
+			<if test="lastLoginIp != null">
+				#{lastLoginIp},
+			</if>
+			<if test="serviceLimitQuantity != null">
+				#{serviceLimitQuantity},
+			</if>
+			<if test="applyReason != null">
+				#{applyReason},
+			</if>
+			<if test="createdBy != null">
+				#{createdBy},
+			</if>
+			<if test="createdDt != null">
+				#{createdDt},
+			</if>
+			<if test="updatedBy != null">
+				#{updatedBy},
+			</if>
+			<if test="updatedDt != null">
+				#{updatedDt},
+			</if>
+			<if test="version != null">
+				#{version},
+			</if>
+			<if test="tenantSid != null">
+				#{tenantSid},
+			</if>
+			<if test="uuid != null">
+				#{uuid},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria"
+			resultType="java.lang.Integer">
+		<!-- select count(DISTINCT A.USER_SID) from sys_m_user A
+		
+		INNER JOIN SYS_M_USER_ROLE F on(A.USER_SID = F.USER_SID)
+		LEFT JOIN sys_m_mgt_obj smb ON (A.MGT_OBJ_SID=smb.MGT_OBJ_SID)
+		LEFT JOIN sys_m_mgt_obj smb1 ON (smb1.MGT_OBJ_SID = smb.PARENT_ID) -->
+		select count(DISTINCT A.USER_SID) from sys_m_user A
+		INNER JOIN SYS_M_USER_ROLE F on(A.USER_SID = F.USER_SID)
+		LEFT JOIN(SELECT G3.USER_SID,G3.ACCOUNT,G1.`NAME`,GROUP_CONCAT(G1.`NAME`) AS PROJECT_NAME FROM sys_m_mgt_obj G1
+		LEFT JOIN sys_m_user_mgt_obj G2 ON (G1.MGT_OBJ_SID = G2.MGT_OBJ_SID)
+		LEFT JOIN sys_m_user G3 ON (G2.USER_SID = G3.USER_SID)GROUP BY G3.USER_SID) G ON (A.USER_SID = G.USER_SID)
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByParamsSelective" parameterType="map">
+		update sys_m_user A
+		<set>
+			<if test="record.userSid != null">
+				USER_SID = #{record.userSid},
+			</if>
+			<if test="record.account != null">
+				ACCOUNT = #{record.account},
+			</if>
+			<if test="record.password != null">
+				PASSWORD = #{record.password},
+			</if>
+			<if test="record.password64!= null">
+				PASSWORD64 = #{record.password64},
+			</if>
+			<if test="record.realName != null">
+				REAL_NAME = #{record.realName},
+			</if>
+			<if test="record.userType!= null">
+				USER_TYPE = #{record.userType},
+			</if>
+			<if test="record.status!= null">
+				STATUS = #{record.status},
+			</if>
+			<if test="record.orgSid!= null">
+				ORG_SID = #{record.orgSid},
+			</if>
+			<if test="record.sex != null">
+				SEX = #{record.sex},
+			</if>
+			<if test="record.email != null">
+				EMAIL = #{record.email},
+			</if>
+			<if test="record.mobile != null">
+				MOBILE = #{record.mobile},
+			</if>
+			<if test="record.depName != null">
+				DEP_NAME = #{record.depName},
+			</if>
+			<if test="record.pmName != null">
+				PM_NAME = #{record.pmName},
+			</if>
+			<if test="record.pmTel != null">
+				PM_TEL = #{record.pmTel},
+			</if>
+			<if test="record.pmEmail != null">
+				PM_EMAIL = #{record.pmEmail},
+			</if>
+			<if test="record.remark != null">
+				REMARK = #{record.remark},
+			</if>
+			<if test="record.errorCount != null">
+				ERROR_COUNT = #{record.errorCount},
+			</if>
+			<if test="record.lastLoginTime != null">
+				LAST_LOGIN_TIME = #{record.lastLoginTime},
+			</if>
+			<if test="record.lastLoginIp != null">
+				LAST_LOGIN_IP = #{record.lastLoginIp},
+			</if>
+			<if test="record.serviceLimitQuantity != null">
+				SERVICE_LIMIT_QUANTITY = #{record.serviceLimitQuantity},
+			</if>
+			<if test="record.applyReason != null">
+				APPLY_REASON = #{record.applyReason},
+			</if>
+			<if test="record.createdBy != null">
+				CREATED_BY = #{record.createdBy},
+			</if>
+			<if test="record.createdDt != null">
+				CREATED_DT = #{record.createdDt},
+			</if>
+			<if test="record.updatedBy != null">
+				UPDATED_BY = #{record.updatedBy},
+			</if>
+			<if test="record.updatedDt != null">
+				UPDATED_DT = #{record.updatedDt},
+			</if>
+			<if test="record.version != null">
+				VERSION = #{record.version},
+			</if>
+			<if test="record.tenantSid != null">
+				VERSION = #{record.tenantSid},
+			</if>
+			<if test="record.uuid != null">
+				UUID = #{record.uuid},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByParams" parameterType="map">
+		update sys_m_user A
+		set USER_SID = #{record.userSid},
+		ACCOUNT =
+		#{record.account},
+		PASSWORD = #{record.password},
+		PASSWORD64 = #{record.password64},
+		REAL_NAME =
+		#{record.realName},
+		USER_TYPE = #{record.userType},
+		STATUS =
+		#{record.status},
+		ORG_SID =
+		#{record.orgSid},
+		SEX = #{record.sex},
+		EMAIL = #{record.email},
+		MOBILE =
+		#{record.mobile},
+		DEP_NAME = #{record.depName},
+		PM_NAME = #{record.pmName},
+		PM_TEL = #{record.pmTel},
+		PM_EMAIL = #{record.pmEmail},
+		REMARK =
+		#{record.remark},
+		ERROR_COUNT = #{record.errorCount},
+		LAST_LOGIN_TIME =
+		#{record.lastLoginTime},
+		LAST_LOGIN_IP = #{record.lastLoginIp},
+		SERVICE_LIMIT_QUANTITY = #{record.serviceLimitQuantity},
+		APPLY_REASON =
+		#{record.applyReason},
+		CREATED_BY = #{record.createdBy},
+		CREATED_DT =
+		#{record.createdDt},
+		UPDATED_BY = #{record.updatedBy},
+		UPDATED_DT =
+		#{record.updatedDt},
+		VERSION = #{record.version},
+		TENANT_SID =
+		#{record.tenantSid},
+		UUID =
+		#{record.uuid}
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.user.User">
+		update sys_m_user
+		<set>
+			<if test="account != null">
+				ACCOUNT = #{account},
+			</if>
+			<if test="password != null">
+				PASSWORD = #{password},
+			</if>
+			<if test="password64 != null">
+				PASSWORD64 = #{password64},
+			</if>
+			<if test="realName != null">
+				REAL_NAME = #{realName},
+			</if>
+			<if test="userType != null">
+				USER_TYPE = #{userType},
+			</if>
+			<if test="sex != null">
+				SEX = #{sex},
+			</if>
+			<if test="status != null">
+				STATUS = #{status},
+			</if>
+			<if test="orgSid != null">
+				ORG_SID = #{orgSid},
+			</if>
+			<if test="email != null">
+				EMAIL = #{email},
+			</if>
+			<if test="mobile != null">
+				MOBILE = #{mobile},
+			</if>
+			<if test="depName != null">
+				DEP_NAME = #{depName},
+			</if>
+			<if test="pmName != null">
+				PM_NAME = #{pmName},
+			</if>
+			<if test="pmTel != null">
+				PM_TEL = #{pmTel},
+			</if>
+			<if test="pmEmail != null">
+				PM_EMAIL = #{pmEmail},
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark},
+			</if>
+			<if test="errorCount != null">
+				ERROR_COUNT = #{errorCount},
+			</if>
+			<if test="lastLoginTime != null">
+				LAST_LOGIN_TIME = #{lastLoginTime},
+			</if>
+			<if test="lastLoginIp != null">
+				LAST_LOGIN_IP = #{lastLoginIp},
+			</if>
+			<if test="serviceLimitQuantity != null">
+				SERVICE_LIMIT_QUANTITY = #{serviceLimitQuantity},
+			</if>
+			<if test="applyReason != null">
+				APPLY_REASON = #{applyReason},
+			</if>
+			<if test="tenantSid != null">
+				TENANT_SID = #{tenantSid},
+			</if>
+			<if test="createdBy != null">
+				CREATED_BY = #{createdBy},
+			</if>
+			<if test="createdDt != null">
+				CREATED_DT = #{createdDt},
+			</if>
+			<if test="updatedBy != null">
+				UPDATED_BY = #{updatedBy},
+			</if>
+			<if test="updatedDt != null">
+				UPDATED_DT = #{updatedDt},
+			</if>
+			<if test="version != null">
+				VERSION = #{version},
+			</if>
+			<if test="version != null">
+				VERSION = #{version}+1,
+			</if>
+			<if test="uuid != null">
+				UUID = #{uuid},
+			</if>
+		</set>
+		where USER_SID = #{userSid}
+		<if test="oldPassword !=null">
+			and PASSWORD = #{oldPassword}
+		</if>
+		<if test="version != null">
+			and VERSION = #{version}
+		</if>
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.user.User">
+		update sys_m_user
+		set ACCOUNT = #{account},
+		PASSWORD = #{password},
+		PASSWORD64 = #{password64},
+		REAL_NAME =
+		#{realName},
+		USER_TYPE = #{userType},
+		STATUS = #{status},
+		ORG_SID = #{orgSid},
+		SEX = #{sex},
+		EMAIL = #{email},
+		MOBILE = #{mobile},
+		DEP_NAME = #{depName},
+		PM_NAME = #{pmName},
+		PM_TEL = #{pmTel},
+		PM_EMAIL = #{pmEmail},
+		REMARK =
+		#{remark},
+		ERROR_COUNT = #{errorCount},
+		LAST_LOGIN_TIME =
+		#{lastLoginTime},
+		LAST_LOGIN_IP = #{lastLoginIp},
+		SERVICE_LIMIT_QUANTITY = #{serviceLimitQuantity},
+		APPLY_REASON =
+		#{applyReason},
+		CREATED_BY = #{createdBy},
+		CREATED_DT = #{createdDt},
+		UPDATED_BY = #{updatedBy},
+		UPDATED_DT = #{updatedDt},
+		VERSION =
+		#{version},
+		TENANT_SID = #{tenantSid},
+		UUID = #{uuid}
+		where USER_SID = #{userSid}
+	</update>
+	<select id="selectUserByRoles" resultMap="BaseResultMap"
+			parameterType="java.lang.String">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM SYS_M_USER A
+		LEFT JOIN SYS_M_USER_ROLE B ON (A.USER_SID = B.USER_SID)
+		where b.role_sid in (#{roles});
+	</select>
+	<select id="selectUserSidByMgtObjSid" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT A.USER_SID
+		FROM  SYS_M_USER A
+		WHERE A.MGT_OBJ_SID IN (#{mgtObjSid});
+	</select>
+
+	<select id="selectIdcUser" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		FROM SYS_M_USER A
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+</mapper>

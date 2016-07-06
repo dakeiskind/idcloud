@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 提供方应用信息，用于计算依赖关系 -->
+    <dubbo:application name="idcloud-core-service-res-provider" logger="slf4j"/>
+
+    <!-- 使用zookeeper注册中心暴露服务地址 -->
+    <dubbo:registry address="zookeeper://127.0.0.1:2181" timeout="5000" file="idcloud-core-service-res-provider.cache"/>
+
+    <!-- 用dubbo协议在20880端口暴露服务 -->
+    <dubbo:protocol name="dubbo" port="20883"/>
+
+    <!-- 和本地bean一样实现服务 -->
+    <dubbo:annotation package="com.h3c.idcloud.core.service.res.provider" />
+
+    <dubbo:consumer check="false" timeout="60000" />
+
+    <!-- import -->
+    <import resource="classpath*:/META-INF/spring/idc-spring-persistance.xml"/>
+
+    <context:component-scan base-package="com.h3c.idcloud.core.service.res,com.h3c.idcloud.infra,com.h3c.idcloud.infrastructure"/>
+
+    <bean id="applicationContext" class="com.h3c.idcloud.infrastructure.common.util.SpringContextHolder"/>
+
+    <!--<bean id="producer" class="com.h3c.idcloud.core.service.res.provider.resultListener.Producer"-->
+          <!--init-method="producerInitialized"/>-->
+
+    <!--<import resource="classpath*:/META-INF/spring/idc-spring-task.xml"/>-->
+    <bean id="resVmService" class="com.h3c.idcloud.core.service.res.provider.ResVmServiceImpl"/>
+    <bean id="resNetworkService" class="com.h3c.idcloud.core.service.res.provider.ResNetworkServiceImpl"/>
+    <bean id="resKeypairsService" class="com.h3c.idcloud.core.service.res.provider.ResKeypairsServiceImpl"/>
+    <bean id="resFloatingIpService" class="com.h3c.idcloud.core.service.res.provider.ResFloatingIpServiceImpl"/>
+    <bean id="resVpcRouterService" class="com.h3c.idcloud.core.service.res.provider.ResVpcRouterServiceImpl"/>
+    <bean id="resVdService" class="com.h3c.idcloud.core.service.res.provider.ResVdServiceImpl"/>
+    <!--<bean id="resVeService" class="com.h3c.idcloud.core.service.res.provider.ResVeServiceImpl"/>-->
+
+</beans>

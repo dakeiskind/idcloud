@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResOsUserMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResOsUser">
+        <id column="OS_USER_SID" property="osUserSid" jdbcType="VARCHAR"/>
+        <result column="RES_SID" property="resSid" jdbcType="VARCHAR"/>
+        <result column="RES_TYPE" property="resType" jdbcType="VARCHAR"/>
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
+        <result column="USER_GROUP" property="userGroup" jdbcType="VARCHAR"/>
+        <result column="PRIVILEGE" property="privilege" jdbcType="VARCHAR"/>
+        <result column="HOME_PATH" property="homePath" jdbcType="VARCHAR"/>
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP"/>
+        <result column="VERSION" property="version" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.resSid != null">
+                and RES_SID = #{condition.resSid}
+            </if>
+            <if test="condition.resType != null">
+                and RES_TYPE = #{condition.resType}
+            </if>
+            <if test="condition.userName != null">
+                and USER_NAME = #{condition.userName}
+            </if>
+            <if test="condition.password != null">
+                and PASSWORD = #{condition.password}
+            </if>
+            <if test="condition.userGroup != null">
+                and USER_GROUP = #{condition.userGroup}
+            </if>
+            <if test="condition.privilege != null">
+                and PRIVILEGE = #{condition.privilege}
+            </if>
+            <if test="condition.homePath != null">
+                and HOME_PATH = #{condition.homePath}
+            </if>
+            <if test="condition.description != null">
+                and DESCRIPTION = #{condition.description}
+            </if>
+            <if test="condition.createdBy != null">
+                and CREATED_BY = #{condition.createdBy}
+            </if>
+            <if test="condition.createdDt != null">
+                and CREATED_DT = #{condition.createdDt}
+            </if>
+            <if test="condition.updatedBy != null">
+                and UPDATED_BY = #{condition.updatedBy}
+            </if>
+            <if test="condition.updatedDt != null">
+                and UPDATED_DT = #{condition.updatedDt}
+            </if>
+            <if test="condition.version != null">
+                and VERSION = #{condition.version}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        OS_USER_SID, RES_SID, RES_TYPE, USER_NAME, PASSWORD, USER_GROUP, PRIVILEGE, HOME_PATH,
+        DESCRIPTION, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from res_os_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_os_user
+        where OS_USER_SID = #{osUserSid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_os_user
+        where OS_USER_SID = #{osUserSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_os_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResOsUser">
+        <selectKey resultType="java.lang.String" keyProperty="osUserSid" order="BEFORE">
+            SELECT UUID();
+        </selectKey>
+        insert into res_os_user (OS_USER_SID, RES_SID, RES_TYPE, USER_NAME, PASSWORD, USER_GROUP,
+        PRIVILEGE, HOME_PATH, DESCRIPTION, CREATED_BY, CREATED_DT, UPDATED_BY,
+        UPDATED_DT, VERSION)
+        values (#{osUserSid}, #{resSid}, #{resType}, #{userName}, #{password}, #{userGroup},
+        #{privilege}, #{homePath}, #{description}, #{createdBy}, #{createdDt}, #{updatedBy},
+        #{updatedDt}, #{version})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResOsUser">
+        <selectKey resultType="java.lang.String" keyProperty="osUserSid" order="BEFORE">
+            SELECT UUID();
+        </selectKey>
+        insert into res_os_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            OS_USER_SID,
+            <if test="resSid != null">
+                RES_SID,
+            </if>
+            <if test="resType != null">
+                RES_TYPE,
+            </if>
+            <if test="userName != null">
+                USER_NAME,
+            </if>
+            <if test="password != null">
+                PASSWORD,
+            </if>
+            <if test="userGroup != null">
+                USER_GROUP,
+            </if>
+            <if test="privilege != null">
+                PRIVILEGE,
+            </if>
+            <if test="homePath != null">
+                HOME_PATH,
+            </if>
+            <if test="description != null">
+                DESCRIPTION,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+            <if test="version != null">
+                VERSION,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{osUserSid},
+            <if test="resSid != null">
+                #{resSid},
+            </if>
+            <if test="resType != null">
+                #{resType},
+            </if>
+            <if test="userName != null">
+                #{userName},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="userGroup != null">
+                #{userGroup},
+            </if>
+            <if test="privilege != null">
+                #{privilege},
+            </if>
+            <if test="homePath != null">
+                #{homePath},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_os_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_os_user
+        <set>
+            <if test="record.osUserSid != null">
+                OS_USER_SID = #{record.osUserSid},
+            </if>
+            <if test="record.resSid != null">
+                RES_SID = #{record.resSid},
+            </if>
+            <if test="record.resType != null">
+                RES_TYPE = #{record.resType},
+            </if>
+            <if test="record.userName != null">
+                USER_NAME = #{record.userName},
+            </if>
+            <if test="record.password != null">
+                PASSWORD = #{record.password},
+            </if>
+            <if test="record.userGroup != null">
+                USER_GROUP = #{record.userGroup},
+            </if>
+            <if test="record.privilege != null">
+                PRIVILEGE = #{record.privilege},
+            </if>
+            <if test="record.homePath != null">
+                HOME_PATH = #{record.homePath},
+            </if>
+            <if test="record.description != null">
+                DESCRIPTION = #{record.description},
+            </if>
+            <if test="record.createdBy != null">
+                CREATED_BY = #{record.createdBy},
+            </if>
+            <if test="record.createdDt != null">
+                CREATED_DT = #{record.createdDt},
+            </if>
+            <if test="record.updatedBy != null">
+                UPDATED_BY = #{record.updatedBy},
+            </if>
+            <if test="record.updatedDt != null">
+                UPDATED_DT = #{record.updatedDt},
+            </if>
+            <if test="record.version != null">
+                VERSION = #{record.version},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_os_user
+        set OS_USER_SID = #{record.osUserSid},
+        RES_SID = #{record.resSid},
+        RES_TYPE = #{record.resType},
+        USER_NAME = #{record.userName},
+        PASSWORD = #{record.password},
+        USER_GROUP = #{record.userGroup},
+        PRIVILEGE = #{record.privilege},
+        HOME_PATH = #{record.homePath},
+        DESCRIPTION = #{record.description},
+        CREATED_BY = #{record.createdBy},
+        CREATED_DT = #{record.createdDt},
+        UPDATED_BY = #{record.updatedBy},
+        UPDATED_DT = #{record.updatedDt},
+        VERSION = #{record.version}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResOsUser">
+        update res_os_user
+        <set>
+            <if test="resSid != null">
+                RES_SID = #{resSid},
+            </if>
+            <if test="resType != null">
+                RES_TYPE = #{resType},
+            </if>
+            <if test="userName != null">
+                USER_NAME = #{userName},
+            </if>
+            <if test="password != null">
+                PASSWORD = #{password},
+            </if>
+            <if test="userGroup != null">
+                USER_GROUP = #{userGroup},
+            </if>
+            <if test="privilege != null">
+                PRIVILEGE = #{privilege},
+            </if>
+            <if test="homePath != null">
+                HOME_PATH = #{homePath},
+            </if>
+            <if test="description != null">
+                DESCRIPTION = #{description},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt},
+            </if>
+            <if test="version != null">
+                VERSION = #{version},
+            </if>
+        </set>
+        where OS_USER_SID = #{osUserSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResOsUser">
+        update res_os_user
+        set RES_SID = #{resSid},
+        RES_TYPE = #{resType},
+        USER_NAME = #{userName},
+        PASSWORD = #{password},
+        USER_GROUP = #{userGroup},
+        PRIVILEGE = #{privilege},
+        HOME_PATH = #{homePath},
+        DESCRIPTION = #{description},
+        CREATED_BY = #{createdBy},
+        CREATED_DT = #{createdDt},
+        UPDATED_BY = #{updatedBy},
+        UPDATED_DT = #{updatedDt},
+        VERSION = #{version}
+        where OS_USER_SID = #{osUserSid}
+    </update>
+</mapper>

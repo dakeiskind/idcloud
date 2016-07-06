@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.CodeProvinceMapper" >
+  <cache type="org.mybatis.caches.ehcache.LoggingEhcache">
+    <property name="timeToIdleSeconds" value="3600"/>
+    <property name="timeToLiveSeconds" value="3600"/>
+    <property name="maxEntriesLocalHeap" value="1000"/>
+    <property name="maxEntriesLocalDisk" value="10000000"/>
+    <property name="memoryStoreEvictionPolicy" value="LRU"/>
+  </cache>
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.CodeProvince" >
+    <id column="PROVINCE_SID" property="provinceSid" jdbcType="BIGINT" />
+    <result column="PROVINCE_ID" property="provinceId" jdbcType="VARCHAR" />
+    <result column="PROVINCE_NAME" property="provinceName" jdbcType="VARCHAR" />
+    <result column="PARENT" property="parent" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.provinceId != null" >
+         and PROVINCE_ID = #{condition.provinceId}
+      </if>
+      <if test="condition.provinceName != null" >
+         and PROVINCE_NAME = #{condition.provinceName}
+      </if>
+      <if test="condition.parent != null" >
+         and PARENT = #{condition.parent}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    PROVINCE_SID, PROVINCE_ID, PROVINCE_NAME, PARENT
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_m_code_province
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_m_code_province
+    where PROVINCE_SID = #{provinceSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_m_code_province
+    where PROVINCE_SID = #{provinceSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from sys_m_code_province
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    insert into sys_m_code_province (PROVINCE_SID, PROVINCE_ID, PROVINCE_NAME, PARENT)
+    values (#{provinceSid}, #{provinceId}, #{provinceName}, #{parent})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    insert into sys_m_code_province
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="provinceSid != null" >
+        PROVINCE_SID,
+      </if>
+      <if test="provinceId != null" >
+        PROVINCE_ID,
+      </if>
+      <if test="provinceName != null" >
+        PROVINCE_NAME,
+      </if>
+      <if test="parent != null" >
+        PARENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="provinceSid != null" >
+        #{provinceSid},
+      </if>
+      <if test="provinceId != null" >
+        #{provinceId},
+      </if>
+      <if test="provinceName != null" >
+        #{provinceName},
+      </if>
+      <if test="parent != null" >
+        #{parent},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from sys_m_code_province
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update sys_m_code_province
+    <set >
+      <if test="record.provinceSid != null" >
+        PROVINCE_SID = #{record.provinceSid},
+      </if>
+      <if test="record.provinceId != null" >
+        PROVINCE_ID = #{record.provinceId},
+      </if>
+      <if test="record.provinceName != null" >
+        PROVINCE_NAME = #{record.provinceName},
+      </if>
+      <if test="record.parent != null" >
+        PARENT = #{record.parent},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update sys_m_code_province
+    set PROVINCE_SID = #{record.provinceSid},
+      PROVINCE_ID = #{record.provinceId},
+      PROVINCE_NAME = #{record.provinceName},
+      PARENT = #{record.parent}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.CodeProvince" >
+    update sys_m_code_province
+    <set >
+      <if test="provinceId != null" >
+        PROVINCE_ID = #{provinceId},
+      </if>
+      <if test="provinceName != null" >
+        PROVINCE_NAME = #{provinceName},
+      </if>
+      <if test="parent != null" >
+        PARENT = #{parent},
+      </if>
+    </set>
+    where PROVINCE_SID = #{provinceSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.CodeProvince" >
+    update sys_m_code_province
+    set PROVINCE_ID = #{provinceId},
+      PROVINCE_NAME = #{provinceName},
+      PARENT = #{parent}
+    where PROVINCE_SID = #{provinceSid}
+  </update>
+</mapper>

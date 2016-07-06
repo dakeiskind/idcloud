@@ -1,0 +1,20 @@
+<form id="editRouterForm" >
+    <table border="0" class="custom-table" ms-controller="routerEditWindow">
+        <tr>
+            <td class="required">名称：</td>
+            <td>
+                <input type="text" ms-duplex="editData['routerName']" name="routerName" style="width:220px" class="input text-small radius-none">
+                <p class="description text-gray" style="width: 220px">名称为2-128个字符，以大写字母或中文开头，可包含数字，"-"或"_"</p> 
+            </td>
+        </tr>
+    </table>
+</form>
+
+<script type="text/javascript">
+    require(["app-modules/console/vpc/vmodel/router-edit"],function(routerEdit){
+        // 初始化数据
+       routerEdit.editData = avalon.vmodels.routerMgt.editRouterData;
+       routerEdit.initValidator();
+       avalon.scan(); 
+    });     
+</script>

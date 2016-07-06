@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResVpcMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResVpc">
+        <id column="RES_VPC_SID" property="resVpcSid" jdbcType="VARCHAR" />
+        <result column="PARENT_TOPOLOGY_SID" property="parentTopologySid" jdbcType="VARCHAR" />
+        <result column="RES_POOL_SID" property="resPoolSid" jdbcType="VARCHAR" />
+        <result column="ZONE" property="zone" jdbcType="VARCHAR" />
+        <result column="VPC_NAME" property="vpcName" jdbcType="VARCHAR" />
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+        <result column="CIDR" property="cidr" jdbcType="VARCHAR" />
+        <result column="MGT_OBJ_SID" property="mgtObjSid" jdbcType="BIGINT" />
+        <result column="UUID" property="uuid" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="VARCHAR" />
+        <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+        <result column="VERSION" property="version" jdbcType="BIGINT" />
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.parentTopologySid != null">
+                and A.PARENT_TOPOLOGY_SID = #{condition.parentTopologySid}
+            </if>
+            <if test="condition.resVpcSid != null">
+                and A.RES_VPC_SID = #{condition.resVpcSid}
+            </if>
+            <if test="condition.zone != null">
+                and A.ZONE = #{condition.zone}
+            </if>
+            <if test="condition.status != null">
+                and A.STATUS = #{condition.status}
+            </if>
+            <if test="condition.vpcName != null">
+                and A.VPC_NAME = #{condition.vpcName}
+            </if>
+            <if test="condition.uuid != null">
+                and A.UUID = #{condition.uuid}
+            </if>
+            <if test="condition.cidr != null">
+                and A.CIDR = #{condition.cidr}
+            </if>
+            <if test="condition.mgtObjSid != null">
+                and A.MGT_OBJ_SID = #{condition.mgtObjSid}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        A.RES_VPC_SID,
+        A.PARENT_TOPOLOGY_SID,
+        A.RES_POOL_SID,
+        A.ZONE,
+        A.VPC_NAME,
+        A.DESCRIPTION,
+        A.CIDR,
+        A.MGT_OBJ_SID,
+        A.UUID,
+        A.STATUS,
+        A.CREATED_BY,
+        A.CREATED_DT,
+        A.UPDATED_BY,
+        A.UPDATED_DT,
+        A.VERSION
+    </sql>
+    <select id="selectByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria"
+            resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />,
+        B.CODE_DISPLAY AS STATUS_NAME
+        FROM res_vpc A
+        LEFT JOIN sys_m_code B ON (A.`STATUS` = B.CODE_VALUE AND B.CODE_CATEGORY = 'NETWORK_STATUS')
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit" />
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM res_vpc A
+        WHERE A.RES_VPC_SID = #{resVpcSid}
+    </select>
+    <select id="selectByUuid" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM res_vpc A
+        WHERE A.UUID = #{uuid}
+    </select>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVpc">
+        <selectKey resultType="java.lang.String" keyProperty="resVpcSid"
+                   order="BEFORE">
+            select UUID()
+        </selectKey>
+        INSERT INTO RES_VPC (
+        RES_VPC_SID,
+        PARENT_TOPOLOGY_SID,
+        RES_POOL_SID,
+        ZONE,
+        VPC_NAME,
+        DESCRIPTION,
+        CIDR,
+        MGT_OBJ_SID,
+        UUID,
+        STATUS,
+        CREATED_BY,
+        CREATED_DT,
+        UPDATED_BY,
+        UPDATED_DT,
+        VERSION
+        ) VALUES (
+        #{resVpcSid},
+        #{parentTopologySid},
+        #{resPoolSid},
+        #{zone},
+        #{vpcName},
+        #{description},
+        #{cidr},
+        #{mgtObjSid},
+        #{uuid},
+        #{status},
+        #{createdBy},
+        #{createdDt},
+        #{updatedBy},
+        #{updatedDt},
+        #{version}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVpc">
+        <selectKey resultType="java.lang.String" keyProperty="resVpcSid"
+                   order="BEFORE">
+            select UUID()
+        </selectKey>
+        INSERT INTO RES_VPC
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            RES_VPC_SID,
+            <if test="parentTopologySid != null">
+                PARENT_TOPOLOGY_SID,
+            </if>
+            <if test="resPoolSid != null">
+                RES_POOL_SID,
+            </if>
+            <if test="zone != null">
+                ZONE,
+            </if>
+            <if test="vpcName != null">
+                VPC_NAME,
+            </if>
+            <if test="description != null">
+                DESCRIPTION,
+            </if>
+            <if test="cidr != null">
+                CIDR,
+            </if>
+            <if test="mgtObjSid != null">
+                MGT_OBJ_SID,
+            </if>
+            <if test="uuid != null">
+                UUID,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+            <if test="version != null">
+                VERSION
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{resVpcSid},
+            <if test="parentTopologySid != null">
+                #{parentTopologySid},
+            </if>
+            <if test="resPoolSid != null">
+                #{resPoolSid},
+            </if>
+            <if test="zone != null">
+                #{zone},
+            </if>
+            <if test="vpcName != null">
+                #{vpcName},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="cidr != null">
+                #{cidr},
+            </if>
+            <if test="mgtObjSid != null">
+                #{mgtObjSid},
+            </if>
+            <if test="uuid != null">
+                #{uuid},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt},
+            </if>
+            <if test="version != null">
+                #{version}
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        DELETE FROM RES_VPC A
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        DELETE FROM
+        RES_VPC WHERE RES_VPC_SID = #{vpcSid}
+    </delete>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVpc">
+        UPDATE RES_VPC
+        <set>
+            <if test="parentTopologySid != null">
+                PARENT_TOPOLOGY_SID = #{parentTopologySid},
+            </if>
+            <if test="resPoolSid != null">
+                RES_POOL_SID = #{resPoolSid},
+            </if>
+            <if test="zone != null">
+                ZONE = #{zone},
+            </if>
+            <if test="vpcName != null">
+                VPC_NAME = #{vpcName},
+            </if>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+            <if test="description != null">
+                DESCRIPTION = #{description},
+            </if>
+            <if test="cidr != null">
+                CIDR = #{cidr},
+            </if>
+            <if test="mgtObjSid != null">
+                MGT_OBJ_SID = #{mgtObjSid},
+            </if>
+            <if test="uuid != null">
+                UUID = #{uuid},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt},
+            </if>
+        </set>
+        WHERE RES_VPC_SID = #{resVpcSid}
+    </update>
+</mapper>

@@ -1,0 +1,52 @@
+<div ms-controller="userLpk">
+	<div class="line">
+		<div class="xs12 margin-small-bottom top-height">
+			<div class="xs8">
+				<div class="float-left text-large">{{title}}</div>
+			</div>
+		</div>
+		<hr>
+		<div class="xs12 alert alert-blue radius-none margin-bottom">
+			<span class="close rotate-hover"></span>
+			<strong>温馨提示：</strong>用户通过平台各种营销活动获取的礼品卡，可以直接充入用户账户，在购买云主机，存储，网络等云服务时，使用账户余额来结账。
+		</div>
+		<div class="xs12 margin-bottom">
+			<!--<div class="search_div input-daterange" id="lpk-picker">-->
+				<div class="search_div">
+					<div class="search_div_02">开始时间：</div>
+					<div class="search_div_01">
+						<div id="beginDate" class="input-append date">
+							<input type="text"
+								   class="input input-small radius-none floating-left"
+								   id="beginDateFile">
+							<span class="add-on radius-none"><i class="icon-th"></i></span>
+						</div>
+					</div>
+				</div>
+			<div class="search_div">
+				<div class="search_div_02">至</div>
+				<div class="search_div_01">
+					<div id="endDate" class="input-append date">
+						<input type="text"
+							   class="input input-small radius-none floating-left"
+							   id="endDateFile">
+						<span class="add-on radius-none"><i class="icon-th"></i></span>
+					</div>
+				</div>
+			</div>
+			<div class="search_div">
+				<div class="search_div_02">礼品卡状态：</div>
+				<div class="search_div_01">
+					<select class="select radius-none text-small" id="lpkStatus"></select>
+				</div>
+			</div>
+			<div class="search_div_L">
+				<div class="search_div_button">
+					<button class="button button-small radius-none" ms-click="searchObjLpk()"><span class="icon-search"></span>
+						查询</button>
+				</div>
+			</div>
+		</div>
+		<div id="lpkGrid" class="grid"></div>
+	</div>
+</div>

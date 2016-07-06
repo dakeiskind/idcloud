@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResVolumeMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResVolume">
+        <id column="RES_VOLUME_SID" property="resVolumeSid" jdbcType="VARCHAR"/>
+        <result column="RES_STORAGE_SID" property="resStorageSid"
+                jdbcType="VARCHAR"/>
+        <result column="VOLUME_NAME" property="volumeName" jdbcType="VARCHAR"/>
+        <result column="VOLUME_WWN" property="volumeWwn" jdbcType="VARCHAR"/>
+        <result column="VOLUME_SIZE" property="size" jdbcType="BIGINT"/>
+        <result column="VOLUME_STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.resVolumeSid != null">
+                and A.RES_VOLUME_SID = #{condition.resVolumeSid}
+            </if>
+            <if test="condition.resStorageSid != null">
+                and A.RES_STORAGE_SID = #{condition.resStorageSid}
+            </if>
+            <if test="condition.volumeName != null">
+                and A.VOLUME_NAME = #{condition.volumeName}
+            </if>
+            <if test="condition.volumeNameLike != null">
+                and A.VOLUME_NAME like concat('%',
+                #{condition.volumeNameLike},'%')
+            </if>
+            <if test="condition.volumeWwn != null">
+                and A.VOLUME_WWN = #{condition.volumeWwn}
+            </if>
+            <if test="condition.status != null">
+                and A.VOLUME_STATUS = #{condition.status}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        A.RES_VOLUME_SID,A.RES_STORAGE_SID,
+        A.VOLUME_NAME,A.VOLUME_WWN,A.VOLUME_SIZE,A.VOLUME_STATUS
+    </sql>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria"
+            resultType="java.lang.Integer">
+        SELECT COUNT(DISTINCT A.RES_VOLUME_SID) FROM RES_VOLUME A
+        INNER JOIN RES_STORAGE
+        B ON (
+        A.RES_STORAGE_SID = B.RES_STORAGE_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <select id="selectByParams" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <include refid="Base_Column_List"/>
+        ,C.CODE_DISPLAY AS STATUS_NAME
+        FROM RES_VOLUME A
+        INNER JOIN RES_STORAGE
+        B ON (
+        A.RES_STORAGE_SID = B.RES_STORAGE_SID)
+        LEFT JOIN SYS_M_CODE C ON
+        (
+        A.VOLUME_STATUS = C.CODE_VALUE
+        AND C.CODE_CATEGORY = 'VOLUME_STATUS')
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVolume">
+        <selectKey resultType="java.lang.String" keyProperty="resVolumeSid"
+                   order="BEFORE">
+            select UUID()
+        </selectKey>
+        INSERT INTO RES_VOLUME (RES_VOLUME_SID, RES_STORAGE_SID,VOLUME_NAME,
+        VOLUME_WWN,
+        VOLUME_SIZE, VOLUME_STATUS)
+        VALUES
+        (#{resVolumeSid},#{resStorageSid},#{volumeName},#{volumeWwn},#{size},#{status})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVolume">
+        <selectKey resultType="java.lang.String" keyProperty="resVolumeSid"
+                   order="BEFORE">
+            SELECT UUID();
+        </selectKey>
+        INSERT INTO RES_VOLUME
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            RES_VOLUME_SID,
+            <if test="resStorageSid != null">
+                RES_STORAGE_SID,
+            </if>
+            <if test="volumeName != null">
+                VOLUME_NAME,
+            </if>
+            <if test="volumeWwn != null">
+                VOLUME_WWN,
+            </if>
+            <if test="size != null">
+                VOLUME_SIZE,
+            </if>
+            <if test="status != null">
+                VOLUME_STATUS,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{resVolumeSid},
+            <if test="resStorageSid != null">
+                #{resStorageSid},
+            </if>
+            <if test="volumeName != null">
+                #{volumeName},
+            </if>
+            <if test="volumeWwn != null">
+                #{volumeWwn},
+            </if>
+            <if test="size != null">
+                #{size},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        DELETE FROM
+        RES_VOLUME WHERE RES_VOLUME_SID = #{resVolumeSid}
+    </delete>
+    <delete id="deleteByResStorageSid" parameterType="java.lang.String">
+        DELETE FROM
+        RES_VOLUME
+        WHERE RES_STORAGE_SID = #{resStorageSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        DELETE FROM RES_VOLUME A
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVolume">
+        UPDATE RES_VOLUME
+        <set>
+            <if test="resStorageSid != null">
+                RES_STORAGE_SID = #{resStorageSid},
+            </if>
+            <if test="volumeName != null">
+                VOLUME_Name = #{volumeName},
+            </if>
+            <if test="volumeWwn != null">
+                VOLUME_WWN = #{volumeWwn},
+            </if>
+            <if test="size != null">
+                VOLUME_SIZE = #{size},
+            </if>
+            <if test="status != null">
+                VOLUME_STATUS = #{status},
+            </if>
+        </set>
+        WHERE RES_VOLUME_SID = #{resVolumeSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVolume">
+        UPDATE RES_VOLUME
+        SET
+        RES_STORAGE_SID = #{resStorageSid},
+        VOLUME_NAME = #{volumeName},
+        VOLUME_WWN = #{volumeWwn},
+        VOLUME_SIZE = #{size},
+        VOLUME_STATUS =
+        #{status},
+        WHERE RES_VOLUME_SID = #{resVolumeSid}
+    </update>
+</mapper>

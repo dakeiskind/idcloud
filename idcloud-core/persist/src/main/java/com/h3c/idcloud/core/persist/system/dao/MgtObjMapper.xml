@@ -1,0 +1,938 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.MgtObjMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.MgtObj" >
+    <id column="MGT_OBJ_SID" property="mgtObjSid" jdbcType="BIGINT" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="BALANCE" property="balance" jdbcType="DECIMAL" />
+    <result column="ACCOUNT_SID" property="accountSid" jdbcType="BIGINT" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="BIGINT" />
+    <result column="PARENT_NAME" property="parentName" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="LEVEL" property="level" jdbcType="BIGINT" />
+    <result column="UUID" property="uuid" jdbcType="VARCHAR" />
+    <result column="BILL_END_TIME" property="billEndTime" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+    
+    <result column="MANAGER_NAME" property="managerName" jdbcType="VARCHAR" />
+    <result column="USER_SID" property="userSid" jdbcType="VARCHAR" />  
+    
+    <result column="MGT_OBJ_ICON" property="mgtObjIcon" jdbcType="VARCHAR" />
+    
+    <result column="PROJECT_START_DATE" property="projectStartTime" jdbcType="VARCHAR" />
+    <result column="PROJECT_END_DATE" property="projectEndTime" jdbcType="VARCHAR" />
+  </resultMap>
+   <resultMap id="TopologyResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResTopology" >
+    <id column="RES_TOPOLOGY_SID" property="resTopologySid" jdbcType="VARCHAR" />
+    <result column="RES_TOPOLOGY_NAME" property="resTopologyName" jdbcType="VARCHAR" />
+    <result column="RES_TOPOLOGY_TYPE" property="resTopologyType" jdbcType="VARCHAR" />
+    <result column="RES_TOPOLOGY_TYPE_NAME" property="resTopologyTypeName" jdbcType="VARCHAR" />
+    <result column="PARENT_TOPOLOGY_SID" property="parentTopologySid" jdbcType="VARCHAR" />
+    <result column="PARENT_TOPOLOGY_NAME" property="parentTopologyName" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="TOPOLOGY_VALUE" property="topologyValue" jdbcType="VARCHAR" />
+    <result column="TOPOLOGY_ICON" property="topologyIcon" jdbcType="VARCHAR" />
+    <result column="SORT_NO" property="sortNo" jdbcType="INTEGER" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+    <result column="VLAN_COUNT" property="vlanCount" jdbcType="VARCHAR" />
+    <result column="PNI_COUNT" property="pniCount" jdbcType="VARCHAR" />
+    <result column="PNE_COUNT" property="pneCount" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <!-- 根据管理对象名称模糊查询 -->
+      <if test="condition.nameLike != null" >
+         and A.NAME like concat('%', #{condition.nameLike},'%')
+      </if>
+      <!-- 根据父挂历对象名称模糊查询 -->
+      <if test="condition.parentNameLike != null" >
+         and B.NAME like concat('%', #{condition.parentNameLike},'%')
+      </if>
+      <!-- 查询本身和其子节点 -->
+      <if test="condition.parentIds != null" >
+         and (A.PARENT_ID = #{condition.parentIds} or A.MGT_OBJ_SID = #{condition.parentIds})
+      </if>
+      <if test="condition.parentMgtObjIds != null" >
+         and (A.PARENT_ID = #{condition.parentMgtObjIds} or A.MGT_OBJ_SID = #{condition.parentMgtObjIds} or B.PARENT_ID = #{condition.parentMgtObjIds})
+      </if>
+      <if test="condition.mgtObjSids != null" >
+         and A.MGT_OBJ_SID in (${condition.mgtObjSids})
+      </if>
+      <if test="condition.mgtObjSid != null" >
+         and A.MGT_OBJ_SID = #{condition.mgtObjSid}
+      </if>
+      <if test="condition.mgtObjSidNotIn != null" >
+         and A.MGT_OBJ_SID not in (${condition.mgtObjSidNotIn})
+      </if>
+      <if test="condition.name != null" >
+         and A.NAME = #{condition.name}
+      </if>
+      <if test="condition.parentId != null" >
+         and A.PARENT_ID = #{condition.parentId}
+      </if>
+      <if test="condition.description != null" >
+         and A.DESCRIPTION = #{condition.description}
+      </if>
+      <if test="condition.level != null" >
+         and A.LEVEL = #{condition.level}
+      </if>
+      <if test="condition.createdBy != null" >
+         and A.CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and A.CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and A.UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and A.UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and A.VERSION = #{condition.version}
+      </if>
+      <if test="condition.uuid != null" >
+         and A.UUID = #{condition.uuid}
+      </if>
+      <if test="condition.status != null" >
+         and A.STATUS = #{condition.status}
+      </if>
+      <if test="condition.statusParams != null">
+		 and A.STATUS  in (${condition.statusParams})
+	  </if>
+      <if test="condition.projectType != null" >
+         and F1.ATTR_VALUE = #{condition.projectType}
+      </if>
+      <if test="condition.projectStartDateStart != null" >
+         and F2.ATTR_VALUE >= #{condition.projectStartDateStart}
+      </if>
+      <if test="condition.projectStartDateEnd != null" >
+         and F2.ATTR_VALUE <![CDATA[ <= #{condition.projectStartDateEnd}]]>
+      </if>
+      <if test="condition.projectEndDateStart != null" >
+         and F3.ATTR_VALUE >= #{condition.projectEndDateStart}
+      </if>
+      <if test="condition.projectEndDateEnd != null" >
+         and F3.ATTR_VALUE <![CDATA[ <= #{condition.projectEndDateEnd}]]>
+      </if>
+      <if test="condition.managerAccount != null" >
+         and E.REAL_NAME like concat('%', #{condition.managerAccount},'%') and R.ROLE_SID = '205'
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    A.MGT_OBJ_SID, A.NAME, A.PARENT_ID, A.DESCRIPTION, A.LEVEL,A.UUID,A.STATUS, A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, 
+    A.UPDATED_DT, A.VERSION
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+      distinct
+    <include refid="Base_Column_List" />
+    ,IFNULL(B.NAME,"") as PARENT_NAME
+	, C.CODE_DISPLAY as STATUS_NAME
+	,E.REAL_NAME as MANAGER_NAME
+	,E.USER_SID as USER_SID
+	,F1.ATTR_VALUE AS PROJECT_TYPE,
+	F2.ATTR_VALUE AS PROJECT_START_DATE,
+	F3.ATTR_VALUE AS PROJECT_END_DATE
+    from sys_m_mgt_obj A
+    LEFT JOIN sys_m_mgt_obj B ON (A.PARENT_ID = B.MGT_OBJ_SID)
+    left join sys_m_code C on (C.CODE_CATEGORY='MGT_OBJ_STATUS' AND C.CODE_VALUE=A.STATUS)
+    LEFT JOIN sys_m_user_mgt_obj D on (A.MGT_OBJ_SID = D.MGT_OBJ_SID)
+	LEFT JOIN sys_m_user E on (D.USER_SID = E.USER_SID)
+	LEFT JOIN sys_m_user_role R ON (E.USER_SID = R.USER_SID)
+		
+	LEFT JOIN sys_m_mgt_obj_ext F1 ON (A.MGT_OBJ_SID = F1.MGT_OBJ_SID AND F1.ATTR_KEY="projectType")
+	LEFT JOIN sys_m_mgt_obj_ext F2 ON (A.MGT_OBJ_SID = F2.MGT_OBJ_SID AND F2.ATTR_KEY="projectStartDate")
+	LEFT JOIN sys_m_mgt_obj_ext F3 ON (A.MGT_OBJ_SID = F3.MGT_OBJ_SID AND F3.ATTR_KEY="projectEndDate")
+		
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  
+  <select id="selectBaseFileByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+      distinct
+    <include refid="Base_Column_List" />
+    ,IFNULL(B.NAME,"") as PARENT_NAME
+	, C.CODE_DISPLAY as STATUS_NAME
+	,F1.ATTR_VALUE AS PROJECT_TYPE,
+	F2.ATTR_VALUE AS PROJECT_START_DATE,
+	F3.ATTR_VALUE AS PROJECT_END_DATE
+    from sys_m_mgt_obj A
+    LEFT JOIN sys_m_mgt_obj B ON (A.PARENT_ID = B.MGT_OBJ_SID)
+    left join sys_m_code C on (C.CODE_CATEGORY='MGT_OBJ_STATUS' AND C.CODE_VALUE=A.STATUS)
+	LEFT JOIN sys_m_mgt_obj_ext F1 ON (A.MGT_OBJ_SID = F1.MGT_OBJ_SID AND F1.ATTR_KEY="projectType")
+	LEFT JOIN sys_m_mgt_obj_ext F2 ON (A.MGT_OBJ_SID = F2.MGT_OBJ_SID AND F2.ATTR_KEY="projectStartDate")
+	LEFT JOIN sys_m_mgt_obj_ext F3 ON (A.MGT_OBJ_SID = F3.MGT_OBJ_SID AND F3.ATTR_KEY="projectEndDate")
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  
+  <select id="selectMgtObjTreeByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+      distinct
+    <include refid="Base_Column_List" />
+    ,IFNULL(B.NAME,"") as PARENT_NAME
+	, C.CODE_DISPLAY as STATUS_NAME
+<!-- 	,E.REAL_NAME as MANAGER_NAME -->
+<!-- 	,E.USER_SID as USER_SID -->
+	,F1.ATTR_VALUE AS PROJECT_TYPE,
+	F2.ATTR_VALUE AS PROJECT_START_DATE,
+	F3.ATTR_VALUE AS PROJECT_END_DATE
+	,(case A.LEVEL
+		when '-1' then '../../images/icon/project-team.png'
+		when '0' then '../../images/icon/project-team.png'
+		when '1' then '../../images/icon/project.png'
+		else  '../../images/icon/project.png'
+	end) AS MGT_OBJ_ICON 
+    from sys_m_mgt_obj A
+    LEFT JOIN sys_m_mgt_obj B ON (A.PARENT_ID = B.MGT_OBJ_SID)
+    left join sys_m_code C on (C.CODE_CATEGORY='MGT_OBJ_STATUS' AND C.CODE_VALUE=A.STATUS)
+    LEFT JOIN sys_m_user_mgt_obj D on (A.MGT_OBJ_SID = D.MGT_OBJ_SID)
+    <if test="condition.managerAccount != null" >
+		LEFT JOIN sys_m_user E on (D.USER_SID = E.USER_SID)
+		INNER JOIN sys_m_user_role R ON (E.USER_SID = R.USER_SID AND R.ROLE_SID = '205')
+    </if>	
+	LEFT JOIN sys_m_mgt_obj_ext F1 ON (A.MGT_OBJ_SID = F1.MGT_OBJ_SID AND F1.ATTR_KEY="projectType")
+	LEFT JOIN sys_m_mgt_obj_ext F2 ON (A.MGT_OBJ_SID = F2.MGT_OBJ_SID AND F2.ATTR_KEY="projectStartDate")
+	LEFT JOIN sys_m_mgt_obj_ext F3 ON (A.MGT_OBJ_SID = F3.MGT_OBJ_SID AND F3.ATTR_KEY="projectEndDate")
+
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  
+  <select id="selectMgtObjTreeByParams2" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+      distinct
+    <include refid="Base_Column_List" />
+    ,IFNULL(B.NAME,"") as PARENT_NAME
+	, C.CODE_DISPLAY as STATUS_NAME
+<!-- 	,E.REAL_NAME as MANAGER_NAME -->
+<!-- 	,E.USER_SID as USER_SID -->
+	,F1.ATTR_VALUE AS PROJECT_TYPE,
+	F2.ATTR_VALUE AS PROJECT_START_DATE,
+	F3.ATTR_VALUE AS PROJECT_END_DATE
+	,(case A.LEVEL
+		when '-1' then '../../../images/icon/project-team.png'
+		when '0' then '../../../images/icon/project-team.png'
+		when '1' then '../../../images/icon/project.png'
+		else  '../../../images/icon/project.png'
+	end) AS MGT_OBJ_ICON 
+    from sys_m_mgt_obj A
+    LEFT JOIN sys_m_mgt_obj B ON (A.PARENT_ID = B.MGT_OBJ_SID)
+    left join sys_m_code C on (C.CODE_CATEGORY='MGT_OBJ_STATUS' AND C.CODE_VALUE=A.STATUS)
+    LEFT JOIN sys_m_user_mgt_obj D on (A.MGT_OBJ_SID = D.MGT_OBJ_SID)
+	<if test="condition.managerAccount != null" >
+		LEFT JOIN sys_m_user E on (D.USER_SID = E.USER_SID)
+		INNER JOIN sys_m_user_role R ON (E.USER_SID = R.USER_SID AND R.ROLE_SID = '205')
+    </if>
+    	
+	LEFT JOIN sys_m_mgt_obj_ext F1 ON (A.MGT_OBJ_SID = F1.MGT_OBJ_SID AND F1.ATTR_KEY="projectType")
+	LEFT JOIN sys_m_mgt_obj_ext F2 ON (A.MGT_OBJ_SID = F2.MGT_OBJ_SID AND F2.ATTR_KEY="projectStartDate")
+	LEFT JOIN sys_m_mgt_obj_ext F3 ON (A.MGT_OBJ_SID = F3.MGT_OBJ_SID AND F3.ATTR_KEY="projectEndDate")
+
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  
+  <select id="findParentMgtObj" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,IFNULL(B.NAME,"") as PARENT_NAME
+
+    from sys_m_mgt_obj A
+    LEFT JOIN sys_m_mgt_obj B ON (A.PARENT_ID = B.MGT_OBJ_SID)
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.mgtObjSid != null">
+    	and A.mgt_obj_sid != #{condition.mgtObjSid} and (A.parent_id != #{condition.mgtObjSid} or A.parent_id is null)
+      </if>
+      <if test="condition.parentId != null">
+    	and A.mgt_obj_sid != #{condition.parentId}
+      </if>
+      <if test="condition.level != null">
+    	and A.LEVEL = #{condition.level}
+      </if>
+    </trim>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  
+  <select id="selectByBillingAccount" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    	 select
+		    <if test="distinct" >
+		      distinct
+		    </if>
+		    C.BALANCE as BALANCE,
+		    D.BILL_NAME as BILL_END_TIME,
+		    B.ACCOUNT_SID as ACCOUNT_SID,
+<!--  			C.`STATUS` -->
+		  	<include refid="Base_Column_List" />
+		    from sys_m_mgt_obj A
+		    INNER JOIN billing_account_mgt_obj B ON (A.MGT_OBJ_SID = B.MGT_OBJ_SID)
+			INNER JOIN billing_account C ON (B.ACCOUNT_SID = C.ACCOUNT_SID)
+			LEFT JOIN (
+					SELECT
+			       b.TENANT_ID,
+			       b.BILL_NAME
+			    FROM
+			    bill b
+			    ORDER BY b.BILL_NAME desc
+			
+			    LIMIT 0,1
+				
+			)D on (A.MGT_OBJ_SID = D.TENANT_ID)
+			<if test="condition.userSid != null" >
+		        LEFT JOIN sys_m_user_mgt_obj F on (A.MGT_OBJ_SID = F.MGT_OBJ_SID and F.USER_SID =  #{condition.userSid})
+		    </if>
+	    <if test="_parameter != null" >
+	      <include refid="Example_Where_Clause" />
+	    </if>
+	    <if test="orderByClause != null" >
+	      order by ${orderByClause}
+	    </if>
+		  <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectAllProject" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+  		SELECT 
+    	DISTINCT 
+		C.* 
+		FROM
+		sys_m_user_mgt_obj A 
+		LEFT JOIN sys_m_mgt_obj_ext B ON (A.MGT_OBJ_SID = B.MGT_OBJ_SID)
+		LEFT JOIN sys_m_mgt_obj C on (C.MGT_OBJ_SID = B.MGT_OBJ_SID)
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_m_mgt_obj A
+    where A.MGT_OBJ_SID = #{mgtObjSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_m_mgt_obj
+    where MGT_OBJ_SID = #{mgtObjSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from sys_m_mgt_obj
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.system.MgtObj" >
+    <selectKey resultType="java.lang.Long" keyProperty="mgtObjSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SYS_M_MGT_OBJ')
+    </selectKey>
+    insert into sys_m_mgt_obj (MGT_OBJ_SID, NAME, PARENT_ID, DESCRIPTION, LEVEL,STATUS, UUID,CREATED_BY, 
+      CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION)
+    values (#{mgtObjSid}, #{name}, #{parentId}, #{description}, #{level}, #{status}, #{uuid}, #{createdBy}, 
+      #{createdDt}, #{updatedBy}, #{updatedDt}, #{version})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.MgtObj" >
+    <selectKey resultType="java.lang.Long" keyProperty="mgtObjSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SYS_M_MGT_OBJ')
+    </selectKey>
+    insert into sys_m_mgt_obj
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      MGT_OBJ_SID,
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="parentId != null" >
+        PARENT_ID,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+      <if test="level != null" >
+        LEVEL,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="uuid != null" >
+        UUID,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{mgtObjSid},
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="parentId != null" >
+        #{parentId},
+      </if>
+      <if test="description != null" >
+        #{description},
+      </if>
+      <if test="level != null" >
+        #{level},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+       <if test="uuid != null" >
+        #{uuid},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from sys_m_mgt_obj
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update sys_m_mgt_obj
+    <set >
+      <if test="record.mgtObjSid != null" >
+        MGT_OBJ_SID = #{record.mgtObjSid},
+      </if>
+      <if test="record.name != null" >
+        NAME = #{record.name},
+      </if>
+      <if test="record.parentId != null" >
+        PARENT_ID = #{record.parentId},
+      </if>
+      <if test="record.description != null" >
+        DESCRIPTION = #{record.description},
+      </if>
+      <if test="record.level != null" >
+        LEVEL = #{record.level},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status},
+      </if>
+       <if test="record.uuid != null" >
+        UUID = #{record.uuid},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update sys_m_mgt_obj
+    set MGT_OBJ_SID = #{record.mgtObjSid},
+      NAME = #{record.name},
+      PARENT_ID = #{record.parentId},
+      DESCRIPTION = #{record.description},
+      LEVEL = #{record.level},
+      STATUS = #{record.status},
+      UUID = #{record.uuid},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.MgtObj" >
+    update sys_m_mgt_obj
+    <set >
+      <if test="name != null" >
+        NAME = #{name},
+      </if>
+      <if test="parentId != null" >
+        PARENT_ID = #{parentId},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description},
+      </if>
+      <if test="level != null" >
+        LEVEL = #{level},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status},
+      </if>
+      <if test="uuid != null" >
+        UUID = #{uuid},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+    </set>
+    where MGT_OBJ_SID = #{mgtObjSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.MgtObj" >
+    update sys_m_mgt_obj
+    set NAME = #{name},
+      PARENT_ID = #{parentId},
+      DESCRIPTION = #{description},
+      LEVEL = #{level},
+      STATUS = #{status},
+      UUID = #{uuid},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version}
+    where MGT_OBJ_SID = #{mgtObjSid}
+  </update>
+  <select id="selectResZoneTopologyByParams" resultMap="TopologyResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    (select A.RES_TOPOLOGY_SID, A.RES_TOPOLOGY_NAME, A.PARENT_TOPOLOGY_SID, A.RES_TOPOLOGY_TYPE, A.SORT_NO, 
+	    concat(A.RES_TOPOLOGY_SID,',',A.RES_TOPOLOGY_TYPE) as TOPOLOGY_VALUE, 
+	    (case A.RES_TOPOLOGY_TYPE when 'R' then '../../../images/icon/region.png' 
+	    when 'DC' then '../../../images/icon/datacenter.png' 
+	    when 'VC' then '../../../images/icon/cluster.png' 
+	    else '../../../images/icon/resource-pool.png' end) as TOPOLOGY_ICON 
+      from res_topology A, res_topology B 
+      where FIND_IN_SET(A.RES_TOPOLOGY_SID,getResTopologyChildList(B.RES_TOPOLOGY_SID))
+      <if test="condition.resTopologySidList != null" >
+         and B.RES_TOPOLOGY_SID IN
+         <foreach item="item" index="index" collection="condition.resTopologySidList"
+                        open="(" separator="," close=")">  
+                       #{item}  
+         </foreach>  
+      </if>
+      <if test="condition.resTopologyType != null">
+	      <if test="condition.resTopologyType == 'PC'">
+	        and A.RES_TOPOLOGY_TYPE IN ('R', 'DC', 'RZ', 'PCVX','PCX','PCVP','PCP')
+	      </if>
+	      <if test="condition.resTopologyType == 'PN'">
+	        and A.RES_TOPOLOGY_TYPE IN('R', 'DC', 'RZ','PN', 'PNI', 'PNE')
+	      </if>
+	      <if test="condition.resTopologyType == 'PS'">
+	        and A.RES_TOPOLOGY_TYPE IN('R', 'DC', 'RZ','PS')
+	      </if>
+       </if>
+     )
+     UNION
+    <if test="condition.resTopologyType != null">
+      <if test="condition.resTopologyType == 'PC'">
+        (
+	        SELECT A.RES_TOPOLOGY_SID AS RES_TOPOLOGY_SID, C.RES_TOPOLOGY_NAME AS RES_TOPOLOGY_NAME, 
+	        A.RES_POOL_SID AS PARENT_TOPOLOGY_SID, 'VC' AS RES_TOPOLOGY_TYPE,
+	        B.SORT_NO AS SORT_NO, concat(A.RES_TOPOLOGY_SID,',','VC') as TOPOLOGY_VALUE,
+	        '../../../images/icon/cluster.png' AS TOPOLOGY_ICON 
+			FROM res_vc A 
+			INNER JOIN res_topology B ON ( A.RES_POOL_SID = B.RES_TOPOLOGY_SID ) 
+			INNER JOIN res_topology C ON ( A.RES_TOPOLOGY_SID = C.RES_TOPOLOGY_SID ) 
+			INNER JOIN res_topology D 
+			WHERE FIND_IN_SET(B.RES_TOPOLOGY_SID,getResTopologyChildList (D.RES_TOPOLOGY_SID)) 
+			<if test="condition.resTopologySidList != null" >
+		         and D.RES_TOPOLOGY_SID IN
+		         <foreach item="item" index="index" collection="condition.resTopologySidList"
+		                        open="(" separator="," close=")">  
+		                       #{item}  
+		         </foreach>  
+		    </if>
+		) 
+		UNION ( 
+			SELECT A.RES_HOST_SID AS RES_TOPOLOGY_SID, A.HOST_NAME AS RES_TOPOLOGY_NAME, A.PARENT_TOPOLOGY_SID AS PARENT_TOPOLOGY_SID, 
+			'RES-HOST' AS RES_TOPOLOGY_TYPE, 9 AS SORT_NO, concat(A.RES_HOST_SID,',','RES-HOST') as TOPOLOGY_VALUE,
+			 '../../../images/icon/host.png' AS TOPOLOGY_ICON 
+			FROM res_host A 
+			INNER JOIN res_vc B ON ( A.PARENT_TOPOLOGY_SID = B.RES_TOPOLOGY_SID ) 
+			INNER JOIN res_topology C ON ( B.RES_POOL_SID = C.RES_TOPOLOGY_SID ) 
+			<if test="condition.mgtObjSid != null" >
+			INNER JOIN sys_m_mgt_obj_res E ON (E.RES_SET_SID = A.RES_HOST_SID AND E.RES_SET_TYPE = 'RES-HOST' AND E.BIZ_SID =#{condition.mgtObjSid})
+			</if>
+			INNER JOIN res_topology D WHERE FIND_IN_SET(C.RES_TOPOLOGY_SID,getResTopologyChildList (D.RES_TOPOLOGY_SID)) 
+			<if test="condition.resTopologySidList != null" >
+		         and D.RES_TOPOLOGY_SID IN
+		         <foreach item="item" index="index" collection="condition.resTopologySidList"
+		                        open="(" separator="," close=")">  
+		                       #{item}  
+		         </foreach>  
+		    </if>
+		)
+		UNION ( 
+			SELECT A.RES_HOST_SID AS RES_TOPOLOGY_SID, 
+				 A.HOST_NAME AS RES_TOPOLOGY_NAME, 
+				 A.RES_POOL_SID AS PARENT_TOPOLOGY_SID, 'RES-HOST' AS RES_TOPOLOGY_TYPE, 9 AS SORT_NO, 
+				 concat(A.RES_HOST_SID,',','RES-HOST') as TOPOLOGY_VALUE, '../../../images/icon/host.png' AS TOPOLOGY_ICON 
+			FROM res_host A 
+			INNER JOIN res_topology C ON ( A.RES_POOL_SID = C.RES_TOPOLOGY_SID ) 
+			<if test="condition.mgtObjSid != null" >
+			INNER JOIN sys_m_mgt_obj_res E ON (E.RES_SET_SID = A.RES_HOST_SID AND E.RES_SET_TYPE = 'RES-HOST' AND E.BIZ_SID =#{condition.mgtObjSid})
+			</if>			
+			INNER JOIN res_topology D WHERE FIND_IN_SET(C.RES_TOPOLOGY_SID,getResTopologyChildList (D.RES_TOPOLOGY_SID)) 
+			<if test="condition.resTopologySidList != null" >
+		         and D.RES_TOPOLOGY_SID IN
+		         <foreach item="item" index="index" collection="condition.resTopologySidList"
+		                        open="(" separator="," close=")">  
+		                       #{item}  
+		         </foreach>  
+		    </if>
+			AND A.RES_HOST_SID NOT IN (
+				SELECT RH.RES_HOST_SID
+				FROM res_host RH 
+				inner JOIN res_vc RV ON ( RH.PARENT_TOPOLOGY_SID = RV.RES_TOPOLOGY_SID ) 
+				inner JOIN res_topology RT ON ( RV.RES_POOL_SID = RT.RES_TOPOLOGY_SID ) 
+			)
+		)
+      </if>
+      <if test="condition.resTopologyType == 'PN'">
+        (
+			SELECT A.RES_NETWORK_SID AS RES_TOPOLOGY_SID, A.NETWORK_NAME AS RES_TOPOLOGY_NAME, A.RES_POOL_SID AS PARENT_TOPOLOGY_SID, 'RES-NETWORK' AS RES_TOPOLOGY_TYPE, 9 AS SORT_NO, concat(A.RES_NETWORK_SID,',','RES-NETWORK') as TOPOLOGY_VALUE, '../../../images/icon/network.png' AS TOPOLOGY_ICON 
+			FROM res_network A INNER JOIN res_topology B ON ( A.RES_POOL_SID = B.RES_TOPOLOGY_SID ) 
+			<if test="condition.mgtObjSid != null" >
+			INNER JOIN sys_m_mgt_obj_res E ON (E.RES_SET_SID = A.RES_NETWORK_SID AND E.RES_SET_TYPE = 'RES-NETWORK' AND E.BIZ_SID =#{condition.mgtObjSid})
+			</if>
+			INNER JOIN res_topology C 
+			WHERE FIND_IN_SET(B.RES_TOPOLOGY_SID,getResTopologyChildList(C.RES_TOPOLOGY_SID)) 
+			<if test="condition.resTopologySidList != null" >
+		         and C.RES_TOPOLOGY_SID IN
+		         <foreach item="item" index="index" collection="condition.resTopologySidList"
+		                        open="(" separator="," close=")">  
+		                       #{item}  
+		         </foreach>  
+		    </if>
+		)
+      </if>
+      <if test="condition.resTopologyType == 'PS'">
+        (
+			select A.RES_STORAGE_SID AS RES_TOPOLOGY_SID, A.STORAGE_NAME as RES_TOPOLOGY_NAME, A.RES_POOL_SID AS PARENT_TOPOLOGY_SID, 'RES-STORAGE' AS RES_TOPOLOGY_TYPE, 9 AS SORT_NO, concat(A.RES_STORAGE_SID,',','RES-STORAGE') as TOPOLOGY_VALUE, '../../../images/icon/storage.png' AS TOPOLOGY_ICON 
+			from res_storage A INNER JOIN res_topology B ON ( A.RES_POOL_SID = B.RES_TOPOLOGY_SID) 
+			<if test="condition.mgtObjSid != null" >
+			INNER JOIN sys_m_mgt_obj_res E on (E.RES_SET_SID = A.RES_STORAGE_SID AND E.RES_SET_TYPE = 'RES-STORAGE' AND E.BIZ_SID =#{condition.mgtObjSid})
+	        </if>
+			INNER JOIN res_topology C 
+			WHERE FIND_IN_SET(B.RES_TOPOLOGY_SID,getResTopologyChildList(C.RES_TOPOLOGY_SID)) 
+			<if test="condition.resTopologySidList != null" >
+		         and C.RES_TOPOLOGY_SID IN
+		         <foreach item="item" index="index" collection="condition.resTopologySidList"
+		                        open="(" separator="," close=")">  
+		                       #{item}  
+		         </foreach>  
+		    </if>
+		)
+      </if>
+    </if>
+    order by SORT_NO,RES_TOPOLOGY_NAME 
+  </select>
+  <select id="selectVeListByHost" resultMap="TopologyResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    SELECT distinct A.* FROM res_topology A 
+<!-- 	LEFT JOIN res_topology B ON ( A.RES_TOPOLOGY_SID = B.PARENT_TOPOLOGY_SID ) --> 
+<!-- 	LEFT JOIN res_vc C ON ( B.RES_TOPOLOGY_SID = C.RES_TOPOLOGY_SID ) -->
+	LEFT JOIN res_host D ON (A.res_topology_sid = D.PARENT_TOPOLOGY_SID )
+	<if test="condition.hosts != null" >
+		where D.res_host_sid in 
+         <foreach item="item" index="index" collection="condition.hosts"
+                        open="(" separator="," close=")">  
+                       #{item}  
+         </foreach>  
+     </if>
+   </select>
+   
+   <select id="selectMgtObjComByParams" resultMap="TopologyResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+   		(
+			SELECT A.RES_TOPOLOGY_SID AS RES_TOPOLOGY_SID, 
+							B.RES_TOPOLOGY_NAME AS RES_TOPOLOGY_NAME, 
+							'' AS PARENT_TOPOLOGY_SID, 
+							'VE' AS RES_TOPOLOGY_TYPE, 
+							B.SORT_NO AS SORT_NO, 
+							concat(A.RES_TOPOLOGY_SID,',','VE') as TOPOLOGY_VALUE, 
+							(case A.VIRTUAL_PLATFORM_TYPE
+								when 'VMware' then '../../images/icon/resource-ve-vmware.png'
+								when 'OpenStack' then '../../images/icon/resource-ve-kvm.png'
+								when 'KVM' then '../../images/icon/resource-ve-kvm.png'
+								when 'Hyper-V' then '../../images/icon/resource-ve-hyperv.png'
+								when 'Xen' then '../../images/icon/resource-ve-xen.png'
+								when 'PowerVM' then '../../images/icon/resource-ve-powervm.png'
+								when 'HP-UX' then '../../images/icon/resource-ve-hpux.png'
+								else  '../../images/icon/resource-pool.png'
+							end) AS TOPOLOGY_ICON 
+			FROM res_ve A 
+			INNER JOIN res_topology B ON ( A.RES_TOPOLOGY_SID = B.RES_TOPOLOGY_SID ) 
+			WHERE A.RES_TOPOLOGY_SID in (
+						SELECT RH.PARENT_TOPOLOGY_SID from res_host RH 
+						<if test="condition.mgtObjSid != null" >
+							INNER JOIN sys_m_mgt_obj_res E ON (E.RES_SET_SID = RH.RES_HOST_SID  AND E.RES_SET_TYPE = 'RES-HOST' AND E.BIZ_SID =#{condition.mgtObjSid})
+					    </if>
+						WHERE RH.RES_HOST_SID NOT IN (SELECT S.RES_ID FROM service_inst_res S WHERE S.RES_TYPE="RES-HOST")
+						<if test="condition.resPoolType != null">
+							AND RH.RES_POOL_SID in (
+								SELECT RT.RES_TOPOLOGY_SID FROM res_topology RT WHERE RT.RES_TOPOLOGY_TYPE = #{condition.resPoolType}
+							)
+						</if>
+				  ) 
+			   or A.RES_TOPOLOGY_SID in (
+					SELECT RT.PARENT_TOPOLOGY_SID 
+					FROM res_topology RT 
+					LEFT JOIN res_vc RV ON (RT.RES_TOPOLOGY_SID = RV.RES_TOPOLOGY_SID)
+					WHERE RV.RES_TOPOLOGY_SID in (
+						SELECT RH.PARENT_TOPOLOGY_SID FROM res_host RH
+						<if test="condition.mgtObjSid != null" >
+							INNER JOIN sys_m_mgt_obj_res E ON (E.RES_SET_SID = RH.RES_HOST_SID  AND E.RES_SET_TYPE = 'RES-HOST' AND E.BIZ_SID =#{condition.mgtObjSid})
+					    </if>
+						WHERE RH.RES_HOST_SID NOT IN (SELECT S.RES_ID FROM service_inst_res S WHERE S.RES_TYPE="RES-HOST")
+						<if test="condition.resPoolType != null">
+							AND RH.RES_POOL_SID in (
+								SELECT RT.RES_TOPOLOGY_SID FROM res_topology RT WHERE RT.RES_TOPOLOGY_TYPE = #{condition.resPoolType}
+							)
+						</if>
+					)
+				)
+		)
+     	UNION	
+		(
+			SELECT A.RES_TOPOLOGY_SID AS RES_TOPOLOGY_SID, 
+						 C.RES_TOPOLOGY_NAME AS RES_TOPOLOGY_NAME, 
+						 C.PARENT_TOPOLOGY_SID AS PARENT_TOPOLOGY_SID, 
+						 'VC' AS RES_TOPOLOGY_TYPE, 
+						 C.SORT_NO AS SORT_NO, 
+						 concat(A.RES_TOPOLOGY_SID,',','VC') as TOPOLOGY_VALUE, 
+						 '../../images/icon/cluster.png' AS TOPOLOGY_ICON 
+			FROM res_vc A 
+<!-- 			INNER JOIN res_topology B ON ( A.RES_POOL_SID = B.RES_TOPOLOGY_SID )  -->
+			INNER JOIN res_topology C ON ( A.RES_TOPOLOGY_SID = C.RES_TOPOLOGY_SID ) 
+
+			WHERE A.RES_TOPOLOGY_SID in (
+			SELECT RH.PARENT_TOPOLOGY_SID FROM res_host RH
+			<if test="condition.mgtObjSid != null" >
+				INNER JOIN sys_m_mgt_obj_res E ON (E.RES_SET_SID = RH.RES_HOST_SID  AND E.RES_SET_TYPE = 'RES-HOST' AND E.BIZ_SID =#{condition.mgtObjSid})
+		    </if>
+			WHERE RH.RES_HOST_SID NOT IN (SELECT S.RES_ID FROM service_inst_res S WHERE S.RES_TYPE="RES-HOST")
+			<if test="condition.resPoolType != null">
+				AND RH.RES_POOL_SID in (
+					SELECT RT.RES_TOPOLOGY_SID FROM res_topology RT WHERE RT.RES_TOPOLOGY_TYPE = #{condition.resPoolType}
+				)
+			</if>
+			)
+		)
+    	UNION		
+		(
+			SELECT A.RES_HOST_SID AS RES_TOPOLOGY_SID, A.HOST_NAME AS RES_TOPOLOGY_NAME, A.PARENT_TOPOLOGY_SID AS PARENT_TOPOLOGY_SID, 
+			'RES-HOST' AS RES_TOPOLOGY_TYPE, 9 AS SORT_NO, concat(A.RES_HOST_SID,',','RES-HOST') as TOPOLOGY_VALUE,
+			 '../../images/icon/host.png' AS TOPOLOGY_ICON 
+			FROM res_host A 
+			INNER JOIN res_vc B ON ( A.PARENT_TOPOLOGY_SID = B.RES_TOPOLOGY_SID ) 
+			INNER JOIN res_topology C ON ( B.RES_POOL_SID = C.RES_TOPOLOGY_SID ) 
+			<if test="condition.mgtObjSid != null" >
+				INNER JOIN sys_m_mgt_obj_res E ON (E.RES_SET_SID = A.RES_HOST_SID  AND E.RES_SET_TYPE = 'RES-HOST' AND E.BIZ_SID =#{condition.mgtObjSid})
+		    </if>
+			WHERE A.RES_HOST_SID NOT IN (SELECT S.RES_ID FROM service_inst_res S WHERE S.RES_TYPE="RES-HOST")
+			<if test="condition.resPoolType != null">
+				AND A.RES_POOL_SID in (
+					SELECT RT.RES_TOPOLOGY_SID FROM res_topology RT WHERE RT.RES_TOPOLOGY_TYPE = #{condition.resPoolType}
+				)
+			</if>
+		)
+		UNION 
+		( 
+			SELECT A.RES_HOST_SID AS RES_TOPOLOGY_SID, 
+				 A.HOST_NAME AS RES_TOPOLOGY_NAME, 
+				 A.PARENT_TOPOLOGY_SID AS PARENT_TOPOLOGY_SID, 'RES-HOST' AS RES_TOPOLOGY_TYPE, 9 AS SORT_NO, 
+				 concat(A.RES_HOST_SID,',','RES-HOST') as TOPOLOGY_VALUE, '../../images/icon/host.png' AS TOPOLOGY_ICON 
+			FROM res_host A 
+			INNER JOIN res_topology C ON ( A.RES_POOL_SID = C.RES_TOPOLOGY_SID ) 
+			<if test="condition.mgtObjSid != null" >
+				INNER JOIN sys_m_mgt_obj_res E ON (E.RES_SET_SID = A.RES_HOST_SID  AND E.RES_SET_TYPE = 'RES-HOST' AND E.BIZ_SID =#{condition.mgtObjSid})
+		    </if>
+			AND A.RES_HOST_SID NOT IN (
+				SELECT RH.RES_HOST_SID
+				FROM res_host RH 
+				inner JOIN res_vc RV ON ( RH.PARENT_TOPOLOGY_SID = RV.RES_TOPOLOGY_SID ) 
+				inner JOIN res_topology RT ON ( RV.RES_POOL_SID = RT.RES_TOPOLOGY_SID ) 
+			)
+			WHERE A.RES_HOST_SID NOT IN (SELECT S.RES_ID FROM service_inst_res S WHERE S.RES_TYPE="RES-HOST")
+			<if test="condition.resPoolType != null">
+				AND A.RES_POOL_SID in (
+					SELECT RT.RES_TOPOLOGY_SID FROM res_topology RT WHERE RT.RES_TOPOLOGY_TYPE = #{condition.resPoolType}
+				)
+			</if>
+		)
+   </select>
+   
+    <select id="selectMgtObjResZoneTopologyByParams" resultMap="TopologyResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    (
+		SELECT A.RES_TOPOLOGY_SID AS RES_TOPOLOGY_SID, 
+			B.RES_TOPOLOGY_NAME AS RES_TOPOLOGY_NAME, 
+			'' AS PARENT_TOPOLOGY_SID, 
+			'VE' AS RES_TOPOLOGY_TYPE, 
+			B.SORT_NO AS SORT_NO, 
+			concat(A.RES_TOPOLOGY_SID,',','VE') as TOPOLOGY_VALUE, 
+			(case A.VIRTUAL_PLATFORM_TYPE
+				when 'VMware' then '../../images/icon/resource-ve-vmware.png'
+				when 'OpenStack' then '../../images/icon/resource-ve-kvm.png'
+				when 'KVM' then '../../images/icon/resource-ve-kvm.png'
+				when 'Hyper-V' then '../../images/icon/resource-ve-hyperv.png'
+				when 'Xen' then '../../images/icon/resource-ve-xen.png'
+				when 'PowerVM' then '../../images/icon/resource-ve-powervm.png'
+				when 'HP-UX' then '../../images/icon/resource-ve-hpux.png'
+				else  '../../images/icon/resource-pool.png'
+			end) AS TOPOLOGY_ICON 
+		FROM res_ve A 
+		INNER JOIN res_topology B ON ( A.RES_TOPOLOGY_SID = B.RES_TOPOLOGY_SID ) 
+		<if test="condition.resTopologySidList != null" >
+		 	WHERE B.PARENT_TOPOLOGY_SID in (
+				SELECT RT.PARENT_TOPOLOGY_SID FROM res_topology RT WHERE RT.RES_TOPOLOGY_SID IN 
+		         <foreach item="item" index="index" collection="condition.resTopologySidList"
+		                        open="(" separator="," close=")">  
+		                       #{item}  
+		         </foreach>  
+			)
+	    </if>
+	)
+     UNION
+      (
+       SELECT A.RES_TOPOLOGY_SID AS RES_TOPOLOGY_SID, C.RES_TOPOLOGY_NAME AS RES_TOPOLOGY_NAME, 
+       C.PARENT_TOPOLOGY_SID AS PARENT_TOPOLOGY_SID, 'VC' AS RES_TOPOLOGY_TYPE,
+       C.SORT_NO AS SORT_NO, concat(A.RES_TOPOLOGY_SID,',','VC') as TOPOLOGY_VALUE,
+       '../../images/icon/cluster.png' AS TOPOLOGY_ICON 
+	FROM res_vc A 
+<!-- 	INNER JOIN res_topology B ON ( A.RES_POOL_SID = B.RES_TOPOLOGY_SID )  -->
+	INNER JOIN res_topology C ON ( A.RES_TOPOLOGY_SID = C.RES_TOPOLOGY_SID ) 
+	INNER JOIN res_topology D 
+	WHERE FIND_IN_SET(C.RES_TOPOLOGY_SID,getResTopologyChildList (D.RES_TOPOLOGY_SID)) 
+	<if test="condition.resTopologySidList != null" >
+         and D.RES_TOPOLOGY_SID IN
+         <foreach item="item" index="index" collection="condition.resTopologySidList"
+                        open="(" separator="," close=")">  
+                       #{item}  
+         </foreach>  
+    </if>
+	) 
+	UNION ( 
+		SELECT A.RES_HOST_SID AS RES_TOPOLOGY_SID, A.HOST_NAME AS RES_TOPOLOGY_NAME, A.PARENT_TOPOLOGY_SID AS PARENT_TOPOLOGY_SID, 
+		'RES-HOST' AS RES_TOPOLOGY_TYPE, 9 AS SORT_NO, concat(A.RES_HOST_SID,',','RES-HOST') as TOPOLOGY_VALUE,
+		 '../../images/icon/host.png' AS TOPOLOGY_ICON 
+		FROM res_host A 
+		INNER JOIN res_vc B ON ( A.PARENT_TOPOLOGY_SID = B.RES_TOPOLOGY_SID ) 
+		INNER JOIN res_topology C ON ( B.RES_POOL_SID = C.RES_TOPOLOGY_SID ) 
+		<if test="condition.mgtObjSid != null" >
+		INNER JOIN sys_m_mgt_obj_res E ON (E.RES_SET_SID = A.RES_HOST_SID AND E.RES_SET_TYPE = 'RES-HOST' AND E.BIZ_SID =#{condition.mgtObjSid})
+		</if>
+		INNER JOIN res_topology D WHERE FIND_IN_SET(C.RES_TOPOLOGY_SID,getResTopologyChildList (D.RES_TOPOLOGY_SID)) 
+		<if test="condition.resTopologySidList != null" >
+	         and D.RES_TOPOLOGY_SID IN
+	         <foreach item="item" index="index" collection="condition.resTopologySidList"
+	                        open="(" separator="," close=")">  
+	                       #{item}  
+	         </foreach>  
+	    </if>
+	    <if test="condition.resPoolType != null">
+			AND A.RES_POOL_SID in (
+				SELECT RT.RES_TOPOLOGY_SID FROM res_topology RT WHERE RT.RES_TOPOLOGY_TYPE = #{condition.resPoolType}
+			)
+		</if>
+	)
+	UNION ( 
+		SELECT A.RES_HOST_SID AS RES_TOPOLOGY_SID, 
+			 A.HOST_NAME AS RES_TOPOLOGY_NAME, 
+			 A.RES_POOL_SID AS PARENT_TOPOLOGY_SID, 'RES-HOST' AS RES_TOPOLOGY_TYPE, 9 AS SORT_NO, 
+			 concat(A.RES_HOST_SID,',','RES-HOST') as TOPOLOGY_VALUE, '../../images/icon/host.png' AS TOPOLOGY_ICON 
+		FROM res_host A 
+		INNER JOIN res_topology C ON ( A.RES_POOL_SID = C.RES_TOPOLOGY_SID ) 
+		<if test="condition.mgtObjSid != null" >
+		INNER JOIN sys_m_mgt_obj_res E ON (E.RES_SET_SID = A.RES_HOST_SID AND E.RES_SET_TYPE = 'RES-HOST' AND E.BIZ_SID =#{condition.mgtObjSid})
+		</if>			
+		INNER JOIN res_topology D WHERE FIND_IN_SET(C.RES_TOPOLOGY_SID,getResTopologyChildList (D.RES_TOPOLOGY_SID)) 
+		<if test="condition.resTopologySidList != null" >
+	         and D.RES_TOPOLOGY_SID IN
+	         <foreach item="item" index="index" collection="condition.resTopologySidList"
+	                        open="(" separator="," close=")">  
+	                       #{item}  
+	         </foreach>  
+	    </if>
+		AND A.RES_HOST_SID NOT IN (
+			SELECT RH.RES_HOST_SID
+			FROM res_host RH 
+			inner JOIN res_vc RV ON ( RH.PARENT_TOPOLOGY_SID = RV.RES_TOPOLOGY_SID ) 
+			inner JOIN res_topology RT ON ( RV.RES_POOL_SID = RT.RES_TOPOLOGY_SID ) 
+		)
+		<if test="condition.resPoolType != null">
+			AND A.RES_POOL_SID in (
+				SELECT RT.RES_TOPOLOGY_SID FROM res_topology RT WHERE RT.RES_TOPOLOGY_TYPE = #{condition.resPoolType}
+			)
+		</if>
+	)
+    order by SORT_NO,RES_TOPOLOGY_NAME 
+  </select>
+   
+</mapper>

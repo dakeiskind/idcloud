@@ -1,0 +1,1 @@
+{"url":"${providerUrl}","user":"${authUser}","passwd":"${authPass}"}

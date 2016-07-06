@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResStatisticsMapper">
+
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache">
+        <property name="timeToIdleSeconds" value="600"/> <!-- 10分钟-->
+        <property name="timeToLiveSeconds" value="600"/>
+        <property name="maxEntriesLocalHeap" value="1000"/>
+        <property name="maxEntriesLocalDisk" value="10000000"/>
+        <property name="memoryStoreEvictionPolicy" value="LRU"/>
+    </cache>
+
+    <select id="selectStatisticsVmInfo" resultType="java.util.HashMap"  parameterType="java.lang.String">
+select
+SUM(IF(V.STATUS = 'normal',1,0)) as NORMAL,
+SUM(IF(V.STATUS = 'poweredOff',1,0)) as POWERED_OFF,
+SUM(IF(V.STATUS = 'failure',1,0)) as FAILURE,
+count(V.STATUS) as TOTAL
+from service_instance A
+INNER JOIN service_inst_res B on(A.INSTANCE_SID = B.INSTANCE_SID)
+INNER JOIN RES_VM V on(V.RES_VM_SID = B.RES_ID)
+        where V.OWNER_ID = #{ownerId} and V.STATUS != 'deleted'
+
+    </select>
+
+
+    <select id="selectStatisticsFloatingIpInfo" resultType="java.util.HashMap" parameterType="java.lang.Long">
+select
+SUM(IF(F.STATUS = 'normal',1,0)) as NORMAL,
+SUM(IF(F.STATUS = 'deleting',1,0)) as DELETING,
+SUM(IF(F.STATUS = 'creating',1,0)) as CREATING,
+count(F.STATUS) as TOTAL
+from service_instance A
+INNER JOIN service_inst_res B on(A.INSTANCE_SID = B.INSTANCE_SID)
+INNER JOIN  res_floating_ip F on(F.RES_SID = B.RES_ID)
+        where F.STATUS != 'deleted' and F.MGT_OBJ_SID = #{mgtObjSid}
+    </select>
+
+</mapper>

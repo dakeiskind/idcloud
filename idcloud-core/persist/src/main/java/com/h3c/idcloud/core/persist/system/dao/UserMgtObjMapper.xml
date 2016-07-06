@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.UserMgtObjMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.UserMgtObjKey" >
+    <id column="MGT_OBJ_SID" property="mgtObjSid" jdbcType="BIGINT" />
+    <id column="USER_SID" property="userSid" jdbcType="BIGINT" />
+    <id column="MGT_OBJ_NAME" property="mgtObjName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+	    <if test="condition.userSid != null">
+			and A.USER_SID = #{condition.userSid}
+		</if>
+		<if test="condition.mgtObjSid != null">
+			and A.MGT_OBJ_SID = #{condition.mgtObjSid}
+		</if>
+		<if test="condition.status != null">
+			and B.STATUS = #{condition.status}
+		</if>
+	</trim>
+  </sql>
+  <sql id="Example_Where_Clause2" >
+    <trim prefix="where" prefixOverrides="and|or">
+	    <if test="condition.userSid != null">
+			and USER_SID = #{condition.userSid}
+		</if>
+		<if test="condition.mgtObjSid != null">
+			and MGT_OBJ_SID = #{condition.mgtObjSid}
+		</if>
+	</trim>
+  </sql>
+    <sql id="Example_Where_Clause3" >
+    <trim prefix="where" prefixOverrides="and|or" >
+	    <if test="condition.userSid != null">
+			and USER_SID = #{condition.userSid}
+		</if>
+		<if test="condition.mgtObjSid != null">
+			and MGT_OBJ_SID = #{condition.mgtObjSid}
+		</if>
+	</trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    A.MGT_OBJ_SID, A.USER_SID
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,B.NAME AS MGT_OBJ_NAME
+    from sys_m_user_mgt_obj A
+    left join sys_m_mgt_obj B on (A.MGT_OBJ_SID = B.MGT_OBJ_SID)
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.UserMgtObjKey" >
+    delete from sys_m_user_mgt_obj
+    where MGT_OBJ_SID = #{mgtObjSid}
+      and USER_SID = #{userSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from sys_m_user_mgt_obj
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause3" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.system.UserMgtObjKey" >
+    insert into sys_m_user_mgt_obj (MGT_OBJ_SID, USER_SID)
+    values (#{mgtObjSid}, #{userSid})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.UserMgtObjKey" >
+    insert into sys_m_user_mgt_obj
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mgtObjSid != null" >
+        MGT_OBJ_SID,
+      </if>
+      <if test="userSid != null" >
+        USER_SID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mgtObjSid != null" >
+        #{mgtObjSid},
+      </if>
+      <if test="userSid != null" >
+        #{userSid},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from sys_m_user_mgt_obj
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update sys_m_user_mgt_obj
+    <set >
+      <if test="record.mgtObjSid != null" >
+        MGT_OBJ_SID = #{record.mgtObjSid},
+      </if>
+      <if test="record.userSid != null" >
+        USER_SID = #{record.userSid},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update sys_m_user_mgt_obj
+    set MGT_OBJ_SID = #{record.mgtObjSid},
+      USER_SID = #{record.userSid}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.UserMgtObjKey" >
+    update sys_m_user_mgt_obj
+    <set >
+      <if test="mgtObjSid != null" >
+        MGT_OBJ_SID = #{mgtObjSid},
+      </if>
+      <if test="userSid != null" >
+        USER_SID = #{userSid},
+      </if>
+    </set>
+    where USER_SID = #{userSid}
+  </update>
+</mapper>

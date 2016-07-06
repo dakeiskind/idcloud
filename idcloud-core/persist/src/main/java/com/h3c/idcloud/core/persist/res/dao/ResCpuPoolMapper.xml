@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResCpuPoolMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResCpuPool">
+        <id column="RES_CPU_POOL_SID" property="resCpuPoolSid" jdbcType="VARCHAR"/>
+        <result column="RES_HOST_SID" property="resHostSid" jdbcType="VARCHAR"/>
+        <result column="CPU_POOL_NAME" property="cpuPoolName" jdbcType="VARCHAR"/>
+        <result column="RESERVED_VALUE" property="reservedValue" jdbcType="REAL"/>
+        <result column="MAX_VALUE" property="maxValue" jdbcType="REAL"/>
+        <result column="CPU_POOL_ID" property="cpuPoolId" jdbcType="BIGINT"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.resHostSid != null">
+                and RES_HOST_SID = #{condition.resHostSid}
+            </if>
+            <if test="condition.cpuPoolName != null">
+                and CPU_POOL_NAME = #{condition.cpuPoolName}
+            </if>
+            <if test="condition.reservedValue != null">
+                and RESERVED_VALUE = #{condition.reservedValue}
+            </if>
+            <if test="condition.maxValue != null">
+                and MAX_VALUE = #{condition.maxValue}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        RES_CPU_POOL_SID, RES_HOST_SID, CPU_POOL_NAME, RESERVED_VALUE, MAX_VALUE,CPU_POOL_ID, UUID
+    </sql>
+    <select id="selectByPowerVe" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        A.*
+        from res_cpu_pool A
+        LEFT JOIN res_host B ON (
+        A.RES_HOST_SID=B.RES_HOST_SID
+        )
+        WHERE B.PARENT_TOPOLOGY_SID=#{resVeSid}
+    </select>
+
+    <select id="selectByPoolWithSum" resultType="com.h3c.idcloud.core.pojo.dto.res.ResCpuPool" parameterType="string">
+        SELECT
+        sum(if(cpm.CPU_VALUE is null, 0, cpm.CPU_VALUE)) AS totalUsedCpuValue
+        , cp.MAX_VALUE AS "maxValue"
+        , cp.RES_CPU_POOL_SID AS resCpuPoolSid
+        FROM
+        RES_CPU_POOL cp
+        LEFT OUTER JOIN res_cpu_pool_mpar_rel cpm
+        ON cp.RES_CPU_POOL_SID = cpm.RES_CPU_POOL_SID
+        WHERE
+        cp.RES_HOST_SID = #{resHostSid}
+        GROUP BY
+        cp.RES_CPU_POOL_SID
+    </select>
+
+    <select id="selectByParams" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from res_cpu_pool
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_cpu_pool
+        where RES_CPU_POOL_SID = #{resCpuPoolSid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_cpu_pool
+        where RES_CPU_POOL_SID = #{resCpuPoolSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_cpu_pool
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResCpuPool">
+        <selectKey resultType="java.lang.String" keyProperty="resCpuPoolSid" order="BEFORE">
+            SELECT UUID();
+        </selectKey>
+        insert into res_cpu_pool (RES_CPU_POOL_SID, RES_HOST_SID, CPU_POOL_NAME, RESERVED_VALUE, MAX_VALUE,CPU_POOL_ID,
+        UUID
+        )
+        values (#{resCpuPoolSid}, #{resHostSid}, #{cpuPoolName}, #{reservedValue}, #{maxValue}, #{cpuPoolId}, #{uuid}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResCpuPool">
+        <selectKey resultType="java.lang.String" keyProperty="resCpuPoolSid" order="BEFORE">
+            SELECT UUID();
+        </selectKey>
+        insert into res_cpu_pool
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            RES_CPU_POOL_SID,
+            <if test="resHostSid != null">
+                RES_HOST_SID,
+            </if>
+            <if test="cpuPoolName != null">
+                CPU_POOL_NAME,
+            </if>
+            <if test="reservedValue != null">
+                RESERVED_VALUE,
+            </if>
+            <if test="maxValue != null">
+                MAX_VALUE,
+            </if>
+            <if test="cpuPoolId != null">
+                CPU_POOL_ID,
+            </if>
+            <if test="uuid != null">
+                UUID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{resCpuPoolSid},
+            <if test="resHostSid != null">
+                #{resHostSid},
+            </if>
+            <if test="cpuPoolName != null">
+                #{cpuPoolName},
+            </if>
+            <if test="reservedValue != null">
+                #{reservedValue},
+            </if>
+            <if test="maxValue != null">
+                #{maxValue},
+            </if>
+            <if test="cpuPoolId != null">
+                #{cpuPoolId},
+            </if>
+            <if test="uuid != null">
+                #{uuid},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria"
+            resultType="java.lang.Integer">
+        select count(*) from res_cpu_pool
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_cpu_pool
+        <set>
+            <if test="record.resCpuPoolSid != null">
+                RES_CPU_POOL_SID = #{record.resCpuPoolSid},
+            </if>
+            <if test="record.resHostSid != null">
+                RES_HOST_SID = #{record.resHostSid},
+            </if>
+            <if test="record.cpuPoolName != null">
+                CPU_POOL_NAME = #{record.cpuPoolName},
+            </if>
+            <if test="record.reservedValue != null">
+                RESERVED_VALUE = #{record.reservedValue},
+            </if>
+            <if test="record.maxValue != null">
+                MAX_VALUE = #{record.maxValue},
+            </if>
+            <if test="record.cpuPoolId != null">
+                CPU_POOL_ID = #{record.cpuPoolId},
+            </if>
+            <if test="record.cpuPoolId != null">
+                UUID = #{record.uuid},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_cpu_pool
+        set RES_CPU_POOL_SID = #{record.resCpuPoolSid},
+        RES_HOST_SID = #{record.resHostSid},
+        CPU_POOL_NAME = #{record.cpuPoolName},
+        RESERVED_VALUE = #{record.reservedValue},
+        MAX_VALUE = #{record.maxValue},
+        CPU_POOL_ID = #{record.cpuPoolId},
+        UUID = #{record.uuid}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResCpuPool">
+        update res_cpu_pool
+        <set>
+            <if test="resHostSid != null">
+                RES_HOST_SID = #{resHostSid},
+            </if>
+            <if test="cpuPoolName != null">
+                CPU_POOL_NAME = #{cpuPoolName},
+            </if>
+            <if test="reservedValue != null">
+                RESERVED_VALUE = #{reservedValue},
+            </if>
+            <if test="maxValue != null">
+                MAX_VALUE = #{maxValue},
+            </if>
+            <if test="cpuPoolId != null">
+                CPU_POOL_ID = #{cpuPoolId},
+            </if>
+            <if test="uuid != null">
+                CPU_POOL_ID = #{uuid},
+            </if>
+        </set>
+        where RES_CPU_POOL_SID = #{resCpuPoolSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResCpuPool">
+        update res_cpu_pool
+        set RES_HOST_SID = #{resHostSid},
+        CPU_POOL_NAME = #{cpuPoolName},
+        RESERVED_VALUE = #{reservedValue},
+        MAX_VALUE = #{maxValue},
+        CPU_POOL_ID = #{cpuPoolId},
+        UUID = #{uuid}
+        where RES_CPU_POOL_SID = #{resCpuPoolSid}
+    </update>
+</mapper>

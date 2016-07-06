@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResHostItemMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResHostItem">
+        <id column="HOST_ITEM_ID" property="hostItemId" jdbcType="VARCHAR"/>
+        <result column="HOST_ITEM_TYPE_CODE" property="hostItemTypeCode" jdbcType="VARCHAR"/>
+        <result column="SUP_HOST_ITEM_ID" property="supHostItemId" jdbcType="VARCHAR"/>
+        <result column="HOST_ITEM_TYPE_CODE_NAME" property="hostItemTypeCodeName" jdbcType="VARCHAR"/>
+        <result column="RES_HOST_SID" property="resHostSid" jdbcType="VARCHAR"/>
+        <result column="RELATE_RES_SID" property="relateResSid" jdbcType="VARCHAR"/>
+        <result column="HOST_ITEM_DESC" property="hostItemDesc" jdbcType="VARCHAR"/>
+        <result column="HOST_ITEM_INDEX" property="hostItemIndex" jdbcType="VARCHAR"/>
+        <result column="HOST_ITEM_ADDR" property="hostItemAddr" jdbcType="VARCHAR"/>
+        <result column="ITEM_LOCATION" property="itemLocation" jdbcType="VARCHAR"/>
+        <result column="RES_ALLOC_FLAG" property="resAllocFlag" jdbcType="INTEGER"/>
+        <result column="RES_ALLOC_STATUS" property="resAllocStatus" jdbcType="INTEGER"/>
+        <result column="PART_AMOUNT" property="partAmount" jdbcType="DECIMAL"/>
+        <result column="SUB_PART_AMOUNT" property="subPartAmount" jdbcType="DECIMAL"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR"/>
+        <result column="MAC_ADDRESS" property="macAddress" jdbcType="VARCHAR"/>
+        <result column="OWNER" property="owner" jdbcType="VARCHAR"/>
+        <result column="WWPN" property="wwpn" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.hostItemTypeCode != null">
+                and A.HOST_ITEM_TYPE_CODE = #{condition.hostItemTypeCode}
+            </if>
+            <if test="condition.supHostItemId != null">
+                and A.SUP_HOST_ITEM_ID = #{condition.supHostItemId}
+            </if>
+            <if test="condition.resHostSid != null">
+                and A.RES_HOST_SID = #{condition.resHostSid}
+            </if>
+            <if test="condition.resHostSidDel != null">
+                and RES_HOST_SID = #{condition.resHostSidDel}
+            </if>
+            <if test="condition.relateResSid != null">
+                and A.RELATE_RES_SID = #{condition.relateResSid}
+            </if>
+            <if test="condition.relateResSidIsNull != null">
+                and A.RELATE_RES_SID IS NULL or RELATE_RES_SID =""
+            </if>
+            <if test="condition.hostItemDesc != null">
+                and A.HOST_ITEM_DESC = #{condition.hostItemDesc}
+            </if>
+            <if test="condition.hostItemIndex != null">
+                and A.HOST_ITEM_INDEX = #{condition.hostItemIndex}
+            </if>
+            <if test="condition.hostItemAddr != null">
+                and A.HOST_ITEM_ADDR = #{condition.hostItemAddr}
+            </if>
+            <if test="condition.itemLocation != null">
+                and A.ITEM_LOCATION = #{condition.itemLocation}
+            </if>
+            <if test="condition.resAllocFlag != null">
+                and A.RES_ALLOC_FLAG = #{condition.resAllocFlag}
+            </if>
+            <if test="condition.resAllocStatus != null">
+                and A.RES_ALLOC_STATUS = #{condition.resAllocStatus}
+            </if>
+            <if test="condition.partAmount != null">
+                and A.PART_AMOUNT = #{condition.partAmount}
+            </if>
+            <if test="condition.subPartAmount != null">
+                and A.SUB_PART_AMOUNT = #{condition.subPartAmount}
+            </if>
+            <if test="condition.uuid != null">
+                and A.UUID = #{condition.uuid}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        A.HOST_ITEM_ID, A.HOST_ITEM_TYPE_CODE, A.SUP_HOST_ITEM_ID, A.RES_HOST_SID, A.RELATE_RES_SID, A.HOST_ITEM_DESC,
+        A.HOST_ITEM_INDEX, A.HOST_ITEM_ADDR, A.ITEM_LOCATION, A.RES_ALLOC_FLAG, A.RES_ALLOC_STATUS,
+        A.PART_AMOUNT, A.SUB_PART_AMOUNT, A.UUID, A.MAC_ADDRESS, A.WWPN
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        B.CODE_DISPLAY as HOST_ITEM_TYPE_CODE_NAME,
+        C.VM_NAME as OWNER,
+        <include refid="Base_Column_List"/>,
+        if(A.HOST_ITEM_TYPE_CODE = 3,A.MAC_ADDRESS,A.WWPN) as WWPN
+        from res_host_item A
+        LEFT JOIN sys_m_code B on (A.HOST_ITEM_TYPE_CODE = B.CODE_VALUE AND B.CODE_CATEGORY='HOST_ITEM_TYPE_CODE')
+        LEFT JOIN res_vm C on (A.RELATE_RES_SID = C.RES_VM_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByPowerVe" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        A.*
+        from res_host_item A
+        LEFT JOIN res_host B ON (A.RES_HOST_SID=B.RES_HOST_SID)
+        WHERE B.PARENT_TOPOLOGY_SID=#{resVeSid}
+
+    </select>
+
+    <select id="selectByPowerVeForIo" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        A.*
+        from res_host_item A
+        LEFT JOIN res_host B ON (A.RES_HOST_SID=B.RES_HOST_SID)
+        WHERE B.PARENT_TOPOLOGY_SID=#{condition.resVeSid}
+        AND A.HOST_ITEM_TYPE_CODE IN
+        <foreach collection="condition.itemType" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectDiskItemForVd" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria"
+            resultType="com.h3c.idcloud.core.pojo.dto.res.ResHostItem">
+        SELECT
+        a.RELATE_RES_SID AS relateResSid,
+        a.UUID AS uuid,
+        SUM(
+        CASE
+        WHEN b.HOST_ITEM_TYPE_CODE = #{condition.slotItemTypeCode} THEN
+        1
+        ELSE
+        0
+        END
+        ) AS diskNum
+        FROM
+        res_host_item a
+        LEFT OUTER JOIN res_host_item b ON a.HOST_ITEM_ID = b.SUP_HOST_ITEM_ID
+        INNER JOIN res_host c ON A.RES_HOST_SID = c.RES_HOST_SID
+        WHERE
+        a.HOST_ITEM_TYPE_CODE = #{condition.hostItemTypeCode}
+        AND c.PARENT_TOPOLOGY_SID = #{condition.resVeSid}
+        GROUP BY
+        a.RELATE_RES_SID,
+        a.UUID
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_host_item A
+        where HOST_ITEM_ID = #{hostItemId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_host_item
+        where HOST_ITEM_ID = #{hostItemId}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_host_item
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResHostItem">
+        <selectKey resultType="java.lang.String" keyProperty="hostItemId" order="BEFORE">
+            SELECT UUID();
+        </selectKey>
+        insert into res_host_item (HOST_ITEM_ID, HOST_ITEM_TYPE_CODE, SUP_HOST_ITEM_ID, RES_HOST_SID, RELATE_RES_SID,
+        HOST_ITEM_DESC, HOST_ITEM_INDEX, HOST_ITEM_ADDR, ITEM_LOCATION, RES_ALLOC_FLAG,
+        RES_ALLOC_STATUS, PART_AMOUNT, SUB_PART_AMOUNT, UUID, MAC_ADDRESS, WWPN)
+        values (#{hostItemId}, #{hostItemTypeCode}, #{supHostItemId}, #{resHostSid}, #{relateResSid},
+        #{hostItemDesc}, #{hostItemIndex}, #{hostItemAddr}, #{itemLocation}, #{resAllocFlag},
+        #{resAllocStatus}, #{partAmount}, #{subPartAmount}, #{uuid}, #{macAddress}, #{wwpn})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResHostItem">
+        <selectKey resultType="java.lang.String" keyProperty="hostItemId" order="BEFORE">
+            SELECT UUID();
+        </selectKey>
+        insert into res_host_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            HOST_ITEM_ID,
+            <if test="hostItemTypeCode != null">
+                HOST_ITEM_TYPE_CODE,
+            </if>
+            <if test="supHostItemId != null">
+                SUP_HOST_ITEM_ID,
+            </if>
+            <if test="resHostSid != null">
+                RES_HOST_SID,
+            </if>
+            <if test="relateResSid != null">
+                RELATE_RES_SID,
+            </if>
+            <if test="hostItemDesc != null">
+                HOST_ITEM_DESC,
+            </if>
+            <if test="hostItemIndex != null">
+                HOST_ITEM_INDEX,
+            </if>
+            <if test="hostItemAddr != null">
+                HOST_ITEM_ADDR,
+            </if>
+            <if test="itemLocation != null">
+                ITEM_LOCATION,
+            </if>
+            <if test="resAllocFlag != null">
+                RES_ALLOC_FLAG,
+            </if>
+            <if test="resAllocStatus != null">
+                RES_ALLOC_STATUS,
+            </if>
+            <if test="partAmount != null">
+                PART_AMOUNT,
+            </if>
+            <if test="subPartAmount != null">
+                SUB_PART_AMOUNT,
+            </if>
+            <if test="uuid != null">
+                UUID,
+            </if>
+            <if test="macAddress != null">
+                MAC_ADDRESS,
+            </if>
+            <if test="wwpn != null">
+                WWPN,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{hostItemId},
+            <if test="hostItemTypeCode != null">
+                #{hostItemTypeCode},
+            </if>
+            <if test="supHostItemId != null">
+                #{supHostItemId},
+            </if>
+            <if test="resHostSid != null">
+                #{resHostSid},
+            </if>
+            <if test="relateResSid != null">
+                #{relateResSid},
+            </if>
+            <if test="hostItemDesc != null">
+                #{hostItemDesc},
+            </if>
+            <if test="hostItemIndex != null">
+                #{hostItemIndex},
+            </if>
+            <if test="hostItemAddr != null">
+                #{hostItemAddr},
+            </if>
+            <if test="itemLocation != null">
+                #{itemLocation},
+            </if>
+            <if test="resAllocFlag != null">
+                #{resAllocFlag},
+            </if>
+            <if test="resAllocStatus != null">
+                #{resAllocStatus},
+            </if>
+            <if test="partAmount != null">
+                #{partAmount},
+            </if>
+            <if test="subPartAmount != null">
+                #{subPartAmount},
+            </if>
+            <if test="uuid != null">
+                #{uuid},
+            </if>
+            <if test="macAddress != null">
+                #{macAddress},
+            </if>
+            <if test="wwpn != null">
+                #{wwpn},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_host_item
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_host_item A
+        <set>
+            <if test="record.hostItemId != null">
+                HOST_ITEM_ID = #{record.hostItemId},
+            </if>
+            <if test="record.hostItemTypeCode != null">
+                HOST_ITEM_TYPE_CODE = #{record.hostItemTypeCode},
+            </if>
+            <if test="record.supHostItemId != null">
+                SUP_HOST_ITEM_ID = #{record.supHostItemId},
+            </if>
+            <if test="record.resHostSid != null">
+                RES_HOST_SID = #{record.resHostSid},
+            </if>
+            <if test="record.relateResSid != null">
+                RELATE_RES_SID = #{record.relateResSid},
+            </if>
+            <if test="record.hostItemDesc != null">
+                HOST_ITEM_DESC = #{record.hostItemDesc},
+            </if>
+            <if test="record.hostItemIndex != null">
+                HOST_ITEM_INDEX = #{record.hostItemIndex},
+            </if>
+            <if test="record.hostItemAddr != null">
+                HOST_ITEM_ADDR = #{record.hostItemAddr},
+            </if>
+            <if test="record.itemLocation != null">
+                ITEM_LOCATION = #{record.itemLocation},
+            </if>
+            <if test="record.resAllocFlag != null">
+                RES_ALLOC_FLAG = #{record.resAllocFlag},
+            </if>
+            <if test="record.resAllocStatus != null">
+                RES_ALLOC_STATUS = #{record.resAllocStatus},
+            </if>
+            <if test="record.partAmount != null">
+                PART_AMOUNT = #{record.partAmount},
+            </if>
+            <if test="record.subPartAmount != null">
+                SUB_PART_AMOUNT = #{record.subPartAmount},
+            </if>
+            <if test="record.uuid != null">
+                UUID = #{record.uuid},
+            </if>
+            <if test="record.macAddress != null">
+                MAC_ADDRESS = #{record.macAddress},
+            </if>
+            <if test="record.wwpn != null">
+                WWPN = #{record.wwpn},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_host_item A
+        set HOST_ITEM_ID = #{record.hostItemId},
+        HOST_ITEM_TYPE_CODE = #{record.hostItemTypeCode},
+        SUP_HOST_ITEM_ID = #{record.supHostItemId},
+        RES_HOST_SID = #{record.resHostSid},
+        RELATE_RES_SID = #{record.relateResSid},
+        HOST_ITEM_DESC = #{record.hostItemDesc},
+        HOST_ITEM_INDEX = #{record.hostItemIndex},
+        HOST_ITEM_ADDR = #{record.hostItemAddr},
+        ITEM_LOCATION = #{record.itemLocation},
+        RES_ALLOC_FLAG = #{record.resAllocFlag},
+        RES_ALLOC_STATUS = #{record.resAllocStatus},
+        PART_AMOUNT = #{record.partAmount},
+        SUB_PART_AMOUNT = #{record.subPartAmount},
+        MAC_ADDRESS = #{record.macAddress},
+        WWPN = #{record.wwpn},
+        UUID = #{record.uuid}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResHostItem">
+        update res_host_item
+        <set>
+            <if test="hostItemTypeCode != null">
+                HOST_ITEM_TYPE_CODE = #{hostItemTypeCode},
+            </if>
+            <if test="supHostItemId != null">
+                SUP_HOST_ITEM_ID = #{supHostItemId},
+            </if>
+            <if test="resHostSid != null">
+                RES_HOST_SID = #{resHostSid},
+            </if>
+            <if test="relateResSid != null">
+                RELATE_RES_SID = #{relateResSid},
+            </if>
+            <if test="hostItemDesc != null">
+                HOST_ITEM_DESC = #{hostItemDesc},
+            </if>
+            <if test="hostItemIndex != null">
+                HOST_ITEM_INDEX = #{hostItemIndex},
+            </if>
+            <if test="hostItemAddr != null">
+                HOST_ITEM_ADDR = #{hostItemAddr},
+            </if>
+            <if test="itemLocation != null">
+                ITEM_LOCATION = #{itemLocation},
+            </if>
+            <if test="resAllocFlag != null">
+                RES_ALLOC_FLAG = #{resAllocFlag},
+            </if>
+            <if test="resAllocStatus != null">
+                RES_ALLOC_STATUS = #{resAllocStatus},
+            </if>
+            <if test="partAmount != null">
+                PART_AMOUNT = #{partAmount},
+            </if>
+            <if test="subPartAmount != null">
+                SUB_PART_AMOUNT = #{subPartAmount},
+            </if>
+            <if test="uuid != null">
+                UUID = #{uuid},
+            </if>
+            <if test="macAddress != null">
+                MAC_ADDRESS = #{macAddress},
+            </if>
+            <if test="wwpn != null">
+                WWPN = #{wwpn},
+            </if>
+        </set>
+        where HOST_ITEM_ID = #{hostItemId}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResHostItem">
+        update res_host_item
+        set HOST_ITEM_TYPE_CODE = #{hostItemTypeCode},
+        SUP_HOST_ITEM_ID = #{supHostItemId},
+        RES_HOST_SID = #{resHostSid},
+        RELATE_RES_SID = #{relateResSid},
+        HOST_ITEM_DESC = #{hostItemDesc},
+        HOST_ITEM_INDEX = #{hostItemIndex},
+        HOST_ITEM_ADDR = #{hostItemAddr},
+        ITEM_LOCATION = #{itemLocation},
+        RES_ALLOC_FLAG = #{resAllocFlag},
+        RES_ALLOC_STATUS = #{resAllocStatus},
+        PART_AMOUNT = #{partAmount},
+        SUB_PART_AMOUNT = #{subPartAmount},
+        MAC_ADDRESS = #{macAddress},
+        WWPN = #{wwpn},
+        UUID = #{uuid}
+        where HOST_ITEM_ID = #{hostItemId}
+    </update>
+    <select id="selectNoDiskRootHba" resultMap="BaseResultMap">
+        select * from (
+        select a.host_item_id, a.item_location, count(if(b.host_item_type_code = 'Disk', b.host_item_id, null)) as
+        diskNum
+        from res_host_item a
+        left join res_host_item b on (b.sup_host_item_id = a.host_item_id )
+        where a.res_host_sid = #{resHostSid} and a.host_item_type_code = '1' and a.res_alloc_status = 0
+        group by a.host_item_id, a.item_location
+        ) as c where c.diskNum > 0;
+    </select>
+</mapper>

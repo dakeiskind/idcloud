@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResObjStorageInstMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResObjStorageInst">
+        <id column="RES_INST_SID" property="resInstSid" jdbcType="VARCHAR"/>
+        <result column="RES_OS_SID" property="resOsSid" jdbcType="VARCHAR"/>
+        <result column="VISIT_ADDRESS" property="visitAddress" jdbcType="VARCHAR"/>
+        <result column="VISIT_KEY" property="visitKey" jdbcType="VARCHAR"/>
+        <result column="VISIT_USER" property="visitUser" jdbcType="VARCHAR"/>
+        <result column="CAPACITY" property="capacity" jdbcType="BIGINT"/>
+        <result column="MGT_OBJ_SID" property="mgtObjSid" jdbcType="VARCHAR"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP"/>
+        <result column="VERSION" property="version" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.resOsSid != null">
+                and RES_OS_SID = #{condition.resOsSid}
+            </if>
+            <if test="condition.visitAddress != null">
+                and VISIT_ADDRESS = #{condition.visitAddress}
+            </if>
+            <if test="condition.visitKey != null">
+                and VISIT_KEY = #{condition.visitKey}
+            </if>
+            <if test="condition.visitUser != null">
+                and VISIT_USER = #{condition.visitUser}
+            </if>
+            <if test="condition.capacity != null">
+                and CAPACITY = #{condition.capacity}
+            </if>
+            <if test="condition.mgtObjSid != null">
+                and MGT_OBJ_SID = #{condition.mgtObjSid}
+            </if>
+            <if test="condition.uuid != null">
+                and UUID = #{condition.uuid}
+            </if>
+            <if test="condition.status != null">
+                and STATUS = #{condition.status}
+            </if>
+            <if test="condition.createdBy != null">
+                and CREATED_BY = #{condition.createdBy}
+            </if>
+            <if test="condition.createdDt != null">
+                and CREATED_DT = #{condition.createdDt}
+            </if>
+            <if test="condition.updatedBy != null">
+                and UPDATED_BY = #{condition.updatedBy}
+            </if>
+            <if test="condition.updatedDt != null">
+                and UPDATED_DT = #{condition.updatedDt}
+            </if>
+            <if test="condition.version != null">
+                and VERSION = #{condition.version}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        RES_INST_SID, RES_OS_SID, VISIT_ADDRESS, VISIT_KEY, VISIT_USER, CAPACITY, UUID, STATUS,
+        CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION, MGT_OBJ_SID
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from res_obj_storage_inst
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_obj_storage_inst
+        where RES_INST_SID = #{resInstSid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_obj_storage_inst
+        where RES_INST_SID = #{resInstSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_obj_storage_inst
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResObjStorageInst">
+        insert into res_obj_storage_inst (RES_INST_SID, RES_OS_SID, VISIT_ADDRESS, VISIT_KEY, VISIT_USER, CAPACITY,
+        UUID, STATUS, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION, MGT_OBJ_SID
+        )
+        values (#{resInstSid}, #{resOsSid}, #{visitAddress}, #{visitKey}, #{visitUser}, #{capacity},
+        #{uuid}, #{status}, #{createdBy}, #{createdDt}, #{updatedBy}, #{updatedDt}, #{version}, #{mgtObjSid}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResObjStorageInst">
+        <selectKey resultType="java.lang.String" keyProperty="resInstSid" order="BEFORE">
+            select UUID()
+        </selectKey>
+        insert into res_obj_storage_inst
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="resInstSid != null">
+                RES_INST_SID,
+            </if>
+            <if test="resOsSid != null">
+                RES_OS_SID,
+            </if>
+            <if test="visitAddress != null">
+                VISIT_ADDRESS,
+            </if>
+            <if test="visitKey != null">
+                VISIT_KEY,
+            </if>
+            <if test="visitUser != null">
+                VISIT_USER,
+            </if>
+            <if test="capacity != null">
+                CAPACITY,
+            </if>
+            <if test="mgtObjSid != null">
+                MGT_OBJ_SID,
+            </if>
+            <if test="uuid != null">
+                UUID,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+            <if test="version != null">
+                VERSION,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="resInstSid != null">
+                #{resInstSid},
+            </if>
+            <if test="resOsSid != null">
+                #{resOsSid},
+            </if>
+            <if test="visitAddress != null">
+                #{visitAddress},
+            </if>
+            <if test="visitKey != null">
+                #{visitKey},
+            </if>
+            <if test="visitUser != null">
+                #{visitUser},
+            </if>
+            <if test="capacity != null">
+                #{capacity},
+            </if>
+            <if test="mgtObjSid != null">
+                #{mgtObjSid},
+            </if>
+            <if test="uuid != null">
+                #{uuid},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_obj_storage_inst
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_obj_storage_inst
+        <set>
+            <if test="record.resInstSid != null">
+                RES_INST_SID = #{record.resInstSid},
+            </if>
+            <if test="record.resOsSid != null">
+                RES_OS_SID = #{record.resOsSid},
+            </if>
+            <if test="record.visitAddress != null">
+                VISIT_ADDRESS = #{record.visitAddress},
+            </if>
+            <if test="record.visitKey != null">
+                VISIT_KEY = #{record.visitKey},
+            </if>
+            <if test="record.visitUser != null">
+                VISIT_USER = #{record.visitUser},
+            </if>
+            <if test="record.capacity != null">
+                CAPACITY = #{record.capacity},
+            </if>
+            <if test="record.mgtObjSid != null">
+                MGT_OBJ_SID = #{record.mgtObjSid},
+            </if>
+            <if test="record.uuid != null">
+                UUID = #{record.uuid},
+            </if>
+            <if test="record.status != null">
+                STATUS = #{record.status},
+            </if>
+            <if test="record.createdBy != null">
+                CREATED_BY = #{record.createdBy},
+            </if>
+            <if test="record.createdDt != null">
+                CREATED_DT = #{record.createdDt},
+            </if>
+            <if test="record.updatedBy != null">
+                UPDATED_BY = #{record.updatedBy},
+            </if>
+            <if test="record.updatedDt != null">
+                UPDATED_DT = #{record.updatedDt},
+            </if>
+            <if test="record.version != null">
+                VERSION = #{record.version},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_obj_storage_inst
+        set RES_INST_SID = #{record.resInstSid},
+        RES_OS_SID = #{record.resOsSid},
+        VISIT_ADDRESS = #{record.visitAddress},
+        VISIT_KEY = #{record.visitKey},
+        VISIT_USER = #{record.visitUser},
+        CAPACITY = #{record.capacity},
+        MGT_OBJ_SID = #{record.mgtObjSid},
+        UUID = #{record.uuid},
+        STATUS = #{record.status},
+        CREATED_BY = #{record.createdBy},
+        CREATED_DT = #{record.createdDt},
+        UPDATED_BY = #{record.updatedBy},
+        UPDATED_DT = #{record.updatedDt},
+        VERSION = #{record.version}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResObjStorageInst">
+        update res_obj_storage_inst
+        <set>
+            <if test="resOsSid != null">
+                RES_OS_SID = #{resOsSid},
+            </if>
+            <if test="visitAddress != null">
+                VISIT_ADDRESS = #{visitAddress},
+            </if>
+            <if test="visitKey != null">
+                VISIT_KEY = #{visitKey},
+            </if>
+            <if test="visitUser != null">
+                VISIT_USER = #{visitUser},
+            </if>
+            <if test="capacity != null">
+                CAPACITY = #{capacity},
+            </if>
+            <if test="mgtObjSid != null">
+                MGT_OBJ_SID = #{mgtObjSid},
+            </if>
+            <if test="uuid != null">
+                UUID = #{uuid},
+            </if>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt},
+            </if>
+            <if test="version != null">
+                VERSION = #{version},
+            </if>
+        </set>
+        where RES_INST_SID = #{resInstSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResObjStorageInst">
+        update res_obj_storage_inst
+        set RES_OS_SID = #{resOsSid},
+        VISIT_ADDRESS = #{visitAddress},
+        VISIT_KEY = #{visitKey},
+        VISIT_USER = #{visitUser},
+        CAPACITY = #{capacity},
+        MGT_OBJ_SID = #{mgtObjSid},
+        UUID = #{uuid},
+        STATUS = #{status},
+        CREATED_BY = #{createdBy},
+        CREATED_DT = #{createdDt},
+        UPDATED_BY = #{updatedBy},
+        UPDATED_DT = #{updatedDt},
+        VERSION = #{version}
+        where RES_INST_SID = #{resInstSid}
+    </update>
+</mapper>

@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.order.dao.OrderMapper" >
+
+  <resultMap id="BaseVoResultMap" type="com.h3c.idcloud.core.pojo.vo.order.UserOrderVo">
+    <result column="ORDER_ID" property="orderId" jdbcType="VARCHAR" />
+    <result column="ORDER_NAME" property="orderName" jdbcType="VARCHAR" />
+    <result column="SERVICE_NAME" property="serviceName" jdbcType="VARCHAR" />
+    <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+    <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="DREDGE_DATE" property="dredgeDate" jdbcType="TIMESTAMP" />
+    <result column="TIME_PURCHASE" property="timePurchase" jdbcType="TIMESTAMP" />
+    <result column="ORDER_TYPE_NAME" property="orderTypeName" jdbcType="VARCHAR" />
+    <collection property="orderDetails"  javaType="java.util.ArrayList" ofType="com.h3c.idcloud.core.pojo.vo.order.UserOrderDetailVo"
+                column="ORDER_ID" select="com.h3c.idcloud.core.persist.order.dao.OrderDetailMapper.selectOrderDetailsByOrderId"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.order.Order" >
+    <id column="ORDER_SID" property="orderSid" jdbcType="BIGINT" />
+    <result column="ORDER_ID" property="orderId" jdbcType="VARCHAR" />
+    <result column="ORDER_NAME" property="orderName" jdbcType="VARCHAR" />
+    <result column="MGT_OBJ_SID" property="mgtObjSid" jdbcType="VARCHAR" />
+    <result column="OWNER_ID" property="ownerId" jdbcType="VARCHAR" />
+    <result column="CONTRACT_ID" property="contractId" jdbcType="VARCHAR" />
+    <result column="PROJECT_ID" property="projectId" jdbcType="VARCHAR" />
+    <result column="CONTRACT_FILE" property="contractFile" jdbcType="VARCHAR" />
+    <result column="PROJECT_FILE" property="projectFile" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="ORDER_TYPE" property="orderType" jdbcType="VARCHAR" />
+    <result column="ORDER_TYPE_NAME" property="orderTypeName" jdbcType="VARCHAR" />
+    <result column="STATUSAPPLICATION" property="statusapplication" jdbcType="VARCHAR" />
+    <result column="STATUSOPENED" property="statusopened" jdbcType="VARCHAR" />
+    <result column="STATUSREFUSED" property="statusrefused" jdbcType="VARCHAR" />
+    <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR" />
+    <result column="EXPECTED_TIME" property="expectedTime" jdbcType="TIMESTAMP" />
+    <result column="DREDGE_DATE" property="dredgeDate" jdbcType="TIMESTAMP" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+    <result column="SERVICE_SID" property="serviceSid" jdbcType="BIGINT" />
+    <result column="PROCESS_INSTANCE_ID" property="processInstanceId" jdbcType="VARCHAR" />
+    <result column="SERVICE_NAME" property="serviceName" jdbcType="VARCHAR" />
+    <result column="TENANT_NAME" property="tenantName" jdbcType="VARCHAR" />
+    <result column="TENANT_SHORT_NAME" property="tenantShortName" jdbcType="VARCHAR" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="APPROVE_OPINION" property="approveOpinion" jdbcType="VARCHAR" />
+    <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+    <result column="TIME_PURCHASE" property="timePurchase" jdbcType="TIMESTAMP" />
+    
+
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.orderId != null" >
+         and A.ORDER_ID = #{condition.orderId}
+      </if>
+      <!--<if test="condition.mgtObjSid != null" >-->
+         <!--and F.MGT_OBJ_SID = #{condition.mgtObjSid}-->
+      <!--</if>-->
+      <if test="condition.mgtObjSids != null" >
+         and A.MGT_OBJ_SID in 
+         <foreach item="item" index="index" collection="condition.mgtObjSids"
+                        open="(" separator="," close=")">  
+                       #{item}  
+         </foreach>  
+      </if>
+       <if test="condition.orderIdLike != null" >
+       	 and A.ORDER_ID like concat('%', #{condition.orderIdLike}, '%') 
+      </if>
+      <if test="condition.orderName != null" >
+         and A.ORDER_NAME = #{condition.orderName}
+      </if>
+      <if test="condition.serviceSid != null" >
+         and B.SERVICE_SID = #{condition.serviceSid}
+      </if>
+      <if test="condition.serviceNameLikeD != null" >
+       	 and D.SERVICE_NAME like concat('%', #{condition.serviceNameLikeD}, '%')
+      </if>
+      <if test="condition.serviceNameLike != null" >
+        and A.SERVICE_NAME like concat('%', #{condition.serviceNameLike}, '%')
+      </if>
+      <if test="condition.orderNameLike != null" >
+         and A.ORDER_NAME like concat('%', #{condition.orderNameLike}, '%') 
+      </if>
+      <if test="condition.mgtObjSid != null" >
+         and A.MGT_OBJ_SID = #{condition.mgtObjSid}
+      </if>
+      <if test="condition.tanentNameLike != null" >
+         and E.TENANT_NAME like concat('%', #{condition.tanentNameLike}, '%') 
+      </if>
+      <if test="condition.mgtObjNameLike != null" >
+         and E.NAME like concat('%', #{condition.mgtObjNameLike}, '%') 
+      </if>
+      <if test="condition.ownerId != null" >
+         and A.OWNER_ID = #{condition.ownerId}
+      </if>
+      <if test="condition.ownerIdLike != null" >
+         and A.OWNER_ID like concat('%', #{condition.ownerIdLike}, '%') 
+      </if>
+      <if test="condition.status != null" >
+         and A.STATUS = #{condition.status}
+      </if>
+      <!--
+      <if test="condition.orderType != null" >
+        and A.ORDER_TYPE = #{condition.orderType}
+      </if>
+      -->
+      <if test="condition.expectedTime != null" >
+         and A.EXPECTED_TIME = #{condition.expectedTime}
+      </if>
+      <if test="condition.expectedFromDate != null" >
+         and A.EXPECTED_TIME >= #{condition.expectedFromDate}
+      </if>
+      <if test="condition.expectedToDate != null" >
+         and A.EXPECTED_TIME <![CDATA[ <= #{condition.expectedToDate} ]]>
+      </if>
+      <if test="condition.dredgeDate != null" >
+         and A.DREDGE_DATE = #{condition.dredgeDate}
+      </if>
+     <if test="condition.dredgeFromDate != null" >
+         and A.DREDGE_DATE >= #{condition.dredgeFromDate}
+      </if>
+      <if test="condition.dredgeToDate != null" >
+         and A.DREDGE_DATE <![CDATA[ <= #{condition.dredgeToDate} ]]>
+      </if>
+      <if test="condition.createdBy != null" >
+         and A.CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.startTime != null" >
+         and A.CREATED_DT <![CDATA[ >=str_to_date(#{condition.startTime},'%Y-%m-%d %H:%i')]]>
+      </if>
+      <if test="condition.endTime != null" >
+          and A.CREATED_DT <![CDATA[ <=str_to_date(#{condition.endTime} ,'%Y-%m-%d %H:%i')]]>
+      </if>
+      <if test="condition.createdDt != null" >
+         and A.CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and A.UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and A.UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and A.VERSION = #{condition.version}
+      </if>
+      <if test="condition.amount != null" >
+        and A.AMOUNT = #{condition.amount}
+      </if>
+      <if test="condition.timePurchase != null" >
+        and A.TIME_PURCHASE = #{condition.timePurchase}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    A.ORDER_SID, A.ORDER_ID, A.ORDER_NAME, A.MGT_OBJ_SID, A.OWNER_ID,A.CONTRACT_ID,A.PROJECT_ID,A.CONTRACT_FILE,A.PROJECT_FILE, A.STATUS, A.EXPECTED_TIME, A.DREDGE_DATE, A.CREATED_BY, 
+    A.CREATED_DT, A.UPDATED_BY, A.UPDATED_DT, A.VERSION,A.AMOUNT,A.TIME_PURCHASE,A.SERVICE_NAME,A.SERVICE_SID,A.ORDER_TYPE
+  </sql>
+  <select id="selectPersonalOrderList" resultMap="BaseVoResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+    SELECT
+    A.ORDER_ID,
+    A.ORDER_NAME,
+    A.SERVICE_NAME,
+    A.AMOUNT,
+    C.CODE_DISPLAY AS STATUS_NAME,
+    A.CREATED_DT,
+    A.DREDGE_DATE,
+    L.CODE_DISPLAY AS ORDER_TYPE_NAME,
+    A.TIME_PURCHASE
+    from service_order A
+    left join sys_m_code C ON (A.STATUS = C.CODE_VALUE AND C.CODE_CATEGORY = 'ORDER_STATUS' )
+    left join sys_m_mgt_obj E on (A.MGT_OBJ_SID = E.MGT_OBJ_SID)
+    left join sys_m_user F on(A.OWNER_ID=F.ACCOUNT)
+    left join SYS_M_CODE L on(L.CODE_CATEGORY = 'ORDER_TYPE'and A.ORDER_TYPE = L.CODE_VALUE)
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    GROUP BY A.ORDER_SID
+    <if test="orderByClause != null" >
+      order by ${orderByClause} desc
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+     distinct
+     C.CODE_DISPLAY AS STATUS_NAME,
+     E.NAME AS TENANT_NAME,
+<!--      E.TENANT_SHORT_NAME AS TENANT_SHORT_NAME, -->
+     F.REAL_NAME AS USER_NAME,
+     G.APPROVE_OPINION as APPROVE_OPINION,
+    M.CODE_DISPLAY AS ORDER_TYPE_NAME,
+    <include refid="Base_Column_List" />
+    from service_order A 
+    left join sys_m_code C ON (A.STATUS = C.CODE_VALUE AND C.CODE_CATEGORY = 'ORDER_STATUS' )
+    left join SYS_M_CODE M on(M.CODE_CATEGORY = 'ORDER_TYPE'and A.ORDER_TYPE = M.CODE_VALUE)
+    left join sys_m_mgt_obj E on (A.MGT_OBJ_SID = E.MGT_OBJ_SID)
+    left join sys_m_user F on(A.OWNER_ID=F.ACCOUNT)
+    left join service_order_detail H on (A.ORDER_ID = H.ORDER_ID)
+    left join (select * from approve_record L order by L.APPROVE_RECORD_SID desc) G on (H.PROCESS_INSTANCE_ID = G.PROCESS_INSTANCE_ID)
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+      GROUP BY A.ORDER_SID 
+    <if test="orderByClause != null" >
+      order by ${orderByClause} desc 
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+     distinct
+     C.CODE_DISPLAY AS STATUS_NAME,
+    <include refid="Base_Column_List" />
+    from service_order A
+    left join sys_m_code C ON
+    (A.STATUS = C.CODE_VALUE AND C.CODE_CATEGORY = 'ORDER_STATUS' )
+    where ORDER_SID = #{orderSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from service_order
+    where ORDER_SID = #{orderSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from service_order A
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.order.Order" >
+    insert into service_order (ORDER_SID, ORDER_ID, ORDER_NAME, MGT_OBJ_SID, OWNER_ID, STATUS, 
+      EXPECTED_TIME, DREDGE_DATE, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION,AMOUNT,TIME_PURCHASE,SERVICE_NAME,SERVICE_SID,ORDER_TYPE
+      )
+    values (#{orderSid}, #{orderId}, #{orderName}, #{mgtObjSid}, #{ownerId}, #{status}, 
+      #{expectedTime}, #{dredgeDate}, #{createdBy}, #{createdDt}, #{updatedBy}, #{updatedDt}, #{version}, #{amount}, #{timePurchase}, #{serviceName}, #{serviceSid}, #{orderType}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.order.Order" >
+    <selectKey resultType="java.lang.Long" keyProperty="orderSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SERVICE_ORDER')
+    </selectKey>
+    insert into service_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        ORDER_SID,
+      <if test="orderId != null" >
+        ORDER_ID,
+      </if>
+      <if test="orderName != null" >
+        ORDER_NAME,
+      </if>
+      <if test="mgtObjSid != null" >
+        MGT_OBJ_SID,
+      </if>
+      <if test="ownerId != null" >
+        OWNER_ID,
+      </if>
+      <if test="contractId != null">
+		CONTRACT_ID,
+	  </if>
+	  <if test="projectId != null">
+		PROJECT_ID,
+	  </if>
+	  <if test="contractFile != null">
+		CONTRACT_FILE,
+	  </if>
+	  <if test="projectFile != null">
+		PROJECT_FILE,
+	  </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="expectedTime != null" >
+        EXPECTED_TIME,
+      </if>
+      <if test="dredgeDate != null" >
+        DREDGE_DATE,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+      <if test="amount != null" >
+        AMOUNT,
+      </if>
+      <if test="timePurchase != null" >
+        TIME_PURCHASE,
+      </if>
+      <if test="serviceName != null" >
+        SERVICE_NAME,
+      </if>
+      <if test="serviceSid != null" >
+        SERVICE_SID,
+      </if>
+      <if test="orderType != null" >
+        ORDER_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{orderSid},
+      <if test="orderId != null" >
+        #{orderId},
+      </if>
+      <if test="orderName != null" >
+        #{orderName},
+      </if>
+      <if test="mgtObjSid != null" >
+        #{mgtObjSid},
+      </if>
+      <if test="ownerId != null" >
+        #{ownerId},
+      </if>
+      <if test="contractId != null">
+		#{contractId},
+	  </if>
+	  <if test="projectId != null">
+		#{projectId},
+	  </if>
+	  <if test="contractFile != null">
+		#{contractFile},
+	  </if>
+	  <if test="projectFile != null">
+		#{projectFile},
+	  </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="expectedTime != null" >
+        #{expectedTime},
+      </if>
+      <if test="dredgeDate != null" >
+        #{dredgeDate},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+      <if test="amount != null" >
+        #{amount},
+      </if>
+      <if test="timePurchase != null" >
+        #{timePurchase},
+      </if>
+      <if test="serviceName != null" >
+        #{serviceName},
+      </if>
+      <if test="serviceSid != null" >
+        #{serviceSid},
+      </if>
+      <if test="orderType != null" >
+        #{orderType},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from service_order A
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update service_order
+    <set >
+      <if test="record.orderSid != null" >
+        ORDER_SID = #{record.orderSid},
+      </if>
+      <if test="record.orderId != null" >
+        ORDER_ID = #{record.orderId},
+      </if>
+      <if test="record.orderName != null" >
+        ORDER_NAME = #{record.orderName},
+      </if>
+      <if test="record.mgtObjSid != null" >
+        MGT_OBJ_SID = #{record.mgtObjSid},
+      </if>
+      <if test="record.ownerId != null" >
+        OWNER_ID = #{record.ownerId},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status},
+      </if>
+      <if test="record.expectedTime != null" >
+        EXPECTED_TIME = #{record.expectedTime},
+      </if>
+      <if test="record.dredgeDate != null" >
+        DREDGE_DATE = #{record.dredgeDate},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+      <if test="record.amount != null" >
+        AMOUNT = #{record.amount},
+      </if>
+      <if test="record.timePurchase != null" >
+        TIME_PURCHASE = #{record.timePurchase},
+      </if>
+      <if test="record.serviceName != null" >
+        SERVICE_NAME = #{record.serviceName},
+      </if>
+      <if test="record.serviceSid != null" >
+        SERVICE_SID = #{record.serviceSid},
+      </if>
+      <if test="record.orderType != null" >
+      ORDER_TYPE = #{record.orderType},
+    </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update service_order
+    set ORDER_SID = #{record.orderSid},
+      ORDER_ID = #{record.orderId},
+      ORDER_NAME = #{record.orderName},
+      MGT_OBJ_SID = #{record.mgtObjSid},
+      OWNER_ID = #{record.ownerId},
+      STATUS = #{record.status},
+      EXPECTED_TIME = #{record.expectedTime},
+      DREDGE_DATE = #{record.dredgeDate},
+      AMOUNT = #{record.amount},
+      SERVICE_NAME = #{record.serviceName},
+      SERVICE_SID = #{record.serviceSid},
+      ORDER_TYPE = #{record.orderType},
+      TIME_PURCHASE = #{record.timePurchase},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.order.Order" >
+    update service_order
+    <set >
+      <if test="orderId != null" >
+        ORDER_ID = #{orderId},
+      </if>
+      <if test="orderName != null" >
+        ORDER_NAME = #{orderName},
+      </if>
+      <if test="mgtObjSid != null" >
+        MGT_OBJ_SID = #{mgtObjSid},
+      </if>
+      <if test="ownerId != null" >
+        OWNER_ID = #{ownerId},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status},
+      </if>
+      <if test="expectedTime != null" >
+        EXPECTED_TIME = #{expectedTime},
+      </if>
+      <if test="dredgeDate != null" >
+        DREDGE_DATE = #{dredgeDate},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+      <if test="amount != null" >
+        AMOUNT = #{amount},
+      </if>
+      <if test="timePurchase != null" >
+        TIME_PURCHASE = #{timePurchase},
+      </if>
+      <if test="serviceName != null" >
+        SERVICE_NAME = #{serviceName},
+      </if>
+      <if test="serviceSid != null" >
+        SERVICE_SID = #{serviceSid},
+      </if>
+      <if test="orderType != null" >
+        ORDER_TYPE = #{orderType},
+      </if>
+    </set>
+    where ORDER_SID = #{orderSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.order.Order" >
+    update service_order
+    set ORDER_ID = #{orderId},
+      ORDER_NAME = #{orderName},
+      MGT_OBJ_SID = #{mgtObjSid},
+      OWNER_ID = #{ownerId},
+      STATUS = #{status},
+      EXPECTED_TIME = #{expectedTime},
+      DREDGE_DATE = #{dredgeDate},
+      AMOUNT = #{amount},
+      TIME_PURCHASE = #{timePurchase},
+      SERVICE_NAME = #{serviceName},
+      SERVICE_SID = #{serviceSid},
+      ORDER_TYPE = #{orderType},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version}
+    where ORDER_SID = #{orderSid}
+  </update>
+   <select id="selectByOrderStatusInMonth" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+  	 SELECT 
+  	 <if test="distinct" >
+      distinct
+    </if>
+  		 count(CASE A.STATUS WHEN '02'THEN 1 ELSE NULL END) AS STATUSAPPLICATION, 
+  		 count(CASE A.STATUS WHEN '05'THEN 1 ELSE NULL END) AS STATUSOPENED,
+		 count(CASE A.STATUS WHEN '98'THEN 1 ELSE NULL END) AS STATUSREFUSED 
+     FROM service_order A
+     WHERE DATE_FORMAT(CREATED_DT, '%y%M') = DATE_FORMAT(CURDATE(), '%y%M') and A.OWNER_ID = #{condition.ownerId}
+   </select>
+   <select id="selectByOrderStatusInAll" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+  	 SELECT 
+  	 <if test="distinct" >
+      distinct
+    </if>
+  		 count(CASE A.STATUS WHEN '02'THEN 1 ELSE NULL END) AS STATUSAPPLICATION, 
+  		 count(CASE A.STATUS WHEN '05'THEN 1 ELSE NULL END) AS STATUSOPENED,
+		 count(CASE A.STATUS WHEN '98'THEN 1 ELSE NULL END) AS STATUSREFUSED 
+     FROM service_order A
+    WHERE A.OWNER_ID = #{condition.ownerId}
+   </select>
+
+  <select id="selectOrderByOrderId" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    distinct
+    C.CODE_DISPLAY AS STATUS_NAME,
+    <include refid="Base_Column_List" />
+    from service_order A
+    left join sys_m_code C ON
+    (A.STATUS = C.CODE_VALUE AND C.CODE_CATEGORY = 'ORDER_STATUS' )
+    where A.ORDER_ID = #{orderId}
+
+  </select>
+</mapper>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+
+    <display-name>rest-war</display-name>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext.xml</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>resteasy.logger.type</param-name>
+        <param-value>SLF4J</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>resteasy.providers</param-name>
+        <param-value>com.h3c.idcloud.infrastructure.common.exception.handle.RestExceptionHandler,com.h3c.idcloud.core.rest.war.provider.JacksonProviderConfig</param-value>
+    </context-param>
+
+    <!-- RESTEasy configuration -->
+    <listener>
+        <listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
+    </listener>
+
+    <!-- RESTEasy <-> Spring connector (RESTEasy can access Spring beans) -->
+    <listener>
+        <listener-class>org.jboss.resteasy.plugins.spring.SpringContextLoaderListener</listener-class>
+    </listener>
+
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- web 跨域 -->
+    <filter>
+        <filter-name>CORS</filter-name>
+        <filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>
+        <init-param>
+            <param-name>cors.allowOrigin</param-name>
+            <param-value>*</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.supportedMethods</param-name>
+            <param-value>GET, POST, HEAD, OPTIONS, PUT, DELETE</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.supportedHeaders</param-name>
+            <param-value>*</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.supportsCredentials</param-name>
+            <param-value>false</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CORS</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- RESTEasy HTTP Request processor -->
+    <context-param>
+        <param-name>resteasy.servlet.mapping.prefix</param-name>
+        <param-value>/rest</param-value>
+    </context-param>
+    <servlet>
+        <servlet-name>restservlet</servlet-name>
+        <servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
+    </servlet>
+
+    <!-- NEVER map servlet to root context "/*" ! -->
+    <servlet-mapping>
+        <servlet-name>restservlet</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
+</web-app>

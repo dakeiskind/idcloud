@@ -1,0 +1,267 @@
+@charset "utf-8";
+/* CSS Document */
+/*header*/
+.scroll-item{
+	position: relative;
+	background-color: #0070cc;
+	text-align: center;
+	margin-bottom: 7px;
+	border-radius: 3px;
+	height: 36px;
+}
+.scroll-icon{
+	width: 36px;
+	height: 36px;
+	display: inline-block;
+	border-radius: 3px;
+}
+.scroll-item-call{
+	width: 210px;
+	top: 1px;
+	color: #5c5c5b;
+	right:47px;
+	position: absolute;
+	text-align: center;
+}
+.tc-bubble-inner,.tc-bubble-inner2{
+	font-size: 12px;
+	padding: 3px 5px;
+	box-sizing: border-box;
+	padding: 8px 10px;
+	border: 1px solid #e4e6e9;
+	border-radius: 2px;
+	background-color: #F4F4F4;
+	line-height: 1.6;
+	position: static!important;
+	left: 50%;
+	top: 50%;
+}
+.tc-bubble-inner:BEFORE,.tc-bubble-inner:AFTER{
+	position:absolute;
+	content:"\00a0";
+	display:inline-block;
+	width:0px;
+	height:0px;
+	border-width:10px 5px 10px 15px;
+	border-style:solid;
+	border-color:transparent transparent transparent #F4F4F4;
+	right:-15px;
+	top:15px;
+}
+.tc-bubble-inner2:BEFORE,.tc-bubble-inner2:AFTER{
+	position:absolute;
+	content:"\00a0";
+	display:inline-block;
+	width:0px;
+	height:0px;
+	border-width:10px 5px 10px 15px;
+	border-style:solid;
+	border-color:transparent transparent transparent #F4F4F4;
+	right:-15px;
+	top:68px;
+}
+.des-text{
+	color: #5c5c5b;
+	font-size: 14px;
+	text-align: center;
+	margin: 0;
+	padding: 0;
+}
+body{
+	margin:0px;
+	min-width:100px;
+	font-family:arial,"Microsoft Yahei","Hiragino Sans GB",sans-serif;
+	}
+.top{
+
+	height:90px;
+	width:100%;
+	}
+.top_01_bk{
+	height:28px;
+	width:100%;
+	background-color: rgba(0,0,0,.85);
+	}
+.top_02_bk{
+	height:62px;
+	width:100%;
+	background:url("../../images/nav_bgp.png");
+
+	}
+.top_01{
+	padding-top:5px;
+	color:#888888;
+	text-align:right;
+	font-size:12px;
+	height:28px;
+	width:1024px;
+	}
+/*.top_01 a{*/
+	/*font-size:12px;*/
+	/*text-decoration:none;*/
+	/*padding:0px 10px;*/
+	/*color:#cecece;*/
+	/*}*/
+.top_01 a:hover{
+	color:#eeeeee;
+	}
+.top_02{
+	color:#fff;
+	height:90px;
+	width:1024px;
+	}
+.logo{
+    position: relative;
+	margin-top:10px;
+	float:left;
+	width:180px;
+	height:46px;
+    text-align: left;
+	}
+.menu_bk{
+	height:62px;
+	float:right;
+	}
+.maimenu_bar{
+	padding:21px 30px;
+	line-height:62px;
+	color:#ffffff;
+	text-decoration:none;
+	font-size:16px;
+	}
+.mainmenu{
+	float:left;
+	}
+.maimenu_bar:hover{
+	 padding:21px 30px;
+	color:#0089D3;
+	border-bottom:1px #0089EF solid;
+
+	text-decoration:none;
+	font-size:16px;
+	}
+.second_menu{
+	position:absolute;
+	top:89px;
+	left:40%;
+	height:200px;
+	width:560px;
+	border:1px #cccccc solid;
+	background:#f8f8f8;
+	}
+.second_menu_box{
+	display:block;
+	height:200px;
+	font-size:14px;
+	line-height:40px;
+	font-weight:normal;
+	color:#000000;
+	text-align:left;
+	}
+.second_menu_box li{
+	list-style:none;
+	font-size:12px;
+	line-height:24px;
+	font-weight: normal;
+	color:#333333;
+	}
+.second_menu_box li a{
+	text-decoration:none;
+	list-style:none;
+	font-size:12px;
+	line-height:24px;
+	font-weight: normal;
+	color:#333333;
+	}
+.second_menu_box li a:hover{
+	color:#0090ff;
+	text-decoration: underline;
+	}
+.second_menu_txt{
+	float:left;
+	margin:0px 20px;
+	}
+
+/*=============================footer===============================*/
+
+.footer{
+	height:280px;
+	width:100%;
+	}
+.footer_01_bk{
+	height:200px;
+	width:100%;
+	background:#252525;
+	}
+.footer_02_bk{
+	height:44px;
+	width:100%;
+	background:#252525;
+	}
+.footer_02{
+	color:#888888;
+	font-size:14px;
+	line-height:44px;
+	width:1024px;
+	}
+.footer_02 a{
+	font-size:14px;
+	text-decoration:none;
+	padding:0px 10px;
+	color:#cecece;
+	}
+.footer_02 a:hover{
+	color:#eeeeee;
+	}
+.footer_03_bk{
+	height:36px;
+	width:100%;
+	background:#191919;
+	}
+.footer_03{
+	color:#bbbbbb;
+	font-size:12px;
+	line-height:36px;
+	width:1024px;
+	}
+.footer_01{
+	width:1024px;
+	}
+.footer_box{
+	display:block;
+	width:680px;
+	height:180px;
+	font-size:14px;
+	line-height:40px;
+	font-weight:normal;
+	color:#ffffff;
+	text-align:left;
+	}
+.footer_box li{
+	list-style:none;
+	font-size:12px;
+	line-height:24px;
+	font-weight: normal;
+	color:#d4d4d4;
+	}
+.footer_box li a{
+	text-decoration:none;
+	list-style:none;
+	font-size:12px;
+	line-height:24px;
+	font-weight: normal;
+	color:#d4d4d4;
+	}
+.footer_box li a:hover{
+	color:#ffffff;
+	text-decoration: underline;
+	}
+.footer_txt{
+	float:left;
+	margin:0px 20px;
+	}
+.weibo_logo{
+	position:relative;
+	top:5px;
+	margin-right:4px;
+	}

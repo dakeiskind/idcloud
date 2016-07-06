@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <title>金贸云 - 注册</title>
+    <link rel="icon" href="topfooter/images/favicon.ico" type="image/x-icon" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="css/pintuer.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link href="css/index.css" rel="stylesheet" type="text/css">
+    <link href="css/custom.css" rel="stylesheet" type="text/css">
+    <link href="css/slider.css" rel="stylesheet">
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/public.js"></script>
+    <script type="text/javascript" src="js/pintuer.js"></script>
+    <script type="text/javascript" src="js/register.js"></script>
+    <script type="text/javascript" src="js/js.cookie.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/jquery.base64.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //获取短信验证码
+            var validCode = true;
+            $(".msgs").click (function () {
+                var time = 60;
+                var code = $(this);
+                if (validCode) {
+                    validCode = false;
+                    code.addClass("msgs1");
+                    var t = setInterval(function () {
+                        time--;
+                        code.html(time + "秒");
+                        if (time == 0) {
+                            clearInterval(t);
+                            code.html("重新获取");
+                            validCode = true;
+                            code.removeClass("msgs1");
+
+                        }
+                    }, 1000)
+                }
+            })
+        })
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#confirmPassword').keyup(function () {
+                var strongRegex = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
+                var mediumRegex = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
+                var enoughRegex = new RegExp("(?=.{6,}).*", "g");
+
+                if (false == enoughRegex.test($(this).val())) {
+                    $('#level').removeClass('pw-weak');
+                    $('#level').removeClass('pw-medium');
+                    $('#level').removeClass('pw-strong');
+                    $('#level').addClass('pw-defule');
+                    //密码小于六位的时候，密码强度图片都为灰色
+                }
+                else if (strongRegex.test($(this).val())) {
+                    $('#level').removeClass('pw-weak');
+                    $('#level').removeClass('pw-medium');
+                    $('#level').removeClass('pw-strong');
+                    $('#level').addClass('pw-strong');
+                    //密码为八位及以上并且字母数字特殊字符三项都包括,强度最强
+                }
+                else if (mediumRegex.test($(this).val())) {
+                    $('#level').removeClass('pw-weak');
+                    $('#level').removeClass('pw-medium');
+                    $('#level').removeClass('pw-strong');
+                    $('#level').addClass('pw-medium');
+                    //密码为七位及以上并且字母、数字、特殊字符三项中有两项，强度是中等
+                }
+                else {
+                    $('#level').removeClass('pw-weak');
+                    $('#level').removeClass('pw-medium');
+                    $('#level').removeClass('pw-strong');
+                    $('#level').addClass('pw-weak');
+                    //如果密码为6为及以下，就算字母、数字、特殊字符三项都包括，强度也是弱的
+                }
+                return true;
+            });
+        })
+
+    </script>
+    <style type="text/css">
+        .msgs {
+            display: inline-block;
+            width: 90px;
+            color: #fff;
+            font-size: 12px;
+            border: 1px solid #0697DA;
+            text-align: center;
+            height: 30px;
+            line-height: 30px;
+            background: #0697DA;
+            cursor: pointer;
+        }
+
+        form .msgs1 {
+            background: #E6E6E6;
+            color: #818080;
+            border: 1px solid #CCCCCC;
+        }
+    </style>
+    <style type="text/css">
+        /*密码强度*/
+        .pw-strength {
+            clear: both;
+            position: relative;
+            top: 30px;
+            width: 180px;
+        }
+
+        .pw-bar {
+            background: url(images/pwd-1.png) no-repeat;
+            height: 14px;
+            overflow: hidden;
+            width: 179px;
+
+        }
+
+        .pw-bar-on {
+            background: url(images/pwd-2.png) no-repeat;
+            width: 0px;
+            height: 14px;
+            position: absolute;
+            top: 0px;
+            left: 3px;
+            transition: width .5s ease-in;
+            -moz-transition: width .5s ease-in;
+            -webkit-transition: width .5s ease-in;
+            -o-transition: width .5s ease-in;
+        }
+
+        .pw-weak .pw-defule {
+            width: 0px;
+        }
+
+        .pw-weak .pw-bar-on {
+            width: 60px;
+        }
+
+        .pw-medium .pw-bar-on {
+            width: 120px;
+        }
+
+        .pw-strong .pw-bar-on {
+            width: 179px;
+        }
+
+        .pw-txt {
+            padding-top: 2px;
+            width: 180px;
+            overflow: hidden;
+        }
+
+        .pw-txt span {
+            color: #707070;
+            float: left;
+            font-size: 12px;
+            text-align: center;
+            width: 58px;
+        }</style>
+</head>
+<body>
+<div class="top" id="header">
+</div>
+<div class="line-big show " id="regist">
+    <!-- 基本信息 -->
+    <div class="xs8 xs2-move " style="margin-top: 110px">
+        <p><font size="5">用户注册</font></p>
+        <br>
+        <div class="step">
+            <div class="step-bar bg-blue " style="width: 25%;">
+                <span class="step-point bg-blue">1</span><span class="step-text">账号信息</span>
+            </div>
+            <div class="step-bar " style="width: 25%;">
+                <span class="step-point ">2</span><span class="step-text">完善资料</span>
+            </div>
+            <div class="step-bar " style="width: 25%;">
+                <span class="step-point">3</span><span class="step-text">激活账号</span>
+            </div>
+            <div class="step-bar" style="width: 25%;">
+                <span class="step-point">4</span><span class="step-text">完成</span>
+            </div>
+        </div>
+
+        <hr style="margin-top: 40px">
+        <div class="line-big">
+            <div class="xs7 xs2-move" style="margin-left: 200px">
+                <form method="post" class="form-x form-auto">
+                    <div class="form-group">
+                        <div class="xs4 text-right">
+                            <label id="accountName" class="" for="account" style="line-height: 35px"><span style="color: red">*</span>
+                                用户名：</label>
+                        </div>
+                        <div class="field  x4-move " style="margin-top: -32px;">
+                            <input id="account"  class="input radius-none " type="text" name="account"
+                                   placeholder="请输入您的用户名"
+                                   size="28"
+                                   data-validate="required:用户名不能为空,length#>=3:用户名不能小于3个字符">
+                            <div id="exist"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="xs4 text-right">
+                            <label id="emailName" class="" for="email" style="line-height: 35px"><span
+                                    style="color: red">*</span>
+                                电子邮箱：</label>
+                        </div>
+                        <div class="field  x4-move " style="margin-top: -32px;">
+                            <input id="email"  class="input radius-none " type="email" name="email"
+                                   placeholder="输入您的电子邮箱"
+                                   size="28"
+                                   data-validate="required:邮箱不能为空,email:邮箱格式不正确">
+                            <div id="existEmail"></div>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="xs4 text-right">
+                            <table>
+                                <tr>
+                                    <label for="confirmPassword" style="line-height: 35px"><span
+                                            style="color: red">*</span>设定密码：</label>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="field xs4-move " style="margin-top: -30px">
+                            <td><span class="tbl-txt">
+                                        <input  id="confirmPassword"  class="input radius-none"
+                                                size="28" name="password"
+                                               type="password"
+                                               data-validate="required:密码不能为空,length#>=6:密码长度必须大于6位"></span></td>
+                        </div>
+                        <div class="field xs4-move"  style="margin-top: 5px">
+                            <table >
+                                <tr>
+                                    <td id="level" class="">
+                                        <div class="pw-bar"></div>
+                                        <div class="pw-bar-on"></div>
+                                        <div class="pw-txt">
+                                            <span>弱</span>
+                                            <span>中</span>
+                                            <span>强</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="xs4 text-right">
+                            <label for="surepassword" style="line-height: 35px"><span style="color: red">*</span>
+                                确认密码：</label>
+                        </div>
+                        <div class="field  x4-move " style="margin-top: -29px;">
+                            <input id="surepassword" class="input radius-none" type="password" name="surepassword"
+                                   size="28"
+                                   data-validate="required:请再次确认密码,repeat#password:两次输入密码不一致
+                               ">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="xs4 text-right">
+                            <label id="mobileName" for="mobile" style="line-height: 35px"><span
+                                    style="color: red"></span>
+                                手机号码：</label>
+                        </div>
+                        <div class="field  x4-move " style="margin-top: -29px;">
+                            <input id="mobile" class="input radius-none" type="text" name="phonenum" size="28"
+                                   data-validate="mobile:请输入正确的手机号">
+                            <div id="existMobile"></div>
+                        </div>
+                    </div>
+                    <!--<div class="form-group">-->
+                        <!--<div class="xs4 text-right">-->
+                            <!--<label for="authcode" style="line-height: 35px"><span style="color: red">*</span>-->
+                                <!--验证码：</label>-->
+                        <!--</div>-->
+                        <!--<div class="field  x4-move " style="margin-top: -32px;">-->
+                            <!--<input size="28" id="authcode" type="text" class="input radius-none"-->
+                                   <!--style="margin-right: 10px;"-->
+                                   <!--data-validate="required:请输入验证码">-->
+                            <!--<span id="change_user_email"></span>-->
+                            <!--<button id="senmsg" type="button" class="button button-small bg-blue radius-none"-->
+                                    <!--style="margin-left: 20px;" onclick="send_check_code()">发送验证码-->
+                            <!--</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div>
+                        <div class="xs4 text-right">
+
+                        </div>
+                        <div>
+                            <input onclick="cheacksieyi()" id="xieyi"
+                                   class="checkbox "
+                                   type="checkbox" data-validate="required:请阅读注册协议">同意<a
+                                   href="about.html?hp=3"
+                                   target="_blank"
+                                class="text-blue">《金贸云平台服务条款》
+                        </a>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="xs4 text-right">
+
+                        </div>
+                        <div style="margin-top: 20px" >
+                            <button id="commitregist" type="button" style="width: 223px"
+                                    data-toggle="hover" disabled
+                                    class="button tips bg-blue text-center radius-none" onclick="checkSubmit()">
+                                下一步
+                            </button>
+                            <h6 id="Msg"></h6>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="line-big hidden" id="registinfo">
+    <!-- 基本信息 -->
+    <div class="xs8 xs2-move " style="margin-top: 110px">
+        <p><font size="5">用户注册</font></p>
+        <br>
+
+        <div class="step">
+            <div class="step-bar  bg-green" style="width: 25%;">
+                <span class="step-point bg-green icon-check "></span><span class="step-text">账号信息</span></span>
+            </div>
+            <div class="step-bar bg-blue" style="width: 25%;">
+                <span class="step-point bg-blue">2</span><span class="step-text">完善资料</span>
+            </div>
+            <div class="step-bar " style="width: 25%;">
+                <span class="step-point">3</span><span class="step-text">激活账号</span>
+            </div>
+            <div class="step-bar" style="width: 25%;">
+                <span class="step-point">4</span><span class="step-text">完成</span>
+            </div>
+        </div>
+        <hr style="margin-top: 40px">
+        <div class="line-big" id="SubmitRegist">
+            <div class="xs7 xs2-move">
+                <form method="post" class="form-x form-auto">
+                    <div class="form-group">
+                        <div class="xs4 text-right">
+                            <label for="usertype" style="line-height: 35px"><span style="color: red">*</span>
+                                用户类型：</label>
+                        </div>
+                        <div class="button-group radio border-blue text-center" style="margin-top: 0px" id="usertype">
+                            <label  id="comuser" class="button active radius-none" style="width: 122px;height: 33px">
+                                <input onclick="cchoose()" id="comche" value="企业用户" name="enterprise" checked="checked" type="radio">企业用户
+                            </label>
+                            <label  id="puser" class="button radius-none " style="width: 122px;height: 33px">
+                                <input onclick="pchoose()" id="perche" value="个人用户" name="personal" type="radio">个人用户
+                            </label>
+                        </div>
+                        <br>
+
+                        <p class="text-gray text-small xs7 xs4-move" style="width: 250px">（以下信息帮助我们更好的为您服务，请您仔细填写，如信息有误，可能会影响您的账号审核周期。）</p>
+                        <!--<h6 class="text-gray xs7 xs4-move">如信息有误，可能会影响您的账号审核周期。）</h6>-->
+                    </div>
+                    <div class="form-group">
+                        <div class="xs4 text-right" style="margin-top: -20px">
+                            <label for="realName" style="line-height: 35px"><span style="color: red">*</span>
+                                您的称呼：</label>
+                        </div>
+                        <div class="field xs4-move" style="margin-top: -28px;">
+                            <input id="realName" class="input radius-none" type="text" name="realname" placeholder="姓名"
+                                   size="31"
+                                   data-validate="required:请填写你的真实姓名">
+                        </div>
+                    </div>
+                    <div class="form-group " id="companynames">
+                        <div class="xs4 text-right">
+                            <label id="companyname" for="tenantName" style="line-height: 35px"><span style="color: red">*</span>
+                                公司名称：</label>
+                        </div>
+                        <div class="field  xs4-move" style="margin-top: -28px;">
+                            <input  id="tenantName" class="input radius-none" type="text" name="companyname"
+                                   placeholder="完整名称"
+                                   size="31" data-validate="required:请填写公司全名">
+                            <div id="mgtobjmsg">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="xs4 text-right">
+                            <label for="industry" style="line-height: 35px"><span style="color: red">*</span>
+                                所属行业：</label>
+                        </div>
+                        <select class="select radius-none" id="industry"  >
+                        </select>
+                    </div>
+                    <div class="form-group" id="caddressmodel">
+                        <div class="xs4 text-right">
+                            <label  for="selProvince" style="line-height: 35px"><span style="color: red">*</span>
+                                地址：</label>
+                        </div>
+                        <select id="selProvince"  onclick="provinceSwitch()"  class="select radius-none" style="width: 80px"></select>
+                        <select id="selCity"  onclick="citySwitch()" class="select radius-none" style="width: 80px"></select>
+                        <select id="selArea"  class="select radius-none" style="width: 80px"></select>
+                    </div>
+                    <div class="form-group">
+                        <div class="xs4 text-right">
+
+                        </div>
+                        <div class="field xs4-move" style="margin-top: 0px;">
+                            <input id="addressmsg" class="input radius-none" type="text" name="addressmsg"
+                                   placeholder="请填写完整地址"
+                                   size="31" data-validate="required:请填写完整地址">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="xs4 text-right">
+
+                        </div>
+                        <div style="margin-top: 20px">
+                            <button id="back" style="width: 120px" onclick="toback()"
+                                    class="button tips bg-blue text-center radius-none">
+                                上一步
+                            </button>
+                            <button id="submit" type="button" style="width: 120px" data-toggle="hover"
+                                    class="button tips bg-blue text-center radius-none"
+                                    onclick="checkIofoSubmit(), checkaddressmsg()">
+                                提交注册
+                            </button>
+                            <button id="submitp" type="button" style="width: 120px" data-toggle="hover"
+                                    class="button tips bg-blue text-center radius-none hidden"
+                                    onclick="checkIofoSubmitP(), checkaddressmsg()">
+                                提交注册
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="line-big hidden" id="SubmitRegistEro">
+            <div class="xs7 xs3-move"  style="margin-top: 30px" >
+                <form method="post" class="form-x form-auto text-center">
+                    <div class="form-group">
+                        <strong>
+                            <span  class="text-center text-red" style="font-size: 25px">
+                               出错啦!
+                            </span>
+                        </strong>
+                        <img src="images/zcsb.gif">
+                    </div>
+                    <button style="width: 100px;margin-top: 30px" data-toggle="hover"
+                            onclick="window.location.reload()"
+                            class="button tips bg-blue text-center radius-none"
+                           >
+                        重新注册
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="line-big hidden" id="registsendemalie">
+    <!-- 基本信息 -->
+    <div class="xs8 xs2-move" style="margin-top: 110px">
+        <p><font size="5">用户注册</font></p>
+        <br>
+
+        <div class="step">
+            <div class="step-bar bg-green " style="width: 25%;">
+                <span class="step-point icon-check bg-green"></span><span class="step-text">账号信息</span></span>
+            </div>
+            <div class="step-bar bg-green" style="width: 25%;">
+                <span class="step-point icon-check bg-green"></span><span class="step-text">完善资料</span>
+            </div>
+            <div class="step-bar bg-blue" style="width: 25%;">
+                <span class="step-point bg-blue">3</span><span class="step-text">激活账号</span>
+            </div>
+            <div class="step-bar" style="width: 25%;">
+                <span class="step-point">4</span><span class="step-text">完成</span>
+            </div>
+        </div>
+        <hr style="margin-top: 40px">
+        <br>
+        <br>
+
+        <div class="line-big">
+            <div class="xs12">
+                <form method="post" class="form-x form-auto text-center">
+                    <div class="form-group">
+                        <div class="xs12">
+                            <p class="xs6 text-right  text-large">
+                                激活邮件已发送至您的邮箱：
+                            </p>
+                            <p class="text-blue xs6 text-large text-left" id="semail">21771536@qq.com</p>
+                            <br>
+                            <p class="text-gray">
+                                请在48小时之内登录邮箱，按照邮箱中的提示完成激活。
+                            </p>
+                            <br>
+                            <br>
+                            <p class="text-gray">
+                                请勿关闭此页面，一分钟内未收到邮件，请<a class="text-blue" href="#">联系技术支持</a>
+                            </p>
+                            <div class="text-center">
+                                <button  class="button radius-none bg-blue dialogs"
+                                         target="_blank" type="button"
+                                        onclick="linkEmail()">
+                                    查收邮件激活账号
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<div class="line-big hidden" id="complete">-->
+    <!--&lt;!&ndash; 基本信息 &ndash;&gt;-->
+    <!--<div class="xs8 xs2-move" style="margin-top: 110px">-->
+        <!--<p><font size="5">用户注册</font></p>-->
+        <!--<br>-->
+
+        <!--<div class="step">-->
+            <!--<div class="step-bar bg-green " style="width: 25%;">-->
+                <!--<span class="step-point icon-check bg-green"></span><span class="step-text">账号信息</span></span>-->
+            <!--</div>-->
+            <!--<div class="step-bar bg-green" style="width: 25%;">-->
+                <!--<span class="step-point icon-check bg-green"></span><span class="step-text">完善资料</span>-->
+            <!--</div>-->
+            <!--<div class="step-bar bg-green" style="width: 25%;">-->
+                <!--<span class="step-point bg-green icon-check"></span><span class="step-text">激活账号</span>-->
+            <!--</div>-->
+            <!--<div class="step-bar bg-blue" style="width: 25%;">-->
+                <!--<span class="step-point bg-blue">4</span><span class="step-text">完成</span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<hr style="margin-top: 40px">-->
+        <!--<br>-->
+        <!--<br>-->
+
+        <!--<div class="line-big">-->
+            <!--<div class="xs8 xs2-move text-center">-->
+                <!--<form method="post" class="form-x form-auto">-->
+                    <!--<p class="text-large">尊敬的用户，您的账号已成功激活，欢迎您使用!</p>-->
+                    <!--<br>-->
+                    <!--<br>-->
+
+                    <!--<div class="">-->
+                        <!--<button class="button radius-none bg-blue dialogs" onclick="backlogin()" type="button">-->
+                            <!--返回登录-->
+                        <!--</button>-->
+                    <!--</div>-->
+                <!--</form>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+<!--<div class="footer" style="margin-top: 40px">-->
+    <!--<div class="footer_01_bk" align="center">-->
+        <!--<div class="footer_01" align="center">-->
+            <!--<div class="footer_box">-->
+                <!--<div class="footer_txt">-->
+                    <!--<ul>服务产品-->
+                        <!--<li><a href="#">计算与存储</a></li>-->
+                        <!--<li><a href="#">协同办公服务</a></li>-->
+                        <!--<li><a href="#">平台服务</a></li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+                <!--<div class="footer_txt">-->
+                    <!--<ul>联系我们-->
+                        <!--<li>售前服务咨询热线：17767096768 (5x8小时)</li>-->
+                        <!--<li>售后服务咨询热线：17767096768 (7x24小时)</li>-->
+                        <!--<li>合作QQ：4000457458</li>-->
+                        <!--<li>电子邮箱：operation@parkservice.com.cn</li>-->
+                        <!--<li>公司地址：杭州北部软件园</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+                <!--<div class="footer_txt">-->
+                    <!--<ul>关注我们-->
+                        <!--<li><img src="images/2dmark.gif"/></li>-->
+                        <!--<li><img src="images/weibo_logo.gif" class="weibo_logo"/>云平台微博</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="footer_02_bk" align="center">-->
+        <!--<div class="footer_02">-->
+            <!--|<a href="/" target="_parent">首页</a>|<a href="#">意见反馈</a>|<a href="#">保密声明</a>|<a href="#">关于园区</a>|-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="footer_03_bk" align="center">-->
+        <!--<div class="footer_03">-->
+            <!--Copyright © 2013 中国惠普有限公司 版权所有 | 京ICP备05021091号-6-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!-- footer部分 -->
+<div class="footer" style="margin-top: 20px;" id="footer"></div>
+</body>
+</html>
+

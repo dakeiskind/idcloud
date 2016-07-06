@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.charge.dao.DepositeMapper" >
+  <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />-->
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.charge.Deposite" >
+    <id column="DEPOSITE_SID" property="depositeSid" jdbcType="BIGINT" />
+    <result column="ACCOUNT_SID" property="accountSid" jdbcType="BIGINT" />
+    <result column="USER_SID" property="userSid" jdbcType="BIGINT" />
+    <result column="TIME" property="time" jdbcType="TIMESTAMP" />
+    <result column="CHANNEL" property="channel" jdbcType="VARCHAR" />
+    <result column="CHANNEL_NAME" property="channelName" jdbcType="VARCHAR" />
+    <result column="FPIC" property="fpic" jdbcType="VARCHAR" />
+    <result column="AMOUNT_DEPOSITED" property="amountDeposited" jdbcType="DECIMAL" />
+    <result column="CURRENCY" property="currency" jdbcType="VARCHAR" />
+    <result column="FLOW_ID" property="flowId" jdbcType="BIGINT" />
+    <result column="SALES" property="sales" jdbcType="BIGINT" />
+    <result column="AMOUNT_RECEIVED" property="amountReceived" jdbcType="DECIMAL" />
+    <result column="COUPON_CODE" property="couponCode" jdbcType="VARCHAR" />
+    <result column="ACCOUNT_NAME" property="accountName" jdbcType="VARCHAR" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="THIRD_PAYMENT_NO" property="thirdPaymentNo" jdbcType="VARCHAR" />
+    <result column="PAY_STATUS" property="payStatus" jdbcType="VARCHAR" />
+    <result column="AMOUNT_GIFT" property="amountGift" jdbcType="DECIMAL" />
+    <result column="PAY_STATUS_LABLE" property="payStatusLable" jdbcType="VARCHAR" />
+    <result column="IS_AUTO_START" property="isAutoStart" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="BaseResultVoMap" type="com.h3c.idcloud.core.pojo.vo.charge.DepositeVo" >
+    <result column="FLOW_ID" property="flowId" jdbcType="BIGINT" />
+    <result column="CHANNEL_NAME" property="channelName" jdbcType="VARCHAR" />
+    <result column="AMOUNT_DEPOSITED" property="amountDeposited" jdbcType="DECIMAL" />
+    <result column="AMOUNT_RECEIVED" property="amountReceived" jdbcType="DECIMAL" />
+    <result column="AMOUNT_GIFT" property="amountGift" jdbcType="DECIMAL" />
+    <result column="ACCOUNT_NAME" property="accountName" jdbcType="VARCHAR" />
+    <result column="THIRD_PAYMENT_NO" property="thirdPaymentNo" jdbcType="VARCHAR" />
+    <result column="TIME" property="time" jdbcType="VARCHAR" />
+    <result column="PAY_STATUS_NAME" property="payStatusName" jdbcType="VARCHAR" />
+    <result column="ACCOUNT_NAME" property="accountName" jdbcType="VARCHAR" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.accountSid != null" >
+         and billing_deposite.ACCOUNT_SID = #{condition.accountSid}
+      </if>
+      <if test="condition.amountGift != null" >
+         and billing_deposite.AMOUNT_GIFT = #{condition.amountGift}
+      </if>
+      <if test="condition.userSid != null">
+         and billing_deposite.USER_SID = #{condition.userSid}
+      </if>
+      <if test="condition.userNameLike != null" >
+         and C.ACCOUNT like concat('%',
+				#{condition.userNameLike}, '%')
+      </if>
+      <if test="condition.accountNameLike != null" >
+         and D.ACCOUNT_NAME like concat('%',
+				#{condition.accountNameLike}, '%')
+      </if>
+      <if test="condition.flowIdLike != null" >
+         and FLOW_ID like concat('%',#{condition.flowIdLike}, '%')
+      </if>
+      <if test="condition.time != null" >
+         and TIME = #{condition.time}
+      </if>
+      <if test="condition.channel != null" >
+         and CHANNEL = #{condition.channel}
+      </if>
+      <if test="condition.fpic != null" >
+         and FPIC = #{condition.fpic}
+      </if>
+      <if test="condition.amountDeposited != null" >
+         and AMOUNT_DEPOSITED = #{condition.amountDeposited}
+      </if>
+      <if test="condition.currency != null" >
+         and CURRENCY = #{condition.currency}
+      </if>
+      <if test="condition.flowId != null" >
+         and FLOW_ID = #{condition.flowId}
+      </if>
+      <if test="condition.sales != null" >
+         and SALES = #{condition.sales}
+      </if>
+      <if test="condition.amountReceived != null" >
+         and AMOUNT_RECEIVED = #{condition.amountReceived}
+      </if>
+      <if test="condition.couponCode != null" >
+         and COUPON_CODE = #{condition.couponCode}
+      </if>
+      <if test="condition.thirdPaymentNo != null" >
+         and THIRD_PAYMENT_NO = #{condition.thirdPaymentNo}
+      </if>
+      <if test="condition.payStatus != null" >
+         and PAY_STATUS = #{condition.payStatus}
+      </if>
+      <if test="condition.paymentTime != null" >
+        and DATE_FORMAT(billing_deposite.TIME,'%Y-%m-%d') = #{condition.paymentTime}
+      </if>
+      <if test="condition.startTime != null" >
+         <![CDATA[ and TIME >= #{condition.startTime}]]>
+      </if>
+      <if test="condition.endTime != null" >
+         <![CDATA[ and TIME <= #{condition.endTime}]]>
+      </if>
+	  <if test="condition.isNeedInvocie != null and condition.isNeedInvocie != '0'.toString()" >
+	      and F.IS_NEED = #{condition.isNeedInvocie}
+	  </if>
+	  	  <if test="condition.isNeedInvocie == '0'.toString()" >
+	      and (F.IS_NEED = #{condition.isNeedInvocie} or F.IS_NEED is Null)
+	  </if>
+	  <if test="condition.invoiceStatus != null" >
+	      and F.INVOICE_STATUS = #{condition.invoiceStatus}
+	  </if>
+	  <if test="condition.sendStatus != null" >
+	      and F.SEND_STATUS = #{condition.sendStatus}
+	  </if>
+	  <if test="condition.isAutoStart != null" >
+	      and IS_AUTO_START = #{condition.isAutoStart}
+	  </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    billing_deposite.DEPOSITE_SID, billing_deposite.ACCOUNT_SID, billing_deposite.USER_SID,TIME, CHANNEL, FPIC, AMOUNT_DEPOSITED, CURRENCY, FLOW_ID, 
+    SALES, AMOUNT_RECEIVED, COUPON_CODE,THIRD_PAYMENT_NO,PAY_STATUS,AMOUNT_GIFT,IS_AUTO_START
+  </sql>
+
+  <select id="selectUserDeposites" resultMap="BaseResultVoMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+   select
+    billing_deposite.FLOW_ID,
+    billing_deposite.AMOUNT_DEPOSITED,
+    billing_deposite.AMOUNT_RECEIVED,
+    billing_deposite.AMOUNT_GIFT,
+    billing_deposite.THIRD_PAYMENT_NO,
+    DATE_FORMAT(billing_deposite.TIME,'%Y-%m-%d %H:%m:%s')as TIME
+    ,B.CODE_DISPLAY AS CHANNEL_NAME
+    ,C.ACCOUNT AS USER_NAME
+    ,D.ACCOUNT_NAME AS ACCOUNT_NAME
+    ,E.CODE_DISPLAY AS PAY_STATUS_NAME
+    from billing_deposite
+    LEFT JOIN SYS_M_CODE B ON(B.CODE_CATEGORY='CHARGE_CHANNEL' AND B.CODE_VALUE=billing_deposite.CHANNEL)
+    inner join sys_m_USER C on(C.USER_SID = billing_deposite.USER_SID)
+    left join billing_account D on(D.ACCOUNT_SID = billing_deposite.ACCOUNT_SID)
+    LEFT JOIN SYS_M_CODE E ON(E.CODE_CATEGORY='DEPOSITE_PAY_STATUS' AND E.CODE_VALUE=billing_deposite.PAY_STATUS)
+
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+      order by billing_deposite.TIME DESC
+  </select>
+
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,B.CODE_DISPLAY AS CHANNEL_NAME
+    ,C.ACCOUNT AS USER_NAME
+    ,D.ACCOUNT_NAME AS ACCOUNT_NAME
+    ,E.CODE_DISPLAY AS PAY_STATUS_LABLE
+    from billing_deposite
+    LEFT JOIN SYS_M_CODE B ON(B.CODE_CATEGORY='CHARGE_CHANNEL' AND B.CODE_VALUE=billing_deposite.CHANNEL)
+    inner join sys_m_USER C on(C.USER_SID = billing_deposite.USER_SID)
+    left join sys_m_account D on(D.ACCOUNT_SID = billing_deposite.ACCOUNT_SID)
+    LEFT JOIN SYS_M_CODE E ON(E.CODE_CATEGORY='DEPOSITE_PAY_STATUS' AND E.CODE_VALUE=billing_deposite.PAY_STATUS)
+    
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from billing_deposite
+    where billing_deposite.DEPOSITE_SID = #{depositeSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from billing_deposite
+    where DEPOSITE_SID = #{depositeSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from billing_deposite
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.charge.Deposite" >
+    <selectKey resultType="java.lang.Long" keyProperty="depositeSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_BILLING_DEPOSIT')
+    </selectKey>
+    insert into billing_deposite (DEPOSITE_SID, USER_SID,ACCOUNT_SID, TIME, CHANNEL, FPIC, AMOUNT_DEPOSITED, 
+      CURRENCY, FLOW_ID, SALES, AMOUNT_RECEIVED, COUPON_CODE,THIRD_PAYMENT_NO,PAY_STATUS,AMOUNT_GIFT,IS_AUTO_START)
+    values (#{depositeSid}, #{userSid},#{accountSid}, #{time}, #{channel}, #{fpic}, #{amountDeposited}, 
+      #{currency}, #{flowId}, #{sales}, #{amountReceived}, #{couponCode}, #{thirdPaymentNo}, #{payStatus},#{amountGift},#{isAutoStart})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.charge.Deposite" >
+    <selectKey resultType="java.lang.Long" keyProperty="depositeSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_BILLING_DEPOSIT')
+    </selectKey>
+    insert into billing_deposite
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      DEPOSITE_SID,
+      <if test="userSid != null" >
+        USER_SID,
+      </if>
+      <if test="accountSid != null" >
+        ACCOUNT_SID,
+      </if>
+      <if test="time != null" >
+        TIME,
+      </if>
+      <if test="channel != null" >
+        CHANNEL,
+      </if>
+      <if test="fpic != null" >
+        FPIC,
+      </if>
+      <if test="amountDeposited != null" >
+        AMOUNT_DEPOSITED,
+      </if>
+      <if test="currency != null" >
+        CURRENCY,
+      </if>
+      <if test="flowId != null" >
+        FLOW_ID,
+      </if>
+      <if test="sales != null" >
+        SALES,
+      </if>
+      <if test="amountReceived != null" >
+        AMOUNT_RECEIVED,
+      </if>
+      <if test="couponCode != null" >
+        COUPON_CODE,
+      </if>
+      <if test="thirdPaymentNo != null" >
+        THIRD_PAYMENT_NO,
+      </if>
+      <if test="payStatus != null" >
+        PAY_STATUS,
+      </if>
+      <if test="amountGift != null" >
+        AMOUNT_GIFT,
+      </if>
+      <if test="isAutoStart != null" >
+        IS_AUTO_START,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{depositeSid},
+      <if test="userSid != null" >
+        #{userSid},
+      </if>
+      <if test="accountSid != null" >
+        #{accountSid},
+      </if>
+      <if test="time != null" >
+        #{time},
+      </if>
+      <if test="channel != null" >
+        #{channel},
+      </if>
+      <if test="fpic != null" >
+        #{fpic},
+      </if>
+      <if test="amountDeposited != null" >
+        #{amountDeposited},
+      </if>
+      <if test="currency != null" >
+        #{currency},
+      </if>
+      <if test="flowId != null" >
+        #{flowId},
+      </if>
+      <if test="sales != null" >
+        #{sales},
+      </if>
+      <if test="amountReceived != null" >
+        #{amountReceived},
+      </if>
+      <if test="couponCode != null" >
+        #{couponCode},
+      </if>
+      <if test="thirdPaymentNo != null" >
+        #{thirdPaymentNo},
+      </if>
+      <if test="payStatus != null" >
+        #{payStatus},
+      </if>
+      <if test="amountGift != null" >
+        #{amountGift},
+      </if>
+      <if test="isAutoStart != null" >
+        #{isAutoStart},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from billing_deposite
+    inner join sys_m_USER C on(C.USER_SID = billing_deposite.USER_SID)
+    left join sys_m_account D on(D.ACCOUNT_SID = billing_deposite.ACCOUNT_SID)
+    LEFT JOIN SYS_M_CODE E ON(E.CODE_CATEGORY='DEPOSITE_PAY_STATUS' AND E.CODE_VALUE=billing_deposite.PAY_STATUS)
+    LEFT JOIN billing_invoice F ON(billing_deposite.DEPOSITE_SID = F.DEPOSITE_SID)
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update billing_deposite
+    <set >
+      <if test="record.depositeSid != null" >
+        DEPOSITE_SID = #{record.depositeSid},
+      </if>
+      <if test="record.userSid != null" >
+        USER_SID = #{record.userSid},
+      </if>
+      <if test="record.accountSid != null" >
+        ACCOUNT_SID = #{record.accountSid},
+      </if>
+      <if test="record.time != null" >
+        TIME = #{record.time},
+      </if>
+      <if test="record.channel != null" >
+        CHANNEL = #{record.channel},
+      </if>
+      <if test="record.fpic != null" >
+        FPIC = #{record.fpic},
+      </if>
+      <if test="record.amountDeposited != null" >
+        AMOUNT_DEPOSITED = #{record.amountDeposited},
+      </if>
+      <if test="record.currency != null" >
+        CURRENCY = #{record.currency},
+      </if>
+      <if test="record.flowId != null" >
+        FLOW_ID = #{record.flowId},
+      </if>
+      <if test="record.sales != null" >
+        SALES = #{record.sales},
+      </if>
+      <if test="record.amountReceived != null" >
+        AMOUNT_RECEIVED = #{record.amountReceived},
+      </if>
+      <if test="record.couponCode != null" >
+        COUPON_CODE = #{record.couponCode},
+      </if>
+      <if test="record.thirdPaymentNo != null" >
+        THIRD_PAYMENT_NO = #{record.thirdPaymentNo},
+      </if>
+      <if test="record.payStatus != null" >
+        PAY_STATUS = #{record.payStatus},
+      </if>
+      <if test="record.amountGift != null" >
+        AMOUNT_GIFT = #{record.amountGift},
+      </if>
+      <if test="record.isAutoStart != null" >
+        IS_AUTO_START = #{record.isAutoStart},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update billing_deposite
+    set DEPOSITE_SID = #{record.depositeSid},
+      USER_SID = #{record.userSid},
+      ACCOUNT_SID = #{record.accountSid},
+      TIME = #{record.time},
+      CHANNEL = #{record.channel},
+      FPIC = #{record.fpic},
+      AMOUNT_DEPOSITED = #{record.amountDeposited},
+      CURRENCY = #{record.currency},
+      FLOW_ID = #{record.flowId},
+      SALES = #{record.sales},
+      AMOUNT_RECEIVED = #{record.amountReceived},
+      COUPON_CODE = #{record.couponCode},
+      THIRD_PAYMENT_NO = #{record.thirdPaymentNo},
+      PAY_STATUS = #{record.payStatus},
+      AMOUNT_GIFT = #{record.amountGift},
+      IS_AUTO_START = #{record.isAutoStart}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.charge.Deposite" >
+    update billing_deposite
+    <set >
+      <if test="userSid != null" >
+        USER_SID = #{userSid},
+      </if>
+      <if test="accountSid != null" >
+        ACCOUNT_SID = #{accountSid},
+      </if>
+      <if test="time != null" >
+        TIME = #{time},
+      </if>
+      <if test="channel != null" >
+        CHANNEL = #{channel},
+      </if>
+      <if test="fpic != null" >
+        FPIC = #{fpic},
+      </if>
+      <if test="amountDeposited != null" >
+        AMOUNT_DEPOSITED = #{amountDeposited},
+      </if>
+      <if test="currency != null" >
+        CURRENCY = #{currency},
+      </if>
+      <if test="flowId != null" >
+        FLOW_ID = #{flowId},
+      </if>
+      <if test="sales != null" >
+        SALES = #{sales},
+      </if>
+      <if test="amountReceived != null" >
+        AMOUNT_RECEIVED = #{amountReceived},
+      </if>
+      <if test="couponCode != null" >
+        COUPON_CODE = #{couponCode},
+      </if>
+      <if test="thirdPaymentNo != null" >
+        THIRD_PAYMENT_NO = #{thirdPaymentNo},
+      </if>
+      <if test="payStatus != null" >
+        PAY_STATUS = #{payStatus},
+      </if>
+      <if test="amountGift != null" >
+        AMOUNT_GIFT = #{amountGift},
+      </if>
+      <if test="isAutoStart != null" >
+        IS_AUTO_START = #{isAutoStart},
+      </if>
+    </set>
+    where DEPOSITE_SID = #{depositeSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.charge.Deposite" >
+    update billing_deposite
+    set 
+    USER_SID = #{userSid},
+    ACCOUNT_SID = #{accountSid},
+      TIME = #{time},
+      CHANNEL = #{channel},
+      FPIC = #{fpic},
+      AMOUNT_DEPOSITED = #{amountDeposited},
+      CURRENCY = #{currency},
+      FLOW_ID = #{flowId},
+      SALES = #{sales},
+      AMOUNT_RECEIVED = #{amountReceived},
+      COUPON_CODE = #{couponCode},
+      THIRD_PAYMENT_NO = #{thirdPaymentNo},
+        AMOUNT_GIFT = #{amountGift},
+        IS_AUTO_START = #{isAutoStart}
+    where DEPOSITE_SID = #{depositeSid}
+  </update>
+  <select id="sumByAmount" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Float" >
+  	select ifnull(SUM(A.AMOUNT_RECEIVED),0)
+    from billing_deposite A
+    inner join sys_m_USER B on(B.USER_SID = A.USER_SID and B.STATUS = '01')
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.channel != null" >
+         and A.CHANNEL = #{condition.channel}
+      </if>
+      <if test="condition.payStatus != null" >
+         and A.PAY_STATUS = #{condition.payStatus}
+      </if>
+      <if test="condition.accountSid != null" >
+         and A.ACCOUNT_SID = #{condition.accountSid}
+      </if>
+    </trim>
+  </select>
+  <select id="selectTopupAndRefundByDay" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.util.HashMap">
+    select B.CODE_VALUE,
+    B.${condition.payTypeKey} as CODEDISPLAY,
+    sum(A.AMOUNT_RECEIVED) as RECHARGEAMOUNT,
+    count(A.AMOUNT_RECEIVED) as RECHARGECOUNT,
+    "" as REFUNDAMOUNT,
+    "" as REFUNDCOUNT
+    from (SELECT  * FROM sys_m_code where CODE_CATEGORY = 'CHARGE_CHANNEL' AND ENABLED=1) AS B
+    LEFT JOIN  billing_deposite A on  ( A.CHANNEL = B.CODE_VALUE
+    <trim prefix="and" prefixOverrides="and|or" >
+      and A.PAY_STATUS = 1
+      <if test="condition.depositRefundFrom != null" >
+        and A.TIME <![CDATA[ >=str_to_date(#{condition.depositRefundFrom},'%Y-%m-%d %H:%i:%S')]]>
+      </if>
+      <if test="condition.depositRefundTo != null" >
+        and A.TIME <![CDATA[ <=str_to_date(#{condition.depositRefundTo} ,'%Y-%m-%d %H:%i:%S')]]>
+      </if>
+    </trim>
+    )
+    GROUP BY B.CODE_VALUE,B.${condition.payTypeKey}
+    ORDER BY B.SORT ASC
+  </select>
+</mapper>

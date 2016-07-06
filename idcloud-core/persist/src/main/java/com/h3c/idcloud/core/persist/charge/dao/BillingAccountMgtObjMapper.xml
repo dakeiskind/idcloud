@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.charge.dao.BillingAccountMgtObjMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.charge.BillingAccountMgtObj" >
+    <id column="ACCOUNT_SID" property="accountSid" jdbcType="BIGINT" />
+    <id column="MGT_OBJ_SID" property="mgtObjSid" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.mgtObjSid != null" >
+         and MGT_OBJ_SID = #{condition.mgtObjSid}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    ACCOUNT_SID, MGT_OBJ_SID
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from billing_account_mgt_obj
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingAccountMgtObjKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from billing_account_mgt_obj
+    where ACCOUNT_SID = #{accountSid}
+      and MGT_OBJ_SID = #{mgtObjSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingAccountMgtObjKey" >
+    delete from billing_account_mgt_obj
+    where ACCOUNT_SID = #{accountSid}
+      and MGT_OBJ_SID = #{mgtObjSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from billing_account_mgt_obj
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingAccountMgtObj" >
+    insert into billing_account_mgt_obj (ACCOUNT_SID, MGT_OBJ_SID)
+    values (#{accountSid}, #{mgtObjSid})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingAccountMgtObj" >
+    insert into billing_account_mgt_obj
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="accountSid != null" >
+        ACCOUNT_SID,
+      </if>
+      <if test="mgtObjSid != null" >
+        MGT_OBJ_SID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="accountSid != null" >
+        #{accountSid},
+      </if>
+      <if test="mgtObjSid != null" >
+        #{mgtObjSid},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from billing_account_mgt_obj
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update billing_account_mgt_obj
+    <set >
+      <if test="record.accountSid != null" >
+        ACCOUNT_SID = #{record.accountSid},
+      </if>
+      <if test="record.mgtObjSid != null" >
+        MGT_OBJ_SID = #{record.mgtObjSid},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update billing_account_mgt_obj
+    set ACCOUNT_SID = #{record.accountSid},
+      MGT_OBJ_SID = #{record.mgtObjSid}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingAccountMgtObj" >
+    update billing_account_mgt_obj
+    <set >
+     
+    </set>
+    where ACCOUNT_SID = #{accountSid}
+      and MGT_OBJ_SID = #{mgtObjSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingAccountMgtObj" >
+    update billing_account_mgt_obj
+    where ACCOUNT_SID = #{accountSid}
+      and MGT_OBJ_SID = #{mgtObjSid}
+  </update>
+</mapper>

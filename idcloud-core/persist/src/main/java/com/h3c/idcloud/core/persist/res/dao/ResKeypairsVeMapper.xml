@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResKeypairsVeMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResKeypairsVe">
+        <id column="RES_KEYPAIRS_SID" property="resKeypairsSid" jdbcType="VARCHAR"/>
+        <result column="RES_TOPOLOGY_SID" property="resTopologySid" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.resKeypairsSid != null">
+                and RES_TOPOLOGY_SID = #{condition.resKeypairsSid}
+            </if>
+            <if test="condition.resTopologySid != null">
+                and RES_KEYPAIRS_SID = #{condition.resTopologySid}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        RES_KEYPAIRS_SID, RES_TOPOLOGY_SID
+    </sql>
+        <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from res_keypairs_ve
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectById" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResKeypairsVe">
+        select
+        <include refid="Base_Column_List"/>
+        from res_keypairs_ve
+        where RES_KEYPAIRS_SID = #{resKeypairsSid} and RES_TOPOLOGY_SID = #{resTopologySid}
+    </select>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_keypairs_ve
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResKeypairsVe">
+        insert into res_keypairs_ve (RES_KEYPAIRS_SID, RES_TOPOLOGY_SID)
+        values (#{resKeypairsSid}, #{resTopologySid})
+    </insert>
+</mapper>

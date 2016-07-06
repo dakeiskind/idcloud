@@ -1,0 +1,894 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.product.dao.ServiceInstanceHistoryMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.product.ServiceInstanceHistory" >
+    <id column="INSTANCE_HISTORY_SID" property="instanceHistorySid" jdbcType="BIGINT" />
+    <result column="INSTANCE_SID" property="instanceSid" jdbcType="BIGINT" />
+    <result column="SERVICE_SID" property="serviceSid" jdbcType="BIGINT" />
+    <result column="PARENT_INSTANCE_SID" property="parentInstanceSid" jdbcType="BIGINT" />
+    <result column="O_SERVICE_ID" property="oServiceId" jdbcType="VARCHAR" />
+    <result column="TEMPLATE_SID" property="templateSid" jdbcType="BIGINT" />
+    <result column="INSTANCE_NAME" property="instanceName" jdbcType="VARCHAR" />
+    <result column="INSTANCE_ID" property="instanceId" jdbcType="VARCHAR" />
+    <result column="RES_INST_NAME" property="resInstName" jdbcType="VARCHAR" />
+    <result column="PROCESS_INSTANCE_ID" property="processInstanceId" jdbcType="VARCHAR" />
+    <result column="PROCESS_INSTANCE_CANCEL_ID" property="processInstanceCancelId" jdbcType="VARCHAR" />
+    <result column="PROCESS_FAILED_DESC" property="processFailedDesc" jdbcType="VARCHAR" />
+    <result column="EXCEPTION_DESC" property="exceptionDesc" jdbcType="VARCHAR" />
+    <result column="BILLING_TYPE" property="billingType" jdbcType="VARCHAR" />
+    <result column="BILLING_TYPE_ID" property="billingTypeId" jdbcType="CHAR" />
+    <result column="BUY_LENGTH" property="buyLength" jdbcType="BIGINT" />
+    <result column="CONTRACT_ID" property="contractId" jdbcType="VARCHAR" />
+    <result column="PROJECT_ID" property="projectId" jdbcType="VARCHAR" />
+    <result column="CONTRACT_FILE" property="contractFile" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="EXPIRING_DATE" property="expiringDate" jdbcType="TIMESTAMP" />
+    <result column="OWNER_ID" property="ownerId" jdbcType="VARCHAR" />
+    <result column="ORDER_ID" property="orderId" jdbcType="VARCHAR" />
+    <result column="DETAIL_SID" property="detailSid" jdbcType="BIGINT" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="TARGET" property="target" jdbcType="VARCHAR" />
+    <result column="TANENT_ID" property="tanentId" jdbcType="VARCHAR" />
+    <result column="EXPECTED_TIME" property="expectedTime" jdbcType="TIMESTAMP" />
+    <result column="DREDGE_DATE" property="dredgeDate" jdbcType="TIMESTAMP" />
+    <result column="BILLING_END_TIME" property="billingEndTime" jdbcType="TIMESTAMP" />
+    <result column="IS_FREE" property="isFree" jdbcType="BIGINT" />
+    <result column="MGT_OBJ_SID" property="mgtObjSid" jdbcType="BIGINT" />
+    <result column="CREATION_DATE_BEGIN" property="creationDateBegin" jdbcType="TIMESTAMP" />
+    <result column="CREATION_DATE_END" property="creationDateEnd" jdbcType="TIMESTAMP" />
+    <result column="SPECIFICATION" property="specification" jdbcType="VARCHAR" />
+    <result column="INSTANCE_DEL_TIME" property="instanceDelTime" jdbcType="TIMESTAMP" />
+    <result column="REGION_SID" property="regionSid" jdbcType="VARCHAR" />
+    <result column="ZONE_SID" property="zoneSid" jdbcType="VARCHAR" />
+    <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.instanceSid != null" >
+         and INSTANCE_SID = #{condition.instanceSid}
+      </if>
+      <if test="condition.serviceSid != null" >
+         and SERVICE_SID = #{condition.serviceSid}
+      </if>
+      <if test="condition.parentInstanceSid != null" >
+         and PARENT_INSTANCE_SID = #{condition.parentInstanceSid}
+      </if>
+      <if test="condition.oServiceId != null" >
+         and O_SERVICE_ID = #{condition.oServiceId}
+      </if>
+      <if test="condition.templateSid != null" >
+         and TEMPLATE_SID = #{condition.templateSid}
+      </if>
+      <if test="condition.instanceName != null" >
+         and INSTANCE_NAME = #{condition.instanceName}
+      </if>
+      <if test="condition.instanceId != null" >
+         and INSTANCE_ID = #{condition.instanceId}
+      </if>
+      <if test="condition.resInstName != null" >
+         and RES_INST_NAME = #{condition.resInstName}
+      </if>
+      <if test="condition.processInstanceId != null" >
+         and PROCESS_INSTANCE_ID = #{condition.processInstanceId}
+      </if>
+      <if test="condition.processInstanceCancelId != null" >
+         and PROCESS_INSTANCE_CANCEL_ID = #{condition.processInstanceCancelId}
+      </if>
+      <if test="condition.processFailedDesc != null" >
+         and PROCESS_FAILED_DESC = #{condition.processFailedDesc}
+      </if>
+      <if test="condition.exceptionDesc != null" >
+         and EXCEPTION_DESC = #{condition.exceptionDesc}
+      </if>
+      <if test="condition.billingType != null" >
+         and BILLING_TYPE = #{condition.billingType}
+      </if>
+      <if test="condition.billingTypeId != null" >
+         and BILLING_TYPE_ID = #{condition.billingTypeId}
+      </if>
+      <if test="condition.buyLength != null" >
+         and BUY_LENGTH = #{condition.buyLength}
+      </if>
+      <if test="condition.contractId != null" >
+         and CONTRACT_ID = #{condition.contractId}
+      </if>
+      <if test="condition.projectId != null" >
+         and PROJECT_ID = #{condition.projectId}
+      </if>
+      <if test="condition.contractFile != null" >
+         and CONTRACT_FILE = #{condition.contractFile}
+      </if>
+      <if test="condition.description != null" >
+         and DESCRIPTION = #{condition.description}
+      </if>
+      <if test="condition.expiringDate != null" >
+         and EXPIRING_DATE = #{condition.expiringDate}
+      </if>
+      <if test="condition.ownerId != null" >
+         and OWNER_ID = #{condition.ownerId}
+      </if>
+      <if test="condition.orderId != null" >
+         and ORDER_ID = #{condition.orderId}
+      </if>
+      <if test="condition.detailSid != null" >
+         and DETAIL_SID = #{condition.detailSid}
+      </if>
+      <if test="condition.status != null" >
+         and STATUS = #{condition.status}
+      </if>
+      <if test="condition.target != null" >
+         and TARGET = #{condition.target}
+      </if>
+      <if test="condition.tanentId != null" >
+         and TANENT_ID = #{condition.tanentId}
+      </if>
+      <if test="condition.expectedTime != null" >
+         and EXPECTED_TIME = #{condition.expectedTime}
+      </if>
+      <if test="condition.dredgeDate != null" >
+         and DREDGE_DATE = #{condition.dredgeDate}
+      </if>
+      <if test="condition.billingEndTime != null" >
+         and BILLING_END_TIME = #{condition.billingEndTime}
+      </if>
+      <if test="condition.isFree != null" >
+         and IS_FREE = #{condition.isFree}
+      </if>
+      <if test="condition.mgtObjSid != null" >
+         and MGT_OBJ_SID = #{condition.mgtObjSid}
+      </if>
+      <if test="condition.creationDateBegin != null" >
+         and CREATION_DATE_BEGIN = #{condition.creationDateBegin}
+      </if>
+      <if test="condition.creationDateEnd != null" >
+         and CREATION_DATE_END = #{condition.creationDateEnd}
+      </if>
+      <if test="condition.specification != null" >
+         and SPECIFICATION = #{condition.specification}
+      </if>
+      <if test="condition.instanceDelTime != null" >
+         and INSTANCE_DEL_TIME = #{condition.instanceDelTime}
+      </if>
+      <if test="condition.regionSid != null" >
+         and REGION_SID = #{condition.regionSid}
+      </if>
+      <if test="condition.zoneSid != null" >
+         and ZONE_SID = #{condition.zoneSid}
+      </if>
+      <if test="condition.amount != null" >
+         and AMOUNT = #{condition.amount}
+      </if>
+      <if test="condition.createdBy != null" >
+         and CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and VERSION = #{condition.version}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    INSTANCE_HISTORY_SID, INSTANCE_SID, SERVICE_SID, PARENT_INSTANCE_SID, O_SERVICE_ID, 
+    TEMPLATE_SID, INSTANCE_NAME, INSTANCE_ID, RES_INST_NAME, PROCESS_INSTANCE_ID, PROCESS_INSTANCE_CANCEL_ID, 
+    PROCESS_FAILED_DESC, EXCEPTION_DESC, BILLING_TYPE, BILLING_TYPE_ID, BUY_LENGTH, CONTRACT_ID, 
+    PROJECT_ID, CONTRACT_FILE, DESCRIPTION, EXPIRING_DATE, OWNER_ID, ORDER_ID, DETAIL_SID, 
+    STATUS, TARGET, TANENT_ID, EXPECTED_TIME, DREDGE_DATE, BILLING_END_TIME, IS_FREE, 
+    MGT_OBJ_SID, CREATION_DATE_BEGIN, CREATION_DATE_END, SPECIFICATION, INSTANCE_DEL_TIME, 
+    REGION_SID, ZONE_SID, AMOUNT, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from service_instance_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from service_instance_history
+    where INSTANCE_HISTORY_SID = #{instanceHistorySid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from service_instance_history
+    where INSTANCE_HISTORY_SID = #{instanceHistorySid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from service_instance_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstanceHistory" >
+    <selectKey resultType="java.lang.Long" keyProperty="instanceHistorySid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SERVICE_INSTANCE_HISTORY')
+    </selectKey>
+    insert into service_instance_history (INSTANCE_HISTORY_SID, INSTANCE_SID, SERVICE_SID, PARENT_INSTANCE_SID, 
+      O_SERVICE_ID, TEMPLATE_SID, INSTANCE_NAME, INSTANCE_ID, RES_INST_NAME, 
+      PROCESS_INSTANCE_ID, PROCESS_INSTANCE_CANCEL_ID, PROCESS_FAILED_DESC, EXCEPTION_DESC, 
+      BILLING_TYPE, BILLING_TYPE_ID, BUY_LENGTH, CONTRACT_ID, PROJECT_ID, CONTRACT_FILE, 
+      DESCRIPTION, EXPIRING_DATE, OWNER_ID, ORDER_ID, DETAIL_SID, STATUS, 
+      TARGET, TANENT_ID, EXPECTED_TIME, DREDGE_DATE, BILLING_END_TIME, IS_FREE, 
+      MGT_OBJ_SID, CREATION_DATE_BEGIN, CREATION_DATE_END, SPECIFICATION, INSTANCE_DEL_TIME, 
+      REGION_SID, ZONE_SID, AMOUNT, CREATED_BY, CREATED_DT, UPDATED_BY, 
+      UPDATED_DT, VERSION)
+    values (#{instanceHistorySid}, #{instanceSid}, #{serviceSid}, #{parentInstanceSid}, 
+      #{oServiceId}, #{templateSid}, #{instanceName}, #{instanceId}, #{resInstName}, 
+      #{processInstanceId}, #{processInstanceCancelId}, #{processFailedDesc}, #{exceptionDesc}, 
+      #{billingType}, #{billingTypeId}, #{buyLength}, #{contractId}, #{projectId}, #{contractFile}, 
+      #{description}, #{expiringDate}, #{ownerId}, #{orderId}, #{detailSid}, #{status}, 
+      #{target}, #{tanentId}, #{expectedTime}, #{dredgeDate}, #{billingEndTime}, #{isFree}, 
+      #{mgtObjSid}, #{creationDateBegin}, #{creationDateEnd}, #{specification}, #{instanceDelTime}, 
+      #{regionSid}, #{zoneSid}, #{amount}, #{createdBy}, #{createdDt}, #{updatedBy}, 
+      #{updatedDt}, #{version})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstanceHistory" >
+    <selectKey resultType="java.lang.Long" keyProperty="instanceHistorySid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SERVICE_INSTANCE_HISTORY')
+    </selectKey>
+    insert into service_instance_history
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      INSTANCE_HISTORY_SID,
+      <if test="instanceSid != null" >
+        INSTANCE_SID,
+      </if>
+      <if test="serviceSid != null" >
+        SERVICE_SID,
+      </if>
+      <if test="parentInstanceSid != null" >
+        PARENT_INSTANCE_SID,
+      </if>
+      <if test="oServiceId != null" >
+        O_SERVICE_ID,
+      </if>
+      <if test="templateSid != null" >
+        TEMPLATE_SID,
+      </if>
+      <if test="instanceName != null" >
+        INSTANCE_NAME,
+      </if>
+      <if test="instanceId != null" >
+        INSTANCE_ID,
+      </if>
+      <if test="resInstName != null" >
+        RES_INST_NAME,
+      </if>
+      <if test="processInstanceId != null" >
+        PROCESS_INSTANCE_ID,
+      </if>
+      <if test="processInstanceCancelId != null" >
+        PROCESS_INSTANCE_CANCEL_ID,
+      </if>
+      <if test="processFailedDesc != null" >
+        PROCESS_FAILED_DESC,
+      </if>
+      <if test="exceptionDesc != null" >
+        EXCEPTION_DESC,
+      </if>
+      <if test="billingType != null" >
+        BILLING_TYPE,
+      </if>
+      <if test="billingTypeId != null" >
+        BILLING_TYPE_ID,
+      </if>
+      <if test="buyLength != null" >
+        BUY_LENGTH,
+      </if>
+      <if test="contractId != null" >
+        CONTRACT_ID,
+      </if>
+      <if test="projectId != null" >
+        PROJECT_ID,
+      </if>
+      <if test="contractFile != null" >
+        CONTRACT_FILE,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+      <if test="expiringDate != null" >
+        EXPIRING_DATE,
+      </if>
+      <if test="ownerId != null" >
+        OWNER_ID,
+      </if>
+      <if test="orderId != null" >
+        ORDER_ID,
+      </if>
+      <if test="detailSid != null" >
+        DETAIL_SID,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="target != null" >
+        TARGET,
+      </if>
+      <if test="tanentId != null" >
+        TANENT_ID,
+      </if>
+      <if test="expectedTime != null" >
+        EXPECTED_TIME,
+      </if>
+      <if test="dredgeDate != null" >
+        DREDGE_DATE,
+      </if>
+      <if test="billingEndTime != null" >
+        BILLING_END_TIME,
+      </if>
+      <if test="isFree != null" >
+        IS_FREE,
+      </if>
+      <if test="mgtObjSid != null" >
+        MGT_OBJ_SID,
+      </if>
+      <if test="creationDateBegin != null" >
+        CREATION_DATE_BEGIN,
+      </if>
+      <if test="creationDateEnd != null" >
+        CREATION_DATE_END,
+      </if>
+      <if test="specification != null" >
+        SPECIFICATION,
+      </if>
+      <if test="instanceDelTime != null" >
+        INSTANCE_DEL_TIME,
+      </if>
+      <if test="regionSid != null" >
+        REGION_SID,
+      </if>
+      <if test="zoneSid != null" >
+        ZONE_SID,
+      </if>
+      <if test="amount != null" >
+        AMOUNT,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{instanceHistorySid},
+      <if test="instanceSid != null" >
+        #{instanceSid},
+      </if>
+      <if test="serviceSid != null" >
+        #{serviceSid},
+      </if>
+      <if test="parentInstanceSid != null" >
+        #{parentInstanceSid},
+      </if>
+      <if test="oServiceId != null" >
+        #{oServiceId},
+      </if>
+      <if test="templateSid != null" >
+        #{templateSid},
+      </if>
+      <if test="instanceName != null" >
+        #{instanceName},
+      </if>
+      <if test="instanceId != null" >
+        #{instanceId},
+      </if>
+      <if test="resInstName != null" >
+        #{resInstName},
+      </if>
+      <if test="processInstanceId != null" >
+        #{processInstanceId},
+      </if>
+      <if test="processInstanceCancelId != null" >
+        #{processInstanceCancelId},
+      </if>
+      <if test="processFailedDesc != null" >
+        #{processFailedDesc},
+      </if>
+      <if test="exceptionDesc != null" >
+        #{exceptionDesc},
+      </if>
+      <if test="billingType != null" >
+        #{billingType},
+      </if>
+      <if test="billingTypeId != null" >
+        #{billingTypeId},
+      </if>
+      <if test="buyLength != null" >
+        #{buyLength},
+      </if>
+      <if test="contractId != null" >
+        #{contractId},
+      </if>
+      <if test="projectId != null" >
+        #{projectId},
+      </if>
+      <if test="contractFile != null" >
+        #{contractFile},
+      </if>
+      <if test="description != null" >
+        #{description},
+      </if>
+      <if test="expiringDate != null" >
+        #{expiringDate},
+      </if>
+      <if test="ownerId != null" >
+        #{ownerId},
+      </if>
+      <if test="orderId != null" >
+        #{orderId},
+      </if>
+      <if test="detailSid != null" >
+        #{detailSid},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="target != null" >
+        #{target},
+      </if>
+      <if test="tanentId != null" >
+        #{tanentId},
+      </if>
+      <if test="expectedTime != null" >
+        #{expectedTime},
+      </if>
+      <if test="dredgeDate != null" >
+        #{dredgeDate},
+      </if>
+      <if test="billingEndTime != null" >
+        #{billingEndTime},
+      </if>
+      <if test="isFree != null" >
+        #{isFree},
+      </if>
+      <if test="mgtObjSid != null" >
+        #{mgtObjSid},
+      </if>
+      <if test="creationDateBegin != null" >
+        #{creationDateBegin},
+      </if>
+      <if test="creationDateEnd != null" >
+        #{creationDateEnd},
+      </if>
+      <if test="specification != null" >
+        #{specification},
+      </if>
+      <if test="instanceDelTime != null" >
+        #{instanceDelTime},
+      </if>
+      <if test="regionSid != null" >
+        #{regionSid},
+      </if>
+      <if test="zoneSid != null" >
+        #{zoneSid},
+      </if>
+      <if test="amount != null" >
+        #{amount},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from service_instance_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update service_instance_history
+    <set >
+      <if test="record.instanceHistorySid != null" >
+        INSTANCE_HISTORY_SID = #{record.instanceHistorySid},
+      </if>
+      <if test="record.instanceSid != null" >
+        INSTANCE_SID = #{record.instanceSid},
+      </if>
+      <if test="record.serviceSid != null" >
+        SERVICE_SID = #{record.serviceSid},
+      </if>
+      <if test="record.parentInstanceSid != null" >
+        PARENT_INSTANCE_SID = #{record.parentInstanceSid},
+      </if>
+      <if test="record.oServiceId != null" >
+        O_SERVICE_ID = #{record.oServiceId},
+      </if>
+      <if test="record.templateSid != null" >
+        TEMPLATE_SID = #{record.templateSid},
+      </if>
+      <if test="record.instanceName != null" >
+        INSTANCE_NAME = #{record.instanceName},
+      </if>
+      <if test="record.instanceId != null" >
+        INSTANCE_ID = #{record.instanceId},
+      </if>
+      <if test="record.resInstName != null" >
+        RES_INST_NAME = #{record.resInstName},
+      </if>
+      <if test="record.processInstanceId != null" >
+        PROCESS_INSTANCE_ID = #{record.processInstanceId},
+      </if>
+      <if test="record.processInstanceCancelId != null" >
+        PROCESS_INSTANCE_CANCEL_ID = #{record.processInstanceCancelId},
+      </if>
+      <if test="record.processFailedDesc != null" >
+        PROCESS_FAILED_DESC = #{record.processFailedDesc},
+      </if>
+      <if test="record.exceptionDesc != null" >
+        EXCEPTION_DESC = #{record.exceptionDesc},
+      </if>
+      <if test="record.billingType != null" >
+        BILLING_TYPE = #{record.billingType},
+      </if>
+      <if test="record.billingTypeId != null" >
+        BILLING_TYPE_ID = #{record.billingTypeId},
+      </if>
+      <if test="record.buyLength != null" >
+        BUY_LENGTH = #{record.buyLength},
+      </if>
+      <if test="record.contractId != null" >
+        CONTRACT_ID = #{record.contractId},
+      </if>
+      <if test="record.projectId != null" >
+        PROJECT_ID = #{record.projectId},
+      </if>
+      <if test="record.contractFile != null" >
+        CONTRACT_FILE = #{record.contractFile},
+      </if>
+      <if test="record.description != null" >
+        DESCRIPTION = #{record.description},
+      </if>
+      <if test="record.expiringDate != null" >
+        EXPIRING_DATE = #{record.expiringDate},
+      </if>
+      <if test="record.ownerId != null" >
+        OWNER_ID = #{record.ownerId},
+      </if>
+      <if test="record.orderId != null" >
+        ORDER_ID = #{record.orderId},
+      </if>
+      <if test="record.detailSid != null" >
+        DETAIL_SID = #{record.detailSid},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status},
+      </if>
+      <if test="record.target != null" >
+        TARGET = #{record.target},
+      </if>
+      <if test="record.tanentId != null" >
+        TANENT_ID = #{record.tanentId},
+      </if>
+      <if test="record.expectedTime != null" >
+        EXPECTED_TIME = #{record.expectedTime},
+      </if>
+      <if test="record.dredgeDate != null" >
+        DREDGE_DATE = #{record.dredgeDate},
+      </if>
+      <if test="record.billingEndTime != null" >
+        BILLING_END_TIME = #{record.billingEndTime},
+      </if>
+      <if test="record.isFree != null" >
+        IS_FREE = #{record.isFree},
+      </if>
+      <if test="record.mgtObjSid != null" >
+        MGT_OBJ_SID = #{record.mgtObjSid},
+      </if>
+      <if test="record.creationDateBegin != null" >
+        CREATION_DATE_BEGIN = #{record.creationDateBegin},
+      </if>
+      <if test="record.creationDateEnd != null" >
+        CREATION_DATE_END = #{record.creationDateEnd},
+      </if>
+      <if test="record.specification != null" >
+        SPECIFICATION = #{record.specification},
+      </if>
+      <if test="record.instanceDelTime != null" >
+        INSTANCE_DEL_TIME = #{record.instanceDelTime},
+      </if>
+      <if test="record.regionSid != null" >
+        REGION_SID = #{record.regionSid},
+      </if>
+      <if test="record.zoneSid != null" >
+        ZONE_SID = #{record.zoneSid},
+      </if>
+      <if test="record.amount != null" >
+        AMOUNT = #{record.amount},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update service_instance_history
+    set INSTANCE_HISTORY_SID = #{record.instanceHistorySid},
+      INSTANCE_SID = #{record.instanceSid},
+      SERVICE_SID = #{record.serviceSid},
+      PARENT_INSTANCE_SID = #{record.parentInstanceSid},
+      O_SERVICE_ID = #{record.oServiceId},
+      TEMPLATE_SID = #{record.templateSid},
+      INSTANCE_NAME = #{record.instanceName},
+      INSTANCE_ID = #{record.instanceId},
+      RES_INST_NAME = #{record.resInstName},
+      PROCESS_INSTANCE_ID = #{record.processInstanceId},
+      PROCESS_INSTANCE_CANCEL_ID = #{record.processInstanceCancelId},
+      PROCESS_FAILED_DESC = #{record.processFailedDesc},
+      EXCEPTION_DESC = #{record.exceptionDesc},
+      BILLING_TYPE = #{record.billingType},
+      BILLING_TYPE_ID = #{record.billingTypeId},
+      BUY_LENGTH = #{record.buyLength},
+      CONTRACT_ID = #{record.contractId},
+      PROJECT_ID = #{record.projectId},
+      CONTRACT_FILE = #{record.contractFile},
+      DESCRIPTION = #{record.description},
+      EXPIRING_DATE = #{record.expiringDate},
+      OWNER_ID = #{record.ownerId},
+      ORDER_ID = #{record.orderId},
+      DETAIL_SID = #{record.detailSid},
+      STATUS = #{record.status},
+      TARGET = #{record.target},
+      TANENT_ID = #{record.tanentId},
+      EXPECTED_TIME = #{record.expectedTime},
+      DREDGE_DATE = #{record.dredgeDate},
+      BILLING_END_TIME = #{record.billingEndTime},
+      IS_FREE = #{record.isFree},
+      MGT_OBJ_SID = #{record.mgtObjSid},
+      CREATION_DATE_BEGIN = #{record.creationDateBegin},
+      CREATION_DATE_END = #{record.creationDateEnd},
+      SPECIFICATION = #{record.specification},
+      INSTANCE_DEL_TIME = #{record.instanceDelTime},
+      REGION_SID = #{record.regionSid},
+      ZONE_SID = #{record.zoneSid},
+      AMOUNT = #{record.amount},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstanceHistory" >
+    update service_instance_history
+    <set >
+      <if test="instanceSid != null" >
+        INSTANCE_SID = #{instanceSid},
+      </if>
+      <if test="serviceSid != null" >
+        SERVICE_SID = #{serviceSid},
+      </if>
+      <if test="parentInstanceSid != null" >
+        PARENT_INSTANCE_SID = #{parentInstanceSid},
+      </if>
+      <if test="oServiceId != null" >
+        O_SERVICE_ID = #{oServiceId},
+      </if>
+      <if test="templateSid != null" >
+        TEMPLATE_SID = #{templateSid},
+      </if>
+      <if test="instanceName != null" >
+        INSTANCE_NAME = #{instanceName},
+      </if>
+      <if test="instanceId != null" >
+        INSTANCE_ID = #{instanceId},
+      </if>
+      <if test="resInstName != null" >
+        RES_INST_NAME = #{resInstName},
+      </if>
+      <if test="processInstanceId != null" >
+        PROCESS_INSTANCE_ID = #{processInstanceId},
+      </if>
+      <if test="processInstanceCancelId != null" >
+        PROCESS_INSTANCE_CANCEL_ID = #{processInstanceCancelId},
+      </if>
+      <if test="processFailedDesc != null" >
+        PROCESS_FAILED_DESC = #{processFailedDesc},
+      </if>
+      <if test="exceptionDesc != null" >
+        EXCEPTION_DESC = #{exceptionDesc},
+      </if>
+      <if test="billingType != null" >
+        BILLING_TYPE = #{billingType},
+      </if>
+      <if test="billingTypeId != null" >
+        BILLING_TYPE_ID = #{billingTypeId},
+      </if>
+      <if test="buyLength != null" >
+        BUY_LENGTH = #{buyLength},
+      </if>
+      <if test="contractId != null" >
+        CONTRACT_ID = #{contractId},
+      </if>
+      <if test="projectId != null" >
+        PROJECT_ID = #{projectId},
+      </if>
+      <if test="contractFile != null" >
+        CONTRACT_FILE = #{contractFile},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description},
+      </if>
+      <if test="expiringDate != null" >
+        EXPIRING_DATE = #{expiringDate},
+      </if>
+      <if test="ownerId != null" >
+        OWNER_ID = #{ownerId},
+      </if>
+      <if test="orderId != null" >
+        ORDER_ID = #{orderId},
+      </if>
+      <if test="detailSid != null" >
+        DETAIL_SID = #{detailSid},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status},
+      </if>
+      <if test="target != null" >
+        TARGET = #{target},
+      </if>
+      <if test="tanentId != null" >
+        TANENT_ID = #{tanentId},
+      </if>
+      <if test="expectedTime != null" >
+        EXPECTED_TIME = #{expectedTime},
+      </if>
+      <if test="dredgeDate != null" >
+        DREDGE_DATE = #{dredgeDate},
+      </if>
+      <if test="billingEndTime != null" >
+        BILLING_END_TIME = #{billingEndTime},
+      </if>
+      <if test="isFree != null" >
+        IS_FREE = #{isFree},
+      </if>
+      <if test="mgtObjSid != null" >
+        MGT_OBJ_SID = #{mgtObjSid},
+      </if>
+      <if test="creationDateBegin != null" >
+        CREATION_DATE_BEGIN = #{creationDateBegin},
+      </if>
+      <if test="creationDateEnd != null" >
+        CREATION_DATE_END = #{creationDateEnd},
+      </if>
+      <if test="specification != null" >
+        SPECIFICATION = #{specification},
+      </if>
+      <if test="instanceDelTime != null" >
+        INSTANCE_DEL_TIME = #{instanceDelTime},
+      </if>
+      <if test="regionSid != null" >
+        REGION_SID = #{regionSid},
+      </if>
+      <if test="zoneSid != null" >
+        ZONE_SID = #{zoneSid},
+      </if>
+      <if test="amount != null" >
+        AMOUNT = #{amount},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+    </set>
+    where INSTANCE_HISTORY_SID = #{instanceHistorySid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstanceHistory" >
+    update service_instance_history
+    set INSTANCE_SID = #{instanceSid},
+      SERVICE_SID = #{serviceSid},
+      PARENT_INSTANCE_SID = #{parentInstanceSid},
+      O_SERVICE_ID = #{oServiceId},
+      TEMPLATE_SID = #{templateSid},
+      INSTANCE_NAME = #{instanceName},
+      INSTANCE_ID = #{instanceId},
+      RES_INST_NAME = #{resInstName},
+      PROCESS_INSTANCE_ID = #{processInstanceId},
+      PROCESS_INSTANCE_CANCEL_ID = #{processInstanceCancelId},
+      PROCESS_FAILED_DESC = #{processFailedDesc},
+      EXCEPTION_DESC = #{exceptionDesc},
+      BILLING_TYPE = #{billingType},
+      BILLING_TYPE_ID = #{billingTypeId},
+      BUY_LENGTH = #{buyLength},
+      CONTRACT_ID = #{contractId},
+      PROJECT_ID = #{projectId},
+      CONTRACT_FILE = #{contractFile},
+      DESCRIPTION = #{description},
+      EXPIRING_DATE = #{expiringDate},
+      OWNER_ID = #{ownerId},
+      ORDER_ID = #{orderId},
+      DETAIL_SID = #{detailSid},
+      STATUS = #{status},
+      TARGET = #{target},
+      TANENT_ID = #{tanentId},
+      EXPECTED_TIME = #{expectedTime},
+      DREDGE_DATE = #{dredgeDate},
+      BILLING_END_TIME = #{billingEndTime},
+      IS_FREE = #{isFree},
+      MGT_OBJ_SID = #{mgtObjSid},
+      CREATION_DATE_BEGIN = #{creationDateBegin},
+      CREATION_DATE_END = #{creationDateEnd},
+      SPECIFICATION = #{specification},
+      INSTANCE_DEL_TIME = #{instanceDelTime},
+      REGION_SID = #{regionSid},
+      ZONE_SID = #{zoneSid},
+      AMOUNT = #{amount},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version}
+    where INSTANCE_HISTORY_SID = #{instanceHistorySid}
+  </update>
+</mapper>

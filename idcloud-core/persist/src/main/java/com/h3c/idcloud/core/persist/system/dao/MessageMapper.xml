@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.MessageMapper" >
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.Message" >
+        <id column="MSG_SID" property="msgSid" jdbcType="BIGINT" />
+        <result column="MSG_TITLE" property="msgTitle" jdbcType="VARCHAR" />
+        <result column="MSG_TYPE" property="msgType" jdbcType="VARCHAR" />
+        <result column="FROM_USER" property="fromUser" jdbcType="VARCHAR" />
+        <result column="TO_USER" property="toUser" jdbcType="VARCHAR" />
+        <result column="MSG_CONTENT" property="msgContent" jdbcType="VARCHAR" />
+        <result column="SEND_DATE" property="sendDate" jdbcType="TIMESTAMP" />
+        <result column="MSG_TYPE_NAME" property="msgTypeName" jdbcType="VARCHAR" />
+        <result column="READ_FLAG" property="readFlag" jdbcType="VARCHAR" />
+        <result column="READ_FLAG_NAME" property="readFlagName" jdbcType="VARCHAR" />
+        <result column="CORELATION_ID" property="corelationId" jdbcType="VARCHAR" />
+        <result column="TEMPLATE_ID" property="templateId" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Example_Where_Clause" >
+        <trim prefix="where" prefixOverrides="and|or" >
+            <if test="condition.msgTitle != null" >
+                and MSG_TITLE = #{condition.msgTitle}
+            </if>
+            <if test="condition.msgType != null" >
+                and MSG_TYPE = #{condition.msgType}
+            </if>
+            <if test="condition.fromUser != null" >
+                and FROM_USER = #{condition.fromUser}
+            </if>
+            <if test="condition.toUser != null" >
+                and TO_USER = #{condition.toUser}
+            </if>
+            <if test="condition.msgContent != null" >
+                and MSG_CONTENT = #{condition.msgContent}
+            </if>
+            <if test="condition.sendDate != null" >
+                and SEND_DATE = #{condition.sendDate}
+            </if>
+            <if test="condition.readFlag != null" >
+                and READ_FLAG = #{condition.readFlag}
+            </if>
+            <if test="condition.sendDateStart != null" >
+                and SEND_DATE <![CDATA[ >=#{condition.sendDateStart}]]>
+            </if>
+            <if test="condition.sendDateEnd != null" >
+                and SEND_DATE <![CDATA[ <=#{condition.sendDateEnd}]]>
+            </if>
+            <if test="condition.inboxInUse != null" >
+                and INBOX_IN_USE = #{condition.inboxInUse}
+            </if>
+            <if test="condition.outboxInUse != null" >
+                and OUTBOX_IN_USE = #{condition.outboxInUse}
+            </if>
+            <if test="condition.corelationId != null" >
+                and CORELATION_ID = #{condition.corelationId}
+            </if>
+            <if test="condition.templateId != null" >
+                and TEMPLATE_ID = #{condition.templateId}
+            </if>
+            <if test="condition.isMaxSendDate != null" >
+                and SEND_DATE = (select max(SEND_DATE) from sys_t_msg 
+                   where 1=1 
+                   <if test="condition.toUser != null" >
+                        and TO_USER = #{condition.toUser}
+                   </if>
+                   <if test="condition.readFlag != null" >
+                       and READ_FLAG = #{condition.readFlag}
+                   </if>
+                   <if test="condition.inboxInUse != null" >
+                       and INBOX_IN_USE = #{condition.inboxInUse}
+                   </if>
+                )
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List" >
+    MSG_SID, MSG_TITLE, MSG_TYPE, FROM_USER, TO_USER, MSG_CONTENT, SEND_DATE, READ_FLAG,CORELATION_ID,TEMPLATE_ID
+  </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+        SELECT
+        <if test="distinct" >
+            DISTINCT
+        </if>
+        <include refid="Base_Column_List" />
+        , S1.CODE_DISPLAY MSG_TYPE_NAME, IF(T.READ_FLAG = '01','已读','未读') READ_FLAG_NAME
+        FROM SYS_T_MSG T
+        LEFT JOIN SYS_M_CODE S1 ON (S1.CODE_CATEGORY='MSG_TYPE' AND S1.CODE_VALUE=T.MSG_TYPE)
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit" />
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from sys_t_msg
+        where MSG_SID = #{msgSid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_t_msg
+    where MSG_SID = #{msgSid}
+  </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+        delete from sys_t_msg
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <delete id="deleteBatchByPks" parameterType = "java.util.List">
+        DELETE FROM SYS_T_MSG WHERE MSG_SID in
+        <foreach  item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.system.Message" >
+        <selectKey resultType="java.lang.Long" keyProperty="msgSid" order="BEFORE" >
+            SELECT NEXTVAL('SEQ_SYS_T_MSG')
+        </selectKey>
+        insert into sys_t_msg (MSG_SID, MSG_TITLE, MSG_TYPE, FROM_USER, TO_USER, MSG_CONTENT,
+        SEND_DATE, READ_FLAG,CORELATION_ID,TEMPLATE_ID)
+        values (#{msgSid}, #{msgTitle}, #{msgType}, #{fromUser}, #{toUser}, #{msgContent},
+        #{sendDate}, #{readFlag}, #{corelationId}, #{templateId})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.Message" >
+        <selectKey resultType="java.lang.Long" keyProperty="msgSid" order="BEFORE" >
+            SELECT NEXTVAL('SEQ_SYS_T_MSG')
+        </selectKey>
+        insert into sys_t_msg
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            MSG_SID,
+            <if test="msgTitle != null" >
+                MSG_TITLE,
+            </if>
+            <if test="msgType != null" >
+                MSG_TYPE,
+            </if>
+            <if test="fromUser != null" >
+                FROM_USER,
+            </if>
+            <if test="toUser != null" >
+                TO_USER,
+            </if>
+            <if test="msgContent != null" >
+                MSG_CONTENT,
+            </if>
+            <if test="sendDate != null" >
+                SEND_DATE,
+            </if>
+            <if test="readFlag != null" >
+                READ_FLAG,
+            </if>
+            <if test="corelationId != null" >
+                CORELATION_ID,
+            </if>
+            <if test="templateId != null" >
+                TEMPLATE_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            #{msgSid},
+            <if test="msgTitle != null" >
+                #{msgTitle},
+            </if>
+            <if test="msgType != null" >
+                #{msgType},
+            </if>
+            <if test="fromUser != null" >
+                #{fromUser},
+            </if>
+            <if test="toUser != null" >
+                #{toUser},
+            </if>
+            <if test="msgContent != null" >
+                #{msgContent},
+            </if>
+            <if test="sendDate != null" >
+                #{sendDate},
+            </if>
+            <if test="readFlag != null" >
+                #{readFlag},
+            </if>
+            <if test="corelationId != null" >
+                #{corelationId},
+            </if>
+            <if test="templateId != null" >
+                #{templateId},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+        select count(*) from sys_t_msg
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map" >
+        update sys_t_msg
+        <set >
+            <if test="record.msgSid != null" >
+                MSG_SID = #{record.msgSid},
+            </if>
+            <if test="record.msgTitle != null" >
+                MSG_TITLE = #{record.msgTitle},
+            </if>
+            <if test="record.msgType != null" >
+                MSG_TYPE = #{record.msgType},
+            </if>
+            <if test="record.fromUser != null" >
+                FROM_USER = #{record.fromUser},
+            </if>
+            <if test="record.toUser != null" >
+                TO_USER = #{record.toUser},
+            </if>
+            <if test="record.msgContent != null" >
+                MSG_CONTENT = #{record.msgContent},
+            </if>
+            <if test="record.sendDate != null" >
+                SEND_DATE = #{record.sendDate},
+            </if>
+            <if test="record.readFlag != null" >
+                READ_FLAG = #{record.readFlag},
+            </if>
+            <if test="record.inboxInUse != null" >
+                INBOX_IN_USE = #{record.inboxInUse},
+            </if>
+            <if test="record.outboxInUse != null" >
+                OUTBOX_IN_USE = #{record.outboxInUse},
+            </if>
+            <if test="record.corelationId != null" >
+                CORELATION_ID = #{record.corelationId},
+            </if>
+            <if test="record.templateId != null" >
+                TEMPLATE_ID = #{record.templateId},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map" >
+        update sys_t_msg
+        set MSG_SID = #{record.msgSid},
+        MSG_TITLE = #{record.msgTitle},
+        MSG_TYPE = #{record.msgType},
+        FROM_USER = #{record.fromUser},
+        TO_USER = #{record.toUser},
+        MSG_CONTENT = #{record.msgContent},
+        SEND_DATE = #{record.sendDate},
+        READ_FLAG = #{record.readFlag},
+        CORELATION_ID = #{record.corelationId},
+        TEMPLATE_ID = #{record.templateId}
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.h3c.idcloud.core.pojo.dto.system.Message" >
+        update sys_t_msg
+        <set >
+            <if test="msgTitle != null" >
+                MSG_TITLE = #{msgTitle},
+            </if>
+            <if test="msgType != null" >
+                MSG_TYPE = #{msgType},
+            </if>
+            <if test="fromUser != null" >
+                FROM_USER = #{fromUser},
+            </if>
+            <if test="toUser != null" >
+                TO_USER = #{toUser},
+            </if>
+            <if test="msgContent != null" >
+                MSG_CONTENT = #{msgContent},
+            </if>
+            <if test="sendDate != null" >
+                SEND_DATE = #{sendDate},
+            </if>
+            <if test="readFlag != null" >
+                READ_FLAG = #{readFlag},
+            </if>
+            <if test="corelationId != null" >
+                CORELATION_ID = #{corelationId},
+            </if>
+            <if test="templateId != null" >
+                TEMPLATE_ID = #{templateId},
+            </if>
+        </set>
+        where MSG_SID = #{msgSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.Message" >
+    update sys_t_msg
+    set MSG_TITLE = #{msgTitle},
+      MSG_TYPE = #{msgType},
+      FROM_USER = #{fromUser},
+      TO_USER = #{toUser},
+      MSG_CONTENT = #{msgContent},
+      SEND_DATE = #{sendDate},
+      READ_FLAG = #{readFlag},
+      CORELATION_ID = #{corelationId},
+      TEMPLATE_ID = #{templateId}
+    where MSG_SID = #{msgSid}
+  </update>
+    <update id="updateBatchByPks" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE SYS_T_MSG
+            <set>
+                <if test="item.msgTitle != null" >
+                    MSG_TITLE = #{item.msgTitle},
+                </if>
+                <if test="item.msgType != null" >
+                    MSG_TYPE = #{item.msgType},
+                </if>
+                <if test="item.fromUser != null" >
+                    FROM_USER = #{item.fromUser},
+                </if>
+                <if test="item.toUser != null" >
+                    TO_USER = #{item.toUser},
+                </if>
+                <if test="item.msgContent != null" >
+                    MSG_CONTENT = #{item.msgContent},
+                </if>
+                <if test="item.sendDate != null" >
+                    SEND_DATE = #{item.sendDate},
+                </if>
+                <if test="item.readFlag != null" >
+                    READ_FLAG = #{item.readFlag},
+                </if>
+                <if test="item.inboxInUse != null" >
+                    INBOX_IN_USE = #{item.inboxInUse},
+                </if>
+                <if test="item.outboxInUse != null" >
+                    OUTBOX_IN_USE = #{item.outboxInUse},
+                </if>
+                <if test="item.corelationId != null" >
+                    CORELATION_ID = #{item.corelationId},
+                </if>
+                <if test="item.templateId != null" >
+                    TEMPLATE_ID = #{item.templateId},
+                </if>
+            </set>
+            where MSG_SID = #{item.msgSid}
+        </foreach>
+    </update>
+
+    <insert id="insertBatch" parameterType="java.util.List" >
+        <selectKey resultType="java.lang.Long" keyProperty="msgSid" order="BEFORE" >
+            SELECT NEXTVAL('SEQ_SYS_T_MSG')
+        </selectKey>
+        insert into sys_t_msg (MSG_SID, MSG_TITLE, MSG_TYPE, FROM_USER, TO_USER, MSG_CONTENT,SEND_DATE, READ_FLAG,CORELATION_ID,TEMPLATE_ID) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (
+              (SELECT NEXTVAL('SEQ_SYS_T_MSG')),
+              #{item.msgTitle},#{item.msgType},#{item.fromUser},#{item.toUser},#{item.msgContent},#{item.sendDate},#{item.readFlag},#{item.corelationId},#{item.templateId}
+            )
+        </foreach>
+    </insert>
+</mapper>

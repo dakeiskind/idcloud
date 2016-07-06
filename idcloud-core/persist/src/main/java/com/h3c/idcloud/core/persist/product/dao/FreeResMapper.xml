@@ -1,0 +1,963 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.product.dao.FreeResMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.product.FreeRes" >
+    <id column="FRES_SID" property="fresSid" jdbcType="BIGINT" />
+    <result column="RES_NAME" property="resName" jdbcType="VARCHAR" />
+    <result column="RES_SID" property="resSid" jdbcType="VARCHAR" />
+    <result column="FBIZ_SID" property="fbizSid" jdbcType="BIGINT" />
+    <result column="SBIZ_SID" property="sbizSid" jdbcType="BIGINT" />
+    <result column="CPU_CORES" property="cpuCores" jdbcType="BIGINT" />
+    <result column="CPU_FERQUENCY" property="cpuFerquency" jdbcType="DOUBLE" />
+    <result column="CPU_USAGE" property="cpuUsage" jdbcType="DOUBLE" />
+    <result column="MEMORY" property="memory" jdbcType="BIGINT" />
+    <result column="MEM_USAGE" property="memUsage" jdbcType="DOUBLE" />
+    <result column="STORAGE" property="storage" jdbcType="BIGINT" />
+    <result column="ST_USED" property="stUsed" jdbcType="DOUBLE" />
+    <result column="ST_USAGE" property="stUsage" jdbcType="DOUBLE" />
+    <result column="MAX_IO" property="maxIo" jdbcType="DOUBLE" />
+    <result column="AVG_IO" property="avgIo" jdbcType="DOUBLE" />
+    <result column="PUB_IP" property="pubIp" jdbcType="VARCHAR" />
+    <result column="PRIVAGE_IP" property="privageIp" jdbcType="VARCHAR" />
+    <result column="RE1" property="re1" jdbcType="VARCHAR" />
+    <result column="RE2" property="re2" jdbcType="VARCHAR" />
+    <result column="RE3" property="re3" jdbcType="VARCHAR" />
+    <result column="RE4" property="re4" jdbcType="VARCHAR" />
+    <result column="STAT_TIME" property="statTime" jdbcType="VARCHAR" />
+    <result column="CREATOR" property="creator" jdbcType="BIGINT" />
+    <result column="CREATENAME" property="createName" jdbcType="VARCHAR" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="RES_FREE_TYPE" property="resFreeType" jdbcType="VARCHAR" />
+    <result column="NET_FREE_TYPE" property="netFreeType" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="BIGINT" />
+    <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR" />
+    <result column="INSTANCE_NAME" property="instanceName" jdbcType="VARCHAR" />
+    <result column="FBIZ_TEXT" property="fbizText" jdbcType="VARCHAR" />
+    <result column="SBIZ_TEXT" property="sbizText" jdbcType="VARCHAR" />
+    <result column="OWNER_ID" property="ownerId" jdbcType="VARCHAR" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="OPEN_DATE" property="openDate" jdbcType="TIMESTAMP" />
+    <result column="FINISH_DATE" property="finishDate" jdbcType="TIMESTAMP" />
+    <result column="CPU_RECOVERY" property="cpuRecovery" jdbcType="BIGINT" />
+    <result column="MEM_RECOVERY" property="memRecovery" jdbcType="BIGINT" />
+    <result column="ST_RECOVERY" property="stRecovery" jdbcType="BIGINT" />
+    <result column="STARTER" property="starter" jdbcType="VARCHAR" />
+    <result column="START_NUM" property="startNum" jdbcType="BIGINT" />
+    <result column="CONTENT" property="content" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="BaseResultMapReport" type="com.h3c.idcloud.core.pojo.dto.product.FreeResTotal" >
+    <result column="FBIZ_SID" property="fbizSid" jdbcType="BIGINT" />
+    <result column="FBIZ_TEXT" property="fbizText" jdbcType="VARCHAR" />
+    <result column="PRIVAGE_IP" property="privateIp" jdbcType="VARCHAR" />
+    <result column="PUB_IP" property="pubIp" jdbcType="VARCHAR" />
+    <result column="CPU_RECOVERY" property="cpuRecovery" jdbcType="BIGINT" />
+    <result column="MEM_RECOVERY" property="memRecovery" jdbcType="BIGINT" />
+    <result column="ST_RECOVERY" property="stRecovery" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="BaseResultMapDisk" type="com.h3c.idcloud.core.pojo.dto.product.FreeResDisk" >
+    <result column="INSTANCE_SID" property="instanceSid" jdbcType="BIGINT" />
+    <result column="NAME" property="instSpecName" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="instSpecDesc" jdbcType="VARCHAR" />
+    <result column="VALUE" property="instSpecValue" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.resName != null" >
+         and RES_NAME = #{condition.resName}
+      </if>
+      <if test="condition.resSid != null" >
+         and RES_SID = #{condition.resSid}
+      </if>
+      <if test="condition.fbizSid != null" >
+         and FBIZ_SID = #{condition.fbizSid}
+      </if>
+      <if test="condition.sbizSid != null" >
+         and SBIZ_SID = #{condition.sbizSid}
+      </if>
+      <if test="condition.cpuCores != null" >
+         and CPU_CORES = #{condition.cpuCores}
+      </if>
+      <if test="condition.cpuFerquency != null" >
+         and CPU_FERQUENCY = #{condition.cpuFerquency}
+      </if>
+      <if test="condition.cpuUsage != null" >
+         and CPU_USAGE = #{condition.cpuUsage}
+      </if>
+      <if test="condition.memory != null" >
+         and MEMORY = #{condition.memory}
+      </if>
+      <if test="condition.memUsage != null" >
+         and MEM_USAGE = #{condition.memUsage}
+      </if>
+      <if test="condition.storage != null" >
+         and STORAGE = #{condition.storage}
+      </if>
+      <if test="condition.stUsed != null" >
+         and ST_USED = #{condition.stUsed}
+      </if>
+      <if test="condition.stUsage != null" >
+         and ST_USAGE = #{condition.stUsage}
+      </if>
+      <if test="condition.maxIo != null" >
+         and MAX_IO = #{condition.maxIo}
+      </if>
+      <if test="condition.avgIo != null" >
+         and AVG_IO = #{condition.avgIo}
+      </if>
+      <if test="condition.pubIp != null" >
+         and PUB_IP = #{condition.pubIp}
+      </if>
+      <if test="condition.privageIp != null" >
+         and PRIVAGE_IP = #{condition.privageIp}
+      </if>
+      <if test="condition.re1 != null" >
+         and RE1 = #{condition.re1}
+      </if>
+      <if test="condition.re2 != null" >
+         and RE2 = #{condition.re2}
+      </if>
+      <if test="condition.re3 != null" >
+         and RE3 = #{condition.re3}
+      </if>
+      <if test="condition.re4 != null" >
+         and RE4 = #{condition.re4}
+      </if>
+      <if test="condition.statTime != null" >
+         and STAT_TIME = #{condition.statTime}
+      </if>
+      <if test="condition.creator != null" >
+         and CREATOR = #{condition.creator}
+      </if>
+      <if test="condition.opTime != null" >
+         and OP_TIME = #{condition.opTime}
+      </if>
+      <if test="condition.resFreeType != null" >
+         and RES_FREE_TYPE = #{condition.resFreeType}
+      </if>
+      <if test="condition.netFreeType != null" >
+         and NET_FREE_TYPE = #{condition.netFreeType}
+      </if>
+      <if test="condition.status != null" >
+         and STATUS = #{condition.status}
+      </if>
+      <if test="condition.fresStatus != null" >
+         and STATUS in (#{condition.status})
+      </if>
+    </trim>
+  </sql>
+  <sql id="Example_Where_Clause1" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.resName != null" >
+         and A.RES_NAME = #{condition.resName}
+      </if>
+      <if test="condition.resSid != null" >
+         and A.RES_SID = #{condition.resSid}
+      </if>
+      <if test="condition.fbizSid != null" >
+         and A.FBIZ_SID = #{condition.fbizSid}
+      </if>
+      <if test="condition.sbizSid != null" >
+         and A.SBIZ_SID = #{condition.sbizSid}
+      </if>
+      <if test="condition.cpuCores != null" >
+         and A.CPU_CORES = #{condition.cpuCores}
+      </if>
+      <if test="condition.cpuFerquency != null" >
+         and A.CPU_FERQUENCY = #{condition.cpuFerquency}
+      </if>
+      <if test="condition.cpuUsage != null" >
+         and A.CPU_USAGE = #{condition.cpuUsage}
+      </if>
+      <if test="condition.memory != null" >
+         and A.MEMORY = #{condition.memory}
+      </if>
+      <if test="condition.memUsage != null" >
+         and A.MEM_USAGE = #{condition.memUsage}
+      </if>
+      <if test="condition.storage != null" >
+         and A.STORAGE = #{condition.storage}
+      </if>
+      <if test="condition.stUsed != null" >
+         and A.ST_USED = #{condition.stUsed}
+      </if>
+      <if test="condition.stUsage != null" >
+         and A.ST_USAGE = #{condition.stUsage}
+      </if>
+      <if test="condition.maxIo != null" >
+         and A.MAX_IO = #{condition.maxIo}
+      </if>
+      <if test="condition.avgIo != null" >
+         and A.AVG_IO = #{condition.avgIo}
+      </if>
+      <if test="condition.pubIp != null" >
+         and A.PUB_IP = #{condition.pubIp}
+      </if>
+      <if test="condition.privageIp != null" >
+         and A.PRIVAGE_IP = #{condition.privageIp}
+      </if>
+      <if test="condition.re1 != null" >
+         and A.RE1 = #{condition.re1}
+      </if>
+      <if test="condition.re2 != null" >
+         and A.RE2 = #{condition.re2}
+      </if>
+      <if test="condition.re3 != null" >
+         and A.RE3 = #{condition.re3}
+      </if>
+      <if test="condition.re4 != null" >
+         and A.RE4 = #{condition.re4}
+      </if>
+      <if test="condition.statTime != null" >
+         and A.STAT_TIME = #{condition.statTime}
+      </if>
+      <if test="condition.creator != null" >
+         and A.CREATOR = #{condition.creator}
+      </if>
+      <if test="condition.opTime != null" >
+         and A.OP_TIME = #{condition.opTime}
+      </if>
+      <if test="condition.resFreeType != null" >
+         and A.RES_FREE_TYPE = #{condition.resFreeType}
+      </if>
+      <if test="condition.netFreeType != null" >
+         and A.NET_FREE_TYPE = #{condition.netFreeType}
+      </if>
+      <if test="condition.status != null" >
+         and A.STATUS = #{condition.status}
+      </if>
+      <if test="condition.fresStatus != null" >
+         and A.STATUS in (${condition.fresStatus})
+      </if>
+      <if test="condition.startDate != null" >
+         <![CDATA[and STAT_TIME >= #{condition.startDate}]]>
+      </if>
+      <if test="condition.finishDate != null" >
+         <![CDATA[and STAT_TIME < #{condition.finishDate}]]>
+      </if>
+    </trim>
+  </sql>
+  <sql id="Example_Where_Clause12" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.fbizSid != null" >
+         and A.FBIZ_SID = #{condition.fbizSid}
+      </if>
+      <if test="condition.sbizSid != null" >
+         and A.SBIZ_SID = #{condition.sbizSid}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Example_Where_Clause2" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      FINISH_DATE is not null
+      <if test="condition.openDate != null" >
+         and FINISH_DATE >= #{condition.openDate}
+      </if>
+      <if test="condition.finishDate != null" >
+         <![CDATA[and FINISH_DATE < #{condition.finishDate}]]>
+      </if>
+    </trim>
+  </sql>
+  <sql id="Example_Where_Clause3" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.openDate != null" >
+         and STAT_TIME >= #{condition.openDate}
+      </if>
+      <if test="condition.finishDate != null" >
+         <![CDATA[and STAT_TIME < #{condition.finishDate}]]>
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    FRES_SID, RES_NAME, RES_SID, FBIZ_SID, SBIZ_SID, CPU_CORES, CPU_FERQUENCY, CPU_USAGE, 
+    MEMORY, MEM_USAGE, STORAGE, ST_USED, ST_USAGE, MAX_IO, AVG_IO, PUB_IP, PRIVAGE_IP, 
+    RE1, RE2, RE3, RE4, STAT_TIME, CREATOR, OP_TIME, RES_FREE_TYPE, NET_FREE_TYPE,STATUS,CONTENT
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select 
+    <if test="distinct" >
+      distinct
+    </if>
+    B.NAME as FBIZ_TEXT,
+    C.NAME as SBIZ_TEXT, 
+    D.ACCOUNT as CREATENAME,
+    E.STARTER as STARTER,
+    IFNULL(E.START_NUM, 0) as START_NUM,
+    A.FRES_SID, A.RES_NAME, A.RES_SID, A.FBIZ_SID, A.SBIZ_SID, A.CPU_CORES, A.CPU_FERQUENCY, A.CPU_USAGE, 
+    A.MEMORY, A.MEM_USAGE, A.STORAGE, A.ST_USED, A.ST_USAGE, A.MAX_IO, A.AVG_IO, A.PUB_IP, A.PRIVAGE_IP, 
+    A.RE1, A.RE2, A.RE3, A.RE4, DATE_FORMAT(A.STAT_TIME,'%Y-%m-%d') STAT_TIME, A.CREATOR, A.OP_TIME, A.RES_FREE_TYPE, A.NET_FREE_TYPE,A.STATUS,
+	(CASE
+	WHEN A.STATUS = 1 THEN  '待处理' 
+	WHEN A.STATUS = 2 THEN  '待确认' 
+	WHEN A.STATUS = 3 THEN  '回收中'
+	WHEN A.STATUS = 4 THEN  '已回收'
+	END) AS STATUS_NAME
+    from free_res A
+    left join sys_m_biz B on B.BIZ_SID = A.FBIZ_SID
+    left join sys_m_biz C on C.BIZ_SID = A.SBIZ_SID
+    left join sys_m_user D on D.USER_SID = A.CREATOR 
+    left join free_res_check_log E on E.FRES_SID = A.FRES_SID
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause1" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  
+  <select id="selectByParamsForSum" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+	SELECT
+		A.FBIZ_SID,
+		A.SBIZ_SID,
+		SUM(A.CPU_CORES) as CPU_CORES,
+  		SUM(A.MEMORY) as MEMORY,
+		SUM(A.`STORAGE`) AS `STORAGE`,
+		SUM(A.ST_USED) AS ST_USED,
+		B.CREATED_DT AS CREATED_DT,
+		B.`NAME` AS SBIZ_TEXT,
+		C.`NAME` AS FBIZ_TEXT,
+		A.STAT_TIME
+	FROM `free_res` A
+	LEFT JOIN sys_m_biz B ON B.BIZ_SID = A.SBIZ_SID
+	LEFT JOIN sys_m_biz C ON C.BIZ_SID = A.FBIZ_SID
+	<if test="_parameter != null" >
+      <include refid="Example_Where_Clause1" />
+    </if>
+	GROUP BY A.SBIZ_SID
+	ORDER BY A.FBIZ_SID, B.CREATED_DT, A.SBIZ_SID
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from free_res
+    where FRES_SID = #{fresSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from free_res
+    where FRES_SID = #{fresSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from free_res
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.product.FreeRes" >
+    <selectKey resultType="java.lang.Long" keyProperty="fresSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_FREE_RES')
+    </selectKey>
+    insert into free_res (FRES_SID, RES_NAME, RES_SID, FBIZ_SID, SBIZ_SID, CPU_CORES, CPU_FERQUENCY, 
+      CPU_USAGE, MEMORY, MEM_USAGE, STORAGE, ST_USED, ST_USAGE, MAX_IO, 
+      AVG_IO, PUB_IP, PRIVAGE_IP, RE1, RE2, RE3, RE4, STAT_TIME, 
+      CREATOR, OP_TIME, RES_FREE_TYPE, NET_FREE_TYPE,STATUS)
+    values (#{fresSid}, #{resName}, #{resSid}, #{fbizSid}, #{sbizSid}, #{cpuCores}, #{cpuFerquency}, 
+      #{cpuUsage}, #{memory}, #{memUsage}, #{storage}, #{stUsed}, #{stUsage}, #{maxIo}, 
+      #{avgIo}, #{pubIp}, #{privageIp}, #{re1}, #{re2}, #{re3}, #{re4}, #{statTime}, 
+      #{creator}, #{opTime}, #{resFreeType}, #{netFreeType}, #{status})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.FreeRes" >
+    <selectKey resultType="java.lang.Long" keyProperty="fresSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_FREE_RES')
+    </selectKey>
+    insert into free_res
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      FRES_SID,
+      <if test="resName != null" >
+        RES_NAME,
+      </if>
+      <if test="resSid != null" >
+        RES_SID,
+      </if>
+      <if test="fbizSid != null" >
+        FBIZ_SID,
+      </if>
+      <if test="sbizSid != null" >
+        SBIZ_SID,
+      </if>
+      <if test="cpuCores != null" >
+        CPU_CORES,
+      </if>
+      <if test="cpuFerquency != null" >
+        CPU_FERQUENCY,
+      </if>
+      <if test="cpuUsage != null" >
+        CPU_USAGE,
+      </if>
+      <if test="memory != null" >
+        MEMORY,
+      </if>
+      <if test="memUsage != null" >
+        MEM_USAGE,
+      </if>
+      <if test="storage != null" >
+        STORAGE,
+      </if>
+      <if test="stUsed != null" >
+        ST_USED,
+      </if>
+      <if test="stUsage != null" >
+        ST_USAGE,
+      </if>
+      <if test="maxIo != null" >
+        MAX_IO,
+      </if>
+      <if test="avgIo != null" >
+        AVG_IO,
+      </if>
+      <if test="pubIp != null" >
+        PUB_IP,
+      </if>
+      <if test="privageIp != null" >
+        PRIVAGE_IP,
+      </if>
+      <if test="re1 != null" >
+        RE1,
+      </if>
+      <if test="re2 != null" >
+        RE2,
+      </if>
+      <if test="re3 != null" >
+        RE3,
+      </if>
+      <if test="re4 != null" >
+        RE4,
+      </if>
+      <if test="statTime != null" >
+        STAT_TIME,
+      </if>
+      <if test="creator != null" >
+        CREATOR,
+      </if>
+      <if test="opTime != null" >
+        OP_TIME,
+      </if>
+      <if test="resFreeType != null" >
+        RES_FREE_TYPE,
+      </if>
+      <if test="netFreeType != null" >
+        NET_FREE_TYPE,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{fresSid},
+      <if test="resName != null" >
+        #{resName},
+      </if>
+      <if test="resSid != null" >
+        #{resSid},
+      </if>
+      <if test="fbizSid != null" >
+        #{fbizSid},
+      </if>
+      <if test="sbizSid != null" >
+        #{sbizSid},
+      </if>
+      <if test="cpuCores != null" >
+        #{cpuCores},
+      </if>
+      <if test="cpuFerquency != null" >
+        #{cpuFerquency},
+      </if>
+      <if test="cpuUsage != null" >
+        #{cpuUsage},
+      </if>
+      <if test="memory != null" >
+        #{memory},
+      </if>
+      <if test="memUsage != null" >
+        #{memUsage},
+      </if>
+      <if test="storage != null" >
+        #{storage},
+      </if>
+      <if test="stUsed != null" >
+        #{stUsed},
+      </if>
+      <if test="stUsage != null" >
+        #{stUsage},
+      </if>
+      <if test="maxIo != null" >
+        #{maxIo},
+      </if>
+      <if test="avgIo != null" >
+        #{avgIo},
+      </if>
+      <if test="pubIp != null" >
+        #{pubIp},
+      </if>
+      <if test="privageIp != null" >
+        #{privageIp},
+      </if>
+      <if test="re1 != null" >
+        #{re1},
+      </if>
+      <if test="re2 != null" >
+        #{re2},
+      </if>
+      <if test="re3 != null" >
+        #{re3},
+      </if>
+      <if test="re4 != null" >
+        #{re4},
+      </if>
+      <if test="statTime != null" >
+        #{statTime},
+      </if>
+      <if test="creator != null" >
+        #{creator},
+      </if>
+      <if test="opTime != null" >
+        #{opTime},
+      </if>
+      <if test="resFreeType != null" >
+        #{resFreeType},
+      </if>
+      <if test="netFreeType != null" >
+        #{netFreeType},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from free_res
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update free_res
+    <set >
+      <if test="record.fresSid != null" >
+        FRES_SID = #{record.fresSid},
+      </if>
+      <if test="record.resName != null" >
+        RES_NAME = #{record.resName},
+      </if>
+      <if test="record.resSid != null" >
+        RES_SID = #{record.resSid},
+      </if>
+      <if test="record.fbizSid != null" >
+        FBIZ_SID = #{record.fbizSid},
+      </if>
+      <if test="record.sbizSid != null" >
+        SBIZ_SID = #{record.sbizSid},
+      </if>
+      <if test="record.cpuCores != null" >
+        CPU_CORES = #{record.cpuCores},
+      </if>
+      <if test="record.cpuFerquency != null" >
+        CPU_FERQUENCY = #{record.cpuFerquency},
+      </if>
+      <if test="record.cpuUsage != null" >
+        CPU_USAGE = #{record.cpuUsage},
+      </if>
+      <if test="record.memory != null" >
+        MEMORY = #{record.memory},
+      </if>
+      <if test="record.memUsage != null" >
+        MEM_USAGE = #{record.memUsage},
+      </if>
+      <if test="record.storage != null" >
+        STORAGE = #{record.storage},
+      </if>
+      <if test="record.stUsed != null" >
+        ST_USED = #{record.stUsed},
+      </if>
+      <if test="record.stUsage != null" >
+        ST_USAGE = #{record.stUsage},
+      </if>
+      <if test="record.maxIo != null" >
+        MAX_IO = #{record.maxIo},
+      </if>
+      <if test="record.avgIo != null" >
+        AVG_IO = #{record.avgIo},
+      </if>
+      <if test="record.pubIp != null" >
+        PUB_IP = #{record.pubIp},
+      </if>
+      <if test="record.privageIp != null" >
+        PRIVAGE_IP = #{record.privageIp},
+      </if>
+      <if test="record.re1 != null" >
+        RE1 = #{record.re1},
+      </if>
+      <if test="record.re2 != null" >
+        RE2 = #{record.re2},
+      </if>
+      <if test="record.re3 != null" >
+        RE3 = #{record.re3},
+      </if>
+      <if test="record.re4 != null" >
+        RE4 = #{record.re4},
+      </if>
+      <if test="record.statTime != null" >
+        STAT_TIME = #{record.statTime},
+      </if>
+      <if test="record.creator != null" >
+        CREATOR = #{record.creator},
+      </if>
+      <if test="record.opTime != null" >
+        OP_TIME = #{record.opTime},
+      </if>
+      <if test="record.resFreeType != null" >
+        RES_FREE_TYPE = #{record.resFreeType},
+      </if>
+      <if test="record.netFreeType != null" >
+        NET_FREE_TYPE = #{record.netFreeType},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status},
+      </if>
+      <if test="record.content != null" >
+        CONTENT = #{record.content},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update free_res
+    set FRES_SID = #{record.fresSid},
+      RES_NAME = #{record.resName},
+      RES_SID = #{record.resSid},
+      FBIZ_SID = #{record.fbizSid},
+      SBIZ_SID = #{record.sbizSid},
+      CPU_CORES = #{record.cpuCores},
+      CPU_FERQUENCY = #{record.cpuFerquency},
+      CPU_USAGE = #{record.cpuUsage},
+      MEMORY = #{record.memory},
+      MEM_USAGE = #{record.memUsage},
+      STORAGE = #{record.storage},
+      ST_USED = #{record.stUsed},
+      ST_USAGE = #{record.stUsage},
+      MAX_IO = #{record.maxIo},
+      AVG_IO = #{record.avgIo},
+      PUB_IP = #{record.pubIp},
+      PRIVAGE_IP = #{record.privageIp},
+      RE1 = #{record.re1},
+      RE2 = #{record.re2},
+      RE3 = #{record.re3},
+      RE4 = #{record.re4},
+      STAT_TIME = #{record.statTime},
+      CREATOR = #{record.creator},
+      OP_TIME = #{record.opTime},
+      RES_FREE_TYPE = #{record.resFreeType},
+      NET_FREE_TYPE = #{record.netFreeType},
+      STATUS = #{record.status}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.FreeRes" >
+    update free_res
+    <set >
+      <if test="resName != null" >
+        RES_NAME = #{resName},
+      </if>
+      <if test="resSid != null" >
+        RES_SID = #{resSid},
+      </if>
+      <if test="fbizSid != null" >
+        FBIZ_SID = #{fbizSid},
+      </if>
+      <if test="sbizSid != null" >
+        SBIZ_SID = #{sbizSid},
+      </if>
+      <if test="cpuCores != null" >
+        CPU_CORES = #{cpuCores},
+      </if>
+      <if test="cpuFerquency != null" >
+        CPU_FERQUENCY = #{cpuFerquency},
+      </if>
+      <if test="cpuUsage != null" >
+        CPU_USAGE = #{cpuUsage},
+      </if>
+      <if test="memory != null" >
+        MEMORY = #{memory},
+      </if>
+      <if test="memUsage != null" >
+        MEM_USAGE = #{memUsage},
+      </if>
+      <if test="storage != null" >
+        STORAGE = #{storage},
+      </if>
+      <if test="stUsed != null" >
+        ST_USED = #{stUsed},
+      </if>
+      <if test="stUsage != null" >
+        ST_USAGE = #{stUsage},
+      </if>
+      <if test="maxIo != null" >
+        MAX_IO = #{maxIo},
+      </if>
+      <if test="avgIo != null" >
+        AVG_IO = #{avgIo},
+      </if>
+      <if test="pubIp != null" >
+        PUB_IP = #{pubIp},
+      </if>
+      <if test="privageIp != null" >
+        PRIVAGE_IP = #{privageIp},
+      </if>
+      <if test="re1 != null" >
+        RE1 = #{re1},
+      </if>
+      <if test="re2 != null" >
+        RE2 = #{re2},
+      </if>
+      <if test="re3 != null" >
+        RE3 = #{re3},
+      </if>
+      <if test="re4 != null" >
+        RE4 = #{re4},
+      </if>
+      <if test="statTime != null" >
+        STAT_TIME = #{statTime},
+      </if>
+      <if test="creator != null" >
+        CREATOR = #{creator},
+      </if>
+      <if test="opTime != null" >
+        OP_TIME = #{opTime},
+      </if>
+      <if test="resFreeType != null" >
+        RES_FREE_TYPE = #{resFreeType},
+      </if>
+      <if test="netFreeType != null" >
+        NET_FREE_TYPE = #{netFreeType},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status},
+      </if>
+      <if test="content != null" >
+        CONTENT = #{content},
+      </if>
+    </set>
+    where FRES_SID = #{fresSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.product.FreeRes" >
+    update free_res
+    set RES_NAME = #{resName},
+      RES_SID = #{resSid},
+      FBIZ_SID = #{fbizSid},
+      SBIZ_SID = #{sbizSid},
+      CPU_CORES = #{cpuCores},
+      CPU_FERQUENCY = #{cpuFerquency},
+      CPU_USAGE = #{cpuUsage},
+      MEMORY = #{memory},
+      MEM_USAGE = #{memUsage},
+      STORAGE = #{storage},
+      ST_USED = #{stUsed},
+      ST_USAGE = #{stUsage},
+      MAX_IO = #{maxIo},
+      AVG_IO = #{avgIo},
+      PUB_IP = #{pubIp},
+      PRIVAGE_IP = #{privageIp},
+      RE1 = #{re1},
+      RE2 = #{re2},
+      RE3 = #{re3},
+      RE4 = #{re4},
+      STAT_TIME = #{statTime},
+      CREATOR = #{creator},
+      OP_TIME = #{opTime},
+      RES_FREE_TYPE = #{resFreeType},
+      NET_FREE_TYPE = #{netFreeType},
+      STATUS = #{status}
+    where FRES_SID = #{fresSid}
+  </update>
+  <select id="selectByFreeInstance" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    SELECT C.INSTANCE_NAME, C.OWNER_ID, 
+	(SELECT D.NAME FROM SYS_M_BIZ D WHERE A.FBIZ_SID = D.BIZ_SID) AS FBIZ_TEXT, 
+	(SELECT D.NAME FROM SYS_M_BIZ D WHERE A.SBIZ_SID = D.BIZ_SID) AS SBIZ_TEXT,
+	A.*  FROM FREE_RES A
+	LEFT JOIN SERVICE_INST_RES B ON(A.RES_SID = B.RES_ID)
+	LEFT JOIN SERVICE_INSTANCE C ON (B.INSTANCE_SID  = C.INSTANCE_SID) 
+	WHERE C.INSTANCE_SID = #{condition.instanceSid}
+	<if test="condition.status != null" >
+         and A.STATUS = #{condition.status}
+    </if>
+  </select>
+  
+  
+  
+  <select id="selectByParamsForFresReport" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+	select a.*
+	from (
+	SELECT C.INSTANCE_NAME, C.OWNER_ID,
+		(SELECT D.NAME FROM SYS_M_BIZ D WHERE A.FBIZ_SID = D.BIZ_SID) AS FBIZ_TEXT, 
+		(SELECT D.NAME FROM SYS_M_BIZ D WHERE A.SBIZ_SID = D.BIZ_SID) AS SBIZ_TEXT,
+		(SELECT D.ORG_NAME FROM SYS_M_ORG D
+	    WHERE D.ORG_SID = (
+				select U.ORG_SID from sys_m_user U
+				where U.user_sid = (
+					select E.OWNER_ID from SERVICE_INSTANCE E
+					where E.INSTANCE_SID =B.INSTANCE_SID 
+				)
+			)
+		) AS ORG_NAME, 
+		IFNULL(D.START_NUM, 0) START_NUM, A.*
+	FROM FREE_RES A
+	LEFT JOIN SERVICE_INST_RES B ON(A.RES_SID = B.RES_ID)
+	LEFT JOIN SERVICE_INSTANCE C ON (B.INSTANCE_SID  = C.INSTANCE_SID) 	
+	LEFT JOIN FREE_RES_CHECK_LOG D ON D.FRES_SID = A.FRES_SID
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause1" />
+    </if>
+    order by A.FBIZ_SID asc,A.RES_SID asc
+    )a
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause3" />
+    </if>
+  </select>
+  
+  <select id="selectByParamsForRecoveryReport" resultMap="BaseResultMapReport" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+	SELECT	
+		a.FBIZ_SID,	
+		a.FBIZ_TEXT,
+		IFNULL(sum(a.CPU_RECOVERY),0) CPU_RECOVERY,
+		IFNULL(sum(a.MEM_RECOVERY),0) MEM_RECOVERY,
+		IFNULL(sum(a.ST_RECOVERY),0) ST_RECOVERY,
+		IFNULL(sum(a.PUB_IP), 0) PUB_IP,
+		IFNULL(sum(a.PRIVAGE_IP), 0) PRIVAGE_IP
+	FROM
+		(
+			SELECT
+				C.INSTANCE_NAME,
+				C.OWNER_ID,
+				C.DREDGE_DATE AS OPEN_DATE,
+				D.CM_END_TIME AS FINISH_DATE,
+				(A.CPU_CORES - E.CPU_CORES) AS CPU_RECOVERY,
+				(A.MEMORY - E.MEMORY) AS MEM_RECOVERY,
+				(A.`STORAGE` - E.`STORAGE`) AS ST_RECOVERY,
+				IFNULL(
+					CHAR_LENGTH(A.PUB_IP) - CHAR_LENGTH(REPLACE(A.PUB_IP, ',', '')) ,- 1
+					) - IFNULL(
+						CHAR_LENGTH(E.PUB_IP) - CHAR_LENGTH(REPLACE(E.PUB_IP, ',', '')) ,- 1
+				) PUB_IP,
+				IFNULL(
+					CHAR_LENGTH(A.PRIVAGE_IP) - CHAR_LENGTH(REPLACE (A.PRIVAGE_IP, ',', '')) ,- 1
+					) - IFNULL(
+						CHAR_LENGTH(E.PRIVAGE_IP) - CHAR_LENGTH(REPLACE (E.PRIVAGE_IP, ',', '')) ,- 1
+				) PRIVAGE_IP,
+				Z2.`NAME` AS FBIZ_TEXT,
+				Z1.`NAME` AS SBIZ_TEXT,
+				A.FBIZ_SID
+			FROM
+				FREE_RES A
+			join SYS_M_BIZ Z2 on A.FBIZ_SID = Z2.BIZ_SID
+	    join SYS_M_BIZ Z1 on A.SBIZ_SID = Z1.BIZ_SID
+			LEFT JOIN SERVICE_INST_RES B ON A.RES_SID = B.RES_ID
+			LEFT JOIN SERVICE_INSTANCE C ON B.INSTANCE_SID = C.INSTANCE_SID
+			LEFT JOIN service_change_log D ON D.INSTANCE_SID = B.INSTANCE_SID
+			LEFT JOIN free_res_check_log E ON E.FRES_SID = A.FRES_SID
+	    WHERE D.CM_TYPE='1' AND D.CM_END_TIME IS NOT NULL
+	    <if test="condition.startDate != null" >
+         	<![CDATA[and D.CM_END_TIME > #{condition.startDate}]]>
+	    </if>
+	    <if test="condition.finishDate != null" >
+	        <![CDATA[and D.CM_END_TIME <= #{condition.finishDate}]]>
+	    </if>
+	    <if test="condition.fbizSid != null" >
+         	and A.FBIZ_SID = #{condition.fbizSid}
+      	</if>
+		ORDER BY	A.FBIZ_SID ASC
+	) a
+	GROUP BY   a.FBIZ_SID
+  </select>
+  
+  <select id="selectByParamsForRecovery" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+  select A.*
+    from (
+	SELECT 	C.INSTANCE_NAME,
+			C.OWNER_ID,
+			(
+				SELECT
+					D. NAME
+				FROM
+					SYS_M_BIZ D
+				WHERE
+					A.FBIZ_SID = D.BIZ_SID
+			) AS FBIZ_TEXT,
+			(
+				SELECT
+					D. NAME
+				FROM
+					SYS_M_BIZ D
+				WHERE
+					A.SBIZ_SID = D.BIZ_SID
+			) AS SBIZ_TEXT,
+			C.DREDGE_DATE AS OPEN_DATE,
+			D.CM_END_TIME AS FINISH_DATE,			
+			(A.CPU_CORES - E.CPU_CORES) AS CPU_RECOVERY,
+			(A.MEMORY - E.MEMORY) AS MEM_RECOVERY,
+			(A.`STORAGE` - E.`STORAGE`) AS ST_RECOVERY,
+			A.*
+		FROM FREE_RES A
+		LEFT JOIN SERVICE_INST_RES B ON(A.RES_SID = B.RES_ID)
+		LEFT JOIN SERVICE_INSTANCE C ON (B.INSTANCE_SID  = C.INSTANCE_SID) 
+		LEFT JOIN service_change_log D on (D.INSTANCE_SID = B.INSTANCE_SID)
+	    LEFT JOIN free_res_check_log E on E.FRES_SID = A.FRES_SID	
+	    where D.CM_END_TIME is not null	
+	    <if test="condition.startDate != null" >
+         	<![CDATA[and D.CM_END_TIME > #{condition.startDate}]]>
+	    </if>
+	    <if test="condition.finishDate != null" >
+	        <![CDATA[and D.CM_END_TIME <= #{condition.finishDate}]]>
+	    </if>
+    	order by A.FBIZ_SID asc,A.RES_SID asc
+    ) A
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause12" />
+    </if>
+  </select>
+  <select id="selectByParamsForFreeDisk" resultMap="BaseResultMapDisk" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+		SELECT
+			A.INSTANCE_SID,
+			A.NAME,
+			A.DESCRIPTION,
+			A.VALUE
+		FROM
+			(
+				SELECT
+					sis.INSTANCE_SID,
+					sis.VERSION,
+					sis.NAME,
+					sis.DESCRIPTION,
+					sis.VALUE
+				FROM
+					service_inst_res sir
+				JOIN service_instance_spec sis ON sir.INSTANCE_SID = sis.INSTANCE_SID
+				WHERE
+					sir.RES_ID = #{condition.resSid}
+			) A
+		WHERE
+			A.VERSION = (
+				SELECT
+					max(version)
+				FROM
+					service_instance_spec sisp
+				WHERE
+					sisp.INSTANCE_SID = A.INSTANCE_SID
+			)
+		AND A.NAME IN ('SYSTEM_DISK', 'DATA_DISK')
+  </select>
+  
+  <select id="selectByInstSid" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    SELECT 
+    <include refid="Base_Column_List" />    
+	FROM
+		FREE_RES A
+	LEFT JOIN SERVICE_INST_RES B ON (A.RES_SID = B.RES_ID)
+	WHERE
+		B.INSTANCE_SID = #{condition.instanceSid}
+		AND A.STATUS IN (1, 2, 3) 
+  </select>
+</mapper>

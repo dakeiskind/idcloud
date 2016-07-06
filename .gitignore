@@ -1,0 +1,32 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Java template
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+target/
+
+# IDE settings
+*.iml
+*.ipr
+*.iws
+.idea/
+.settings/
+.project
+.classpath
+.externalToolBuilders/
+out/
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# VCS file
+.svn//idcloud-portal
+
+# jrebel
+rebel.xml

@@ -1,0 +1,71 @@
+<script type="text/javascript">
+    require(["app-modules/console/loadBalance/vmodel/add-resource-pool"],function(addResourcePool){
+        addResourcePool.initValidator();
+        avalon.vmodels.addResourcePool.data = avalon.vmodels.loadBalanceMgt.data;
+        avalon.scan();
+    });
+</script>
+<form id="addResourcePoolForm">
+    <table border="0" class="custom-table" style="font-size:12px;" ms-controller="addResourcePool">
+        <tr>
+            <td class="required">名称：</td>
+            <td>
+                <input id="name" ms-duplex="data['name']" class="input text-small radius-none" type="text " name="name" style="width: 180px">
+                <p class="description text-gray" style="width: 180px">为负载均衡池定义名称,不能为空,最长为32个字符</p>
+            </td>
+        </tr>
+        <tr>
+            <td>描述：</td>
+            <td>
+                <!--<input id="describe" ms-duplex="data['describe']" class="input text-small radius-none" type="text " name="describe">-->
+                <textarea rows="2" class="input text-small radius-none" name="describe" ms-duplex="data['describe']" style="width: 180px"></textarea>
+                <p class="description text-gray" style="width: 180px">为负载均衡池定义描述，可以为空</p>
+            </td>
+        </tr>
+        <tr>
+            <td>提供者：</td>
+            <td>
+                <select id="provider" class="select radius-none" ms-duplex="data['provider']" style="width:180px">
+                    <option selected="selected" value="0">user(默认值)</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="required">子网：</td>
+            <td>
+                <select id="subnet" name="subnet" ms-duplex="data['subnet']" class="select radius-none" style="width:180px">
+                    <option selected="selected" value="">--请选择子网--</option>
+                    <option value="01">ipv-public-subnet(2001:db8::/64)</option>
+                    <option value="02">public-subnet(192.168.9.0/24)</option>
+                    <option value="03">vpc-network2-sub01(192.168.8.0/24)</option>
+                    <option value="04">vpc-network1-sub01(10.0.0.0/24)</option>
+                </select>
+                <p class="description text-gray" style="width: 180px">选择负载均衡池的子网</p>
+            </td>
+        </tr>
+        <tr>
+            <td class="required">协议：</td>
+            <td>
+                <select id="agreement" name="agreement" ms-duplex="data['agreement']" class="select radius-none" style="width:180px">
+                    <option selected="selected" value="">--请选择一个协议--</option>
+                    <option value="HTTP">HTTP</option>
+                    <option value="HTTPS">HTTPS</option>
+                    <option value="TCP">TCP</option>
+                </select>
+                <p class="description text-gray" style="width: 180px">选择负载均衡池的网络协议</p>
+            </td>
+        </tr>
+        <tr>
+            <td class="required">负载均衡方式：</td>
+            <td>
+                <select id="LBMode" name="LBMode" ms-duplex="data['LBMode']" class="select radius-none" style="width:180px">
+                    <option selected="selected" value="">--请选择一个方法--</option>
+                    <option value="ROUND_ROBIN">ROUND_ROBIN</option>
+                    <option value="LEAST_CONNECTIONS">LEAST_CONNECTIONS</option>
+                    <option value="SOURCE_IP">SOURCE_IP</option>
+                </select>
+                <p class="description text-gray" style="width: 180px">选择负载均衡池的均衡方式</p>
+            </td>
+        </tr>
+    </table>
+</form>

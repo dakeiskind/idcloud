@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.DeptMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.Dept" >
+    <id column="ORG_SID" property="orgSid" jdbcType="BIGINT" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="SORT_RANK" property="sortRank" jdbcType="BIGINT" />
+    <result column="PARENT_ORG_SID" property="parentOrgSid" jdbcType="BIGINT" />
+    <result column="ORG_DESC" property="orgDesc" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="BizResultMap" type="com.h3c.idcloud.core.pojo.dto.system.Biz" >
+    <id column="BIZ_SID" property="bizSid" jdbcType="BIGINT" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="BizFullResultMap" type="com.h3c.idcloud.core.pojo.dto.system.Biz" >
+    <id column="BIZ_SID" property="bizSid" jdbcType="BIGINT" />
+    <result column="PARENT_BIZ_SID" property="parentBizSid" jdbcType="BIGINT" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="OWNER" property="owner" jdbcType="VARCHAR" />
+    <result column="OWNER_TEL" property="ownerTel" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+    <result column="NETWORKTYPE" property="networktype" jdbcType="BIGINT" />
+    <result column="FWPORT" property="fwport" jdbcType="BIGINT" />
+    <result column="ISBIZCONT" property="isbizcont" jdbcType="BIGINT" />
+    <result column="ISPRONO" property="isprono" jdbcType="BIGINT" />
+    <result column="ISPROATTACH" property="isproattach" jdbcType="BIGINT" />
+    <result column="LEVEL" property="level" jdbcType="BIGINT" />
+    <result column="BIZ_TYPE_TEXT" property="bizTypeText" jdbcType="VARCHAR" />
+    <result column="BIZ_TYPE_VALUE" property="bizTypeValue" jdbcType="VARCHAR" />
+    <result column="PARENT_BIZ_NAME" property="parentBizName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.orgName != null" >
+         and A.ORG_NAME = #{condition.orgName}
+      </if>
+      <if test="condition.sortRank != null" >
+         and A.SORT_RANK = #{condition.sortRank}
+      </if>
+      <if test="condition.parentOrgSid != null" >
+         and A.PARENT_ORG_SID = #{condition.parentOrgSid}
+      </if>
+      <if test="condition.orgDesc != null" >
+         and A.ORG_DESC = #{condition.orgDesc}
+      </if>
+      <if test="condition.createdBy != null" >
+         and A.CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and A.CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and A.UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and A.UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and A.VERSION = #{condition.version}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Biz_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.orgSid != null" >
+         and B.ORG_SID = #{condition.orgSid}
+      </if>
+      <if test="condition.level != null" >
+         and C.LEVEL = #{condition.level}
+      </if>
+     </trim>
+  </sql>    
+  <sql id="Base_Column_List" >
+    A.ORG_SID, A.ORG_NAME, A.SORT_RANK, A.PARENT_ORG_SID, A.ORG_DESC, A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, 
+    A.UPDATED_DT, A.VERSION
+  </sql>
+  <sql id="Biz_Column_List" >
+    C.BIZ_SID, C.NAME
+  </sql>
+  <sql id="BizFull_Column_List" >
+    B.BIZ_SID, B.PARENT_BIZ_SID, B.NAME, B.OWNER, B.OWNER_TEL, B.DESCRIPTION, B.CREATED_BY, B.CREATED_DT, 
+    B.UPDATED_BY, B.UPDATED_DT, B.VERSION, B.NETWORKTYPE, B.FWPORT, B.ISBIZCONT, B.ISPRONO, B.ISPROATTACH, B.LEVEL
+  </sql> 
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_m_org A
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByParamsBiz" resultMap="BizResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Biz_Column_List" />
+    from sys_m_org_biz B left join sys_m_biz C on (B.BIZ_SID=C.BIZ_SID)
+    <if test="_parameter != null" >
+      <include refid="Biz_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKeyBizFull" resultMap="BizFullResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="BizFull_Column_List" />
+    from sys_m_biz A
+    left join sys_m_biz B on (A.PARENT_BIZ_SID = B.BIZ_SID)
+    where A.BIZ_SID = #{bizSid}
+  </select>
+</mapper>

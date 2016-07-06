@@ -1,0 +1,37 @@
+<script type="text/javascript" xmlns="http://www.w3.org/1999/html">
+    require(["app-modules/console/host/vmodel/manage-cloud-host",,'lib/jquery/pintuer'],function(pintuer){
+        avalon.scan();
+    });
+</script>
+<div style="font-size:12px;" ms-controller="manageCloudHost">
+    <!--<div class="alert alert-blue radius-none margin-bottom text-left">-->
+        <!--<span class="close rotate-hover"></span>-->
+        <!--当主机加入多个安全组时，新加入的安全组将自动设为最高优先级。-->
+    <!--</div>-->
+    <div class="float-left margin-top margin-left" style="width: 45%;">
+        <span>云主机列表</span>
+
+        <form class="border margin-top">
+            <input type="text" class="input radius-none" style="width: 230px;border: none"/>
+            <button class="button button-small icon-search" ms-click="search()" style="border: none"/>
+        </form>
+        <div class="border text-center" style="height: 300px;">
+            <span style="line-height: 30px;">
+                未找到匹配云主机
+            </span>
+        </div>
+    </div>
+    <div class="float-left margin-top text-center" style="width: 10%;height: 350px;">
+        <span class="icon-arrows-h" style="margin-top: 150px;font-size:24px;line-height: 350px;"></span>
+    </div>
+    <div class="float-left margin-top" style="width: 40%;">
+        <span>已关联<span class="text-red">0</span>台</span>
+        <div class="border text-center margin-top" style="height: 330px;">
+            <span style="line-height: 30px;">
+                暂无关联主机
+            </span>
+        </div>
+    </div>
+</div>
+
+

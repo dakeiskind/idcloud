@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.product.dao.ServiceInstanceChangeLogMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.product.ServiceInstanceChangeLog" >
+    <id column="CHANGE_LOG_SID" property="changeLogSid" jdbcType="BIGINT" />
+    <result column="INSTANCE_SID" property="instanceSid" jdbcType="BIGINT" />
+    <result column="CHANGE_SPONSOR" property="changeSponsor" jdbcType="VARCHAR" />
+    <result column="CHANGE_TYPE" property="changeType" jdbcType="VARCHAR" />
+    <result column="CHANGE_SPEC" property="changeSpec" jdbcType="VARCHAR" />
+    <result column="CHANGE_PRE_SPEC" property="changePreSpec" jdbcType="VARCHAR" />
+    <result column="CHANGE_PRE_SPEC_DESC" property="changePreSpecDesc" jdbcType="VARCHAR" />
+    <result column="CHANGE_CUR_SPEC" property="changeCurSpec" jdbcType="VARCHAR" />
+    <result column="CHANGE_CUR_SPEC_DESC" property="changeCurSpecDesc" jdbcType="VARCHAR" />
+    <result column="CHANGE_BEGIN_TIME" property="changeBeginTime" jdbcType="TIMESTAMP" />
+    <result column="CHANGE_END_TIME" property="changeEndTime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="CHANGE_COMMENTS" property="changeComments" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.instanceSid != null" >
+         and INSTANCE_SID = #{condition.instanceSid}
+      </if>
+      <if test="condition.changeSponsor != null" >
+         and CHANGE_SPONSOR = #{condition.changeSponsor}
+      </if>
+      <if test="condition.changeType != null" >
+         and CHANGE_TYPE = #{condition.changeType}
+      </if>
+      <if test="condition.changeSpec != null" >
+         and CHANGE_SPEC = #{condition.changeSpec}
+      </if>
+      <if test="condition.changePreSpec != null" >
+         and CHANGE_PRE_SPEC = #{condition.changePreSpec}
+      </if>
+      <if test="condition.changePreSpecDesc != null" >
+         and CHANGE_PRE_SPEC_DESC = #{condition.changePreSpecDesc}
+      </if>
+      <if test="condition.changeCurSpec != null" >
+         and CHANGE_CUR_SPEC = #{condition.changeCurSpec}
+      </if>
+      <if test="condition.changeCurSpecDesc != null" >
+         and CHANGE_CUR_SPEC_DESC = #{condition.changeCurSpecDesc}
+      </if>
+      <if test="condition.changeBeginTime != null" >
+         and CHANGE_BEGIN_TIME = #{condition.changeBeginTime}
+      </if>
+      <if test="condition.changeEndTime != null" >
+         and CHANGE_END_TIME = #{condition.changeEndTime}
+      </if>
+      <if test="condition.status != null" >
+         and STATUS = #{condition.status}
+      </if>
+      <if test="condition.changeComments != null" >
+         and CHANGE_COMMENTS = #{condition.changeComments}
+      </if>
+      <if test="condition.createdBy != null" >
+         and CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and VERSION = #{condition.version}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    CHANGE_LOG_SID, INSTANCE_SID, CHANGE_SPONSOR, CHANGE_TYPE, CHANGE_SPEC, CHANGE_PRE_SPEC, 
+    CHANGE_PRE_SPEC_DESC, CHANGE_CUR_SPEC, CHANGE_CUR_SPEC_DESC, CHANGE_BEGIN_TIME, CHANGE_END_TIME, 
+    STATUS, CHANGE_COMMENTS, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from service_instance_change_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from service_instance_change_log
+    where CHANGE_LOG_SID = #{changeLogSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from service_instance_change_log
+    where CHANGE_LOG_SID = #{changeLogSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from service_instance_change_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstanceChangeLog" >
+    <selectKey resultType="java.lang.Long" keyProperty="changeLogSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SERVICE_INSTANCE_CHANGE_LOG')
+    </selectKey>
+    insert into service_instance_change_log (CHANGE_LOG_SID, INSTANCE_SID, CHANGE_SPONSOR, CHANGE_TYPE, CHANGE_SPEC, 
+      CHANGE_PRE_SPEC, CHANGE_PRE_SPEC_DESC, CHANGE_CUR_SPEC, CHANGE_CUR_SPEC_DESC, 
+      CHANGE_BEGIN_TIME, CHANGE_END_TIME, STATUS, CHANGE_COMMENTS, CREATED_BY, 
+      CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION)
+    values (#{changeLogSid}, #{instanceSid}, #{changeSponsor}, #{changeType}, #{changeSpec}, 
+      #{changePreSpec}, #{changePreSpecDesc}, #{changeCurSpec}, #{changeCurSpecDesc}, 
+      #{changeBeginTime}, #{changeEndTime}, #{status}, #{changeComments}, #{createdBy}, 
+      #{createdDt}, #{updatedBy}, #{updatedDt}, #{version})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstanceChangeLog" >
+    <selectKey resultType="java.lang.Long" keyProperty="changeLogSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SERVICE_INSTANCE_CHANGE_LOG')
+    </selectKey>
+    insert into service_instance_change_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      CHANGE_LOG_SID,
+      <if test="instanceSid != null" >
+        INSTANCE_SID,
+      </if>
+      <if test="changeSponsor != null" >
+        CHANGE_SPONSOR,
+      </if>
+      <if test="changeType != null" >
+        CHANGE_TYPE,
+      </if>
+      <if test="changeSpec != null" >
+        CHANGE_SPEC,
+      </if>
+      <if test="changePreSpec != null" >
+        CHANGE_PRE_SPEC,
+      </if>
+      <if test="changePreSpecDesc != null" >
+        CHANGE_PRE_SPEC_DESC,
+      </if>
+      <if test="changeCurSpec != null" >
+        CHANGE_CUR_SPEC,
+      </if>
+      <if test="changeCurSpecDesc != null" >
+        CHANGE_CUR_SPEC_DESC,
+      </if>
+      <if test="changeBeginTime != null" >
+        CHANGE_BEGIN_TIME,
+      </if>
+      <if test="changeEndTime != null" >
+        CHANGE_END_TIME,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="changeComments != null" >
+        CHANGE_COMMENTS,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{changeLogSid},
+      <if test="instanceSid != null" >
+        #{instanceSid},
+      </if>
+      <if test="changeSponsor != null" >
+        #{changeSponsor},
+      </if>
+      <if test="changeType != null" >
+        #{changeType},
+      </if>
+      <if test="changeSpec != null" >
+        #{changeSpec},
+      </if>
+      <if test="changePreSpec != null" >
+        #{changePreSpec},
+      </if>
+      <if test="changePreSpecDesc != null" >
+        #{changePreSpecDesc},
+      </if>
+      <if test="changeCurSpec != null" >
+        #{changeCurSpec},
+      </if>
+      <if test="changeCurSpecDesc != null" >
+        #{changeCurSpecDesc},
+      </if>
+      <if test="changeBeginTime != null" >
+        #{changeBeginTime},
+      </if>
+      <if test="changeEndTime != null" >
+        #{changeEndTime},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="changeComments != null" >
+        #{changeComments},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from service_instance_change_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update service_instance_change_log
+    <set >
+      <if test="record.changeLogSid != null" >
+        CHANGE_LOG_SID = #{record.changeLogSid},
+      </if>
+      <if test="record.instanceSid != null" >
+        INSTANCE_SID = #{record.instanceSid},
+      </if>
+      <if test="record.changeSponsor != null" >
+        CHANGE_SPONSOR = #{record.changeSponsor},
+      </if>
+      <if test="record.changeType != null" >
+        CHANGE_TYPE = #{record.changeType},
+      </if>
+      <if test="record.changeSpec != null" >
+        CHANGE_SPEC = #{record.changeSpec},
+      </if>
+      <if test="record.changePreSpec != null" >
+        CHANGE_PRE_SPEC = #{record.changePreSpec},
+      </if>
+      <if test="record.changePreSpecDesc != null" >
+        CHANGE_PRE_SPEC_DESC = #{record.changePreSpecDesc},
+      </if>
+      <if test="record.changeCurSpec != null" >
+        CHANGE_CUR_SPEC = #{record.changeCurSpec},
+      </if>
+      <if test="record.changeCurSpecDesc != null" >
+        CHANGE_CUR_SPEC_DESC = #{record.changeCurSpecDesc},
+      </if>
+      <if test="record.changeBeginTime != null" >
+        CHANGE_BEGIN_TIME = #{record.changeBeginTime},
+      </if>
+      <if test="record.changeEndTime != null" >
+        CHANGE_END_TIME = #{record.changeEndTime},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status},
+      </if>
+      <if test="record.changeComments != null" >
+        CHANGE_COMMENTS = #{record.changeComments},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update service_instance_change_log
+    set CHANGE_LOG_SID = #{record.changeLogSid},
+      INSTANCE_SID = #{record.instanceSid},
+      CHANGE_SPONSOR = #{record.changeSponsor},
+      CHANGE_TYPE = #{record.changeType},
+      CHANGE_SPEC = #{record.changeSpec},
+      CHANGE_PRE_SPEC = #{record.changePreSpec},
+      CHANGE_PRE_SPEC_DESC = #{record.changePreSpecDesc},
+      CHANGE_CUR_SPEC = #{record.changeCurSpec},
+      CHANGE_CUR_SPEC_DESC = #{record.changeCurSpecDesc},
+      CHANGE_BEGIN_TIME = #{record.changeBeginTime},
+      CHANGE_END_TIME = #{record.changeEndTime},
+      STATUS = #{record.status},
+      CHANGE_COMMENTS = #{record.changeComments},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstanceChangeLog" >
+    update service_instance_change_log
+    <set >
+      <if test="instanceSid != null" >
+        INSTANCE_SID = #{instanceSid},
+      </if>
+      <if test="changeSponsor != null" >
+        CHANGE_SPONSOR = #{changeSponsor},
+      </if>
+      <if test="changeType != null" >
+        CHANGE_TYPE = #{changeType},
+      </if>
+      <if test="changeSpec != null" >
+        CHANGE_SPEC = #{changeSpec},
+      </if>
+      <if test="changePreSpec != null" >
+        CHANGE_PRE_SPEC = #{changePreSpec},
+      </if>
+      <if test="changePreSpecDesc != null" >
+        CHANGE_PRE_SPEC_DESC = #{changePreSpecDesc},
+      </if>
+      <if test="changeCurSpec != null" >
+        CHANGE_CUR_SPEC = #{changeCurSpec},
+      </if>
+      <if test="changeCurSpecDesc != null" >
+        CHANGE_CUR_SPEC_DESC = #{changeCurSpecDesc},
+      </if>
+      <if test="changeBeginTime != null" >
+        CHANGE_BEGIN_TIME = #{changeBeginTime},
+      </if>
+      <if test="changeEndTime != null" >
+        CHANGE_END_TIME = #{changeEndTime},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status},
+      </if>
+      <if test="changeComments != null" >
+        CHANGE_COMMENTS = #{changeComments},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+    </set>
+    where CHANGE_LOG_SID = #{changeLogSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstanceChangeLog" >
+    update service_instance_change_log
+    set INSTANCE_SID = #{instanceSid},
+      CHANGE_SPONSOR = #{changeSponsor},
+      CHANGE_TYPE = #{changeType},
+      CHANGE_SPEC = #{changeSpec},
+      CHANGE_PRE_SPEC = #{changePreSpec},
+      CHANGE_PRE_SPEC_DESC = #{changePreSpecDesc},
+      CHANGE_CUR_SPEC = #{changeCurSpec},
+      CHANGE_CUR_SPEC_DESC = #{changeCurSpecDesc},
+      CHANGE_BEGIN_TIME = #{changeBeginTime},
+      CHANGE_END_TIME = #{changeEndTime},
+      STATUS = #{status},
+      CHANGE_COMMENTS = #{changeComments},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version}
+    where CHANGE_LOG_SID = #{changeLogSid}
+  </update>
+
+  <select id="selectLastChangeLog"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select * from service_instance_change_log
+    where change_end_time is null and instance_sid = #{instanceSid}
+  </select>
+
+</mapper>

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResVfcMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResVfc">
+        <id column="RES_FC_PORT_SID" property="resFcPortSid" jdbcType="VARCHAR"/>
+        <result column="RES_VD_SID" property="resVdSid" jdbcType="VARCHAR"/>
+        <result column="WWPN" property="wwpn" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="CLIENT_SLOT_NUMBER" property="clientSlotNumber" jdbcType="INTEGER"/>
+        <result column="RES_VIOS_ID" property="resViosId" jdbcType="VARCHAR"/>
+        <result column="VIOS_SLOT_NUMBER" property="viosSlotNumber" jdbcType="INTEGER"/>
+        <result column="FC_NAME" property="fcName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.resVdSid != null">
+                and RES_VD_SID = #{condition.resVdSid}
+            </if>
+            <if test="condition.wwpn != null">
+                and WWPN = #{condition.wwpn}
+            </if>
+            <if test="condition.status != null">
+                and STATUS = #{condition.status}
+            </if>
+            <if test="condition.clientSlotNumber != null">
+                and CLIENT_SLOT_NUMBER = #{condition.clientSlotNumber}
+            </if>
+            <if test="condition.resViosId != null">
+                and RES_VIOS_ID = #{condition.resViosId}
+            </if>
+            <if test="condition.viosSlotNumber != null">
+                and VIOS_SLOT_NUMBER = #{condition.viosSlotNumber}
+            </if>
+            <if test="condition.fcName != null">
+                and FC_NAME = #{condition.fcName}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        RES_FC_PORT_SID, RES_VD_SID, WWPN, STATUS, CLIENT_SLOT_NUMBER, RES_VIOS_ID, VIOS_SLOT_NUMBER,
+        FC_NAME
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from res_vfc
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <select id="selectByPowerVe" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        A.*
+        from res_vfc A
+        LEFT JOIN res_vios B ON (
+        A.RES_VIOS_ID = B.RES_VIOS_SID
+        )
+        LEFT JOIN res_host C ON (
+        B.RES_HOST_SID = C.RES_HOST_SID
+        )
+        WHERE
+        C.PARENT_TOPOLOGY_SID=#{resVeSid}
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_vfc
+        where RES_FC_PORT_SID = #{resFcPortSid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_vfc
+        where RES_FC_PORT_SID = #{resFcPortSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_vfc
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVfc">
+        <selectKey resultType="java.lang.String" keyProperty="resFcPortSid" order="BEFORE">
+            SELECT UUID()
+        </selectKey>
+        insert into res_vfc (RES_FC_PORT_SID, RES_VD_SID, WWPN, STATUS, CLIENT_SLOT_NUMBER, RES_VIOS_ID,
+        VIOS_SLOT_NUMBER, FC_NAME)
+        values (#{resFcPortSid}, #{resVdSid}, #{wwpn}, #{status}, #{clientSlotNumber}, #{resViosId},
+        #{viosSlotNumber}, #{fcName})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVfc">
+        <selectKey resultType="java.lang.String" keyProperty="resFcPortSid" order="BEFORE">
+            SELECT UUID()
+        </selectKey>
+        insert into res_vfc
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            RES_FC_PORT_SID,
+            <if test="resVdSid != null">
+                RES_VD_SID,
+            </if>
+            <if test="wwpn != null">
+                WWPN,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="clientSlotNumber != null">
+                CLIENT_SLOT_NUMBER,
+            </if>
+            <if test="resViosId != null">
+                RES_VIOS_ID,
+            </if>
+            <if test="viosSlotNumber != null">
+                VIOS_SLOT_NUMBER,
+            </if>
+            <if test="fcName != null">
+                FC_NAME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{resFcPortSid},
+            <if test="resVdSid != null">
+                #{resVdSid},
+            </if>
+            <if test="wwpn != null">
+                #{wwpn},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="clientSlotNumber != null">
+                #{clientSlotNumber},
+            </if>
+            <if test="resViosId != null">
+                #{resViosId},
+            </if>
+            <if test="viosSlotNumber != null">
+                #{viosSlotNumber},
+            </if>
+            <if test="fcName != null">
+                #{fcName},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_vfc
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_vfc
+        <set>
+            <if test="record.resFcPortSid != null">
+                RES_FC_PORT_SID = #{record.resFcPortSid},
+            </if>
+            <if test="record.resVdSid != null">
+                RES_VD_SID = #{record.resVdSid},
+            </if>
+            <if test="record.wwpn != null">
+                WWPN = #{record.wwpn},
+            </if>
+            <if test="record.status != null">
+                STATUS = #{record.status},
+            </if>
+            <if test="record.clientSlotNumber != null">
+                CLIENT_SLOT_NUMBER = #{record.clientSlotNumber},
+            </if>
+            <if test="record.resViosId != null">
+                RES_VIOS_ID = #{record.resViosId},
+            </if>
+            <if test="record.viosSlotNumber != null">
+                VIOS_SLOT_NUMBER = #{record.viosSlotNumber},
+            </if>
+            <if test="record.fcName != null">
+                FC_NAME = #{record.fcName},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_vfc
+        set RES_FC_PORT_SID = #{record.resFcPortSid},
+        RES_VD_SID = #{record.resVdSid},
+        WWPN = #{record.wwpn},
+        STATUS = #{record.status},
+        CLIENT_SLOT_NUMBER = #{record.clientSlotNumber},
+        RES_VIOS_ID = #{record.resViosId},
+        VIOS_SLOT_NUMBER = #{record.viosSlotNumber},
+        FC_NAME = #{record.fcName}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVfc">
+        update res_vfc
+        <set>
+            <if test="resVdSid != null">
+                RES_VD_SID = #{resVdSid},
+            </if>
+            <if test="wwpn != null">
+                WWPN = #{wwpn},
+            </if>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+            <if test="clientSlotNumber != null">
+                CLIENT_SLOT_NUMBER = #{clientSlotNumber},
+            </if>
+            <if test="resViosId != null">
+                RES_VIOS_ID = #{resViosId},
+            </if>
+            <if test="viosSlotNumber != null">
+                VIOS_SLOT_NUMBER = #{viosSlotNumber},
+            </if>
+            <if test="fcName != null">
+                FC_NAME = #{fcName},
+            </if>
+        </set>
+        where RES_FC_PORT_SID = #{resFcPortSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVfc">
+        update res_vfc
+        set RES_VD_SID = #{resVdSid},
+        WWPN = #{wwpn},
+        STATUS = #{status},
+        CLIENT_SLOT_NUMBER = #{clientSlotNumber},
+        RES_VIOS_ID = #{resViosId},
+        VIOS_SLOT_NUMBER = #{viosSlotNumber},
+        FC_NAME = #{fcName}
+        where RES_FC_PORT_SID = #{resFcPortSid}
+    </update>
+</mapper>

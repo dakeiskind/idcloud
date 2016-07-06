@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.charge.dao.BillDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.charge.BillDetail" >
+    <id column="BILL_DETAIL_SID" property="billDetailSid" jdbcType="BIGINT" />
+    <result column="BILL_SID" property="billSid" jdbcType="BIGINT" />
+    <result column="SERVICE_SID" property="serviceSid" jdbcType="VARCHAR" />
+    <result column="SERVICE_INSTANCE_SID" property="serviceInstanceSid" jdbcType="VARCHAR" />
+    <result column="BILLING_TYPE" property="billingType" jdbcType="VARCHAR" />
+    <result column="BILLING_TYPE_NAME" property="billingTypeName" jdbcType="VARCHAR" />
+    <result column="SERVICE_INSTANCE_NAME" property="serviceInstanceName" jdbcType="VARCHAR" />
+    <result column="BILL_TIME_NAME" property="billTimeName" jdbcType="VARCHAR" />
+    <result column="OWNER_ID" property="ownerId" jdbcType="VARCHAR" />
+    <result column="BILLING_START_TIME" property="billingStartTime" jdbcType="VARCHAR" />
+	<result column="BILLING_END_TIME" property="billingEndTime" jdbcType="VARCHAR" />
+    
+    <result column="LONG_USE" property="longUse" jdbcType="REAL" />
+    <result column="USAGE_VOLUME" property="usageVolume" jdbcType="VARCHAR" />
+    <result column="MONEY" property="money" jdbcType="DECIMAL" />
+    <result column="NUMBER" property="number" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+    <result column="SERVICE_NAME" property="serviceName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.billSid != null" >
+         and A.BILL_SID = #{condition.billSid}
+      </if>
+      <if test="condition.serviceSid != null" >
+         and A.SERVICE_SID = #{condition.serviceSid}
+      </if>
+      <if test="condition.billTimeName != null" >
+         and A.BILL_TIME_NAME = #{condition.billTimeName}
+      </if>
+      <if test="condition.serviceInstanceSid != null" >
+         and A.SERVICE_INSTANCE_SID = #{condition.serviceInstanceSid}
+      </if>
+      <if test="condition.billingType != null" >
+         and A.BILLING_TYPE = #{condition.billingType}
+      </if>
+      <if test="condition.longUse != null" >
+         and A.LONG_USE = #{condition.longUse}
+      </if>
+      <if test="condition.money != null" >
+         and A.MONEY = #{condition.money}
+      </if>
+      <if test="condition.number != null" >
+         and A.NUMBER = #{condition.number}
+      </if>
+      <if test="condition.status != null" >
+         and A.STATUS = #{condition.status}
+      </if>
+      <if test="condition.createdBy != null" >
+         and A.CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and A.CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and A.UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and A.UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and A.VERSION = #{condition.version}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    A.BILL_DETAIL_SID, A.BILL_SID, A.SERVICE_SID, A.SERVICE_INSTANCE_SID, A.BILL_TIME_NAME, A.BILLING_START_TIME, A.BILLING_END_TIME, A.BILLING_TYPE, A.USAGE_VOLUME, A.LONG_USE, 
+    A.MONEY, A.NUMBER, A.STATUS, A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, A.UPDATED_DT, A.VERSION
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    B.CODE_DISPLAY AS STATUS_NAME,
+    C.SERVICE_NAME AS SERVICE_NAME,
+    if(D.SERVICE_SID = 107,'CDN服务',D.INSTANCE_NAME) AS SERVICE_INSTANCE_NAME,
+    D.OWNER_ID AS OWNER_ID,
+    E.CODE_DISPLAY AS BILLING_TYPE_NAME,
+    <include refid="Base_Column_List" />
+    from bill_detail A
+    left join sys_m_code B ON (A.STATUS = B.CODE_VALUE AND B.CODE_CATEGORY = 'BILL_STATUS' )
+    left join service C ON (A.SERVICE_SID = C.SERVICE_SID)
+    left join service_instance D ON (A.SERVICE_INSTANCE_SID = D.INSTANCE_SID)
+    left join sys_m_code E ON (A.BILLING_TYPE = E.CODE_VALUE AND E.CODE_CATEGORY = 'BILLING_TYPE_YM' )
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from bill_detail A
+    where A.BILL_DETAIL_SID = #{billDetailSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from bill_detail
+    where BILL_DETAIL_SID = #{billDetailSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from bill_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillDetail" >
+    insert into bill_detail (BILL_DETAIL_SID, BILL_SID, SERVICE_SID, SERVICE_INSTANCE_SID, BILLING_TYPE, 
+      LONG_USE, MONEY, NUMBER, STATUS, CREATED_BY, CREATED_DT, UPDATED_BY, 
+      UPDATED_DT, VERSION)
+    values (#{billDetailSid}, #{billSid}, #{serviceSid}, #{serviceInstanceSid}, #{billingType}, 
+      #{longUse}, #{money}, #{number}, #{status}, #{createdBy}, #{createdDt}, #{updatedBy}, 
+      #{updatedDt}, #{version})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillDetail" >
+    <selectKey resultType="java.lang.Long" keyProperty="billDetailSid" order="BEFORE">
+			SELECT NEXTVAL('SEQ_BILL_DETAIL')
+	</selectKey>
+    insert into bill_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        BILL_DETAIL_SID,
+      <if test="billSid != null" >
+        BILL_SID,
+      </if>
+      <if test="serviceSid != null" >
+        SERVICE_SID,
+      </if>
+      <if test="serviceInstanceSid != null" >
+        SERVICE_INSTANCE_SID,
+      </if>
+      <if test="billTimeName != null" >
+        BILL_TIME_NAME,
+      </if>
+      <if test="billingStartTime != null" >
+        BILLING_START_TIME,
+      </if>
+      <if test="billingEndTime != null" >
+        BILLING_END_TIME,
+      </if>
+      <if test="billingType != null" >
+        BILLING_TYPE,
+      </if>
+      <if test="longUse != null" >
+        LONG_USE,
+      </if>
+      <if test="usageVolume != null" >
+         USAGE_VOLUME,
+      </if>
+      <if test="money != null" >
+        MONEY,
+      </if>
+      <if test="number != null" >
+        NUMBER,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{billDetailSid},
+      <if test="billSid != null" >
+        #{billSid},
+      </if>
+      <if test="serviceSid != null" >
+        #{serviceSid},
+      </if>
+      <if test="serviceInstanceSid != null" >
+        #{serviceInstanceSid},
+      </if>
+      <if test="billTimeName != null" >
+        #{billTimeName},
+      </if>
+      <if test="billingStartTime != null" >
+        #{billingStartTime},
+      </if>
+      <if test="billingEndTime != null" >
+        #{billingEndTime},
+      </if>
+      <if test="billingType != null" >
+        #{billingType},
+      </if>
+      <if test="longUse != null" >
+        #{longUse},
+      </if>
+      <if test="usageVolume != null" >
+        #{usageVolume},
+      </if>
+      <if test="money != null" >
+        #{money},
+      </if>
+      <if test="number != null" >
+        #{number},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from bill_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update bill_detail
+    <set >
+      <if test="record.billDetailSid != null" >
+        BILL_DETAIL_SID = #{record.billDetailSid},
+      </if>
+      <if test="record.billSid != null" >
+        BILL_SID = #{record.billSid},
+      </if>
+      <if test="record.serviceSid != null" >
+        SERVICE_SID = #{record.serviceSid},
+      </if>
+      <if test="record.serviceInstanceSid != null" >
+        SERVICE_INSTANCE_SID = #{record.serviceInstanceSid},
+      </if>
+      <if test="record.billTimeName != null" >
+        BILL_TIME_NAME = #{record.billTimeName},
+      </if>
+      <if test="record.billingStartTime != null" >
+        BILLING_START_TIME = #{record.billingStartTime},
+      </if>
+      <if test="record.billingEndTime != null" >
+        BILLING_END_TIME = #{record.billingEndTime},
+      </if>
+      <if test="record.billingType != null" >
+        BILLING_TYPE = #{record.billingType},
+      </if>
+      <if test="record.longUse != null" >
+        LONG_USE = #{record.longUse},
+      </if>
+      <if test="record.usageVolume != null" >
+        USAGE_VOLUME = #{record.usageVolume},
+      </if>
+      <if test="record.money != null" >
+        MONEY = #{record.money},
+      </if>
+      <if test="record.number != null" >
+        NUMBER = #{record.number},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update bill_detail
+    set BILL_DETAIL_SID = #{record.billDetailSid},
+      BILL_SID = #{record.billSid},
+      SERVICE_SID = #{record.serviceSid},
+      SERVICE_INSTANCE_SID = #{record.serviceInstanceSid},
+      BILLING_TYPE = #{record.billingType},
+      LONG_USE = #{record.longUse},
+      MONEY = #{record.money},
+      NUMBER = #{record.number},
+      STATUS = #{record.status},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillDetail" >
+    update bill_detail
+    <set >
+      <if test="billSid != null" >
+        BILL_SID = #{billSid},
+      </if>
+      <if test="serviceSid != null" >
+        SERVICE_SID = #{serviceSid},
+      </if>
+      <if test="serviceInstanceSid != null" >
+        SERVICE_INSTANCE_SID = #{serviceInstanceSid},
+      </if>
+      <if test="billTimeName != null" >
+        BILL_TIME_NAME = #{billTimeName},
+      </if>
+      <if test="billingStartTime != null" >
+        BILLING_START_TIME = #{billingStartTime},
+      </if>
+      <if test="billingEndTime != null" >
+        BILLING_END_TIME = #{billingEndTime},
+      </if>
+      <if test="billingType != null" >
+        BILLING_TYPE = #{billingType},
+      </if>
+      <if test="longUse != null" >
+        LONG_USE = #{longUse},
+      </if>
+      <if test="usageVolume != null" >
+        USAGE_VOLUME = #{usageVolume},
+      </if>
+      <if test="money != null" >
+        MONEY = #{money},
+      </if>
+      <if test="number != null" >
+        NUMBER = #{number},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+    </set>
+    where BILL_DETAIL_SID = #{billDetailSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillDetail" >
+    update bill_detail
+    set BILL_SID = #{billSid},
+      SERVICE_SID = #{serviceSid},
+      SERVICE_INSTANCE_SID = #{serviceInstanceSid},
+      BILLING_TYPE = #{billingType},
+      LONG_USE = #{longUse},
+      MONEY = #{money},
+      NUMBER = #{number},
+      STATUS = #{status},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version}
+    where BILL_DETAIL_SID = #{billDetailSid}
+  </update>
+</mapper>

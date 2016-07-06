@@ -1,0 +1,55 @@
+<div ms-controller="safeGroup">
+    <div id="safeGroup">
+        <div class="xs12 margin-small-bottom top-height">
+            <div class="xs8">
+                <div class="float-left text-large">{{title}}</div>
+                <div class="margin-small-left float-left title">
+                    <select class="select" >
+                        <option>华南地区（广东）</option>
+                        <option>华南地区（广西）</option>
+                        <option>华南地区（海南）</option>
+                        <option>华中地区（湖北）</option>
+                        <option>华中地区（湖南）</option>
+                    </select>
+                </div>
+            </div>
+            <div class="xs4">
+                <button class="button bg-blue float-right radius-none" type="button" ms-click="createSafeGroup()">创建安全组</button>
+            </div>
+        </div>
+        <hr/>
+        <div id="safeGroupGrid"></div>
+    </div>
+
+    <div class="fadein-right hidden" id="configRule">
+        <div class="xs12 padding-bottom">
+            <div class="xs8">
+                <i class="float-left icon-arrow-left margin-right" style="font-size: 20px;color: #0099D7; cursor: pointer;" ms-click="returnSafeGroup()"></i>
+                <!--<button class="button button-little float-left radius-none margin-right" ms-click="returnSafeGroup" style="margin-top: 3px;">-->
+                <!--<span class="text-big icon-arrow-left" style="color: #0099d7;"></span>-->
+                <!--</button>-->
+                <div class="float-left text-large" id="sgIdName"></div>
+            </div>
+            <div class="xs4">
+                <button class="button bg-blue float-right radius-none" type="button" ms-click="sgRuleAdd()">添加安全组规则</button>
+            </div>
+        </div>
+        <hr/>
+        <div class="tab">
+            <div class="tab-head">
+                <ul class="tab-nav" >
+                    <li  class="active"><a href="#tab-enter">入口方向</a></li>
+                    <li ><a href="#tab-exit">出口方向</a></li>
+                </ul>
+            </div>
+            <div class="tab-body">
+                <div class="tab-panel active" id="tab-enter">
+                    <div id="enterDirectionGrid"></div>
+                </div>
+                <div class="tab-panel" id="tab-exit">
+                    <div id="exitDirectionGrid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

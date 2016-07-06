@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="application/json;charset=UTF-8">
+    <title>金贸云 - 首页</title>
+    <link rel="icon" href="topfooter/images/favicon.ico" type="image/x-icon" />
+    <link href="css/index.css" rel="stylesheet" type="text/css">
+    <link href="css/custom.css" rel="stylesheet" type="text/css">
+    <link href="css/slider.css" rel="stylesheet">
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/unslider.min.js"></script>
+    <script type="text/javascript" src="js/public.js"></script>
+    <script type="text/javascript" src="js/js.cookie.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/jquery.base64.js"></script>
+    <script>
+        $(function () {
+            $('.banner').unslider({
+                speed: 500,
+                delay: 2000,
+                keys: true,
+                dots: true,
+                fluid: false
+            });
+        });
+    </script>
+
+</head>
+<body>
+<!--header部分-->
+<div class="top" id="header">
+</div>
+<!--内容部分-->
+<div style="width:100%;height:465px;">
+    <div class="banner">
+        <ul>
+            <li><a target="_blank" href="#"><img src="images/banner_bg3.jpg" width="100%" alt=""></a>
+            </li>
+            <li><a target="_blank" href="#"><img src="images/banner_bg4.jpg" width="100%" alt=""></a>
+            </li>
+            <li><a target="_blank" href="#"><img src="images/banner_bg5.jpg" width="100%" alt=""></a>
+            </li>
+            <li><a target="_blank" href="#"><img src="images/banner_bg7.jpg" width="100%" alt=""></a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+<div class="nmiddle" style="width:100%;height:100%;float:left;">
+    <!-- 服务名称 -->
+    <div id="services" class="product_bk" align="center">
+        <div class="product_box" id="serviceContent" >
+        </div>
+    </div>
+</div>
+<!-- footer部分 -->
+<div class="footer" style="width:100%;height:100%;float:left;"  id="footer"></div>
+</body>
+</html>

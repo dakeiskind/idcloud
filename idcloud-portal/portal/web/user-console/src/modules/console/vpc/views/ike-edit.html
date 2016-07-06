@@ -1,0 +1,85 @@
+<form id="editIKEForm" >
+    <table border="0" class="custom-table" ms-controller="ikeEditWindow">
+        <tr>
+            <td class="required">名称：</td>
+            <td>
+                <input id="IKEName" type="text" ms-duplex="addIKEData['IKEName']" name="IKEName" style="width:220px" class="input text-small radius-none">
+            </td>
+        </tr>
+        <tr>
+            <td>描述：</td>
+            <td>
+                <input id="IKEdesc" type="text" ms-duplex="addIKEData['IKEdesc']" name="IKEdesc" style="width:220px" class="input text-small radius-none">
+            </td>
+        </tr>
+        <tr>
+            <td>授权算法：</td>
+            <td>
+                <select class="select radius-none" style="width:220px" name="IKEAlgorithm" ms-duplex="addIKEData['IKEAlgorithm']">
+                    <option selected="selected" value="sha1">sha1</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>加密算法：</td>
+            <td>
+                <select class="select radius-none" style="width:220px" name="IKEEncryption" ms-duplex="addIKEData['IKEEncryption']">
+                    <option  value="3des">3des</option>
+                    <option selected="selected" value="aes-128">aes-128</option>
+                    <option value="aes-192">aes-192</option>
+                    <option  value="aes-256">aes-256</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>IKE版本：</td>
+            <td>
+                <select class="select radius-none" style="width:220px">
+                    <option selected="selected"  value="v1">v1</option>
+                    <option  value="v2">v2</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>IKE密钥的生存期单位：</td>
+            <td>
+                <select class="select radius-none" style="width:220px">
+                    <option selected="selected"  value="seconds">seconds</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>IKE密钥的生存期：</td>
+            <td>
+                <input type="number" value="3600"  style="width:220px" class="input text-small radius-none">
+            </td>
+        </tr>
+        <tr>
+            <td>完美前传保密：</td>
+            <td>
+                <select class="select radius-none" style="width:220px" name="IKEPfs" ms-duplex="addIKEData['IKEPfs']">
+                    <option   value="group2">group2</option>
+                    <option selected="selected"  value="group5">group5</option>
+                    <option   value="group14">group14</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>IKE Phase1协商模式：</td>
+            <td>
+                <select class="select radius-none" style="width:220px">
+                    <option selected="selected"  value="main">main</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+</form>
+
+<script type="text/javascript">
+    require(["app-modules/console/vpc/vmodel/ike-edit"],function(ikeEdit){
+        // 初始化数据
+        ikeEdit.addIKEData = avalon.vmodels.VPNMgt.editIKEData;
+        ikeEdit.initValidator();
+        avalon.scan();
+    });
+</script>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.UserTopicMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.UserTopic" >
+    <id column="TOPIC_SID" property="topicSid" jdbcType="BIGINT" />
+    <id column="USER_SID" property="userSid" jdbcType="BIGINT" />
+    <result column="SORT_RANK" property="sortRank" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.sortRank != null" >
+         and SORT_RANK = #{condition.sortRank}
+      </if>
+      <if test="condition.userSid != null" >
+         and USER_SID = #{condition.userSid}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    TOPIC_SID, USER_SID, SORT_RANK
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_m_user_topic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.core.pojo.dto.system.UserTopic" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_m_user_topic
+    where TOPIC_SID = #{topicSid}
+      and USER_SID = #{userSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.UserTopic" >
+    delete from sys_m_user_topic
+    where TOPIC_SID = #{topicSid}
+      and USER_SID = #{userSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from sys_m_user_topic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.system.UserTopic" >
+    insert into sys_m_user_topic (TOPIC_SID, USER_SID, SORT_RANK)
+    values (#{topicSid}, #{userSid}, #{sortRank})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.UserTopic" >
+    insert into sys_m_user_topic
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="topicSid != null" >
+        TOPIC_SID,
+      </if>
+      <if test="userSid != null" >
+        USER_SID,
+      </if>
+      <if test="sortRank != null" >
+        SORT_RANK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="topicSid != null" >
+        #{topicSid},
+      </if>
+      <if test="userSid != null" >
+        #{userSid},
+      </if>
+      <if test="sortRank != null" >
+        #{sortRank},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from sys_m_user_topic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.UserTopic" >
+    update sys_m_user_topic
+    <set >
+      <if test="sortRank != null" >
+        SORT_RANK = #{sortRank},
+      </if>
+    </set>
+    where TOPIC_SID = #{topicSid}
+      and USER_SID = #{userSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.UserTopic" >
+    update sys_m_user_topic
+    set SORT_RANK = #{sortRank}
+    where TOPIC_SID = #{topicSid}
+      and USER_SID = #{userSid}
+  </update>
+</mapper>

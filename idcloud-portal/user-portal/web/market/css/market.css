@@ -1,0 +1,14 @@
+.input-group-addon{ background-color: rgb(43,150,204);color:#fff;border:none;border-radius: 0px;}
+.menu{ padding:15px;font-size: 20px;   }
+.menu span{ display: inline-block;margin-left: 15px;}
+@media (min-width: 768px){
+
+    .fixed-header .menu{
+        top:84px;
+    }
+
+}
+.serviceInfo ul{
+    list-style-type: none;
+}
+.serviceInfo p{margin-bottom: 10px;}

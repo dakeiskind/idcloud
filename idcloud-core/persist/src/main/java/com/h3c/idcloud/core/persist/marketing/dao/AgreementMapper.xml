@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.marketing.dao.AgreementMapper" >
+  <!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />-->
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.marketing.Agreement" >
+    <id column="AGREEMENT_SID" property="agreementSid" jdbcType="BIGINT" />
+    <result column="USER_SID" property="userSid" jdbcType="BIGINT" />
+    <result column="BRIEF" property="brief" jdbcType="VARCHAR" />
+    <result column="AGREEMENT_FILE" property="agreementFile" jdbcType="VARCHAR" />
+    <result column="AGREEMENT_TITLE" property="agreementTitle" jdbcType="VARCHAR" />
+    <result column="DATE_SIGNED" property="dateSigned" jdbcType="TIMESTAMP" />
+    <result column="PRICE" property="price" jdbcType="DECIMAL" />
+    <result column="PAYMENT" property="payment" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+    <result column="ACCOUNT_NAME" property="accountName" jdbcType="VARCHAR" />
+    <result column="ACCOUNT_SID" property="accountSid" jdbcType="BIGINT" />
+    <result column="ORAGIN_NAME" property="oraginName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.userSid != null" >
+         and A.USER_SID = #{condition.userSid}
+      </if> 
+	  <if test="condition.accountNameLike != null">
+		  and A.ACCOUNT_NAME like concat('%',
+		  #{condition.accountNameLike}, '%')
+	  </if>                
+      <if test="condition.brief != null" >
+         and A.BRIEF = #{condition.brief}
+      </if>
+      <if test="condition.agreementFile != null" >
+         and A.AGREEMENT_FILE = #{condition.agreementFile}
+      </if>
+      <if test="condition.agreementTitle != null" >
+         and A.AGREEMENT_TITLE = #{condition.agreementTitle}
+      </if>
+	  <if test="condition.agreementTitleLike != null">
+		  and A.AGREEMENT_TITLE like concat('%',
+		  #{condition.agreementTitleLike}, '%')
+	  </if>      
+      <if test="condition.dateSigned != null" >
+         and A.DATE_SIGNED = #{condition.dateSigned}
+      </if>
+      <if test="condition.dateSignedFrom != null" >
+         and A.DATE_SIGNED <![CDATA[ >=str_to_date(#{condition.dateSignedFrom},'%Y-%m-%d %H:%i:%S')]]>
+      </if>
+      <if test="condition.dateSignedTo != null" >
+         and A.DATE_SIGNED <![CDATA[ <=str_to_date(#{condition.dateSignedTo} ,'%Y-%m-%d %H:%i:%S')]]>
+      </if>      
+      <if test="condition.price != null" >
+         and A.PRICE = #{condition.price}
+      </if>
+      <if test="condition.payment != null" >
+         and A.PAYMENT = #{condition.payment}
+      </if>
+      <if test="condition.createdBy != null" >
+         and A.CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and A.CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and A.UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and A.UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and A.VERSION = #{condition.version}
+      </if>
+      <if test="condition.oraginName != null" >
+         and A.ORAGIN_NAME = #{condition.oraginName}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    A.AGREEMENT_SID, A.USER_SID, A.BRIEF, A.AGREEMENT_FILE, A.AGREEMENT_TITLE, A.DATE_SIGNED, A.PRICE, 
+    A.PAYMENT, A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, A.UPDATED_DT, A.VERSION,A.ORAGIN_NAME
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,C.ACCOUNT_SID as ACCOUNT_SID
+    ,C.ACCOUNT_NAME as ACCOUNT_NAME
+    from billing_agreement A
+    LEFT JOIN SYS_M_USER B on A.USER_SID = B.USER_SID
+    LEFT JOIN billing_account_mgt_obj D ON B.MGT_OBJ_SID = D.MGT_OBJ_SID
+    LEFT JOIN billing_account C ON D.ACCOUNT_SID = C.ACCOUNT_SID
+
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from billing_agreement A
+    where A.AGREEMENT_SID = #{agreementSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from billing_agreement
+    where AGREEMENT_SID = #{agreementSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from billing_agreement
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.marketing.Agreement" >
+    <selectKey resultType="java.lang.Long" keyProperty="agreementSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_BILLING_AGREEMENT')
+    </selectKey>
+    insert into billing_agreement (AGREEMENT_SID, USER_SID, BRIEF, AGREEMENT_FILE, AGREEMENT_TITLE, 
+      DATE_SIGNED, PRICE, PAYMENT, CREATED_BY, CREATED_DT, UPDATED_BY, 
+      UPDATED_DT, VERSION,ORAGIN_NAME)
+    values (#{agreementSid}, #{userSid}, #{brief}, #{agreementFile}, #{agreementTitle}, 
+      #{dateSigned}, #{price}, #{payment}, #{createdBy}, #{createdDt}, #{updatedBy}, 
+      #{updatedDt}, #{version},#{oraginName})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.marketing.Agreement" >
+    <selectKey resultType="java.lang.Long" keyProperty="agreementSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_BILLING_AGREEMENT')
+    </selectKey>
+    insert into billing_agreement
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      AGREEMENT_SID,
+      <if test="userSid != null" >
+        USER_SID,
+      </if>
+      <if test="brief != null" >
+        BRIEF,
+      </if>
+      <if test="agreementFile != null" >
+        AGREEMENT_FILE,
+      </if>
+      <if test="agreementTitle != null" >
+        AGREEMENT_TITLE,
+      </if>
+      <if test="dateSigned != null" >
+        DATE_SIGNED,
+      </if>
+      <if test="price != null" >
+        PRICE,
+      </if>
+      <if test="payment != null" >
+        PAYMENT,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>    
+      <if test="oraginName != null" >
+        ORAGIN_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{agreementSid},
+      <if test="userSid != null" >
+        #{userSid},
+      </if>
+      <if test="brief != null" >
+        #{brief},
+      </if>
+      <if test="agreementFile != null" >
+        #{agreementFile},
+      </if>
+      <if test="agreementTitle != null" >
+        #{agreementTitle},
+      </if>
+      <if test="dateSigned != null" >
+        #{dateSigned},
+      </if>
+      <if test="price != null" >
+        #{price},
+      </if>
+      <if test="payment != null" >
+        #{payment},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if> 
+      <if test="oraginName != null" >
+        #{oraginName},
+      </if>    
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from billing_agreement A 
+    LEFT JOIN SYS_M_USER B on A.USER_SID = B.USER_SID
+    LEFT JOIN billing_account_mgt_obj D ON B.MGT_OBJ_SID = D.MGT_OBJ_SID
+    LEFT JOIN billing_account C ON D.ACCOUNT_SID = C.ACCOUNT_SID
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update billing_agreement
+    <set >
+      <if test="record.agreementSid != null" >
+        AGREEMENT_SID = #{record.agreementSid},
+      </if>
+      <if test="record.userSid != null" >
+        USER_SID = #{record.userSid},
+      </if>
+      <if test="record.brief != null" >
+        BRIEF = #{record.brief},
+      </if>
+      <if test="record.agreementFile != null" >
+        AGREEMENT_FILE = #{record.agreementFile},
+      </if>
+      <if test="record.agreementTitle != null" >
+        AGREEMENT_TITLE = #{record.agreementTitle},
+      </if>
+      <if test="record.dateSigned != null" >
+        DATE_SIGNED = #{record.dateSigned},
+      </if>
+      <if test="record.price != null" >
+        PRICE = #{record.price},
+      </if>
+      <if test="record.payment != null" >
+        PAYMENT = #{record.payment},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+      <if test="record.oraginName != null" >
+        ORAGIN_NAME = #{record.oraginName},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update billing_agreement
+    set AGREEMENT_SID = #{record.agreementSid},
+      USER_SID = #{record.userSid},
+      BRIEF = #{record.brief},
+      AGREEMENT_FILE = #{record.agreementFile},
+      AGREEMENT_TITLE = #{record.agreementTitle},
+      DATE_SIGNED = #{record.dateSigned},
+      PRICE = #{record.price},
+      PAYMENT = #{record.payment},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version},
+      ORAGIN_NAME = #{record.oraginName}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective"
+          parameterType="com.h3c.idcloud.core.pojo.dto.marketing.Agreement" >
+    update billing_agreement
+    <set >
+      <if test="userSid != null" >
+        USER_SID = #{userSid},
+      </if>
+      <if test="brief != null" >
+        BRIEF = #{brief},
+      </if>
+      <if test="agreementFile != null" >
+        AGREEMENT_FILE = #{agreementFile},
+      </if>
+      <if test="agreementTitle != null" >
+        AGREEMENT_TITLE = #{agreementTitle},
+      </if>
+      <if test="dateSigned != null" >
+        DATE_SIGNED = #{dateSigned},
+      </if>
+      <if test="price != null" >
+        PRICE = #{price},
+      </if>
+      <if test="payment != null" >
+        PAYMENT = #{payment},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+      <if test="oraginName != null" >
+        ORAGIN_NAME = #{oraginName},
+      </if>
+    </set>
+    where AGREEMENT_SID = #{agreementSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.marketing.Agreement" >
+    update billing_agreement
+    set USER_SID = #{userSid},
+      BRIEF = #{brief},
+      AGREEMENT_FILE = #{agreementFile},
+      AGREEMENT_TITLE = #{agreementTitle},
+      DATE_SIGNED = #{dateSigned},
+      PRICE = #{price},
+      PAYMENT = #{payment},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version},
+      ORAGIN_NAME = #{oraginName}
+    where AGREEMENT_SID = #{agreementSid}
+  </update>
+</mapper>

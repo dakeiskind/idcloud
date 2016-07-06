@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResVmNetworkMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResVmNetwork">
+        <id column="RES_VM_SID" property="resVmSid" jdbcType="VARCHAR"/>
+        <result column="RES_NETWORK_SID" property="resNetworkSid" jdbcType="VARCHAR"/>
+        <result column="RES_NETWORK_NAME" property="resNetworkName" jdbcType="VARCHAR"/>
+        <result column="IP_ADDRESS" property="ipAddress" jdbcType="VARCHAR"/>
+        <result column="NET_PRIMARY" property="netPrimary" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="RELEASE_MODE" property="releaseMode" jdbcType="VARCHAR"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR"/>
+        <result column="MAC_ADDRESS" property="mac" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.resNetworkSid != null">
+                and A.RES_NETWORK_SID = #{condition.resNetworkSid}
+            </if>
+            <if test="condition.ipAddress != null">
+                and A.IP_ADDRESS = #{condition.ipAddress}
+            </if>
+            <if test="condition.mac != null">
+                and A.MAC_ADDRESS = #{condition.mac}
+            </if>
+            <if test="condition.netPrimary != null">
+                and A.NET_PRIMARY = #{condition.netPrimary}
+            </if>
+            <if test="condition.resVmSid != null">
+                and A.RES_VM_SID = #{condition.resVmSid}
+            </if>
+            <if test="condition.status != null">
+                and A.STATUS = #{condition.status}
+            </if>
+            <if test="condition.uuid != null">
+                and A.UUID = #{condition.uuid}
+            </if>
+            <if test="condition.releaseMode != null">
+                and A.RELEASE_MODE = #{condition.releaseMode}
+            </if>
+            <if test="condition.resVmSidDelete != null">
+                and RES_VM_SID = #{condition.resVmSidDelete}
+            </if>
+            <if test="condition.vMstatus != null">
+                and B.STATUS != #{condition.vMstatus}
+            </if>
+            <if test="condition.networkType != null">
+                and A.NETWORK_TYPE = #{condition.networkType}
+            </if>
+            <if test="condition.parentTopologySid != null">
+                and A.RES_NETWORK_SID in (
+                SELECT B.RES_NETWORK_SID
+                FROM res_network B
+                where B.PARENT_TOPOLOGY_SID = #{condition.parentTopologySid}
+                )
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        A.RES_VM_SID, A.RES_NETWORK_SID, A.IP_ADDRESS,A.NET_PRIMARY,A.STATUS,A.MAC_ADDRESS,
+        A.UUID, A.RELEASE_MODE
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        B.NETWORK_NAME as RES_NETWORK_NAME,
+        <include refid="Base_Column_List"/>
+        from res_vm_network A
+        left join res_network B on (A.RES_NETWORK_SID = B.RES_NETWORK_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <select id="selectNetsByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select A.* from(
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        B.NETWORK_NAME AS RES_NETWORK_NAME,
+        B.NETWORK_TYPE AS NETWORK_TYPE,
+        <include refid="Base_Column_List"/>
+        from res_vm_network A
+        LEFT JOIN res_ext_ip D on (D.IP_ADDRESS = A.IP_ADDRESS AND D.RES_EXT_NETWORK_SID = A.RES_NETWORK_SID)
+        LEFT JOIN res_floating_ip C ON (C.RES_IP_SID = D.RES_SID AND C.MAPPING_VM_SID = A.RES_VM_SID)
+        LEFT JOIN res_network B on (A.RES_NETWORK_SID = B.RES_NETWORK_SID)
+        WHERE C.RES_SID IS NULL
+        )A
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <select id="selectVMNetByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from res_vm_network A
+        LEFT JOIN res_vm B ON (
+        A.RES_VM_SID=B.RES_VM_SID
+        )
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_vm_network A
+        where A.RES_VM_SID = #{resVmSid}
+    </select>
+
+    <select id="selectByVmSid" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_vm_network A
+        where A.RES_VM_SID = #{resVmSid}
+    </select>
+    <select id="selectByNetSid" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_vm_network A
+        where A.RES_NETWORK_SID = #{resNetworkSid}
+    </select>
+    <select id="selectByVpc" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM res_vm_network A
+          INNER JOIN res_network B ON A.RES_NETWORK_SID = B.RES_NETWORK_SID
+        WHERE B.PARENT_TOPOLOGY_SID = #{vpcSid}
+    </select>
+    <select id="selectByIp" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_vm_network A
+        where A.IP_ADDRESS = #{ipAddress}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_vm_network
+        where RES_VM_SID = #{resVmSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_vm_network
+        <if test="_parameter != null">
+            <trim prefix="where" prefixOverrides="and|or">
+                <if test="condition.resNetworkSid != null">
+                    and RES_NETWORK_SID = #{condition.resNetworkSid}
+                </if>
+                <if test="condition.ipAddress != null">
+                    and IP_ADDRESS = #{condition.ipAddress}
+                </if>
+                <if test="condition.mac != null">
+                    and MAC_ADDRESS = #{condition.mac}
+                </if>
+                <if test="condition.resVmSid != null">
+                    and RES_VM_SID = #{condition.resVmSid}
+                </if>
+                <if test="condition.resVmSidDelete != null">
+                    and RES_VM_SID = #{condition.resVmSidDelete}
+                </if>
+            </trim>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVmNetwork">
+        insert into res_vm_network (RES_VM_SID, RES_NETWORK_SID, IP_ADDRESS,NET_PRIMARY,STATUS,MAC_ADDRESS,UUID,RELEASE_MODE)
+        values (#{resVmSid}, #{resNetworkSid}, #{ipAddress},#{netPrimary},#{status},#{mac},#{uuid},#{releaseMode})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVmNetwork">
+        insert into res_vm_network
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="resVmSid != null">
+                RES_VM_SID,
+            </if>
+            <if test="resNetworkSid != null">
+                RES_NETWORK_SID,
+            </if>
+            <if test="ipAddress != null">
+                IP_ADDRESS,
+            </if>
+            <if test="netPrimary != null">
+                NET_PRIMARY,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="mac != null">
+                MAC_ADDRESS,
+            </if>
+            <if test="uuid != null">
+                UUID,
+            </if>
+            <if test="releaseMode != null">
+                RELEASE_MODE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="resVmSid != null">
+                #{resVmSid},
+            </if>
+            <if test="resNetworkSid != null">
+                #{resNetworkSid},
+            </if>
+            <if test="ipAddress != null">
+                #{ipAddress},
+            </if>
+            <if test="netPrimary != null">
+                #{netPrimary},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="mac != null">
+                #{mac},
+            </if>
+            <if test="uuid != null">
+                #{uuid},
+            </if>
+            <if test="releaseMode != null">
+                #{releaseMode},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_vm_network
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_vm_network A
+        <set>
+            <if test="record.resVmSid != null">
+                A.RES_VM_SID = #{record.resVmSid},
+            </if>
+            <if test="record.resNetworkSid != null">
+                A.RES_NETWORK_SID = #{record.resNetworkSid},
+            </if>
+            <!--   <if test="record.ipAddress != null" >
+                IP_ADDRESS = #{record.ipAddress},
+              </if> -->
+            <if test="record.mac!= null">
+                A.MAC_ADDRESS = #{record.mac},
+            </if>
+            <if test="record.netPrimary != null">
+                A.NET_PRIMARY = #{record.netPrimary},
+            </if>
+            <if test="record.status != null">
+                A.STATUS = #{record.status},
+            </if>
+            <if test="record.uuid != null">
+                A.UUID = #{record.uuid},
+            </if>
+            <if test="record.releaseMode != null">
+                A.RELEASE_MODE = #{record.releaseMode},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_vm_network
+        set RES_VM_SID = #{record.resVmSid},
+        RES_NETWORK_SID = #{record.resNetworkSid},
+        IP_ADDRESS = #{record.ipAddress},
+        MAC_ADDRESS = #{record.mac},
+        NET_PRIMARY = #{record.netPrimary},
+        STATUS = #{record.status}
+        UUID = #{record.uuid},
+        RELEASE_MODE = #{record.releaseMode}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVmNetwork">
+        update res_vm_network
+        <set>
+            <if test="resNetworkSid != null">
+                RES_NETWORK_SID = #{resNetworkSid},
+            </if>
+            <if test="netPrimary != null">
+                NET_PRIMARY = #{netPrimary},
+            </if>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+            <if test="mac != null">
+                MAC_ADDRESS = #{mac},
+            </if>
+            <if test="uuid != null">
+                UUID = #{uuid},
+            </if>
+            <if test="releaseMode != null">
+                RELEASE_MODE = #{releaseMode},
+            </if>
+            <!--       <if test="ipAddress != null" > -->
+            <!--         IP_ADDRESS = #{ipAddress}, -->
+            <!--       </if> -->
+        </set>
+        where RES_VM_SID = #{resVmSid} and IP_ADDRESS = #{ipAddress}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVmNetwork">
+        update res_vm_network
+        set RES_NETWORK_SID = #{resNetworkSid},
+        NET_PRIMARY = #{netPrimary},
+        STATUS = #{status}
+        where RES_VM_SID = #{resVmSid} and IP_ADDRESS = #{ipAddress}
+    </update>
+</mapper>

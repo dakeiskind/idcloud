@@ -1,0 +1,137 @@
+<div ms-controller="userJy">
+    <div class="line">
+        <div class="xs12 margin-small-bottom top-height">
+            <div class="xs8">
+                <div class="float-left text-large">{{title}}</div>
+            </div>
+        </div>
+        <hr>
+        <div class="tab xs12">
+            <div class="tab-head">
+                <ul class="tab-nav ">
+                    <li class="active" ><a href="#tab-bill">账单明细</a></li>
+                    <li><a href="#tab-recharge">充值明细</a></li>
+                    <!--<li ><a href="#tab-renew">产品续费明细</a></li>-->
+                </ul>
+            </div>
+            <div class="tab-body">
+                <div class="tab-panel active" id="tab-bill">
+                    <!--<div class="xs12 alert alert-blue radius-none margin-bottom" >-->
+                        <!--<span class="close rotate-hover"></span>-->
+                        <!--<strong>2016-01-01 至 2016-01-27 消费总计：￥<span class="text-yellow">7.89</span></strong><br>-->
+                        <!--<span class="text-little">(后付费金额总计：￥<span class="text-yellow">7.89</span>    预付费金额总计：￥<span class="text-yellow">0.00</span>)</span>-->
+                    <!--</div>-->
+                    <div class="xs12 margin-bottom">
+                        <div class="search_div">
+                            <div class="search_div_02">产品：</div>
+                            <div class="search_div_01">
+                                <select class="select radius-none text-small" id="productBillName">
+                                    <option value="" selected>全部</option>
+                                </select>
+                            </div>
+                            <!--<div class="search_div_01">-->
+                                <!--<select class="select radius-none text-small">-->
+                                    <!--<option value="所有产品细类">所有产品细类</option>-->
+                                    <!--<option value="按时计费">按时计费</option>-->
+                                <!--</select>-->
+                            <!--</div>-->
+                        </div>
+                        <div class="search_div">
+                            <div class="search_div_02">支付状态：</div>
+                            <div class="search_div_01">
+                                <select class="select radius-none text-small" id="payStatus">
+                                    <option value="" selected>全部</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="search_div input-daterange" id="bill-picker">
+                            <div class="search_div_02">开始时间：</div>
+                            <div class="search_div_01">
+                                <div id="startTimeDiv"  class="input-append date">
+                                    <input type="text" class="input input-small radius-none floating-left" id="startTime" />
+                                    <span class="add-on radius-none"><i class="icon-th"></i></span>
+                                </div>
+                            </div>
+                            <div class="search_div_03">至</div>
+                            <div class="search_div_01">
+                                <div id="endTimeDiv" class="input-append date">
+                                    <input type="text" class="input input-small radius-none  floating-left" id="endTime" />
+                                    <span class="add-on radius-none"><i class="icon-th"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="search_div_L">
+                            <div class="search_div_button">
+                                <button class="button button-small radius-none" ms-click="searchBill()"><span class="icon-search"></span>
+                                    查询</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="billGrid" class="grid"></div>
+                </div>
+                <div class="tab-panel" id="tab-recharge" >
+                    <div class="xs12 margin-bottom">
+                        <div class="search_div">
+                            <div class="search_div_02">购买渠道：</div>
+                            <div class="search_div_01">
+                                <select class="select radius-none text-small" id="czChannel">
+                                    <option value="" selected>全部</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="search_div">
+                            <div class="search_div_02">充值时间：</div>
+                            <div class="search_div_01">
+                                <div id="beginRechargeDate" class="input-append date">
+                                    <input id="beginRechargeDateFile" type="text"
+                                           class="input input-small radius-none floating-left" />
+                                    <span class="add-on radius-none"><i class="icon-th"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="search_div_L">
+                            <div class="search_div_button">
+                                <button class="button button-small radius-none" ms-click="searchCz()"><span class="icon-search"></span>
+                                    查询</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid" id="rechargeGrid"></div>
+                </div>
+                <!--<div class="tab-panel" id="tab-renew">-->
+                    <!--<div class="xs12  margin-bottom" >-->
+                        <!--<div class="search_div">-->
+                            <!--<div class="search_div_02">产品名称：</div>-->
+                            <!--<div class="search_div_01">-->
+                                <!--<input type="text" class="input input-small radius-none" id="renewName" placeholder="请输入产品名称"/>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="search_div input-daterange" id="renew-picker">-->
+                            <!--<div class="search_div_02">开始时间：</div>-->
+                            <!--<div class="search_div_01">-->
+                                <!--<div  class="input-append date">-->
+                                    <!--<input type="text" class="input input-small radius-none floating-left" />-->
+                                    <!--<span class="add-on radius-none"><i class="icon-th"></i></span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="search_div_03">至</div>-->
+                            <!--<div class="search_div_01">-->
+                                <!--<div  class="input-append date">-->
+                                    <!--<input type="text" class="input input-small radius-none floating-left"/>-->
+                                    <!--<span class="add-on radius-none"><i class="icon-th"></i></span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="search_div_L">-->
+                            <!--<div class="search_div_button">-->
+                                <!--<button class="button button-small radius-none" ms-click="searchProduct()"><span class="icon-search"></span>-->
+                                    <!--查询</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div id="renewGrid" class="grid"></div>-->
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+</div>

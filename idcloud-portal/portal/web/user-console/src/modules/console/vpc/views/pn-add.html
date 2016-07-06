@@ -1,0 +1,93 @@
+<div ms-controller="pnAddWindow">
+    <form id="addPnForm">
+        <!-- 私有网络部分 -->
+        <table border="0" class="custom-table" >
+            <tr>
+                <td class="required">私有网络名称：</td>
+                <td>
+                    <input id="pnName" type="text" ms-duplex="addPnData['vpcName']" name="vpcName" style="width:220px" class="input text-small radius-none">
+                    <p class="description text-gray" style="width: 220px">名称为2-128个字符，以大写字母或中文开头，可包含数字，"-"或"_"</p>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" valign="top">描述：</td>
+                <td>
+                    <textarea rows="2" id="description" class="input text-small radius-none" style="width:220px" ms-duplex="addPnData['vpcDescription']" placeholder="">
+
+                    </textarea>
+                    <p class="description text-gray" style="width: 220px">描述可以为空，或填写2-128个中英文字符，不能以http://或https://开头</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="required">网段：</td>
+                <td>
+                    <select class="select radius-none" name="vpcCidr" ms-change="switchSubnetSegment(this)" ms-duplex="addPnData['vpcCidr']"style="width:220px">
+                        <option selected="selected" value="">--请选择网段--</option>
+                        <option value="192.168.0.0/16">192.168.0.0/16</option>
+                        <option value="10.10.0.0/16">10.10.0.0/16</option>
+                    </select>
+                    <p class="description warning" style="width: 220px">一旦创建成功，网段不能修改</p>
+                </td>
+            </tr>
+
+        </table>
+        <div class="custom-window-btn-container" style="margin-top: 5px;">
+            <a class="custom-window-btn-cancel" ms-click="closeWindow()">取消</a>
+            <a class="custom-window-btn-ok" ms-click="theNextStep()">下一步</a>
+        </div>
+    </form>
+
+    <!-- 创建子网 -->
+    <form id="subNetForm" style="display: none">
+        <table border="0" class="custom-table" >
+            <tr>
+                <td class="required">子网名称：</td>
+                <td>
+                    <input id="subName" type="text" name="subNetName" ms-duplex="addSubnetData['subNetName']" style="width:220px" class="input text-small radius-none">
+                    <p class="description text-gray" style="width: 220px">名称为2-128个字符，以大写字母或中文开头，可包含数字，"-"或"_"</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="required">网段：</td>
+                <td id="subnetSegment"></td>
+            </tr>
+            <tr>
+                <td align="right" valign="top">描述：</td>
+                <td>
+                        <textarea rows="2" id="subDescription" ms-duplex="addSubnetData['subNetDescription']" class="input text-small radius-none" style="width:220px" placeholder="">
+
+                        </textarea>
+                    <p class="description text-gray" style="width: 220px">描述可以为空，或填写2-128个中英文字符，不能以http://或https://开头</p>
+                </td>
+            </tr>
+        </table>
+        <div class="custom-window-btn-container" style="margin-top: 36px;">
+            <a class="custom-window-btn-cancel" ms-click="closeWindow()">取消</a>
+            <a class="custom-window-btn-ok" ms-click="submitPrivateNetworkInfo()">保存</a>
+            <a class="custom-window-btn-ok" ms-click="thePreStep()">上一步</a>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    require(["app-modules/console/vpc/vmodel/pn-add"],function(pnAdd){
+        // 清空数据
+        pnAdd.addPnData = {};
+        pnAdd.addSubnetData = {};
+        pnAdd.addPnData = {
+            region: avalon.vmodels.pnMgt.regionValue,
+            zone: avalon.vmodels.pnMgt.zoneValue,
+            vpcName: null,
+            vpcDescription: null,
+            vpcCidr: ""
+        };
+        pnAdd.addSubnetData = {
+            subNetName: null,
+            subNetDescription: null,
+            subNetCidr:""
+        };
+        // 初始化数据
+       pnAdd.initValidator();
+       avalon.scan(); 
+    });     
+</script>

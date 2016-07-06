@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResEquipInfoMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResEquipInfo">
+        <id column="EQUIP_SID" jdbcType="VARCHAR" property="equipSid"/>
+        <result column="EQUIP_CATEGORY" jdbcType="VARCHAR" property="equipCategory"/>
+        <result column="EQUIP_TYPE" jdbcType="VARCHAR" property="equipType"/>
+        <result column="LOCATION_NUMBER" jdbcType="VARCHAR" property="locationNumber"/>
+        <result column="NAME" jdbcType="VARCHAR" property="name"/>
+        <result column="SERIAL_NUMBER" jdbcType="VARCHAR" property="serialNumber"/>
+        <result column="BRAND" jdbcType="VARCHAR" property="brand"/>
+        <result column="MODEL" jdbcType="VARCHAR" property="model"/>
+        <result column="REMOTE_MGT_IP1" jdbcType="VARCHAR" property="remoteMgtIp1"/>
+        <result column="REMOTE_MGT_IP2" jdbcType="VARCHAR" property="remoteMgtIp2"/>
+        <result column="REMOTE_MGT_USER" jdbcType="VARCHAR" property="remoteMgtUser"/>
+        <result column="REMOTE_MGT_PWD" jdbcType="VARCHAR" property="remoteMgtPwd"/>
+        <result column="MAINT_COMPANY" jdbcType="VARCHAR" property="maintCompany"/>
+        <result column="MAINT_TEL" jdbcType="VARCHAR" property="maintTel"/>
+        <result column="PURCHASE_DATE" jdbcType="TIMESTAMP" property="purchaseDate"/>
+        <result column="WARRANTY_PERIOD" jdbcType="DECIMAL" property="warrantyPeriod"/>
+        <result column="EQUIP_SUPPLIER" jdbcType="VARCHAR" property="equipSupplier"/>
+        <result column="DESCRIPTION" jdbcType="LONGVARCHAR" property="description"/>
+        <result column="SPEC" jdbcType="LONGVARCHAR" property="spec"/>
+        <result column="START_END_DATE" jdbcType="TIMESTAMP" property="startEndDate"/>
+        <result column="RELEVANCE_IP" jdbcType="VARCHAR" property="relevanceIp"/>
+
+        <result column="EQUIP_SUM" jdbcType="BIGINT" property="equipSum"/>
+        <result column="EQUIP_CATEGORY_NAME" jdbcType="VARCHAR" property="equipCategoryName"/>
+        <result column="ROOM_NAME" jdbcType="VARCHAR" property="roomName"/>
+        <result column="CABINET_NAME" jdbcType="VARCHAR" property="cabinetName"/>
+        <result column="RACK_NAME" jdbcType="VARCHAR" property="rackName"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.equipCategory != null">
+                and EQUIP_CATEGORY = #{condition.equipCategory}
+            </if>
+            <if test="condition.equipSid != null">
+                and EQUIP_SID = #{condition.equipSid}
+            </if>
+            <if test="condition.equipType != null">
+                and EQUIP_TYPE = #{condition.equipType}
+            </if>
+            <if test="condition.locationNumber != null">
+                and LOCATION_NUMBER = #{condition.locationNumber}
+            </if>
+            <if test="condition.name != null">
+                and NAME = #{condition.name}
+            </if>
+            <if test="condition.serialNumber != null">
+                and SERIAL_NUMBER = #{condition.serialNumber}
+            </if>
+            <if test="condition.brand != null">
+                and BRAND = #{condition.brand}
+            </if>
+            <if test="condition.model != null">
+                and MODEL = #{condition.model}
+            </if>
+            <if test="condition.remoteMgtIp1 != null">
+                and REMOTE_MGT_IP1 = #{condition.remoteMgtIp1}
+            </if>
+            <if test="condition.remoteMgtIp2 != null">
+                and REMOTE_MGT_IP2 = #{condition.remoteMgtIp2}
+            </if>
+            <if test="condition.remoteMgtUser != null">
+                and REMOTE_MGT_USER = #{condition.remoteMgtUser}
+            </if>
+            <if test="condition.remoteMgtPwd != null">
+                and REMOTE_MGT_PWD = #{condition.remoteMgtPwd}
+            </if>
+            <if test="condition.maintCompany != null">
+                and MAINT_COMPANY = #{condition.maintCompany}
+            </if>
+            <if test="condition.maintTel != null">
+                and MAINT_TEL = #{condition.maintTel}
+            </if>
+            <if test="condition.purchaseDate != null">
+                and PURCHASE_DATE = #{condition.purchaseDate}
+            </if>
+            <if test="condition.warrantyPeriod != null">
+                and WARRANTY_PERIOD = #{condition.warrantyPeriod}
+            </if>
+            <if test="condition.equipSupplier != null">
+                and EQUIP_SUPPLIER = #{condition.equipSupplier}
+            </if>
+            <if test="condition.spec != null">
+                and SPEC = #{condition.spec}
+            </if>
+            <if test="condition.description != null">
+                and DESCRIPTION = #{condition.description}
+            </if>
+            <if test="condition.startEndDate != null">
+                and START_END_DATE = #{condition.startEndDate}
+            </if>
+            <if test="condition.relevanceIp != null">
+                and RELEVANCE_IP = #{condition.relevanceIp}
+            </if>
+            <if test="condition.findChildBySid != null">
+                and FIND_IN_SET(B.RES_TOPOLOGY_SID,getResTopologyChildList(#{condition.findChildBySid}))
+                OR FIND_IN_SET(C.RES_TOPOLOGY_SID,getResTopologyChildList(#{condition.findChildBySid}))
+                OR FIND_IN_SET(D.RES_TOPOLOGY_SID,getResTopologyChildList(#{condition.findChildBySid}))
+                OR FIND_IN_SET(E.RES_TOPOLOGY_SID,getResTopologyChildList(#{condition.findChildBySid}))
+                OR FIND_IN_SET(F.RES_TOPOLOGY_SID,getResTopologyChildList(#{condition.findChildBySid}))
+                OR FIND_IN_SET(K.RES_TOPOLOGY_SID,getResTopologyChildList(#{condition.findChildBySid}))
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        EQUIP_SID, EQUIP_CATEGORY, EQUIP_TYPE, LOCATION_NUMBER, NAME, SERIAL_NUMBER, BRAND,
+        MODEL, REMOTE_MGT_IP1, REMOTE_MGT_IP2, REMOTE_MGT_USER, REMOTE_MGT_PWD, MAINT_COMPANY,
+        MAINT_TEL, PURCHASE_DATE, WARRANTY_PERIOD, EQUIP_SUPPLIER, SPEC, DESCRIPTION, START_END_DATE,RELEVANCE_IP
+    </sql>
+    <select id="selectByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from res_equip_info
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <select id="countByCategory" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultMap="BaseResultMap">
+        SELECT B.CODE_DISPLAY AS EQUIP_CATEGORY_NAME,A.EQUIP_CATEGORY,COUNT(*) AS EQUIP_SUM
+        FROM res_equip_info A
+        LEFT JOIN sys_m_code B ON (A.EQUIP_CATEGORY = B.CODE_VALUE AND B.CODE_CATEGORY ="EQUIP_CATEGORY")
+        GROUP BY A.EQUIP_CATEGORY
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        DISTINCT
+        B.CODE_DISPLAY AS EQUIP_CATEGORY_NAME,
+        <!-- <include refid="Base_Column_List" /> -->
+        A.*
+        from res_equip_info A
+        LEFT JOIN sys_m_code B on (A.EQUIP_CATEGORY=B.CODE_VALUE AND B.CODE_CATEGORY='EQUIP_CATEGORY')
+        where EQUIP_SID = #{equipSid}
+    </select>
+
+    <select id="selectPhysicalInfoByResSid" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria"
+            resultMap="BaseResultMap">
+        <!-- SELECT
+         DISTINCT
+         K.NAME AS ROOM_NAME,
+         J.NAME AS CABINET_NAME,
+         I.NAME AS RACK_NAME,
+         A.*
+         FROM res_equip_info A
+         LEFT JOIN res_equip_blade_frame B ON (A.EQUIP_SID = B.EQUIP_SID)
+         LEFT JOIN res_equip_sw C ON (A.EQUIP_SID = C.EQUIP_SWITCH_SID)
+         LEFT JOIN res_equip_fw D ON (A.EQUIP_SID = D.EQUIP_SID)
+         LEFT JOIN res_equip_lb E ON (A.EQUIP_SID = E.EQUIP_LOAD_BALANCE_SID)
+         LEFT JOIN res_equip_storage F ON (A.EQUIP_SID = F.EQUIP_SID)
+         LEFT JOIN res_host H ON (A.EQUIP_SID = H.RES_HOST_SID)
+         INNER JOIN res_equip_rack I ON (C.EQUIP_RACK_SID = I.EQUIP_SID || D.EQUIP_RACK_SID = I.EQUIP_SID
+                                        || E.EQUIP_RACK_SID = I.EQUIP_SID || F.EQUIP_RACK_SID = I.EQUIP_SID || H.EQUIP_RACK_SID = I.EQUIP_SID)
+         LEFT JOIN res_equip_cabinet J ON (B.EQUIP_CABINET_SID = J.EQUIP_SID || I.EQUIP_CABINET_SID = J.EQUIP_SID || H.EQUIP_CABINET_SID = J.EQUIP_SID)
+         LEFT JOIN res_equip_room K ON (J.EQUIP_ROOM_SID = K.EQUIP_ROOM_SID || H.EQUIP_ROOM_SID = K.EQUIP_ROOM_SID) -->
+        SELECT
+        DISTINCT
+        K.NAME AS ROOM_NAME,
+        J.NAME AS CABINET_NAME,
+        I.NAME AS RACK_NAME,
+        L.CODE_DISPLAY AS EQUIP_CATEGORY_NAME,
+        A.*
+        FROM res_equip_info A
+        LEFT JOIN res_equip_blade_frame B ON (A.EQUIP_SID = B.EQUIP_SID)
+        LEFT JOIN res_equip_sw C ON (A.EQUIP_SID = C.EQUIP_SWITCH_SID)
+        LEFT JOIN res_equip_fw D ON (A.EQUIP_SID = D.EQUIP_SID)
+        LEFT JOIN res_equip_lb E ON (A.EQUIP_SID = E.EQUIP_LOAD_BALANCE_SID)
+        LEFT JOIN res_equip_storage F ON (A.EQUIP_SID = F.EQUIP_SID)
+        LEFT JOIN res_host H ON (A.EQUIP_SID = H.RES_HOST_SID)
+        LEFT JOIN res_equip_rack I ON (C.EQUIP_RACK_SID = I.EQUIP_SID || D.EQUIP_RACK_SID = I.EQUIP_SID
+        || E.EQUIP_RACK_SID = I.EQUIP_SID || F.EQUIP_RACK_SID = I.EQUIP_SID || H.EQUIP_RACK_SID = I.EQUIP_SID)
+        LEFT JOIN res_equip_cabinet J ON (B.EQUIP_CABINET_SID = J.EQUIP_SID || I.EQUIP_CABINET_SID = J.EQUIP_SID ||
+        H.EQUIP_CABINET_SID = J.EQUIP_SID)
+        LEFT JOIN res_equip_room K ON (J.EQUIP_ROOM_SID = K.EQUIP_ROOM_SID || H.EQUIP_ROOM_SID = K.EQUIP_ROOM_SID)
+        LEFT JOIN sys_m_code L on (A.EQUIP_CATEGORY=L.CODE_VALUE AND L.CODE_CATEGORY='EQUIP_CATEGORY')
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        ORDER BY K.NAME
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_equip_info
+        where EQUIP_SID = #{equipSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_equip_info
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResEquipInfo">
+        <selectKey resultType="java.lang.String" keyProperty="equipSid" order="BEFORE">
+            SELECT UUID()
+        </selectKey>
+        insert into res_equip_info (EQUIP_SID, EQUIP_CATEGORY, EQUIP_TYPE, LOCATION_NUMBER, NAME,
+        SERIAL_NUMBER, BRAND, MODEL, REMOTE_MGT_IP1, REMOTE_MGT_IP2, REMOTE_MGT_USER,
+        REMOTE_MGT_PWD, MAINT_COMPANY, MAINT_TEL, PURCHASE_DATE, WARRANTY_PERIOD,
+        EQUIP_SUPPLIER, SPEC, DESCRIPTION ,RELEVANCE_IP,START_END_DATE)
+        values (#{equipSid}, #{equipCategory}, #{equipType}, #{locationNumber}, #{name},
+        #{serialNumber}, #{brand}, #{model}, #{remoteMgtIp1}, #{remoteMgtIp2}, #{remoteMgtUser},
+        #{remoteMgtPwd}, #{maintCompany}, #{maintTel}, #{purchaseDate}, #{warrantyPeriod},
+        #{equipSupplier}, #{spec}, #{description},#{relevanceIp},#{startEndDate})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResEquipInfo">
+        insert into res_equip_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="equipSid != null">
+                EQUIP_SID,
+            </if>
+            <if test="equipCategory != null">
+                EQUIP_CATEGORY,
+            </if>
+            <if test="equipType != null">
+                EQUIP_TYPE,
+            </if>
+            <if test="locationNumber != null">
+                LOCATION_NUMBER,
+            </if>
+            <if test="name != null">
+                NAME,
+            </if>
+            <if test="serialNumber != null">
+                SERIAL_NUMBER,
+            </if>
+            <if test="brand != null">
+                BRAND,
+            </if>
+            <if test="model != null">
+                MODEL,
+            </if>
+            <if test="remoteMgtIp1 != null">
+                REMOTE_MGT_IP1,
+            </if>
+            <if test="remoteMgtIp2 != null">
+                REMOTE_MGT_IP2,
+            </if>
+            <if test="remoteMgtUser != null">
+                REMOTE_MGT_USER,
+            </if>
+            <if test="remoteMgtPwd != null">
+                REMOTE_MGT_PWD,
+            </if>
+            <if test="maintCompany != null">
+                MAINT_COMPANY,
+            </if>
+            <if test="maintTel != null">
+                MAINT_TEL,
+            </if>
+            <if test="purchaseDate != null">
+                PURCHASE_DATE,
+            </if>
+            <if test="startEndDate != null">
+                START_END_DATE,
+            </if>
+            <if test="warrantyPeriod != null">
+                WARRANTY_PERIOD,
+            </if>
+            <if test="equipSupplier != null">
+                EQUIP_SUPPLIER,
+            </if>
+            <if test="spec != null">
+                SPEC,
+            </if>
+            <if test="description != null">
+                DESCRIPTION,
+            </if>
+            <if test="relevanceIp != null">
+                RELEVANCE_IP
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="equipSid != null">
+                #{equipSid},
+            </if>
+            <if test="equipCategory != null">
+                #{equipCategory},
+            </if>
+            <if test="equipType != null">
+                #{equipType},
+            </if>
+            <if test="locationNumber != null">
+                #{locationNumber},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="serialNumber != null">
+                #{serialNumber},
+            </if>
+            <if test="brand != null">
+                #{brand},
+            </if>
+            <if test="model != null">
+                #{model},
+            </if>
+            <if test="remoteMgtIp1 != null">
+                #{remoteMgtIp1},
+            </if>
+            <if test="remoteMgtIp2 != null">
+                #{remoteMgtIp2},
+            </if>
+            <if test="remoteMgtUser != null">
+                #{remoteMgtUser},
+            </if>
+            <if test="remoteMgtPwd != null">
+                #{remoteMgtPwd},
+            </if>
+            <if test="maintCompany != null">
+                #{maintCompany},
+            </if>
+            <if test="maintTel != null">
+                #{maintTel},
+            </if>
+            <if test="purchaseDate != null">
+                #{purchaseDate},
+            </if>
+            <if test="startEndDate != null">
+                #{startEndDate},
+            </if>
+            <if test="warrantyPeriod != null">
+                #{warrantyPeriod},
+            </if>
+            <if test="equipSupplier != null">
+                #{equipSupplier},
+            </if>
+            <if test="spec != null">
+                #{spec},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="relevanceIp != null">
+                #{relevanceIp}
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_equip_info
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_equip_info
+        <set>
+            <if test="record.equipSid != null">
+                EQUIP_SID = #{record.equipSid},
+            </if>
+            <if test="record.equipCategory != null">
+                EQUIP_CATEGORY = #{record.equipCategory},
+            </if>
+            <if test="record.equipType != null">
+                EQUIP_TYPE = #{record.equipType},
+            </if>
+            <if test="record.locationNumber != null">
+                LOCATION_NUMBER = #{record.locationNumber},
+            </if>
+            <if test="record.name != null">
+                NAME = #{record.name},
+            </if>
+            <if test="record.serialNumber != null">
+                SERIAL_NUMBER = #{record.serialNumber},
+            </if>
+            <if test="record.brand != null">
+                BRAND = #{record.brand},
+            </if>
+            <if test="record.model != null">
+                MODEL = #{record.model},
+            </if>
+            <if test="record.remoteMgtIp1 != null">
+                REMOTE_MGT_IP1 = #{record.remoteMgtIp1},
+            </if>
+            <if test="record.remoteMgtIp2 != null">
+                REMOTE_MGT_IP2 = #{record.remoteMgtIp2},
+            </if>
+            <if test="record.remoteMgtUser != null">
+                REMOTE_MGT_USER = #{record.remoteMgtUser},
+            </if>
+            <if test="record.remoteMgtPwd != null">
+                REMOTE_MGT_PWD = #{record.remoteMgtPwd},
+            </if>
+            <if test="record.maintCompany != null">
+                MAINT_COMPANY = #{record.maintCompany},
+            </if>
+            <if test="record.maintTel != null">
+                MAINT_TEL = #{record.maintTel},
+            </if>
+            <if test="record.purchaseDate != null">
+                PURCHASE_DATE = #{record.purchaseDate},
+            </if>
+            <if test="record.startEndDate != null">
+                START_END_DATE = #{record.startEndDate},
+            </if>
+            <if test="record.warrantyPeriod != null">
+                WARRANTY_PERIOD = #{record.warrantyPeriod},
+            </if>
+            <if test="record.equipSupplier != null">
+                EQUIP_SUPPLIER = #{record.equipSupplier},
+            </if>
+            <if test="record.spec != null">
+                SPEC = #{record.spec},
+            </if>
+            <if test="record.description != null">
+                DESCRIPTION = #{record.description},
+            </if>
+            <if test="record.relevanceIp != null">
+                RELEVANCE_IP = #{record.relevanceIp}
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_equip_info
+        set EQUIP_SID = #{record.equipSid},
+        EQUIP_CATEGORY = #{record.equipCategory},
+        EQUIP_TYPE = #{record.equipType},
+        LOCATION_NUMBER = #{record.locationNumber},
+        NAME = #{record.name},
+        SERIAL_NUMBER = #{record.serialNumber},
+        BRAND = #{record.brand},
+        MODEL = #{record.model},
+        REMOTE_MGT_IP1 = #{record.remoteMgtIp1},
+        REMOTE_MGT_IP2 = #{record.remoteMgtIp2},
+        REMOTE_MGT_USER = #{record.remoteMgtUser},
+        REMOTE_MGT_PWD = #{record.remoteMgtPwd},
+        MAINT_COMPANY = #{record.maintCompany},
+        MAINT_TEL = #{record.maintTel},
+        PURCHASE_DATE = #{record.purchaseDate},
+        WARRANTY_PERIOD = #{record.warrantyPeriod},
+        EQUIP_SUPPLIER = #{record.equipSupplier},
+        SPEC = #{record.spec},
+        DESCRIPTION = #{record.description},
+        RELEVANCE_IP = #{record.relevanceIp},
+        START_END_DATE = #{record.startEndDate}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResEquipInfo">
+        update res_equip_info
+        <set>
+            <if test="equipCategory != null">
+                EQUIP_CATEGORY = #{equipCategory},
+            </if>
+            <if test="equipType != null">
+                EQUIP_TYPE = #{equipType},
+            </if>
+            <if test="locationNumber != null">
+                LOCATION_NUMBER = #{locationNumber},
+            </if>
+            <if test="name != null">
+                NAME = #{name},
+            </if>
+            <if test="serialNumber != null">
+                SERIAL_NUMBER = #{serialNumber},
+            </if>
+            <if test="brand != null">
+                BRAND = #{brand},
+            </if>
+            <if test="model != null">
+                MODEL = #{model},
+            </if>
+            <if test="remoteMgtIp1 != null">
+                REMOTE_MGT_IP1 = #{remoteMgtIp1},
+            </if>
+            <if test="remoteMgtIp2 != null">
+                REMOTE_MGT_IP2 = #{remoteMgtIp2},
+            </if>
+            <if test="remoteMgtUser != null">
+                REMOTE_MGT_USER = #{remoteMgtUser},
+            </if>
+            <if test="remoteMgtPwd != null">
+                REMOTE_MGT_PWD = #{remoteMgtPwd},
+            </if>
+            <if test="maintCompany != null">
+                MAINT_COMPANY = #{maintCompany},
+            </if>
+            <if test="maintTel != null">
+                MAINT_TEL = #{maintTel},
+            </if>
+            <if test="purchaseDate != null">
+                PURCHASE_DATE = #{purchaseDate},
+            </if>
+            <if test="startEndDate != null">
+                START_END_DATE = #{startEndDate},
+            </if>
+            <if test="warrantyPeriod != null">
+                WARRANTY_PERIOD = #{warrantyPeriod},
+            </if>
+            <if test="equipSupplier != null">
+                EQUIP_SUPPLIER = #{equipSupplier},
+            </if>
+            <if test="spec != null">
+                SPEC = #{spec},
+            </if>
+            <if test="description != null">
+                DESCRIPTION = #{description},
+            </if>
+            <if test="relevanceIp != null">
+                RELEVANCE_IP = #{relevanceIp}
+            </if>
+        </set>
+        where EQUIP_SID = #{equipSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResEquipInfo">
+        update res_equip_info
+        set EQUIP_CATEGORY = #{equipCategory},
+        EQUIP_TYPE = #{equipType},
+        LOCATION_NUMBER = #{locationNumber},
+        NAME = #{name},
+        SERIAL_NUMBER = #{serialNumber},
+        BRAND = #{brand},
+        MODEL = #{model},
+        REMOTE_MGT_IP1 = #{remoteMgtIp1},
+        REMOTE_MGT_IP2 = #{remoteMgtIp2},
+        REMOTE_MGT_USER = #{remoteMgtUser},
+        REMOTE_MGT_PWD = #{remoteMgtPwd},
+        MAINT_COMPANY = #{maintCompany},
+        MAINT_TEL = #{maintTel},
+        PURCHASE_DATE = #{purchaseDate},
+        START_END_DATE = #{startEndDate},
+        WARRANTY_PERIOD = #{warrantyPeriod},
+        EQUIP_SUPPLIER = #{equipSupplier},
+        SPEC = #{spec},
+        DESCRIPTION = #{description},
+        RELEVANCE_IP = #{relevanceIp}
+        where EQUIP_SID = #{equipSid}
+    </update>
+</mapper>

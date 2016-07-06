@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResVeMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResVe">
+        <id column="RES_TOPOLOGY_SID" property="resTopologySid" jdbcType="VARCHAR"/>
+        <result column="VIRTUAL_PLATFORM_TYPE" property="virtualPlatformType" jdbcType="VARCHAR"/>
+        <result column="VIRTUAL_PLATFORM_VERSION" property="virtualPlatformVersion" jdbcType="VARCHAR"/>
+        <result column="VIRTUAL_PLATFORM_VERSION_NAME" property="virtualPlatformVersionName" jdbcType="VARCHAR"/>
+        <result column="ADMIN_MANAGEMENT_URL" property="adminManagementUrl" jdbcType="VARCHAR"/>
+        <result column="MANAGEMENT_URL" property="managementUrl" jdbcType="VARCHAR"/>
+        <result column="MANAGEMENT_TENANT" property="managementTenant" jdbcType="VARCHAR"/>
+        <result column="MANAGEMENT_ACCOUNT" property="managementAccount" jdbcType="VARCHAR"/>
+        <result column="MANAGEMENT_PASSWORD" property="managementPassword" jdbcType="VARCHAR"/>
+        <result column="CONNECT_STATUS" property="connectStatus" jdbcType="VARCHAR"/>
+        <result column="CONNECT_STATUS_NAME" property="connectStatusName" jdbcType="VARCHAR"/>
+        <result column="UPDATE_STATUS" property="updateStatus" jdbcType="VARCHAR"/>
+        <result column="UPDATE_STATUS_NAME" property="updateStatusName" jdbcType="VARCHAR"/>
+        <result column="UPDATE_CYCLE" property="updateCycle" jdbcType="VARCHAR"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="MQ_TOPIC" property="mqTopic" jdbcType="VARCHAR"/>
+        <result column="TASK_ID" property="taskId" jdbcType="VARCHAR"/>
+
+        <result column="RES_TOPOLOGY_NAME" property="resTopologyName" jdbcType="VARCHAR"/>
+        <result column="RES_TOPOLOGY_TYPE" property="resTopologyType" jdbcType="VARCHAR"/>
+        <result column="RES_TOPOLOGY_TYPE_NAME" property="resTopologyTypeName" jdbcType="VARCHAR"/>
+        <result column="PARENT_TOPOLOGY_SID" property="parentTopologySid" jdbcType="BIGINT"/>
+        <result column="PARENT_TOPOLOGY_NAME" property="parentTopologyName" jdbcType="VARCHAR"/>
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR"/>
+
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.virtualPlatformType != null">
+                and A.VIRTUAL_PLATFORM_TYPE = #{condition.virtualPlatformType}
+            </if>
+            <if test="condition.virtualPlatformVersion != null">
+                and A.VIRTUAL_PLATFORM_VERSION = #{condition.virtualPlatformVersion}
+            </if>
+            <if test="condition.adminManagementUrl != null">
+                and A.ADMIN_MANAGEMENT_URL = #{condition.adminManagementUrl}
+            </if>
+            <if test="condition.managementUrl != null">
+                and A.MANAGEMENT_URL = #{condition.managementUrl}
+            </if>
+            <if test="condition.managementTenant != null">
+                and A.MANAGEMENT_TENANT = #{condition.managementTenant}
+            </if>
+            <if test="condition.managementAccount != null">
+                and A.MANAGEMENT_ACCOUNT = #{condition.managementAccount}
+            </if>
+            <if test="condition.managementAccountLike != null">
+                and A.MANAGEMENT_ACCOUNT like concat('%', #{condition.managementAccountLike},'%')
+            </if>
+            <if test="condition.managementPassword != null">
+                and A.MANAGEMENT_PASSWORD = #{condition.managementPassword}
+            </if>
+            <if test="condition.connectStatus != null">
+                and A.CONNECT_STATUS = #{condition.connectStatus}
+            </if>
+            <if test="condition.updateStatus != null">
+                and A.UPDATE_STATUS = #{condition.updateStatus}
+            </if>
+            <if test="condition.updateCycle != null">
+                and A.UPDATE_CYCLE = #{condition.updateCycle}
+            </if>
+            <if test="condition.updateTime != null">
+                and A.UPDATE_TIME = #{condition.updateTime}
+            </if>
+            <if test="condition.mqTopic != null">
+                and A.MQ_TOPIC = #{condition.mqTopic}
+            </if>
+            <if test="condition.taskId != null">
+                and A.TASK_ID = #{condition.taskId}
+            </if>
+            <if test="condition.parentTopologySid != null">
+                and B.PARENT_TOPOLOGY_SID = #{condition.parentTopologySid}
+            </if>
+            <if test="condition.mgtObjRzSidList != null">
+                and B.PARENT_TOPOLOGY_SID in (
+                SELECT RT.PARENT_TOPOLOGY_SID FROM res_topology RT WHERE RT.RES_TOPOLOGY_SID IN
+                <foreach item="item" index="index" collection="condition.mgtObjRzSidList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+                )
+            </if>
+            <if test="condition.resTopologyType != null">
+                and B.RES_TOPOLOGY_TYPE = #{condition.resTopologyType}
+            </if>
+            <if test="condition.resTopologyTypes != null">
+                and A.VIRTUAL_PLATFORM_TYPE in (${condition.resTopologyTypes})
+            </if>
+            <if test="condition.resTopologyNameLike != null">
+                and B.RES_TOPOLOGY_NAME like concat('%', #{condition.resTopologyNameLike},'%')
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        A.RES_TOPOLOGY_SID, A.VIRTUAL_PLATFORM_TYPE, A.VIRTUAL_PLATFORM_VERSION, A.MANAGEMENT_URL,
+        A.MANAGEMENT_ACCOUNT, A.MANAGEMENT_PASSWORD, A.CONNECT_STATUS, A.UPDATE_STATUS, A.UPDATE_CYCLE,
+        A.UPDATE_TIME, A.MQ_TOPIC,A.TASK_ID,A.ADMIN_MANAGEMENT_URL,A.MANAGEMENT_TENANT
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        , B.RES_TOPOLOGY_NAME as RES_TOPOLOGY_NAME
+        , B.RES_TOPOLOGY_TYPE as RES_TOPOLOGY_TYPE
+        , B.PARENT_TOPOLOGY_SID as PARENT_TOPOLOGY_SID
+        , B.DESCRIPTION as DESCRIPTION
+        , C.RES_TOPOLOGY_NAME as PARENT_TOPOLOGY_NAME
+        , D.CODE_DISPLAY AS RES_TOPOLOGY_TYPE_NAME
+        , E.CODE_DISPLAY AS VIRTUAL_PLATFORM_VERSION_NAME
+        , F.CODE_DISPLAY AS CONNECT_STATUS_NAME
+        , G.CODE_DISPLAY AS UPDATE_STATUS_NAME
+        from res_ve A
+        inner join res_topology B on (A.RES_TOPOLOGY_SID = B.RES_TOPOLOGY_SID)
+        inner join res_topology C on (C.RES_TOPOLOGY_SID = B.PARENT_TOPOLOGY_SID)
+        left join sys_m_code D on (B.RES_TOPOLOGY_TYPE=D.CODE_VALUE AND D.CODE_CATEGORY='RES_TOPOLOGY_TYPE')
+        left join sys_m_code E on (A.VIRTUAL_PLATFORM_VERSION=E.CODE_VALUE AND
+        E.CODE_CATEGORY='VIRTUAL_PLATFORM_VERSION')
+        left join sys_m_code F on (A.CONNECT_STATUS=F.CODE_VALUE AND F.CODE_CATEGORY='CONNECT_STATUS')
+        left join sys_m_code G on (A.UPDATE_STATUS=G.CODE_VALUE AND G.CODE_CATEGORY='UPDATE_STATUS')
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <select id="selectVeByResHost" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_ve A
+        where A.RES_TOPOLOGY_SID = (SELECT RH.PARENT_TOPOLOGY_SID FROM res_host RH WHERE RH.RES_HOST_SID =
+        #{resHostSid})
+        OR A.RES_TOPOLOGY_SID = (SELECT B.PARENT_TOPOLOGY_SID
+        FROM res_host RH
+        LEFT JOIN res_topology B ON (RH.PARENT_TOPOLOGY_SID = B.RES_TOPOLOGY_SID)
+        WHERE RH.RES_HOST_SID = #{resHostSid}
+        )
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        , B.RES_TOPOLOGY_NAME as RES_TOPOLOGY_NAME
+        , B.RES_TOPOLOGY_TYPE as RES_TOPOLOGY_TYPE
+        , B.PARENT_TOPOLOGY_SID as PARENT_TOPOLOGY_SID
+        , B.DESCRIPTION as DESCRIPTION
+        , C.RES_TOPOLOGY_NAME as PARENT_TOPOLOGY_NAME
+        , D.CODE_DISPLAY AS RES_TOPOLOGY_TYPE_NAME
+        , E.CODE_DISPLAY AS VIRTUAL_PLATFORM_VERSION_NAME
+        from res_ve A
+        inner join res_topology B on (A.RES_TOPOLOGY_SID = B.RES_TOPOLOGY_SID)
+        inner join res_topology C on (C.RES_TOPOLOGY_SID = B.PARENT_TOPOLOGY_SID)
+        left join sys_m_code D on (B.RES_TOPOLOGY_TYPE=D.CODE_VALUE AND D.CODE_CATEGORY='RES_TOPOLOGY_TYPE')
+        left join sys_m_code E on (A.VIRTUAL_PLATFORM_VERSION=E.CODE_VALUE AND
+        E.CODE_CATEGORY='VIRTUAL_PLATFORM_VERSION')
+        where A.RES_TOPOLOGY_SID = #{resTopologySid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_ve
+        where RES_TOPOLOGY_SID = #{resTopologySid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_ve
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVe">
+        <selectKey resultType="java.lang.String" keyProperty="resTopologySid" order="BEFORE">
+            select UUID()
+        </selectKey>
+        insert into res_ve (RES_TOPOLOGY_SID, VIRTUAL_PLATFORM_TYPE, VIRTUAL_PLATFORM_VERSION, MANAGEMENT_URL,
+        MANAGEMENT_ACCOUNT, MANAGEMENT_PASSWORD, CONNECT_STATUS, UPDATE_STATUS,
+        UPDATE_CYCLE, UPDATE_TIME, MQ_TOPIC,TASK_ID, ADMIN_MANAGEMENT_URL, MANAGEMENT_TENANT)
+        values (#{resTopologySid}, #{virtualPlatformType}, #{virtualPlatformVersion}, #{managementUrl},
+        #{managementAccount}, #{managementPassword}, #{connectStatus}, #{updateStatus},
+        #{updateCycle}, #{updateTime}, #{mqTopic}, #{taskId}, #{adminManagementUrl}, #{managementTenant})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVe">
+        insert into res_ve
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="resTopologySid != null">
+                RES_TOPOLOGY_SID,
+            </if>
+            <if test="virtualPlatformType != null">
+                VIRTUAL_PLATFORM_TYPE,
+            </if>
+            <if test="virtualPlatformVersion != null">
+                VIRTUAL_PLATFORM_VERSION,
+            </if>
+            <if test="adminManagementUrl != null">
+                ADMIN_MANAGEMENT_URL,
+            </if>
+            <if test="managementUrl != null">
+                MANAGEMENT_URL,
+            </if>
+            <if test="managementTenant != null">
+                MANAGEMENT_TENANT,
+            </if>
+            <if test="managementAccount != null">
+                MANAGEMENT_ACCOUNT,
+            </if>
+            <if test="managementPassword != null">
+                MANAGEMENT_PASSWORD,
+            </if>
+            <if test="connectStatus != null">
+                CONNECT_STATUS,
+            </if>
+            <if test="updateStatus != null">
+                UPDATE_STATUS,
+            </if>
+            <if test="updateCycle != null">
+                UPDATE_CYCLE,
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME,
+            </if>
+            <if test="mqTopic != null">
+                MQ_TOPIC,
+            </if>
+            <if test="taskId != null">
+                TASK_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="resTopologySid != null">
+                #{resTopologySid},
+            </if>
+            <if test="virtualPlatformType != null">
+                #{virtualPlatformType},
+            </if>
+            <if test="virtualPlatformVersion != null">
+                #{virtualPlatformVersion},
+            </if>
+            <if test="adminManagementUrl != null">
+                #{adminManagementUrl},
+            </if>
+            <if test="managementUrl != null">
+                #{managementUrl},
+            </if>
+            <if test="managementTenant != null">
+                #{managementTenant},
+            </if>
+            <if test="managementAccount != null">
+                #{managementAccount},
+            </if>
+            <if test="managementPassword != null">
+                #{managementPassword},
+            </if>
+            <if test="connectStatus != null">
+                #{connectStatus},
+            </if>
+            <if test="updateStatus != null">
+                #{updateStatus},
+            </if>
+            <if test="updateCycle != null">
+                #{updateCycle},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime},
+            </if>
+            <if test="mqTopic != null">
+                #{mqTopic},
+            </if>
+            <if test="taskId != null">
+                #{taskId},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_ve
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_ve
+        <set>
+            <if test="record.resTopologySid != null">
+                RES_TOPOLOGY_SID = #{record.resTopologySid},
+            </if>
+            <if test="record.virtualPlatformType != null">
+                VIRTUAL_PLATFORM_TYPE = #{record.virtualPlatformType},
+            </if>
+            <if test="record.virtualPlatformVersion != null">
+                VIRTUAL_PLATFORM_VERSION = #{record.virtualPlatformVersion},
+            </if>
+            <if test="record.adminManagementUrl != null">
+                ADMIN_MANAGEMENT_URL = #{record.adminManagementUrl},
+            </if>
+            <if test="record.managementUrl != null">
+                MANAGEMENT_URL = #{record.managementUrl},
+            </if>
+            <if test="record.managementTenant != null">
+                MANAGEMENT_TENANT = #{record.managementTenant},
+            </if>
+            <if test="record.managementAccount != null">
+                MANAGEMENT_ACCOUNT = #{record.managementAccount},
+            </if>
+            <if test="record.managementPassword != null">
+                MANAGEMENT_PASSWORD = #{record.managementPassword},
+            </if>
+            <if test="record.connectStatus != null">
+                CONNECT_STATUS = #{record.connectStatus},
+            </if>
+            <if test="record.updateStatus != null">
+                UPDATE_STATUS = #{record.updateStatus},
+            </if>
+            <if test="record.updateCycle != null">
+                UPDATE_CYCLE = #{record.updateCycle},
+            </if>
+            <if test="record.updateTime != null">
+                UPDATE_TIME = #{record.updateTime},
+            </if>
+            <if test="record.mqTopic != null">
+                MQ_TOPIC = #{record.mqTopic},
+            </if>
+            <if test="record.taskId != null">
+                TASK_ID = #{record.taskId},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_ve
+        set RES_TOPOLOGY_SID = #{record.resTopologySid},
+        VIRTUAL_PLATFORM_TYPE = #{record.virtualPlatformType},
+        VIRTUAL_PLATFORM_VERSION = #{record.virtualPlatformVersion},
+        ADMIN_MANAGEMENT_URL = #{record.adminManagementUrl},
+        MANAGEMENT_URL = #{record.managementUrl},
+        MANAGEMENT_TENANT = #{record.managementTenant},
+        MANAGEMENT_ACCOUNT = #{record.managementAccount},
+        MANAGEMENT_PASSWORD = #{record.managementPassword},
+        CONNECT_STATUS = #{record.connectStatus},
+        UPDATE_STATUS = #{record.updateStatus},
+        UPDATE_CYCLE = #{record.updateCycle},
+        UPDATE_TIME = #{record.updateTime},
+        MQ_TOPIC = #{record.mqTopic},
+        TASK_ID = #{record.taskId}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVe">
+        update res_ve
+        <set>
+            <if test="virtualPlatformType != null">
+                VIRTUAL_PLATFORM_TYPE = #{virtualPlatformType},
+            </if>
+            <if test="virtualPlatformVersion != null">
+                VIRTUAL_PLATFORM_VERSION = #{virtualPlatformVersion},
+            </if>
+            <if test="adminManagementUrl != null">
+                ADMIN_MANAGEMENT_URL = #{adminManagementUrl},
+            </if>
+            <if test="managementUrl != null">
+                MANAGEMENT_URL = #{managementUrl},
+            </if>
+            <if test="managementTenant != null">
+                MANAGEMENT_TENANT = #{managementTenant},
+            </if>
+            <if test="managementAccount != null">
+                MANAGEMENT_ACCOUNT = #{managementAccount},
+            </if>
+            <if test="managementPassword != null">
+                MANAGEMENT_PASSWORD = #{managementPassword},
+            </if>
+            <if test="connectStatus != null">
+                CONNECT_STATUS = #{connectStatus},
+            </if>
+            <if test="updateStatus != null">
+                UPDATE_STATUS = #{updateStatus},
+            </if>
+            <if test="updateCycle != null">
+                UPDATE_CYCLE = #{updateCycle},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime},
+            </if>
+            <if test="mqTopic != null">
+                MQ_TOPIC = #{mqTopic},
+            </if>
+            <if test="taskId != null">
+                TASK_ID = #{taskId},
+            </if>
+        </set>
+        where RES_TOPOLOGY_SID = #{resTopologySid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVe">
+        update res_ve
+        set VIRTUAL_PLATFORM_TYPE = #{virtualPlatformType},
+        VIRTUAL_PLATFORM_VERSION = #{virtualPlatformVersion},
+        ADMIN_MANAGEMENT_URL = #{adminManagementUrl},
+        MANAGEMENT_URL = #{managementUrl},
+        MANAGEMENT_TENANT = #{managementTenant},
+        MANAGEMENT_ACCOUNT = #{managementAccount},
+        MANAGEMENT_PASSWORD = #{managementPassword},
+        CONNECT_STATUS = #{connectStatus},
+        UPDATE_STATUS = #{updateStatus},
+        UPDATE_CYCLE = #{updateCycle},
+        UPDATE_TIME = #{updateTime},
+        MQ_TOPIC = #{mqTopic},
+        TASK_ID = #{taskId}
+        where RES_TOPOLOGY_SID = #{resTopologySid}
+    </update>
+
+    <select id="selectResVeByMgtObj" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        distinct
+        D.*
+        FROM `sys_m_mgt_obj_res` A
+        LEFT JOIN res_host B ON (A.RES_SET_SID = B.RES_HOST_SID)
+        LEFT JOIN res_topology C ON (C.RES_TOPOLOGY_SID = B.PARENT_TOPOLOGY_SID)
+        LEFT JOIN res_ve D ON (C.PARENT_TOPOLOGY_SID = D.RES_TOPOLOGY_SID)
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.mgtObjSid != null">
+                and A.RES_SET_TYPE = 'RES-HOST' AND A.BIZ_SID = #{condition.mgtObjSid}
+            </if>
+            <if test="condition.virtualPlatformType != null">
+                AND D.VIRTUAL_PLATFORM_TYPE = #{condition.virtualPlatformType}
+            </if>
+        </trim>
+    </select>
+
+</mapper>

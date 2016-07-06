@@ -1,0 +1,17 @@
+<!--提醒设置页面-->
+<div ms-controller="userPower">
+    <div class="xs12 margin-small-bottom top-height">
+        <div class="xs8">
+            <div class="float-left text-large">{{title}}</div>
+        </div>
+        <div class="xs4">
+            <button class="button bg-blue float-right radius-none" type="button" ms-click="addNewRole()">创建新角色</button>
+        </div>
+    </div>
+    <hr/>
+    <div class="xs12 alert alert-blue radius-none margin-bottom">
+        <span class="close rotate-hover"></span>
+        <strong>温馨提示：</strong>角色是指一组产品权限的集合，您可以创建一个只有主机查看权限的角色，并将此角色赋予某个项目内的成员。
+    </div>
+    <div id="roleGrid" class="grid xs12"></div>
+</div>

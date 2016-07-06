@@ -1,0 +1,1094 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResNetworkMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResNetwork">
+        <id column="RES_NETWORK_SID" property="resNetworkSid" jdbcType="VARCHAR"/>
+        <result column="PARENT_TOPOLOGY_SID" property="parentTopologySid" jdbcType="VARCHAR"/>
+        <result column="RES_POOL_SID" property="resPoolSid" jdbcType="VARCHAR"/>
+        <result column="ZONE" property="zone" jdbcType="VARCHAR"/>
+        <result column="NETWORK_NAME" property="networkName" jdbcType="VARCHAR"/>
+        <result column="NETWORK_TYPE" property="networkType" jdbcType="VARCHAR"/>
+        <result column="NETWORK_TYPE_NAME" property="networkTypeName" jdbcType="VARCHAR"/>
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR"/>
+        <result column="IP_TYPE" property="ipType" jdbcType="VARCHAR"/>
+        <result column="IP_TYPE_NAME" property="ipTypeName" jdbcType="VARCHAR"/>
+        <result column="SUBNET" property="subnet" jdbcType="VARCHAR"/>
+        <result column="SUBNET_MASK" property="subnetMask" jdbcType="VARCHAR"/>
+        <result column="GATEWAY" property="gateway" jdbcType="VARCHAR"/>
+        <result column="DNS1" property="dns1" jdbcType="VARCHAR"/>
+        <result column="DNS2" property="dns2" jdbcType="VARCHAR"/>
+        <result column="IP_RETAIN_START1" property="ipRetainStart1" jdbcType="VARCHAR"/>
+        <result column="IP_RETAIN_END1" property="ipRetainEnd1" jdbcType="VARCHAR"/>
+        <result column="IP_RETAIN_START2" property="ipRetainStart2" jdbcType="VARCHAR"/>
+        <result column="IP_RETAIN_END2" property="ipRetainEnd2" jdbcType="VARCHAR"/>
+        <result column="IP_RETAIN_START3" property="ipRetainStart3" jdbcType="VARCHAR"/>
+        <result column="IP_RETAIN_END3" property="ipRetainEnd3" jdbcType="VARCHAR"/>
+        <result column="VLAN_ID" property="vlanId" jdbcType="VARCHAR"/>
+        <result column="VLAN_ID_NAME" property="vlanIdName" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="NETWORK_TAG" property="networkTag" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP"/>
+        <result column="VERSION" property="version" jdbcType="BIGINT"/>
+
+        <result column="IP_USE_COUNT" property="ipUseCount" jdbcType="BIGINT"/>
+        <result column="IP_TOTAL_COUNT" property="ipTotalCount" jdbcType="BIGINT"/>
+
+        <result column="USAGE_STATUS" property="usageStatus" jdbcType="VARCHAR"/>
+        <result column="USAGE_STATUS_NAME" property="usageStatusName" jdbcType="VARCHAR"/>
+        <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR"/>
+
+        <result column="PNI_COUNT" property="pniCount" jdbcType="BIGINT"/>
+        <result column="PNE_COUNT" property="pneCount" jdbcType="BIGINT"/>
+        <result column="TOTAL_COUNT" property="totalCount" jdbcType="BIGINT"/>
+
+        <result column="PARENT_MGT_OBJ_NAME" property="parentBizName" jdbcType="VARCHAR"/>
+        <result column="PARENT_MGT_OBJ_SID" property="parentBizSid" jdbcType="BIGINT"/>
+        <result column="MGT_OBJ_SID" property="bizSid" jdbcType="BIGINT"/>
+        <result column="SUB_BIZ_NAME" property="subBizName" jdbcType="VARCHAR"/>
+        <result column="IP_ADDRESS" property="ipAddress" jdbcType="VARCHAR"/>
+        <result column="VM_NAME" property="vmName" jdbcType="VARCHAR"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR"/>
+        <result column="IP_AVAILABLE_COUNT" property="ipAvailableCount" jdbcType="VARCHAR"/>
+        <result column="VPC_NAME" property="vpcName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.parentTopologySid != null">
+                and A.PARENT_TOPOLOGY_SID = #{condition.parentTopologySid}
+            </if>
+            <if test="condition.resPoolSid != null">
+                and A.RES_POOL_SID = #{condition.resPoolSid}
+            </if>
+            <if test="condition.zone != null">
+                and A.ZONE = #{condition.zone}
+            </if>
+            <if test="condition.mgtObjSid != null">
+                and B.MGT_OBJ_SID = #{condition.mgtObjSid}
+            </if>
+            <if test="condition.networkName != null">
+                and A.NETWORK_NAME = #{condition.networkName}
+            </if>
+            <if test="condition.networkNameLike != null">
+                and A.NETWORK_NAME like concat('%', #{condition.networkNameLike},'%')
+            </if>
+            <if test="condition.ipOwnerNetwork != null">
+                and E.IP_ADDRESS like concat('%', #{condition.ipOwnerNetwork},'%')
+            </if>
+            <if test="condition.networkType != null">
+                and A.NETWORK_TYPE = #{condition.networkType}
+            </if>
+            <if test="condition.description != null">
+                and A.DESCRIPTION = #{condition.description}
+            </if>
+            <if test="condition.ipType != null">
+                and A.IP_TYPE = #{condition.ipType}
+            </if>
+            <if test="condition.subnet != null">
+                and A.SUBNET = #{condition.subnet}
+            </if>
+            <if test="condition.subnetlike != null">
+                and A.SUBNET like concat('%', #{condition.subnetlike},'%')
+            </if>
+            <if test="condition.subnetMask != null">
+                and A.SUBNET_MASK = #{condition.subnetMask}
+            </if>
+            <if test="condition.gateway != null">
+                and A.GATEWAY = #{condition.gateway}
+            </if>
+            <if test="condition.dns1 != null">
+                and A.DNS1 = #{condition.dns1}
+            </if>
+            <if test="condition.dns2 != null">
+                and A.DNS2 = #{condition.dns2}
+            </if>
+            <if test="condition.ipRetainStart1 != null">
+                and A.IP_RETAIN_START1 = #{condition.ipRetainStart1}
+            </if>
+            <if test="condition.ipRetainEnd1 != null">
+                and A.IP_RETAIN_END1 = #{condition.ipRetainEnd1}
+            </if>
+            <if test="condition.ipRetainStart2 != null">
+                and A.IP_RETAIN_START2 = #{condition.ipRetainStart2}
+            </if>
+            <if test="condition.ipRetainEnd2 != null">
+                and A.IP_RETAIN_END2 = #{condition.ipRetainEnd2}
+            </if>
+            <if test="condition.ipRetainStart3 != null">
+                and A.IP_RETAIN_START3 = #{condition.ipRetainStart3}
+            </if>
+            <if test="condition.ipRetainEnd3 != null">
+                and A.IP_RETAIN_END3 = #{condition.ipRetainEnd3}
+            </if>
+            <if test="condition.vlanId != null">
+                and A.VLAN_ID = #{condition.vlanId}
+            </if>
+            <if test="condition.status != null">
+                and A.STATUS = #{condition.status}
+            </if>
+            <if test="condition.networkTag != null">
+                and A.NETWORK_TAG = #{condition.networkTag}
+            </if>
+            <if test="condition.createdBy != null">
+                and A.CREATED_BY = #{condition.createdBy}
+            </if>
+            <if test="condition.createdDt != null">
+                and A.CREATED_DT = #{condition.createdDt}
+            </if>
+            <if test="condition.updatedBy != null">
+                and A.UPDATED_BY = #{condition.updatedBy}
+            </if>
+            <if test="condition.updatedDt != null">
+                and A.UPDATED_DT = #{condition.updatedDt}
+            </if>
+            <if test="condition.version != null">
+                and A.VERSION = #{condition.version}
+            </if>
+            <if test="condition.uuid != null">
+                and A.UUID = #{condition.uuid}
+            </if>
+            <if test="condition.resBizSid != null">
+                and FIND_IN_SET(BIZ.MGT_OBJ_SID,getResBizChildList(#{condition.resBizSid}))
+            </if>
+            <if test="condition.bizSid != null">
+                and FIND_IN_SET(BIZ.MGT_OBJ_SID,getResBizChildList(#{condition.bizSid}))
+            </if>
+            <!-- <if test="condition.parentBizSid != null" >
+               and BIZ.BIZ_SID IN (SELECT B.BIZ_SID from sys_m_biz B WHERE B.PARENT_BIZ_SID = #{condition.parentBizSid})
+            </if> -->
+            <if test="condition.resStatisticsBizSid != null">
+                and FIND_IN_SET(BIZ.BIZ_SID,getResBizChildList(#{condition.resStatisticsBizSid}))
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        A.RES_NETWORK_SID, A.PARENT_TOPOLOGY_SID, A.RES_POOL_SID, A.ZONE, A.NETWORK_NAME, A.NETWORK_TYPE, A.DESCRIPTION,
+        A.IP_TYPE, SUBNET, A.SUBNET_MASK, A.GATEWAY, A.DNS1, A.DNS2, A.IP_RETAIN_START1, A.IP_RETAIN_END1,
+        A.IP_RETAIN_START2, A.IP_RETAIN_END2, A.IP_RETAIN_START3, A.IP_RETAIN_END3, A.VLAN_ID, A.STATUS,
+        A.NETWORK_TAG, A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, A.UPDATED_DT, A.VERSION,A.UUID
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        B.CODE_DISPLAY AS IP_TYPE_NAME,
+        C.CODE_DISPLAY AS NETWORK_TYPE_NAME,
+        D.VPC_NAME AS VPC_NAME,
+        IF(E.CountUseIps > 0,'01','02') as USAGE_STATUS,
+        IF(E.CountUseIps > 0,'已使用','未使用') as USAGE_STATUS_NAME,
+        F.VLAN_ID as VLAN_ID_NAME,
+        E.CountIps as IP_TOTAL_COUNT,
+        E.CountUseIps as IP_USE_COUNT,
+        <include refid="Base_Column_List"/>
+        from res_network A
+        LEFT JOIN sys_m_code B ON (A.IP_TYPE = B.CODE_VALUE AND B.CODE_CATEGORY = 'IP_TYPE')
+        LEFT JOIN sys_m_code C ON (A.NETWORK_TYPE = C.CODE_VALUE AND C.CODE_CATEGORY = 'NETWORK_TYPE')
+        LEFT JOIN res_vpc D ON (A.PARENT_TOPOLOGY_SID = D.RES_VPC_SID)
+        LEFT JOIN res_vlan F ON (A.VLAN_ID = F.VLAN_ID)
+        LEFT JOIN (
+        SELECT
+        IP.RES_NETWORK_SID ,
+        GROUP_CONCAT(IP.IP_ADDRESS) as IP_ADDRESS,
+        COUNT(DISTINCT IP.RES_SID) as CountIps,
+        SUM(case
+        when (CASE
+        when NET.RES_VM_SID is not null then 'RES-VM'
+--         when H.RES_HOST_SID is not null then 'RES-HOST'
+--         when I.EQUIP_SID is not null then I.EQUIP_CATEGORY
+--         when J.EQUIP_SID is not null then J.EQUIP_CATEGORY
+--         when K.EQUIP_SID is not null then K.EQUIP_CATEGORY
+        else null
+        END) IS NULL then
+        case IP.STATUS
+        when '02' then 1
+        else 0
+        end
+        else 1
+        end
+        ) as CountUseIps
+
+        FROM
+        res_ip IP
+        LEFT JOIN res_vm_network NET ON(IP.IP_ADDRESS = NET.IP_ADDRESS)
+--         LEFT JOIN res_host H on (H.HOST_IP = IP.IP_ADDRESS)
+--         LEFT JOIN res_equip_info I ON (IP.IP_ADDRESS = I.REMOTE_MGT_IP1)
+--         LEFT JOIN res_equip_info J ON (IP.IP_ADDRESS = J.REMOTE_MGT_IP2)
+--         LEFT JOIN res_equip_info K ON (IP.IP_ADDRESS = K.RELEVANCE_IP)
+        GROUP BY IP.RES_NETWORK_SID
+        ) E ON (A.RES_NETWORK_SID = E.RES_NETWORK_SID)
+        LEFT JOIN res_ip G ON (G.RES_NETWORK_SID = A.RES_NETWORK_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        GROUP BY A.RES_NETWORK_SID
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <select id="selectNetWorkAllInfoByParams" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        (E.CountIps-E.CountUseIps)as IP_AVAILABLE_COUNT,
+        B.CODE_DISPLAY AS IP_TYPE_NAME,
+        C.CODE_DISPLAY AS NETWORK_TYPE_NAME,
+        IF(E.CountUseIps > 0,'01','02') as USAGE_STATUS,
+        IF(E.CountUseIps > 0,'已使用','未使用') as USAGE_STATUS_NAME,
+        F.VLAN_ID as VLAN_ID_NAME,
+        E.CountIps as IP_TOTAL_COUNT,
+        E.CountUseIps as IP_USE_COUNT,
+        <include refid="Base_Column_List"/>
+        from res_network A
+        LEFT JOIN sys_m_code B ON (A.IP_TYPE = B.CODE_VALUE AND B.CODE_CATEGORY = 'IP_TYPE')
+        LEFT JOIN sys_m_code C ON (A.NETWORK_TYPE = C.CODE_VALUE AND C.CODE_CATEGORY = 'NETWORK_TYPE')
+        LEFT JOIN res_vlan F ON (A.VLAN_ID = F.VLAN_ID)
+        LEFT JOIN (
+        SELECT
+        IP.RES_NETWORK_SID ,
+        GROUP_CONCAT(IP.IP_ADDRESS) as IP_ADDRESS,
+        COUNT(IP.RES_SID) as CountIps,
+        SUM(case
+        when (CASE
+        when NET.RES_VM_SID is not null then 'RES-VM'
+        when H.RES_HOST_SID is not null then 'RES-HOST'
+        when I.EQUIP_SID is not null then I.EQUIP_CATEGORY
+        when J.EQUIP_SID is not null then J.EQUIP_CATEGORY
+        when K.EQUIP_SID is not null then K.EQUIP_CATEGORY
+        else null
+        END) IS NULL then
+        case IP.STATUS
+        when '02' then 1
+        else 0
+        end
+        else 1
+        end
+        ) as CountUseIps
+
+        FROM
+        res_ip IP
+        LEFT JOIN res_vm_network NET ON(IP.IP_ADDRESS = NET.IP_ADDRESS)
+        LEFT JOIN res_host H on (H.HOST_IP = IP.IP_ADDRESS)
+        LEFT JOIN res_equip_info I ON (IP.IP_ADDRESS = I.REMOTE_MGT_IP1)
+        LEFT JOIN res_equip_info J ON (IP.IP_ADDRESS = J.REMOTE_MGT_IP2)
+        LEFT JOIN res_equip_info K ON (IP.IP_ADDRESS = K.RELEVANCE_IP)
+        GROUP BY IP.RES_NETWORK_SID
+        ) E ON (A.RES_NETWORK_SID = E.RES_NETWORK_SID)
+        LEFT JOIN res_ip G ON (G.RES_NETWORK_SID = A.RES_NETWORK_SID)
+        LEFT JOIN res_topology L ON (L.RES_TOPOLOGY_SID = A.PARENT_TOPOLOGY_SID)
+        WHERE L.PARENT_TOPOLOGY_SID = #{condition.resTopologySid}
+        GROUP BY A.RES_NETWORK_SID
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <!-- 查询私有网络下的子网 -->
+    <select id="selectSubnetInVpc" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <include refid="Base_Column_List"/>,
+        B.VPC_NAME AS VPC_NAME
+        from res_network A
+        INNER JOIN res_vpc B ON (A.PARENT_TOPOLOGY_SID = B.RES_VPC_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+
+    </select>
+
+    <select id="selectByBizParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        <!--     <if test="condition.resBizSid != null" > -->
+        <!--          CALL getResBizChildList(#{condition.resBizSid}); -->
+        <!--     </if>  -->
+        select
+        B.CODE_DISPLAY AS IP_TYPE_NAME,
+        C.CODE_DISPLAY AS NETWORK_TYPE_NAME,
+        IF(E.CountUseIps > 0,'01','02') as USAGE_STATUS,
+        IF(E.CountUseIps > 0,'已使用','未使用') as USAGE_STATUS_NAME,
+        F.VLAN_ID as VLAN_ID_NAME,
+        E.CountIps as IP_TOTAL_COUNT,
+        E.CountUseIps as IP_USE_COUNT,
+        <include refid="Base_Column_List"/>
+        FROM
+        res_network A
+        INNER JOIN (
+        SELECT
+        BIZ.RES_SID,
+        BIZ.MGT_OBJ_SID
+        FROM
+        view_sys_biz_res_network BIZ
+        ) BIZ ON (A.RES_NETWORK_SID = BIZ.RES_SID)
+        <!-- 	INNER JOIN tmp_resbizchildlist TMP ON (BIZ.MGT_OBJ_SID = TMP.MGT_OBJ_SID) -->
+        LEFT JOIN sys_m_code B ON (A.IP_TYPE = B.CODE_VALUE AND B.CODE_CATEGORY = 'IP_TYPE')
+        LEFT JOIN sys_m_code C ON (A.NETWORK_TYPE = C.CODE_VALUE AND C.CODE_CATEGORY = 'NETWORK_TYPE')
+        LEFT JOIN res_vlan F ON (A.VLAN_ID = F.VLAN_ID)
+        LEFT JOIN (
+        SELECT
+        IP.RES_NETWORK_SID,
+        GROUP_CONCAT(IP.IP_ADDRESS) as IP_ADDRESS,
+        COUNT(IP.RES_SID) AS CountIps,
+        SUM(
+        CASE
+        WHEN NET.RES_VM_SID IS NULL THEN
+        CASE IP. STATUS
+        WHEN '02' THEN 1
+        ELSE 0
+        END
+        ELSE
+        1
+        END
+        ) AS CountUseIps
+        FROM
+        res_ip IP
+        LEFT JOIN res_vm_network NET ON(IP.IP_ADDRESS = NET.IP_ADDRESS)
+        GROUP BY IP.RES_NETWORK_SID
+        ) E ON (A.RES_NETWORK_SID = E.RES_NETWORK_SID)
+        LEFT JOIN res_ip G ON (G.RES_NETWORK_SID = A.RES_NETWORK_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        GROUP BY A.RES_NETWORK_SID
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByBizParamsOfNetWork" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        <!-- 		CALL getResBizChildList(#{condition.bizSid}); -->
+        SELECT
+        DISTINCT
+        BIZ.PARENT_MGT_OBJ_SID AS PARENT_MGT_OBJ_SID,
+        BIZ.PARENT_MGT_OBJ_NAME AS PARENT_MGT_OBJ_NAME,
+        BIZ.MGT_OBJ_NAME as MGT_OBJ_NAME,
+        G.CODE_DISPLAY AS NETWORK_TYPE_NAME,
+        A.NETWORK_TYPE AS NETWORK_TYPE,
+        A.NETWORK_NAME AS NETWORK_NAME,
+        A.VLAN_ID AS VLAN_ID,
+        A.GATEWAY AS GATEWAY,
+        A.SUBNET AS SUBNET
+        FROM view_sys_biz_res_network BIZ
+        <!-- 		INNER JOIN tmp_resbizchildlist TMP on (BIZ.MGT_OBJ_SID = TMP.MGT_OBJ_SID) -->
+        INNER JOIN res_network A ON (BIZ.RES_SID = A.RES_NETWORK_SID)
+        LEFT JOIN sys_m_code G ON (A.NETWORK_TYPE = G.CODE_VALUE AND G.CODE_CATEGORY = 'NETWORK_TYPE')
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        GROUP BY BIZ.PARENT_MGT_OBJ_NAME, A.VLAN_ID
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByBizParamsOfEveryNetWork" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        <!-- 		CALL getResBizChildList(#{condition.bizSid}); -->
+        SELECT
+        distinct
+        BIZ.PARENT_MGT_OBJ_SID as PARENT_MGT_OBJ_SID,
+        A.VLAN_ID AS VLAN_ID,
+        C.IP_ADDRESS AS IP_ADDRESS,
+        A.SUBNET AS SUBNET,
+        A.GATEWAY AS GATEWAY,
+        G.VM_NAME AS VM_NAME,
+        F.NAME AS SUB_BIZ_NAME,
+        C.STATUS AS STATUS,
+        C.DESCRIPTION AS DESCRIPTION
+        FROM view_sys_biz_res_network BIZ
+        <!-- 		INNER JOIN tmp_resbizchildlist TMP on (BIZ.MGT_OBJ_SID = TMP.MGT_OBJ_SID) -->
+        INNER JOIN res_network A ON (BIZ.RES_SID = A.RES_NETWORK_SID)
+        INNER JOIN res_ip C ON (A.RES_NETWORK_SID = C.RES_NETWORK_SID)
+        LEFT JOIN res_vm_network D ON (D.IP_ADDRESS = C.IP_ADDRESS)
+        LEFT JOIN res_biz_vm E ON (D.RES_VM_SID = E.RES_VM_SID)
+        LEFT JOIN sys_m_mgt_obj F ON (E.MGT_OBJ_SID = F.MGT_OBJ_SID)
+        LEFT JOIN res_vm G ON (D.RES_VM_SID = G.RES_VM_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByBizParamsOfEverySubNetWorkType" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        SELECT
+        DISTINCT
+        BIZ.MGT_OBJ_SID,
+        A.NETWORK_TYPE,
+        A.VLAN_ID AS VLAN_ID,
+        C.IP_ADDRESS AS IP_ADDRESS,
+        E.VM_NAME AS VM_NAME,
+        F.NAME AS SUB_BIZ_NAME
+        FROM view_sys_biz_res_network BIZ
+        INNER JOIN res_network A ON (BIZ.RES_SID = A.RES_NETWORK_SID)
+        INNER JOIN res_ip C ON (A.RES_NETWORK_SID = C.RES_NETWORK_SID)
+        LEFT JOIN res_vm_network D ON (D.IP_ADDRESS = C.IP_ADDRESS)
+        LEFT JOIN res_biz_vm E ON (D.RES_VM_SID = E.RES_VM_SID)
+        LEFT JOIN sys_m_mgt_obj F ON (E.MGT_OBJ_SID = F.MGT_OBJ_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByBizParamsOfNetWorkType" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        <!-- 		CALL getResBizChildList(#{condition.bizSid}); -->
+        SELECT
+        DISTINCT
+        BIZ.PARENT_MGT_OBJ_SID AS PARENT_MGT_OBJ_SID,
+        BIZ.PARENT_MGT_OBJ_NAME AS PARENT_MGT_OBJ_NAME,
+        A.NETWORK_TYPE AS NETWORK_TYPE
+        FROM view_sys_biz_res_network BIZ
+        <!-- 		INNER JOIN tmp_resbizchildlist TMP on (BIZ.MGT_OBJ_SID = TMP.MGT_OBJ_SID) -->
+        INNER JOIN res_network A ON (BIZ.RES_SID = A.RES_NETWORK_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        GROUP BY BIZ.MGT_OBJ_NAME,A.NETWORK_TYPE
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByBizParamsOfCountNetWorkType" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        <!-- 		CALL getResBizChildList(#{condition.bizSid}); -->
+        SELECT
+        DISTINCT
+        A.VLAN_ID AS VLAN_ID,
+        A.SUBNET AS SUBNET,
+        A.NETWORK_TYPE AS NETWORK_TYPE,
+        BIZ.PARENT_MGT_OBJ_SID AS PARENT_MGT_OBJ_SID,
+        BIZ.PARENT_MGT_OBJ_NAME AS PARENT_MGT_OBJ_NAME
+        FROM view_sys_biz_res_network BIZ
+        INNER JOIN res_network A ON (BIZ.RES_SID = A.RES_NETWORK_SID)
+        <!-- 		INNER JOIN tmp_resbizchildlist TMP on (BIZ.MGT_OBJ_SID = TMP.MGT_OBJ_SID) -->
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByBizParamsOfEveryNumNetWorkType" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        SELECT
+        DISTINCT
+        A.VLAN_ID AS VLAN_ID
+        FROM view_sys_biz_res_network BIZ
+        INNER JOIN res_network A ON (BIZ.RES_SID = A.RES_NETWORK_SID)
+        INNER JOIN res_ip C ON (A.RES_NETWORK_SID = C.RES_NETWORK_SID)
+        LEFT JOIN res_vm_network D ON (D.IP_ADDRESS = C.IP_ADDRESS)
+        LEFT JOIN res_biz_vm E ON (D.RES_VM_SID = E.RES_VM_SID)
+        LEFT JOIN sys_m_mgt_obj F ON (E.MGT_OBJ_SID = F.MGT_OBJ_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="statisticalBizOfNetwork" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        <!--     	<if test="condition.resBizSid != null" > -->
+        <!-- 	         CALL getResBizChildList(#{condition.resBizSid}); -->
+        <!-- 	    </if> -->
+        SELECT
+        count(A.RES_NETWORK_SID) as TOTAL_COUNT,
+        sum(IF((A.NETWORK_TYPE = '01'),1,0)) as PNI_COUNT,
+        sum(IF((A.NETWORK_TYPE = '02'),1,0)) as PNE_COUNT
+        FROM
+        (
+        SELECT
+        N.RES_NETWORK_SID as RES_NETWORK_SID ,
+        N.NETWORK_TYPE as NETWORK_TYPE,
+        BIZ.MGT_OBJ_SID AS MGT_OBJ_SID
+        FROM
+        res_network N
+        INNER JOIN view_sys_biz_res_network BIZ ON (N.RES_NETWORK_SID = BIZ.RES_SID)
+        <!-- 				INNER JOIN tmp_resbizchildlist TMP ON (BIZ.MGT_OBJ_SID = TMP.MGT_OBJ_SID) -->
+        WHERE FIND_IN_SET(BIZ.MGT_OBJ_SID,getResBizChildList(#{condition.resBizSid}))
+        GROUP BY N.RES_NETWORK_SID
+        ) A
+
+    </select>
+
+    <!-- 统计拓扑结构下的网络个数信息 -->
+    <select id="statisticalTopologyOfNetwork" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        count(A.RES_NETWORK_SID) as TOTAL_COUNT,
+        sum(IF((A.NETWORK_TYPE = '01'),1,0)) as PNI_COUNT,
+        sum(IF((A.NETWORK_TYPE = '02'),1,0)) as PNE_COUNT
+        from
+        res_network A
+        WHERE FIND_IN_SET(A.PARENT_TOPOLOGY_SID, getResTopologyChildList(#{resTopologySid}))
+    </select>
+
+    <!-- 查询企业自定义网络 -->
+    <select id="selectExtNetworkByMgtObjSid" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        A.RES_SET_SID as RES_NETWORK_SID,
+        B.NETWORK_NAME as NETWORK_NAME,
+        B.UUID as UUID
+        from sys_m_mgt_obj_res A
+        INNER JOIN res_network B ON (A.RES_SET_SID = B.RES_NETWORK_SID)
+        WHERE A.BIZ_SID = #{mgtObjSid} AND A.RES_CATEGORY = 1
+
+    </select>
+
+    <!-- 查询企业自定义网络 -->
+    <select id="selectCustomNetworkByMgtObjSid" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        B.CODE_DISPLAY AS IP_TYPE_NAME,
+        C.CODE_DISPLAY AS NETWORK_TYPE_NAME,
+        D.CODE_DISPLAY AS STATUS_NAME,
+        E.CountIps as IP_TOTAL_COUNT,
+        <include refid="Base_Column_List"/>
+        from res_network A
+        INNER JOIN sys_m_mgt_obj_res MGT ON (A.RES_NETWORK_SID = MGT.RES_SET_SID)
+        LEFT JOIN sys_m_code B ON (A.IP_TYPE = B.CODE_VALUE AND B.CODE_CATEGORY = 'IP_TYPE')
+        LEFT JOIN sys_m_code C ON (A.NETWORK_TYPE = C.CODE_VALUE AND C.CODE_CATEGORY = 'NETWORK_TYPE')
+        LEFT JOIN sys_m_code D ON (A.STATUS = D.CODE_VALUE AND D.CODE_CATEGORY = 'NETWORK_STATUS')
+        LEFT JOIN res_vlan F ON (A.VLAN_ID = F.VLAN_ID)
+        LEFT JOIN (
+        SELECT
+        IP.RES_NETWORK_SID ,
+        GROUP_CONCAT(IP.IP_ADDRESS) as IP_ADDRESS,
+        COUNT(IP.RES_SID) as CountIps
+        FROM
+        res_ip IP
+        LEFT JOIN res_vm_network NET ON(IP.IP_ADDRESS = NET.IP_ADDRESS)
+        GROUP BY IP.RES_NETWORK_SID
+        ) E ON (A.RES_NETWORK_SID = E.RES_NETWORK_SID)
+        LEFT JOIN res_ip G ON (G.RES_NETWORK_SID = A.RES_NETWORK_SID)
+
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        GROUP BY A.RES_NETWORK_SID
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_network A
+        where A.RES_NETWORK_SID = #{resNetworkSid}
+    </select>
+    <select id="selectByVpc" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM res_network A INNER JOIN res_vpc v ON A.PARENT_TOPOLOGY_SID = v.RES_VPC_SID
+        WHERE A.PARENT_TOPOLOGY_SID = #{resVpcSid}
+        ORDER BY A.SUBNET
+    </select>
+    <select id="selectByUuid" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM res_network A
+        WHERE A.UUID = #{uuid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_network
+        where RES_NETWORK_SID = #{resNetworkSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_network
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResNetwork">
+        <selectKey resultType="java.lang.Long" keyProperty="resNetworkSid" order="BEFORE">
+            select SEQ_RES_NETWORK.NEXTVAL from dual
+        </selectKey>
+        insert into res_network (RES_NETWORK_SID, PARENT_TOPOLOGY_SID, RES_POOL_SID, ZONE, NETWORK_NAME, NETWORK_TYPE,
+        DESCRIPTION, IP_TYPE, SUBNET, SUBNET_MASK, GATEWAY, DNS1, DNS2,
+        IP_RETAIN_START1, IP_RETAIN_END1, IP_RETAIN_START2, IP_RETAIN_END2, IP_RETAIN_START3,
+        IP_RETAIN_END3, VLAN_ID, STATUS, NETWORK_TAG, CREATED_BY, CREATED_DT,
+        UPDATED_BY, UPDATED_DT, VERSION,UUID)
+        values (#{resNetworkSid}, #{parentTopologySid}, #{resPoolSid}, #{zone}, #{networkName}, #{networkType},
+        #{description}, #{ipType}, #{subnet}, #{subnetMask}, #{gateway}, #{dns1}, #{dns2},
+        #{ipRetainStart1}, #{ipRetainEnd1}, #{ipRetainStart2}, #{ipRetainEnd2}, #{ipRetainStart3},
+        #{ipRetainEnd3}, #{vlanId}, #{status}, #{networkTag}, #{createdBy}, #{createdDt},
+        #{updatedBy}, #{updatedDt}, #{version},#{uuid})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResNetwork">
+        <selectKey resultType="java.lang.String" keyProperty="resNetworkSid" order="BEFORE">
+            select UUID()
+        </selectKey>
+        insert into res_network
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            RES_NETWORK_SID,
+            <if test="parentTopologySid != null">
+                PARENT_TOPOLOGY_SID,
+            </if>
+            <if test="resPoolSid != null">
+                RES_POOL_SID,
+            </if>
+            <if test="zone != null">
+                ZONE,
+            </if>
+            <if test="networkName != null">
+                NETWORK_NAME,
+            </if>
+            <if test="networkType != null">
+                NETWORK_TYPE,
+            </if>
+            <if test="description != null">
+                DESCRIPTION,
+            </if>
+            <if test="ipType != null">
+                IP_TYPE,
+            </if>
+            <if test="subnet != null">
+                SUBNET,
+            </if>
+            <if test="subnetMask != null">
+                SUBNET_MASK,
+            </if>
+            <if test="gateway != null">
+                GATEWAY,
+            </if>
+            <if test="dns1 != null">
+                DNS1,
+            </if>
+            <if test="dns2 != null">
+                DNS2,
+            </if>
+            <if test="ipRetainStart1 != null">
+                IP_RETAIN_START1,
+            </if>
+            <if test="ipRetainEnd1 != null">
+                IP_RETAIN_END1,
+            </if>
+            <if test="ipRetainStart2 != null">
+                IP_RETAIN_START2,
+            </if>
+            <if test="ipRetainEnd2 != null">
+                IP_RETAIN_END2,
+            </if>
+            <if test="ipRetainStart3 != null">
+                IP_RETAIN_START3,
+            </if>
+            <if test="ipRetainEnd3 != null">
+                IP_RETAIN_END3,
+            </if>
+            <if test="vlanId != null">
+                VLAN_ID,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="networkTag != null">
+                NETWORK_TAG,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+            <if test="version != null">
+                VERSION,
+            </if>
+            <if test="uuid != null">
+                UUID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{resNetworkSid},
+            <if test="parentTopologySid != null">
+                #{parentTopologySid},
+            </if>
+            <if test="resPoolSid != null">
+                #{resPoolSid},
+            </if>
+            <if test="zone != null">
+                #{zone},
+            </if>
+            <if test="networkName != null">
+                #{networkName},
+            </if>
+            <if test="networkType != null">
+                #{networkType},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="ipType != null">
+                #{ipType},
+            </if>
+            <if test="subnet != null">
+                #{subnet},
+            </if>
+            <if test="subnetMask != null">
+                #{subnetMask},
+            </if>
+            <if test="gateway != null">
+                #{gateway},
+            </if>
+            <if test="dns1 != null">
+                #{dns1},
+            </if>
+            <if test="dns2 != null">
+                #{dns2},
+            </if>
+            <if test="ipRetainStart1 != null">
+                #{ipRetainStart1},
+            </if>
+            <if test="ipRetainEnd1 != null">
+                #{ipRetainEnd1},
+            </if>
+            <if test="ipRetainStart2 != null">
+                #{ipRetainStart2},
+            </if>
+            <if test="ipRetainEnd2 != null">
+                #{ipRetainEnd2},
+            </if>
+            <if test="ipRetainStart3 != null">
+                #{ipRetainStart3},
+            </if>
+            <if test="ipRetainEnd3 != null">
+                #{ipRetainEnd3},
+            </if>
+            <if test="vlanId != null">
+                #{vlanId},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="networkTag != null">
+                #{networkTag},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+            <if test="uuid != null">
+                #{uuid},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByBizParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select
+        COUNT(DISTINCT A.RES_NETWORK_SID)
+        from
+        view_sys_biz_res_network BIZ
+        INNER JOIN res_network A ON (BIZ.RES_SID = A.RES_NETWORK_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_network
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_network
+        <set>
+            <if test="record.resNetworkSid != null">
+                RES_NETWORK_SID = #{record.resNetworkSid},
+            </if>
+            <if test="record.parentTopologySid != null">
+                PARENT_TOPOLOGY_SID = #{record.parentTopologySid},
+            </if>
+            <if test="record.resPoolSid != null">
+                RES_POOL_SID = #{record.resPoolSid},
+            </if>
+            <if test="record.zone != null">
+                ZONE = #{record.zone},
+            </if>
+            <if test="record.networkName != null">
+                NETWORK_NAME = #{record.networkName},
+            </if>
+            <if test="record.networkType != null">
+                NETWORK_TYPE = #{record.networkType},
+            </if>
+            <if test="record.description != null">
+                DESCRIPTION = #{record.description},
+            </if>
+            <if test="record.ipType != null">
+                IP_TYPE = #{record.ipType},
+            </if>
+            <if test="record.subnet != null">
+                SUBNET = #{record.subnet},
+            </if>
+            <if test="record.subnetMask != null">
+                SUBNET_MASK = #{record.subnetMask},
+            </if>
+            <if test="record.gateway != null">
+                GATEWAY = #{record.gateway},
+            </if>
+            <if test="record.dns1 != null">
+                DNS1 = #{record.dns1},
+            </if>
+            <if test="record.dns2 != null">
+                DNS2 = #{record.dns2},
+            </if>
+            <if test="record.ipRetainStart1 != null">
+                IP_RETAIN_START1 = #{record.ipRetainStart1},
+            </if>
+            <if test="record.ipRetainEnd1 != null">
+                IP_RETAIN_END1 = #{record.ipRetainEnd1},
+            </if>
+            <if test="record.ipRetainStart2 != null">
+                IP_RETAIN_START2 = #{record.ipRetainStart2},
+            </if>
+            <if test="record.ipRetainEnd2 != null">
+                IP_RETAIN_END2 = #{record.ipRetainEnd2},
+            </if>
+            <if test="record.ipRetainStart3 != null">
+                IP_RETAIN_START3 = #{record.ipRetainStart3},
+            </if>
+            <if test="record.ipRetainEnd3 != null">
+                IP_RETAIN_END3 = #{record.ipRetainEnd3},
+            </if>
+            <if test="record.vlanId != null">
+                VLAN_ID = #{record.vlanId},
+            </if>
+            <if test="record.status != null">
+                STATUS = #{record.status},
+            </if>
+            <if test="record.networkTag != null">
+                NETWORK_TAG = #{record.networkTag},
+            </if>
+            <if test="record.createdBy != null">
+                CREATED_BY = #{record.createdBy},
+            </if>
+            <if test="record.createdDt != null">
+                CREATED_DT = #{record.createdDt},
+            </if>
+            <if test="record.updatedBy != null">
+                UPDATED_BY = #{record.updatedBy},
+            </if>
+            <if test="record.updatedDt != null">
+                UPDATED_DT = #{record.updatedDt},
+            </if>
+            <if test="record.version != null">
+                VERSION = #{record.version},
+            </if>
+            <if test="record.uuid != null">
+                UUID = #{record.uuid},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_network
+        set RES_NETWORK_SID = #{record.resNetworkSid},
+        PARENT_TOPOLOGY_SID = #{record.parentTopologySid},
+        RES_POOL_SID = #{record.resPoolSid},
+        ZONE = #{record.zone},
+        NETWORK_NAME = #{record.networkName},
+        NETWORK_TYPE = #{record.networkType},
+        DESCRIPTION = #{record.description},
+        IP_TYPE = #{record.ipType},
+        SUBNET = #{record.subnet},
+        SUBNET_MASK = #{record.subnetMask},
+        GATEWAY = #{record.gateway},
+        DNS1 = #{record.dns1},
+        DNS2 = #{record.dns2},
+        IP_RETAIN_START1 = #{record.ipRetainStart1},
+        IP_RETAIN_END1 = #{record.ipRetainEnd1},
+        IP_RETAIN_START2 = #{record.ipRetainStart2},
+        IP_RETAIN_END2 = #{record.ipRetainEnd2},
+        IP_RETAIN_START3 = #{record.ipRetainStart3},
+        IP_RETAIN_END3 = #{record.ipRetainEnd3},
+        VLAN_ID = #{record.vlanId},
+        STATUS = #{record.status},
+        NETWORK_TAG = #{record.networkTag},
+        CREATED_BY = #{record.createdBy},
+        CREATED_DT = #{record.createdDt},
+        UPDATED_BY = #{record.updatedBy},
+        UPDATED_DT = #{record.updatedDt},
+        VERSION = #{record.version},
+        UUID = #{record.uuid}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResNetwork">
+        update res_network
+        <set>
+            <if test="parentTopologySid != null">
+                PARENT_TOPOLOGY_SID = #{parentTopologySid},
+            </if>
+            <if test="resPoolSid != null">
+                RES_POOL_SID = #{resPoolSid},
+            </if>
+            <if test="zone != null">
+                ZONE = #{zone},
+            </if>
+            <if test="networkName != null">
+                NETWORK_NAME = #{networkName},
+            </if>
+            <if test="networkType != null">
+                NETWORK_TYPE = #{networkType},
+            </if>
+            <if test="description != null">
+                DESCRIPTION = #{description},
+            </if>
+            <if test="ipType != null">
+                IP_TYPE = #{ipType},
+            </if>
+            <if test="subnet != null">
+                SUBNET = #{subnet},
+            </if>
+            <if test="subnetMask != null">
+                SUBNET_MASK = #{subnetMask},
+            </if>
+            <if test="gateway != null">
+                GATEWAY = #{gateway},
+            </if>
+            <if test="dns1 != null">
+                DNS1 = #{dns1},
+            </if>
+            <if test="dns2 != null">
+                DNS2 = #{dns2},
+            </if>
+            <if test="ipRetainStart1 != null">
+                IP_RETAIN_START1 = #{ipRetainStart1},
+            </if>
+            <if test="ipRetainEnd1 != null">
+                IP_RETAIN_END1 = #{ipRetainEnd1},
+            </if>
+            <if test="ipRetainStart2 != null">
+                IP_RETAIN_START2 = #{ipRetainStart2},
+            </if>
+            <if test="ipRetainEnd2 != null">
+                IP_RETAIN_END2 = #{ipRetainEnd2},
+            </if>
+            <if test="ipRetainStart3 != null">
+                IP_RETAIN_START3 = #{ipRetainStart3},
+            </if>
+            <if test="ipRetainEnd3 != null">
+                IP_RETAIN_END3 = #{ipRetainEnd3},
+            </if>
+            <if test="vlanId != null">
+                VLAN_ID = #{vlanId},
+            </if>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+            <if test="networkTag != null">
+                NETWORK_TAG = #{networkTag},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt},
+            </if>
+            <if test="version != null">
+                VERSION = #{version},
+            </if>
+            <if test="uuid != null">
+                UUID = #{uuid},
+            </if>
+        </set>
+        where RES_NETWORK_SID = #{resNetworkSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResNetwork">
+        update res_network
+        set PARENT_TOPOLOGY_SID = #{parentTopologySid},
+        RES_POOL_SID = #{resPoolSid},
+        ZONE = #{zone},
+        NETWORK_NAME = #{networkName},
+        NETWORK_TYPE = #{networkType},
+        DESCRIPTION = #{description},
+        IP_TYPE = #{ipType},
+        SUBNET = #{subnet},
+        SUBNET_MASK = #{subnetMask},
+        GATEWAY = #{gateway},
+        DNS1 = #{dns1},
+        DNS2 = #{dns2},
+        IP_RETAIN_START1 = #{ipRetainStart1},
+        IP_RETAIN_END1 = #{ipRetainEnd1},
+        IP_RETAIN_START2 = #{ipRetainStart2},
+        IP_RETAIN_END2 = #{ipRetainEnd2},
+        IP_RETAIN_START3 = #{ipRetainStart3},
+        IP_RETAIN_END3 = #{ipRetainEnd3},
+        VLAN_ID = #{vlanId},
+        STATUS = #{status},
+        NETWORK_TAG = #{networkTag},
+        CREATED_BY = #{createdBy},
+        CREATED_DT = #{createdDt},
+        UPDATED_BY = #{updatedBy},
+        UPDATED_DT = #{updatedDt},
+        VERSION = #{version},
+        UUID = #{uuid}
+        where RES_NETWORK_SID = #{resNetworkSid}
+    </update>
+    <select id="selectByBizParamsOfEveryNetWorkType" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        SELECT
+        DISTINCT
+        B.NETWORK_TYPE
+        FROM view_sys_biz_res_network BIZ
+        INNER JOIN res_network B ON (BIZ.RES_SID = B.RES_NETWORK_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <select id="selectNetworksByHostSid" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select net.* from res_network net
+        inner join res_network_host nh on (net.res_network_sid = nh.res_network_sid)
+        where nh.res_host_sid = #{resHostSid}
+    </select>
+</mapper>

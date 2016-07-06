@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.OrgMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.Org" >
+    <id column="ORG_SID" property="orgSid" jdbcType="BIGINT" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="ORG_TEXT" property="orgText" jdbcType="VARCHAR" />
+    <result column="ORG_VALUE" property="orgValue" jdbcType="VARCHAR" />
+    <result column="SORT_RANK" property="sortRank" jdbcType="BIGINT" />
+    <result column="PARENT_ORG_SID" property="parentOrgSid" jdbcType="BIGINT" />
+    <result column="PARENT_ORG_NAME" property="parentOrgName" jdbcType="VARCHAR" />
+    <result column="ORG_DESC" property="orgDesc" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.orgName != null" >
+         and A.ORG_NAME = #{condition.orgName}
+      </if>
+      <if test="condition.sortRank != null" >
+         and A.SORT_RANK = #{condition.sortRank}
+      </if>
+      <if test="condition.parentOrgSid != null" >
+         and A.PARENT_ORG_SID = #{condition.parentOrgSid}
+      </if>
+      <if test="condition.orgDesc != null" >
+         and A.ORG_DESC = #{condition.orgDesc}
+      </if>
+      <if test="condition.createdBy != null" >
+         and A.CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and A.CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and A.UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and A.UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and A.VERSION = #{condition.version}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    A.ORG_SID, A.ORG_NAME, A.SORT_RANK, A.PARENT_ORG_SID, A.ORG_DESC, A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, 
+    A.UPDATED_DT, A.VERSION
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+      distinct
+    A.ORG_NAME as ORG_TEXT,
+    A.ORG_NAME as ORG_VALUE,
+    IFNULL(B.ORG_NAME,"") as PARENT_ORG_NAME,
+    <include refid="Base_Column_List" />
+    from sys_m_org A
+	left join sys_m_org B on(A.PARENT_ORG_SID=B.ORG_SID)
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+    <select id="selectByParamsWithoutRoot" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+      select
+      distinct
+    A.ORG_NAME as ORG_TEXT,
+    A.ORG_NAME as ORG_VALUE,
+    IFNULL(B.ORG_NAME,"") as PARENT_ORG_NAME,
+    <include refid="Base_Column_List" />
+    from sys_m_org A
+	left join sys_m_org B on(A.PARENT_ORG_SID=B.ORG_SID)
+	where A.PARENT_ORG_SID != ""
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    A.ORG_NAME as ORG_TEXT,
+    A.ORG_NAME as ORG_VALUE,
+    IFNULL(B.ORG_NAME,"") as PARENT_ORG_NAME,
+    <include refid="Base_Column_List" />
+    from sys_m_org A
+    left join sys_m_org B on(A.PARENT_ORG_SID=B.ORG_SID)
+    where A.ORG_SID = #{orgSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_m_org
+    where ORG_SID = #{orgSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from sys_m_org
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.system.Org" >
+    insert into sys_m_org (ORG_SID, ORG_NAME, SORT_RANK, PARENT_ORG_SID, ORG_DESC, CREATED_BY, 
+      CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION)
+    values (#{orgSid}, #{orgName}, #{sortRank}, #{parentOrgSid}, #{orgDesc}, #{createdBy}, 
+      #{createdDt}, #{updatedBy}, #{updatedDt}, #{version})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.Org" >
+  	    <selectKey resultType="java.lang.Long" keyProperty="orgSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SYS_M_ORG')
+    </selectKey>
+    insert into sys_m_org
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        ORG_SID,
+      <if test="orgName != null" >
+        ORG_NAME,
+      </if>
+      <if test="sortRank != null" >
+        SORT_RANK,
+      </if>
+      <if test="parentOrgSid != null" >
+        PARENT_ORG_SID,
+      </if>
+      <if test="orgDesc != null" >
+        ORG_DESC,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{orgSid},
+      <if test="orgName != null" >
+        #{orgName},
+      </if>
+      <if test="sortRank != null" >
+        #{sortRank},
+      </if>
+      <if test="parentOrgSid != null" >
+        #{parentOrgSid},
+      </if>
+      <if test="orgDesc != null" >
+        #{orgDesc},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from sys_m_org
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update sys_m_org
+    <set >
+      <if test="record.orgSid != null" >
+        ORG_SID = #{record.orgSid},
+      </if>
+      <if test="record.orgName != null" >
+        ORG_NAME = #{record.orgName},
+      </if>
+      <if test="record.sortRank != null" >
+        SORT_RANK = #{record.sortRank},
+      </if>
+      <if test="record.parentOrgSid != null" >
+        PARENT_ORG_SID = #{record.parentOrgSid},
+      </if>
+      <if test="record.orgDesc != null" >
+        ORG_DESC = #{record.orgDesc},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update sys_m_org
+    set ORG_SID = #{record.orgSid},
+      ORG_NAME = #{record.orgName},
+      SORT_RANK = #{record.sortRank},
+      PARENT_ORG_SID = #{record.parentOrgSid},
+      ORG_DESC = #{record.orgDesc},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.Org" >
+    update sys_m_org
+    <set >
+      <if test="orgName != null" >
+        ORG_NAME = #{orgName},
+      </if>
+      <if test="sortRank != null" >
+        SORT_RANK = #{sortRank},
+      </if>
+      <if test="parentOrgSid != null" >
+        PARENT_ORG_SID = #{parentOrgSid},
+      </if>
+      <if test="orgDesc != null" >
+        ORG_DESC = #{orgDesc},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+    </set>
+    where ORG_SID = #{orgSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.Org" >
+    update sys_m_org
+    set ORG_NAME = #{orgName},
+      SORT_RANK = #{sortRank},
+      PARENT_ORG_SID = #{parentOrgSid},
+      ORG_DESC = #{orgDesc},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version}
+    where ORG_SID = #{orgSid}
+  </update>
+</mapper>

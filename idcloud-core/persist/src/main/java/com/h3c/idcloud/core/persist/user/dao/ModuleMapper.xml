@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.user.dao.ModuleMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.user.Module" >
+    <id column="MODULE_SID" property="moduleSid" jdbcType="VARCHAR" />
+    <result column="MODULE_NAME" property="moduleName" jdbcType="VARCHAR" />
+    <result column="MODULE_URL" property="moduleUrl" jdbcType="VARCHAR" />
+    <result column="MODULE_ICON_URL" property="moduleIconUrl" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="PARENT_SID" property="parentSid" jdbcType="VARCHAR" />
+    <result column="MODULE_TYPE" property="moduleType" jdbcType="INTEGER" />
+    <result column="DISPLAY_FLAG" property="displayFlag" jdbcType="INTEGER" />
+    <result column="SORT_RANK" property="sortRank" jdbcType="INTEGER" />
+    <result column="SELECTED" property="selected" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.moduleName != null" >
+         and MODULE_NAME = #{condition.moduleName}
+      </if>
+      <if test="condition.moduleUrl != null" >
+         and MODULE_URL = #{condition.moduleUrl}
+      </if>
+      <if test="condition.parentSid != null" >
+         and PARENT_SID = #{condition.parentSid}
+      </if>
+      <if test="condition.moduleType != null" >
+         and MODULE_TYPE = #{condition.moduleType}
+      </if>
+      <if test="condition.displayFlag != null" >
+         and DISPLAY_FLAG = #{condition.displayFlag}
+      </if>
+      <if test="condition.sortRank != null" >
+         and SORT_RANK = #{condition.sortRank}
+      </if>
+      <if test="condition.moduleCategory != null" >
+         and A.MODULE_CATEGORY = #{condition.moduleCategory}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    A.MODULE_SID, A.MODULE_NAME, A.MODULE_URL, A.PARENT_SID, A.MODULE_TYPE, A.DISPLAY_FLAG, A.SORT_RANK,A.MODULE_ICON_URL
+  </sql>
+  
+  <!-- 鏍规嵁鐢ㄦ埛ID鏌ヨ绯荤粺鑿滃崟 -->
+  <select id="selectUserModules" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+	select  
+	      distinct
+	       A.MODULE_SID,
+	       A.MODULE_NAME,
+    	   A.MODULE_URL,
+	       A.PARENT_SID,
+	       A.MODULE_TYPE,
+	       A.DISPLAY_FLAG,
+	       A.SORT_RANK,
+	       A.DESCRIPTION,
+	       A.MODULE_ICON_URL
+	  from SYS_M_MODULE     A,
+	       SYS_M_ROLE_MODULE B,
+	       SYS_M_ROLE       C,
+	       SYS_M_USER_ROLE   D,
+	       SYS_M_USER       E
+	 where A.MODULE_SID = B.MODULE_SID
+	   and B.ROLE_SID = C.ROLE_SID
+	   and C.ROLE_SID = D.ROLE_SID
+	   and D.USER_SID = E.USER_SID
+	   and A.DISPLAY_FLAG = 1
+  	<if test="condition.userSid != null" >
+       and E.USER_SID = #{condition.userSid}
+    </if>
+    <if test="condition.moduleType != null" >
+       and A.MODULE_TYPE = #{condition.moduleType}
+    </if>
+    <if test="condition.moduleCategory != null" >
+       and A.MODULE_CATEGORY = #{condition.moduleCategory}
+    </if>
+    <if test="condition.parentSid != null" >
+       and A.MODULE_SID in (select T.MODULE_SID from SYS_M_MODULE T where 1=1
+             start with T.MODULE_SID = #{condition.parentSid} connect by prior T.MODULE_SID = T.PARENT_SID)
+    </if>
+    order by A.SORT_RANK
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />,
+    IF(B.ROLE_SID,TRUE,FALSE) as SELECTED
+    from sys_m_module A
+    LEFT JOIN sys_m_role_module B ON(A.MODULE_SID = B.MODULE_SID and B.ROLE_SID = #{condition.roleSid})
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_m_module
+    where MODULE_SID = #{moduleSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_m_module
+    where MODULE_SID = #{moduleSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from sys_m_module
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.user.Module" >
+    insert into sys_m_module (MODULE_SID, MODULE_NAME, MODULE_URL, PARENT_SID, MODULE_TYPE, DISPLAY_FLAG, 
+      SORT_RANK
+      )
+    values (#{moduleSid}, #{moduleName}, #{moduleUrl}, #{parentSid}, #{moduleType}, #{displayFlag}, 
+      #{sortRank}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.user.Module" >
+    insert into sys_m_module
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="moduleSid != null" >
+        MODULE_SID,
+      </if>
+      <if test="moduleName != null" >
+        MODULE_NAME,
+      </if>
+      <if test="moduleUrl != null" >
+        MODULE_URL,
+      </if>
+      <if test="parentSid != null" >
+        PARENT_SID,
+      </if>
+      <if test="moduleType != null" >
+        MODULE_TYPE,
+      </if>
+      <if test="displayFlag != null" >
+        DISPLAY_FLAG,
+      </if>
+      <if test="sortRank != null" >
+        SORT_RANK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="moduleSid != null" >
+        #{moduleSid},
+      </if>
+      <if test="moduleName != null" >
+        #{moduleName},
+      </if>
+      <if test="moduleUrl != null" >
+        #{moduleUrl},
+      </if>
+      <if test="parentSid != null" >
+        #{parentSid},
+      </if>
+      <if test="moduleType != null" >
+        #{moduleType},
+      </if>
+      <if test="displayFlag != null" >
+        #{displayFlag},
+      </if>
+      <if test="sortRank != null" >
+        #{sortRank},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.String" >
+    select count(*) from sys_m_module
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update sys_m_module
+    <set >
+      <if test="record.moduleSid != null" >
+        MODULE_SID = #{record.moduleSid},
+      </if>
+      <if test="record.moduleName != null" >
+        MODULE_NAME = #{record.moduleName},
+      </if>
+      <if test="record.moduleUrl != null" >
+        MODULE_URL = #{record.moduleUrl},
+      </if>
+      <if test="record.parentSid != null" >
+        PARENT_SID = #{record.parentSid},
+      </if>
+      <if test="record.moduleType != null" >
+        MODULE_TYPE = #{record.moduleType},
+      </if>
+      <if test="record.displayFlag != null" >
+        DISPLAY_FLAG = #{record.displayFlag},
+      </if>
+      <if test="record.sortRank != null" >
+        SORT_RANK = #{record.sortRank},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update sys_m_module
+    set MODULE_SID = #{record.moduleSid},
+      MODULE_NAME = #{record.moduleName},
+      MODULE_URL = #{record.moduleUrl},
+      PARENT_SID = #{record.parentSid},
+      MODULE_TYPE = #{record.moduleType},
+      DISPLAY_FLAG = #{record.displayFlag},
+      SORT_RANK = #{record.sortRank}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.user.Module" >
+    update sys_m_module
+    <set >
+      <if test="moduleName != null" >
+        MODULE_NAME = #{moduleName},
+      </if>
+      <if test="moduleUrl != null" >
+        MODULE_URL = #{moduleUrl},
+      </if>
+      <if test="parentSid != null" >
+        PARENT_SID = #{parentSid},
+      </if>
+      <if test="moduleType != null" >
+        MODULE_TYPE = #{moduleType},
+      </if>
+      <if test="displayFlag != null" >
+        DISPLAY_FLAG = #{displayFlag},
+      </if>
+      <if test="sortRank != null" >
+        SORT_RANK = #{sortRank},
+      </if>
+    </set>
+    where MODULE_SID = #{moduleSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.user.Module" >
+    update sys_m_module
+    set MODULE_NAME = #{moduleName},
+      MODULE_URL = #{moduleUrl},
+      PARENT_SID = #{parentSid},
+      MODULE_TYPE = #{moduleType},
+      DISPLAY_FLAG = #{displayFlag},
+      SORT_RANK = #{sortRank}
+    where MODULE_SID = #{moduleSid}
+  </update>
+</mapper>

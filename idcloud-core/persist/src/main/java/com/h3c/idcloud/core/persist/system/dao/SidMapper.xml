@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.SidMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.Sid" >
+    <id column="SID" property="sid" jdbcType="BIGINT" />
+    <result column="SID_CATEGORY" property="sidCategory" jdbcType="VARCHAR" />
+    <result column="SID_CATEGORY_NM" property="sidCategoryNm" jdbcType="VARCHAR" />
+    <result column="SID_FREFIX" property="sidFrefix" jdbcType="VARCHAR" />
+    <result column="SID_LENGTH" property="sidLength" jdbcType="INTEGER" />
+    <result column="IS_DATE" property="isDate" jdbcType="VARCHAR" />
+    <result column="DATE_FORMAT" property="dateFormat" jdbcType="VARCHAR" />
+    <result column="CUR_DATE" property="curDate" jdbcType="VARCHAR" />
+    <result column="CUR_NO" property="curNo" jdbcType="BIGINT" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.sidCategory != null" >
+         and SID_CATEGORY = #{condition.sidCategory}
+      </if>
+      <if test="condition.sidCategoryNm != null" >
+         and SID_CATEGORY_NM = #{condition.sidCategoryNm}
+      </if>
+      <if test="condition.sidFrefix != null" >
+         and SID_FREFIX = #{condition.sidFrefix}
+      </if>
+      <if test="condition.sidLength != null" >
+         and SID_LENGTH = #{condition.sidLength}
+      </if>
+      <if test="condition.isDate != null" >
+         and IS_DATE = #{condition.isDate}
+      </if>
+      <if test="condition.dateFormat != null" >
+         and DATE_FORMAT = #{condition.dateFormat}
+      </if>
+      <if test="condition.curDate != null" >
+         and CUR_DATE = #{condition.curDate}
+      </if>
+      <if test="condition.curNo != null" >
+         and CUR_NO = #{condition.curNo}
+      </if>
+      <if test="condition.createdBy != null" >
+         and CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and VERSION = #{condition.version}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    SID, SID_CATEGORY, SID_CATEGORY_NM, SID_FREFIX, SID_LENGTH, IS_DATE, DATE_FORMAT, 
+    CUR_DATE, CUR_NO, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_m_sid
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_m_sid
+    where SID = #{sid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_m_sid
+    where SID = #{sid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from sys_m_sid
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.system.Sid" >
+    <selectKey resultType="java.lang.Long" keyProperty="sid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SYS_M_SID')
+    </selectKey>
+    insert into sys_m_sid (SID, SID_CATEGORY, SID_CATEGORY_NM, SID_FREFIX, SID_LENGTH, IS_DATE, 
+      DATE_FORMAT, CUR_DATE, CUR_NO, CREATED_BY, CREATED_DT, UPDATED_BY, 
+      UPDATED_DT, VERSION)
+    values (#{sid}, #{sidCategory}, #{sidCategoryNm}, #{sidFrefix}, #{sidLength}, #{isDate}, 
+      #{dateFormat}, #{curDate}, #{curNo}, #{createdBy}, #{createdDt}, #{updatedBy}, 
+      #{updatedDt}, #{version})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.Sid" >
+    <selectKey resultType="java.lang.Long" keyProperty="sid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SYS_M_SID')
+    </selectKey>
+    insert into sys_m_sid
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      SID,
+      <if test="sidCategory != null" >
+        SID_CATEGORY,
+      </if>
+      <if test="sidCategoryNm != null" >
+        SID_CATEGORY_NM,
+      </if>
+      <if test="sidFrefix != null" >
+        SID_FREFIX,
+      </if>
+      <if test="sidLength != null" >
+        SID_LENGTH,
+      </if>
+      <if test="isDate != null" >
+        IS_DATE,
+      </if>
+      <if test="dateFormat != null" >
+        DATE_FORMAT,
+      </if>
+      <if test="curDate != null" >
+        CUR_DATE,
+      </if>
+      <if test="curNo != null" >
+        CUR_NO,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{sid},
+      <if test="sidCategory != null" >
+        #{sidCategory},
+      </if>
+      <if test="sidCategoryNm != null" >
+        #{sidCategoryNm},
+      </if>
+      <if test="sidFrefix != null" >
+        #{sidFrefix},
+      </if>
+      <if test="sidLength != null" >
+        #{sidLength},
+      </if>
+      <if test="isDate != null" >
+        #{isDate},
+      </if>
+      <if test="dateFormat != null" >
+        #{dateFormat},
+      </if>
+      <if test="curDate != null" >
+        #{curDate},
+      </if>
+      <if test="curNo != null" >
+        #{curNo},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from sys_m_sid
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update sys_m_sid
+    <set >
+      <if test="record.sid != null" >
+        SID = #{record.sid},
+      </if>
+      <if test="record.sidCategory != null" >
+        SID_CATEGORY = #{record.sidCategory},
+      </if>
+      <if test="record.sidCategoryNm != null" >
+        SID_CATEGORY_NM = #{record.sidCategoryNm},
+      </if>
+      <if test="record.sidFrefix != null" >
+        SID_FREFIX = #{record.sidFrefix},
+      </if>
+      <if test="record.sidLength != null" >
+        SID_LENGTH = #{record.sidLength},
+      </if>
+      <if test="record.isDate != null" >
+        IS_DATE = #{record.isDate},
+      </if>
+      <if test="record.dateFormat != null" >
+        DATE_FORMAT = #{record.dateFormat},
+      </if>
+      <if test="record.curDate != null" >
+        CUR_DATE = #{record.curDate},
+      </if>
+      <if test="record.curNo != null" >
+        CUR_NO = #{record.curNo},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update sys_m_sid
+    set SID = #{record.sid},
+      SID_CATEGORY = #{record.sidCategory},
+      SID_CATEGORY_NM = #{record.sidCategoryNm},
+      SID_FREFIX = #{record.sidFrefix},
+      SID_LENGTH = #{record.sidLength},
+      IS_DATE = #{record.isDate},
+      DATE_FORMAT = #{record.dateFormat},
+      CUR_DATE = #{record.curDate},
+      CUR_NO = #{record.curNo},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.Sid" >
+    update sys_m_sid
+    <set >
+      <if test="sidCategory != null" >
+        SID_CATEGORY = #{sidCategory},
+      </if>
+      <if test="sidCategoryNm != null" >
+        SID_CATEGORY_NM = #{sidCategoryNm},
+      </if>
+      <if test="sidFrefix != null" >
+        SID_FREFIX = #{sidFrefix},
+      </if>
+      <if test="sidLength != null" >
+        SID_LENGTH = #{sidLength},
+      </if>
+      <if test="isDate != null" >
+        IS_DATE = #{isDate},
+      </if>
+      <if test="dateFormat != null" >
+        DATE_FORMAT = #{dateFormat},
+      </if>
+      <if test="curDate != null" >
+        CUR_DATE = #{curDate},
+      </if>
+      <if test="curNo != null" >
+        CUR_NO = #{curNo},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+    </set>
+    where SID = #{sid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.Sid" >
+    update sys_m_sid
+    set SID_CATEGORY = #{sidCategory},
+      SID_CATEGORY_NM = #{sidCategoryNm},
+      SID_FREFIX = #{sidFrefix},
+      SID_LENGTH = #{sidLength},
+      IS_DATE = #{isDate},
+      DATE_FORMAT = #{dateFormat},
+      CUR_DATE = #{curDate},
+      CUR_NO = #{curNo},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version}
+    where SID = #{sid}
+  </update>
+</mapper>

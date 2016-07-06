@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd   http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- 测试用例的Service，需要手动配置实现类-->
+    <bean id="userRest" class="com.h3c.idcloud.core.rest.user.impl.UserRestImpl"/>
+
+    <!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
+    <dubbo:application name="idcloud-core-rest-war" logger="slf4j" />
+
+    <!-- 使用zookeeper注册中心暴露服务地址 -->
+    <dubbo:registry address="multicast://224.10.10.1:12345"/>
+
+    <!-- 自动扫描组件 -->
+    <dubbo:annotation package="com.h3c.idcloud.core.rest"/>
+
+    <!-- 数据库定义 -->
+    <import resource="classpath*:idc-spring-persistance.xml"/>
+</beans>

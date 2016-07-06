@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.charge.dao.BillingTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.charge.BillingType" >
+    <id column="BILLING_TYPE" property="billingType" jdbcType="VARCHAR" />
+    <result column="BILLING_TYPE_NAME" property="billingTypeName" jdbcType="VARCHAR" />
+    <result column="BILLING_PLAN_TYPE" property="billingPlanType" jdbcType="VARCHAR" />
+    <result column="UNIT" property="unit" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.billingTypeName != null" >
+         and BILLING_TYPE_NAME = #{condition.billingTypeName}
+      </if>
+      <if test="condition.billingPlanType != null" >
+         and BILLING_PLAN_TYPE = #{condition.billingPlanType}
+      </if>
+      <if test="condition.unit != null" >
+         and UNIT = #{condition.unit}
+      </if>
+      <if test="condition.description != null" >
+         and DESCRIPTION = #{condition.description}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    BILLING_TYPE, BILLING_TYPE_NAME, BILLING_PLAN_TYPE, UNIT, DESCRIPTION
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from billing_type
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from billing_type
+    where BILLING_TYPE = #{billingType}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from billing_type
+    where BILLING_TYPE = #{billingType}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from billing_type
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingType" >
+    insert into billing_type (BILLING_TYPE, BILLING_TYPE_NAME, BILLING_PLAN_TYPE, UNIT, DESCRIPTION
+      )
+    values (#{billingType}, #{billingTypeName}, #{billingPlanType}, #{unit}, #{description}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingType" >
+    insert into billing_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="billingType != null" >
+        BILLING_TYPE,
+      </if>
+      <if test="billingTypeName != null" >
+        BILLING_TYPE_NAME,
+      </if>
+      <if test="billingPlanType != null" >
+        BILLING_PLAN_TYPE,
+      </if>
+      <if test="unit != null" >
+        UNIT,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="billingType != null" >
+        #{billingType},
+      </if>
+      <if test="billingTypeName != null" >
+        #{billingTypeName},
+      </if>
+      <if test="billingPlanType != null" >
+        #{billingPlanType},
+      </if>
+      <if test="unit != null" >
+        #{unit},
+      </if>
+      <if test="description != null" >
+        #{description},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from billing_type
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update billing_type
+    <set >
+      <if test="record.billingType != null" >
+        BILLING_TYPE = #{record.billingType},
+      </if>
+      <if test="record.billingTypeName != null" >
+        BILLING_TYPE_NAME = #{record.billingTypeName},
+      </if>
+      <if test="record.billingPlanType != null" >
+        BILLING_PLAN_TYPE = #{record.billingPlanType},
+      </if>
+      <if test="record.unit != null" >
+        UNIT = #{record.unit},
+      </if>
+      <if test="record.description != null" >
+        DESCRIPTION = #{record.description},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update billing_type
+    set BILLING_TYPE = #{record.billingType},
+      BILLING_TYPE_NAME = #{record.billingTypeName},
+      BILLING_PLAN_TYPE = #{record.billingPlanType},
+      UNIT = #{record.unit},
+      DESCRIPTION = #{record.description}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingType" >
+    update billing_type
+    <set >
+      <if test="billingTypeName != null" >
+        BILLING_TYPE_NAME = #{billingTypeName},
+      </if>
+      <if test="billingPlanType != null" >
+        BILLING_PLAN_TYPE = #{billingPlanType},
+      </if>
+      <if test="unit != null" >
+        UNIT = #{unit},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description},
+      </if>
+    </set>
+    where BILLING_TYPE = #{billingType}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingType" >
+    update billing_type
+    set BILLING_TYPE_NAME = #{billingTypeName},
+      BILLING_PLAN_TYPE = #{billingPlanType},
+      UNIT = #{unit},
+      DESCRIPTION = #{description}
+    where BILLING_TYPE = #{billingType}
+  </update>
+</mapper>

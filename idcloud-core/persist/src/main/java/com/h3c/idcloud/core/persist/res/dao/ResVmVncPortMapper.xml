@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResVmVncPortMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResVmVncPort">
+        <id column="RES_VM_SID" property="resVmSid" jdbcType="VARCHAR"/>
+        <id column="VNC_PORT" property="vncPort" jdbcType="BIGINT"/>
+        <result column="TOKEN" property="token" jdbcType="VARCHAR"/>
+        <result column="RES_TOPOLOGY_SID" property="resTopologySid" jdbcType="VARCHAR"/>
+        <result column="HOST_IP" property="hostIp" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.token != null">
+                and A.TOKEN = #{condition.token}
+            </if>
+            <if test="condition.resVmSid != null">
+                and A.RES_VM_SID = #{condition.resVmSid}
+            </if>
+            <if test="condition.vncPort != null">
+                and A.VNC_PORT = #{condition.vncPort}
+            </if>
+            <if test="condition.resHostSid != null">
+                and A.HOST_IP = #{condition.hostIp}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        A.RES_VM_SID, A.VNC_PORT, A.TOKEN, A.HOST_IP
+    </sql>
+
+    <select id="selectByParamByVmSid" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        SELECT
+        A.*
+        FROM
+        res_vm C
+        INNER JOIN (
+        SELECT H.RES_HOST_SID FROM res_host H
+        WHERE FIND_IN_SET(H.PARENT_TOPOLOGY_SID, getResTopologyChildList(#{condition.resTopologySid}))
+        )
+        B ON (C.ALLOCATE_RES_HOST_SID = B.RES_HOST_SID)
+        INNER JOIN res_vm_vnc_port A ON (C.RES_VM_SID = A.RES_VM_SID) ORDER BY A.VNC_PORT ASC
+    </select>
+    <select id="selectByParamByCountVnc" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria"
+            resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        res_vm C
+        INNER JOIN (
+        SELECT H.RES_HOST_SID FROM res_host H
+        WHERE FIND_IN_SET(H.PARENT_TOPOLOGY_SID, getResTopologyChildList(#{condition.resTopologySid}))
+        )
+        B ON (C.ALLOCATE_RES_HOST_SID = B.RES_HOST_SID)
+        INNER JOIN res_vm_vnc_port A ON (C.RES_VM_SID = A.RES_VM_SID) ORDER BY A.VNC_PORT ASC
+    </select>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from res_vm_vnc_port A
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_vm_vnc_port A
+        where A.RES_VM_SID = #{resVmSid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_vm_vnc_port
+        where RES_VM_SID = #{resVmSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_vm_vnc_port
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVmVncPort">
+        insert into res_vm_vnc_port
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="resVmSid != null">
+                RES_VM_SID,
+            </if>
+            <if test="vncPort != null">
+                VNC_PORT,
+            </if>
+            <if test="token != null">
+                TOKEN,
+            </if>
+            <if test="hostIp != null">
+                HOST_IP,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="resVmSid != null">
+                #{resVmSid},
+            </if>
+            <if test="vncPort != null">
+                #{vncPort},
+            </if>
+            <if test="token != null">
+                #{token},
+            </if>
+            <if test="hostIp != null">
+                #{hostIp},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_vm_vnc_port
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_vm_vnc_port
+        <set>
+            <if test="record.resVmSid != null">
+                RES_VM_SID = #{record.resVmSid},
+            </if>
+            <if test="record.vncPort != null">
+                VNC_PORT = #{record.vncPort},
+            </if>
+            <if test="record.token != null">
+                TOKEN = #{record.token},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_vm_vnc_port
+        set RES_VM_SID = #{record.resVmSid},
+        VNC_PORT = #{record.vncPort},
+        TOKEN = #{record.token}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVmVncPort">
+        update res_vm_vnc_port
+        <set>
+            <if test="token != null">
+                TOKEN = #{token},
+            </if>
+            <if test="vncPort != null">
+                VNC_PORT = #{vncPort},
+            </if>
+            <if test="hostIp != null">
+                HOST_IP = #{hostIp},
+            </if>
+        </set>
+        where RES_VM_SID = #{resVmSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVmVncPort">
+        update res_vm_vnc_port
+        set TOKEN = #{token}
+        where RES_VM_SID = #{resVmSid}
+        and VNC_PORT = #{vncPort}
+    </update>
+</mapper>

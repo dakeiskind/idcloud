@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResViosMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResVios">
+        <id column="RES_VIOS_SID" property="resViosSid" jdbcType="VARCHAR"/>
+        <result column="RES_HOST_SID" property="resHostSid" jdbcType="VARCHAR"/>
+        <result column="HOST_NAME" property="hostName" jdbcType="VARCHAR"/>
+        <result column="POWER_CPU_MAX_UNITS" property="powerCpuMaxUnits" jdbcType="REAL"/>
+        <result column="POWER_CPU_MIN_UNITS" property="powerCpuMinUnits" jdbcType="REAL"/>
+        <result column="POWER_CPU_UNITS" property="powerCpuUnits" jdbcType="REAL"/>
+        <result column="POWER_CPU_MAX_CORES" property="powerCpuMaxCores" jdbcType="INTEGER"/>
+        <result column="POWER_CPU_MIN_CORES" property="powerCpuMinCores" jdbcType="INTEGER"/>
+        <result column="POWER_CPU_CORES" property="powerCpuCores" jdbcType="INTEGER"/>
+        <result column="MEMORY_SIZE" property="memorySize" jdbcType="INTEGER"/>
+        <result column="MEMORY_MAX" property="memoryMax" jdbcType="INTEGER"/>
+        <result column="MEMORY_MIN" property="memoryMin" jdbcType="INTEGER"/>
+        <result column="USER" property="user" jdbcType="VARCHAR"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
+        <result column="IP" property="ip" jdbcType="VARCHAR"/>
+        <result column="VERSION" property="version" jdbcType="VARCHAR"/>
+        <result column="VIOS_LPAR_NAME" property="viosLparName" jdbcType="VARCHAR"/>
+        <result column="VIOS_LPAR_ID" property="viosLparId" jdbcType="VARCHAR"/>
+        <result column="VIOS_PROFILE" property="viosProfile" jdbcType="VARCHAR"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR"/>
+
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.resHostSid != null">
+                and RES_HOST_SID = #{condition.resHostSid}
+            </if>
+            <if test="condition.powerCpuMaxUnits != null">
+                and POWER_CPU_MAX_UNITS = #{condition.powerCpuMaxUnits}
+            </if>
+            <if test="condition.powerCpuMinUnits != null">
+                and POWER_CPU_MIN_UNITS = #{condition.powerCpuMinUnits}
+            </if>
+            <if test="condition.powerCpuUnits != null">
+                and POWER_CPU_UNITS = #{condition.powerCpuUnits}
+            </if>
+            <if test="condition.powerCpuMaxCores != null">
+                and POWER_CPU_MAX_CORES = #{condition.powerCpuMaxCores}
+            </if>
+            <if test="condition.powerCpuMinCores != null">
+                and POWER_CPU_MIN_CORES = #{condition.powerCpuMinCores}
+            </if>
+            <if test="condition.powerCpuCores != null">
+                and POWER_CPU_CORES = #{condition.powerCpuCores}
+            </if>
+            <if test="condition.user != null">
+                and USER = #{condition.user}
+            </if>
+            <if test="condition.password != null">
+                and PASSWORD = #{condition.password}
+            </if>
+            <if test="condition.ip != null">
+                and IP = #{condition.ip}
+            </if>
+            <if test="condition.version != null">
+                and VERSION = #{condition.version}
+            </if>
+            <if test="condition.viosLparName != null">
+                and VIOS_LPAR_NAME = #{condition.viosLparName}
+            </if>
+            <if test="condition.viosLparId != null">
+                and VIOS_LPAR_ID = #{condition.viosLparId}
+            </if>
+            <if test="condition.viosProfile != null">
+                and VIOS_PROFILE = #{condition.viosProfile}
+            </if>
+            <if test="condition.viosProfile != null">
+                and UUID = #{condition.uuid}
+            </if>
+            <if test="condition.resVeSid != null">
+                and B.PARENT_TOPOLOGY_SID = #{condition.resVeSid}
+            </if>
+            <if test="condition.hostNameLike != null">
+                and B.HOST_NAME like concat('%', #{condition.hostNameLike},'%')
+            </if>
+            <if test="condition.viosLparNamelike != null">
+                and A.VIOS_LPAR_NAME like concat('%', #{condition.viosLparNamelike},'%')
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        RES_VIOS_SID, RES_HOST_SID, POWER_CPU_MAX_UNITS, POWER_CPU_MIN_UNITS,
+        POWER_CPU_UNITS,MEMORY_SIZE,MEMORY_MAX,MEMORY_MIN,
+        POWER_CPU_MAX_CORES, POWER_CPU_MIN_CORES, POWER_CPU_CORES, USER, PASSWORD, IP,
+        VERSION,VIOS_LPAR_NAME,VIOS_LPAR_ID,VIOS_PROFILE,UUID
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from res_vios
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByResVe" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        A.*,
+        B.HOST_NAME as HOST_NAME
+        from res_vios A
+        left join res_host B on(A.RES_HOST_SID=B.RES_HOST_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_vios
+        where RES_VIOS_SID = #{resViosSid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_vios
+        where RES_VIOS_SID = #{resViosSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_vios
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVios">
+        <selectKey resultType="java.lang.String" keyProperty="resViosSid" order="BEFORE">
+            SELECT UUID()
+        </selectKey>
+        insert into res_vios (RES_VIOS_SID, RES_HOST_SID, POWER_CPU_MAX_UNITS, POWER_CPU_MIN_UNITS, POWER_CPU_UNITS,
+        POWER_CPU_MAX_CORES, POWER_CPU_MIN_CORES, POWER_CPU_CORES, USER, PASSWORD,
+        IP, VERSION,VERSION,VIOS_LPAR_NAME,VIOS_LPAR_ID,VIOS_PROFILE,UUID)
+        values (#{resViosSid}, #{resHostSid}, #{powerCpuMaxUnits}, #{powerCpuMinUnits}, #{powerCpuUnits},
+        #{powerCpuMaxCores}, #{powerCpuMinCores}, #{powerCpuCores}, #{user}, #{password},
+        #{ip}, #{version}, #{viosLparName}, #{viosLparId},#{viosProfile},#{uuid})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVios">
+        <selectKey resultType="java.lang.String" keyProperty="resViosSid" order="BEFORE">
+            SELECT UUID()
+        </selectKey>
+        insert into res_vios
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            RES_VIOS_SID,
+            <if test="resHostSid != null">
+                RES_HOST_SID,
+            </if>
+            <if test="powerCpuMaxUnits != null">
+                POWER_CPU_MAX_UNITS,
+            </if>
+            <if test="powerCpuMinUnits != null">
+                POWER_CPU_MIN_UNITS,
+            </if>
+            <if test="powerCpuUnits != null">
+                POWER_CPU_UNITS,
+            </if>
+            <if test="powerCpuMaxCores != null">
+                POWER_CPU_MAX_CORES,
+            </if>
+            <if test="powerCpuMinCores != null">
+                POWER_CPU_MIN_CORES,
+            </if>
+            <if test="powerCpuCores != null">
+                POWER_CPU_CORES,
+            </if>
+            <if test="memorySize != null">
+                MEMORY_SIZE,
+            </if>
+            <if test="memoryMax != null">
+                MEMORY_MAX,
+            </if>
+            <if test="memoryMin != null">
+                MEMORY_MIN,
+            </if>
+            <if test="user != null">
+                USER,
+            </if>
+            <if test="password != null">
+                PASSWORD,
+            </if>
+            <if test="ip != null">
+                IP,
+            </if>
+            <if test="version != null">
+                VERSION,
+            </if>
+            <if test="viosLparName != null">
+                VIOS_LPAR_NAME,
+            </if>
+            <if test="viosLparId != null">
+                VIOS_LPAR_ID,
+            </if>
+            <if test="viosProfile != null">
+                VIOS_PROFILE,
+            </if>
+            <if test="uuid != null">
+                UUID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{resViosSid},
+            <if test="resHostSid != null">
+                #{resHostSid},
+            </if>
+            <if test="powerCpuMaxUnits != null">
+                #{powerCpuMaxUnits},
+            </if>
+            <if test="powerCpuMinUnits != null">
+                #{powerCpuMinUnits},
+            </if>
+            <if test="powerCpuUnits != null">
+                #{powerCpuUnits},
+            </if>
+            <if test="powerCpuMaxCores != null">
+                #{powerCpuMaxCores},
+            </if>
+            <if test="powerCpuMinCores != null">
+                #{powerCpuMinCores},
+            </if>
+            <if test="powerCpuCores != null">
+                #{powerCpuCores},
+            </if>
+            <if test="memorySize != null">
+                #{memorySize},
+            </if>
+            <if test="memoryMax != null">
+                #{memoryMax},
+            </if>
+            <if test="memoryMin != null">
+                #{memoryMin},
+            </if>
+            <if test="user != null">
+                #{user},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="ip != null">
+                #{ip},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+            <if test="viosLparName != null">
+                #{viosLparName},
+            </if>
+            <if test="viosLparId != null">
+                #{viosLparId},
+            </if>
+            <if test="viosProfile != null">
+                #{viosProfile},
+            </if>
+            <if test="uuid != null">
+                #{uuid},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_vios
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_vios
+        <set>
+            <if test="record.resViosSid != null">
+                RES_VIOS_SID = #{record.resViosSid},
+            </if>
+            <if test="record.resHostSid != null">
+                RES_HOST_SID = #{record.resHostSid},
+            </if>
+            <if test="record.powerCpuMaxUnits != null">
+                POWER_CPU_MAX_UNITS = #{record.powerCpuMaxUnits},
+            </if>
+            <if test="record.powerCpuMinUnits != null">
+                POWER_CPU_MIN_UNITS = #{record.powerCpuMinUnits},
+            </if>
+            <if test="record.powerCpuUnits != null">
+                POWER_CPU_UNITS = #{record.powerCpuUnits},
+            </if>
+            <if test="record.powerCpuMaxCores != null">
+                POWER_CPU_MAX_CORES = #{record.powerCpuMaxCores},
+            </if>
+            <if test="record.powerCpuMinCores != null">
+                POWER_CPU_MIN_CORES = #{record.powerCpuMinCores},
+            </if>
+            <if test="record.powerCpuCores != null">
+                POWER_CPU_CORES = #{record.powerCpuCores},
+            </if>
+            <if test="record.user != null">
+                USER = #{record.user},
+            </if>
+            <if test="record.password != null">
+                PASSWORD = #{record.password},
+            </if>
+            <if test="record.ip != null">
+                IP = #{record.ip},
+            </if>
+            <if test="record.version != null">
+                VERSION = #{record.version},
+            </if>
+            <if test="record.viosLparName != null">
+                VIOS_LPAR_NAME = #{record.viosLparName},
+            </if>
+            <if test="record.viosLparId != null">
+                VIOS_LPAR_ID = #{record.viosLparId},
+            </if>
+            <if test="record.viosProfile != null">
+                VIOS_PROFILE = #{record.viosProfile},
+            </if>
+            <if test="record.uuid != null">
+                UUID = #{record.uuid},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_vios
+        set RES_VIOS_SID = #{record.resViosSid},
+        RES_HOST_SID = #{record.resHostSid},
+        POWER_CPU_MAX_UNITS = #{record.powerCpuMaxUnits},
+        POWER_CPU_MIN_UNITS = #{record.powerCpuMinUnits},
+        POWER_CPU_UNITS = #{record.powerCpuUnits},
+        POWER_CPU_MAX_CORES = #{record.powerCpuMaxCores},
+        POWER_CPU_MIN_CORES = #{record.powerCpuMinCores},
+        POWER_CPU_CORES = #{record.powerCpuCores},
+        USER = #{record.user},
+        PASSWORD = #{record.password},
+        IP = #{record.ip},
+        VERSION = #{record.version},
+        VIOS_LPAR_NAME = #{record.viosLparName},
+        VIOS_PROFILE = #{record.viosProfile},
+        VIOS_LPAR_ID = #{record.viosLparId},
+        UUID = #{record.uuid}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVios">
+        update res_vios
+        <set>
+            <if test="resHostSid != null">
+                RES_HOST_SID = #{resHostSid},
+            </if>
+            <if test="powerCpuMaxUnits != null">
+                POWER_CPU_MAX_UNITS = #{powerCpuMaxUnits},
+            </if>
+            <if test="powerCpuMinUnits != null">
+                POWER_CPU_MIN_UNITS = #{powerCpuMinUnits},
+            </if>
+            <if test="powerCpuUnits != null">
+                POWER_CPU_UNITS = #{powerCpuUnits},
+            </if>
+            <if test="powerCpuMaxCores != null">
+                POWER_CPU_MAX_CORES = #{powerCpuMaxCores},
+            </if>
+            <if test="powerCpuMinCores != null">
+                POWER_CPU_MIN_CORES = #{powerCpuMinCores},
+            </if>
+            <if test="powerCpuCores != null">
+                POWER_CPU_CORES = #{powerCpuCores},
+            </if>
+            <if test="user != null">
+                USER = #{user},
+            </if>
+            <if test="password != null">
+                PASSWORD = #{password},
+            </if>
+            <if test="ip != null">
+                IP = #{ip},
+            </if>
+            <if test="version != null">
+                VERSION = #{version},
+            </if>
+            <if test="viosLparName != null">
+                VIOS_LPAR_NAME = #{viosLparName},
+            </if>
+            <if test="viosLparId != null">
+                VIOS_LPAR_ID = #{viosLparId},
+            </if>
+            <if test="viosProfile != null">
+                VIOS_PROFILE = #{viosProfile},
+            </if>
+            <if test="uuid != null">
+                UUID = #{uuid},
+            </if>
+        </set>
+        where RES_VIOS_SID = #{resViosSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVios">
+        update res_vios
+        set RES_HOST_SID = #{resHostSid},
+        POWER_CPU_MAX_UNITS = #{powerCpuMaxUnits},
+        POWER_CPU_MIN_UNITS = #{powerCpuMinUnits},
+        POWER_CPU_UNITS = #{powerCpuUnits},
+        POWER_CPU_MAX_CORES = #{powerCpuMaxCores},
+        POWER_CPU_MIN_CORES = #{powerCpuMinCores},
+        POWER_CPU_CORES = #{powerCpuCores},
+        USER = #{user},
+        PASSWORD = #{password},
+        IP = #{ip},
+        VERSION = #{version},
+        VIOS_LPAR_NAME = #{viosLparName},
+        VIOS_LPAR_ID = #{viosLparId},
+        VIOS_PROFILE = #{viosProfile},
+        UUID = #{uuid}
+        where RES_VIOS_SID = #{resViosSid}
+    </update>
+</mapper>

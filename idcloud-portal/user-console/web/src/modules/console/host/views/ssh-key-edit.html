@@ -1,0 +1,27 @@
+<form id="editForm">
+    <table border="0" class="custom-table" style="font-size: 12px" ms-controller="editSSH">
+        <tr>
+            <td align="right" valign="top" class="required">SSH密钥名称：</td>
+            <td>
+                <input id="keypairsName" class="input text-small radius-none" ms-duplex="data['keypairsName']" type="text" name="keypairsName" style="width:200px;">
+                <p class="description" style="width: 200px">修改此SSH密钥的名称，不能为空，长度为2-128个字符</p>
+            </td>
+        </tr>
+        <tr>
+            <td align="right" valign="top">描述：</td>
+            <td>
+                <textarea id="description" class="input text-small radius-none" ms-duplex="data['description']" type="text" name="description" style="width: 200px"></textarea>
+                <p class="description" style="width: 200px">修改此SSH密钥描述，最长为255个字符</p>
+            </td>
+        </tr>
+    </table>
+</form>
+
+<script type="text/javascript">
+    require(["app-modules/console/host/vmodel/ssh-key-edit"],function(e){
+        e.data = avalon.vmodels.sshKey.editData;
+        e.oldKeypairsName = avalon.vmodels.sshKey.editData.keypairsName;
+        e.initValidator();
+        avalon.scan();
+    });
+</script>

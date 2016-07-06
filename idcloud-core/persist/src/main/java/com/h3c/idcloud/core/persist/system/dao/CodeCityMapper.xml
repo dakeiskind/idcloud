@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.CodeCityMapper" >
+  <cache type="org.mybatis.caches.ehcache.LoggingEhcache">
+    <property name="timeToIdleSeconds" value="3600"/>
+    <property name="timeToLiveSeconds" value="3600"/>
+    <property name="maxEntriesLocalHeap" value="1000"/>
+    <property name="maxEntriesLocalDisk" value="10000000"/>
+    <property name="memoryStoreEvictionPolicy" value="LRU"/>
+  </cache>
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.CodeCity" >
+    <id column="CITY_SID" property="citySid" jdbcType="BIGINT" />
+    <result column="CITY_ID" property="cityId" jdbcType="VARCHAR" />
+    <result column="CITY_NAME" property="cityName" jdbcType="VARCHAR" />
+    <result column="PROVINCE_ID" property="provinceId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.cityId != null" >
+         and CITY_ID = #{condition.cityId}
+      </if>
+      <if test="condition.cityName != null" >
+         and CITY_NAME = #{condition.cityName}
+      </if>
+      <if test="condition.provinceId != null" >
+         and PROVINCE_ID = #{condition.provinceId}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    CITY_SID, CITY_ID, CITY_NAME, PROVINCE_ID
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_m_code_city
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_m_code_city
+    where CITY_SID = #{citySid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_m_code_city
+    where CITY_SID = #{citySid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from sys_m_code_city
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.system.CodeCity" >
+    insert into sys_m_code_city (CITY_SID, CITY_ID, CITY_NAME, PROVINCE_ID)
+    values (#{citySid}, #{cityId}, #{cityName}, #{provinceId})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.CodeCity" >
+    insert into sys_m_code_city
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="citySid != null" >
+        CITY_SID,
+      </if>
+      <if test="cityId != null" >
+        CITY_ID,
+      </if>
+      <if test="cityName != null" >
+        CITY_NAME,
+      </if>
+      <if test="provinceId != null" >
+        PROVINCE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="citySid != null" >
+        #{citySid},
+      </if>
+      <if test="cityId != null" >
+        #{cityId},
+      </if>
+      <if test="cityName != null" >
+        #{cityName},
+      </if>
+      <if test="provinceId != null" >
+        #{provinceId},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from sys_m_code_city
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update sys_m_code_city
+    <set >
+      <if test="record.citySid != null" >
+        CITY_SID = #{record.citySid},
+      </if>
+      <if test="record.cityId != null" >
+        CITY_ID = #{record.cityId},
+      </if>
+      <if test="record.cityName != null" >
+        CITY_NAME = #{record.cityName},
+      </if>
+      <if test="record.provinceId != null" >
+        PROVINCE_ID = #{record.provinceId},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update sys_m_code_city
+    set CITY_SID = #{record.citySid},
+      CITY_ID = #{record.cityId},
+      CITY_NAME = #{record.cityName},
+      PROVINCE_ID = #{record.provinceId}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.CodeCity" >
+    update sys_m_code_city
+    <set >
+      <if test="cityId != null" >
+        CITY_ID = #{cityId},
+      </if>
+      <if test="cityName != null" >
+        CITY_NAME = #{cityName},
+      </if>
+      <if test="provinceId != null" >
+        PROVINCE_ID = #{provinceId},
+      </if>
+    </set>
+    where CITY_SID = #{citySid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.CodeCity" >
+    update sys_m_code_city
+    set CITY_ID = #{cityId},
+      CITY_NAME = #{cityName},
+      PROVINCE_ID = #{provinceId}
+    where CITY_SID = #{citySid}
+  </update>
+</mapper>

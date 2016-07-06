@@ -1,0 +1,114 @@
+.comm_list{
+	margin:auto;
+	width: 950px;
+}
+.comm_list_search1 {
+    border-bottom: 1px solid #ddd;
+    margin: 30px 0px 10px 0px;
+}
+.comm_search_fl {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #cccecf #cccecf -moz-use-text-color;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 1px 1px medium;
+    line-height: 25px;
+    font-size: 12px;
+}
+.comm_search_left.pt18 {
+    padding-top: 18px;
+}
+.comm_search_left {
+    padding: 15px 0 0 15px;
+    width: 10%;
+}
+.fl {
+    float: left;
+}
+
+.comm_search_right {
+    padding: 15px 0;
+    width: 87%;
+}
+
+.comm_list_search1 a {
+    color: #636161;
+    display: inline-block;
+    height: 21px;
+    line-height: 21px;
+    margin: 5px 5px 0 0;
+    padding: 0 10px;
+}
+
+.comm_list_search1 a {
+    color: #636161;
+    display: inline-block;
+    height: 21px;
+    line-height: 21px;
+    margin: 5px 5px 0 0;
+    padding: 0 10px;
+}
+.comm_list_search1 a:hover, .comm_search_on {
+    background-color: #56b3fb;
+    color: #fff !important;
+}
+.cl {
+    clear: both;
+    font-size: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+.comm_left_bottom dl dt {
+    height: 200px;
+    margin-bottom: 2px;
+    width: 200px;
+    overflow: hidden;
+}
+
+.comm_left_bottom dl .shop_name {
+    font: 12px/20px "宋体";
+    height: 20px;
+    overflow: hidden;
+}
+dl, dt, dd, ul, li {
+    border: medium none;
+    list-style: outside none none;
+}
+
+.comm_left_bottom dl .strong_title {
+    display: block;
+    font-weight: normal;
+    height: 20px;
+    line-height: 20px;
+    overflow: hidden;
+}
+
+.comm_left_bottom dl {
+    float: left;
+    height: 230px;
+    margin: 0 20px 15px 0;
+    padding: 5px;
+    width: 200px;
+}
+.comm_left_top, .comm_left_cent, .comm_left_bottom dl, .comm_right_top, .comm_list_search {
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid #cccecf;
+    padding: 10px;
+}
+
+.comm_left_bottom .comm_left_dl {
+    margin-right: 0;
+}
+.shop_name{
+	margin: 0px;
+	text-align: center;
+}
+.shop_name a{
+	color:#000;
+}
+.shop_name a:hover{
+	color:#000;
+}

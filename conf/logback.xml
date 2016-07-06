@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <!-- 在每个需要处理日志的顶级模块中，加上一个log.properties的文件，在其中定义需要的参数。
+         在这个-LoggerConfigListener-中可以读取出来进行配置..
+    -->
+    <!-- <contextListener class="com.h3c.idcloud.log.listener.LoggerConfigListener"/> -->
+    <property resource="log.properties" />
+
+    <timestamp key="timeShow" datePattern="yyyy-MM-dd HH:mm:ss.SSS"/>
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="UTF-8">
+            <pattern>${timeShow} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="service" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- ${var:-xxxx} [:-]后面可以接默认值 -->
+            <fileNamePattern>${log.dir:-F:/temp}/logs/${log.service:-service}-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${timeShow} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- ${var:-xxxx} [:-]后面可以接默认值 -->
+            <fileNamePattern>${log.dir:-F:/temp}/logs/${log.module:-idc}-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${timeShow} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.alibaba.dubbo" level="INFO" />
+    <logger name="org.apache.zookeeper" level="WARN" />
+    <!-- RestEasy Logger-->
+    <logger name="org.jboss.resteasy" level="DEBUG" />
+    <!-- DEBUG SQL <-> Deploy change to ERROR -->
+    <logger name="com.ibatis" level="DEBUG" />
+    <logger name="com.ibatis.common.jdbc.SimpleDataSource" level="DEBUG" />
+    <logger name="com.ibatis.common.jdbc.ScriptRunner" level="DEBUG" />
+    <logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" level="DEBUG" />
+    <logger name="java.sql.Connection" level="DEBUG" />
+    <logger name="java.sql.Statement" level="DEBUG" />
+    <logger name="java.sql.PreparedStatement" level="DEBUG" />
+
+    <!-- 业务服务日志单独存储  additivity=true 是否禁止向上传递 默认向上传递-->
+    <logger name="com.h3c.idcloud.core.service" level="${log.service.level:-INFO}" additivity="{log.service.additivity:-true}">
+        <appender-ref ref="service" />
+    </logger>
+    <root level="INFO">
+        <appender-ref ref="stdout" />
+        <appender-ref ref="RollingFile" />
+    </root>
+
+</configuration>

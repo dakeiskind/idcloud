@@ -1,0 +1,55 @@
+<div ms-controller="userCzjl">
+    <div class="line">
+        <div class="xs12 margin-small-bottom top-height">
+            <div class="xs8">
+                <div class="float-left text-large">{{title}}</div>
+            </div>
+            <div class="xs4">
+                <button class="button bg-blue float-right radius-none" type="button" ms-click="exportLog()">导出日志</button>
+            </div>
+        </div>
+        <hr/>
+    </div>
+    <div class="xs12 margin-bottom">
+        <div class="search_div">
+            <div class="search_div_02">操作模块：</div>
+            <div class="search_div_01">
+                <select class="select text-small radius-none" id="actTarget">
+                    <option value="">全部</option>
+                </select>
+            </div>
+        </div>
+        <div class="search_div">
+            <div class="search_div_02">创建时间：</div>
+            <div class="search_div_01">
+                <div id="beginDate" class="input-append date">
+                    <input type="text" class="input input-small radius-none floating-left" id="startTime">
+                    <span class="add-on radius-none"><i class="icon-th"></i></span>
+                </div>
+            </div>
+            <div class="search_div_03">至</div>
+            <div class="search_div_01">
+                <div id="endDate" class="input-append date">
+                    <input type="text" class="input input-small radius-none floating-left" id="endTime">
+                    <span class="add-on radius-none"><i class="icon-th"></i></span>
+                </div>
+            </div>
+        </div>
+        <div class="search_div">
+            <div class="search_div_02">操作结果：</div>
+            <div class="search_div_01">
+                <select class="select text-small radius-none" id="actResult">
+                    <option value="">全部</option>
+                </select>
+            </div>
+        </div>
+        <div class="search_div_L">
+            <div class="search_div_button">
+                <button class="button button-small radius-none" ms-click="findLogsByParams()">
+                    <span class="icon-search"></span>查询
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="logGrid"></div>
+</div>

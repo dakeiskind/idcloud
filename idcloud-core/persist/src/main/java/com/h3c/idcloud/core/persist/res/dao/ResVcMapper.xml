@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResVcMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResVc">
+        <id column="RES_TOPOLOGY_SID" jdbcType="VARCHAR" property="resTopologySid"/>
+        <result column="RES_POOL_SID" jdbcType="VARCHAR" property="resPoolSid"/>
+        <result column="OPEN_HA" jdbcType="VARCHAR" property="openHa"/>
+        <result column="OPEN_HA_NAME" jdbcType="VARCHAR" property="openHaName"/>
+        <result column="RES_TOPOLOGY_NAME" jdbcType="VARCHAR" property="resTopologyName"/>
+        <result column="RES_TOPOLOGY_TYPE" jdbcType="VARCHAR" property="resVcTopologyType"/>
+        <result column="CLUSTER_NAME" jdbcType="VARCHAR" property="clusterName"/>
+        <result column="HA_RES_RESERVE" jdbcType="VARCHAR" property="haResReserve"/>
+        <result column="HA_RES_RESERVE_NAME" jdbcType="VARCHAR" property="haResReserveName"/>
+        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+        <result column="CPU_RESERVE" jdbcType="INTEGER" property="cpuReserve"/>
+        <result column="MEMORY_RESERVE" jdbcType="INTEGER" property="memoryReserve"/>
+        <result column="PARENT_TOPOLOGY_NAME" property="parentTopologyName" jdbcType="BIGINT"/>
+        <result column="PARENT_TOPOLOGY_SID" property="parentTopologySid" jdbcType="VARCHAR"/>
+
+        <result column="CPU_TOTAL_COUNT" jdbcType="INTEGER" property="cpuTotalCount"/>
+        <result column="CPU_ALLOT_COUNT" jdbcType="INTEGER" property="cpuAllotCount"/>
+        <result column="CPU_ALLOT_RATE" jdbcType="VARCHAR" property="cpuAllotRate"/>
+
+        <result column="MEMORY_TOTAL_VOLUME" jdbcType="INTEGER" property="memoryTotalVolume"/>
+        <result column="MEMORY_ALLOT_VOLUME" jdbcType="INTEGER" property="memoryAllotVolume"/>
+        <result column="MEMORY_ALLOT_RATE" jdbcType="VARCHAR" property="memoryAllotRate"/>
+
+        <result column="HOST_TOTAL_COUNT" jdbcType="INTEGER" property="hostTotalCount"/>
+        <result column="VM_TOTAL_COUNT" jdbcType="INTEGER" property="vmTotalCount"/>
+
+        <result column="STORAGE_TOTAL_VOLUME" jdbcType="INTEGER" property="storageTotalVolume"/>
+        <result column="STORAGE_ALLOT_VOLUME_RATE" jdbcType="VARCHAR" property="storageAllotVolumeRate"/>
+
+        <result column="STORAGE_LOCAL_TOTAL_VOLUME" jdbcType="INTEGER" property="storageLocalTotalVolume"/>
+        <result column="STORAGE_LOCAL_ALLOT_VOLUME_RATE" jdbcType="VARCHAR" property="storageLocalAllotVolumeRate"/>
+
+        <result column="STORAGE_SHARE_TOTAL_VOLUME" jdbcType="INTEGER" property="storageShareTotalVolume"/>
+        <result column="STORAGE_SHARE_ALLOT_VOLUME_RATE" jdbcType="VARCHAR" property="storageShareAllotVolumeRate"/>
+
+        <result column="ZONE" jdbcType="VARCHAR" property="zone"/>
+
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.resTopologyNameLike != null">
+                and B.RES_TOPOLOGY_NAME like concat('%', #{condition.resTopologyNameLike},'%')
+            </if>
+            <if test="condition.resPoolSid != null">
+                and A.RES_POOL_SID = #{condition.resPoolSid}
+            </if>
+            <if test="condition.notExistResPoolSid == 'none'">
+                and (A.RES_POOL_SID is null or A.RES_POOL_SID = '')
+            </if>
+            <if test="condition.resVcTopologyType != null">
+                and VE.VIRTUAL_PLATFORM_TYPE in (${condition.resVcTopologyType})
+            </if>
+            <if test="condition.openHa != null">
+                and A.OPEN_HA = #{condition.openHa}
+            </if>
+            <if test="condition.haResReserve != null">
+                and A.HA_RES_RESERVE = #{condition.haResReserve}
+            </if>
+            <if test="condition.cpuReserve != null">
+                and A.CPU_RESERVE = #{condition.cpuReserve}
+            </if>
+            <if test="condition.memoryReserve != null">
+                and A.MEMORY_RESERVE = #{condition.memoryReserve}
+            </if>
+            <if test="condition.parentTopologySid != null">
+                and FIND_IN_SET(B.PARENT_TOPOLOGY_SID,getResTopologyChildList(#{condition.parentTopologySid}))
+            </if>
+            <if test="condition.clusterName != null">
+                and B.RES_TOPOLOGY_NAME like concat('%', #{condition.clusterName},'%')
+            </if>
+            <if test="condition.zone != null">
+                and A.ZONE = #{condition.zone}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        A.RES_TOPOLOGY_SID, A.RES_POOL_SID, A.OPEN_HA, A.ZONE, A.HA_RES_RESERVE, A.CPU_RESERVE, A.MEMORY_RESERVE
+    </sql>
+    <select id="selectByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultMap="BaseResultMap">
+
+        select
+        A.RES_TOPOLOGY_SID,
+        A.CPU_RESERVE,
+        A.MEMORY_RESERVE,
+        case A.OPEN_HA when 0 then '关闭' else '打开' end AS OPEN_HA_NAME,
+        case A.HA_RES_RESERVE when 0 then '关闭' else '打开' end AS HA_RES_RESERVE_NAME,
+        B.RES_TOPOLOGY_NAME AS CLUSTER_NAME,
+        C.RES_TOPOLOGY_NAME,
+        C.RES_TOPOLOGY_NAME as PARENT_TOPOLOGY_NAME,
+
+        D.hCount as HOST_TOTAL_COUNT,
+        D.vCount as VM_TOTAL_COUNT,
+
+        E.cpu as CPU_TOTAL_COUNT,
+        TRUNCATE((E.memory/1024) , 2) as MEMORY_TOTAL_VOLUME,
+        E.useCpu as CPU_ALLOT_COUNT,
+        E.useMempry as MEMORY_ALLOT_VOLUME,
+
+        IFNULL(CONCAT(TRUNCATE((E.useCpu/E.cpu)*100,2),'%'),'0.00%') as CPU_ALLOT_RATE,
+        IFNULL(CONCAT(TRUNCATE((E.useMempry/E.memory)*100,2),'%'),'0.00%') as MEMORY_ALLOT_RATE,
+
+        F.TOTAL_CAPACITY as STORAGE_TOTAL_VOLUME,
+        IFNULL(CONCAT(F.ALLOT_RATE,'%'),'0.00%') as STORAGE_ALLOT_VOLUME_RATE,
+
+        F.LOCAL_TOTAL_CAPACITY as STORAGE_LOCAL_TOTAL_VOLUME,
+        IFNULL(CONCAT(TRUNCATE(F.LOCAL_ALLOT_RATE,2),'%'),'0.00%') as STORAGE_LOCAL_ALLOT_VOLUME_RATE,
+
+        F.SHARE_TOTAL_CAPACITY as STORAGE_SHARE_TOTAL_VOLUME,
+        IFNULL(CONCAT(TRUNCATE(F.SHARE_ALLOT_RATE,2),'%'),'0.00%') as STORAGE_SHARE_ALLOT_VOLUME_RATE
+
+        from res_vc A
+        INNER JOIN res_topology B ON (A.RES_TOPOLOGY_SID=B.RES_TOPOLOGY_SID)
+        left join res_topology C on (B.PARENT_TOPOLOGY_SID = C.RES_TOPOLOGY_SID)
+        left join res_ve VE on(C.RES_TOPOLOGY_SID = VE.RES_TOPOLOGY_SID)
+        left join (
+        SELECT
+        t1.PARENT_TOPOLOGY_SID,
+        t3.hCount as hCount,
+        COUNT(t2.RES_VM_SID) AS vCount
+        from
+        res_host t1
+        LEFT JOIN res_vm t2 on (t2.ALLOCATE_RES_HOST_SID = t1.RES_HOST_SID)
+
+        INNER JOIN (
+        SELECT
+        RHT.PARENT_TOPOLOGY_SID,
+        COUNT(*) as hCount
+        FROM
+        res_host RHT
+        GROUP BY RHT.PARENT_TOPOLOGY_SID
+        ) t3 ON (t1.PARENT_TOPOLOGY_SID = t3.PARENT_TOPOLOGY_SID)
+        GROUP BY t1.PARENT_TOPOLOGY_SID
+        ) D on (A.RES_TOPOLOGY_SID = D.PARENT_TOPOLOGY_SID)
+
+        left join (
+        SELECT
+        H.PARENT_TOPOLOGY_SID,
+        SUM(H.CPU_CORES) as cpu,
+        SUM(H.MEMORY_SIZE) as memory,
+        SUM(VM.CPU_CORES) as useCpu,
+        SUM(VM.MEMORY_SIZE) as useMempry,
+        SUM(VM.ALLOCATE_DISK_SIZE) as diskSize
+        FROM
+        res_host H
+        LEFT JOIN (
+        SELECT
+        RVM.ALLOCATE_RES_HOST_SID,
+        SUM(RVM.CPU_CORES) as CPU_CORES,
+        SUM(RVM.MEMORY_SIZE) as MEMORY_SIZE,
+        VD.ALLOCATE_DISK_SIZE as ALLOCATE_DISK_SIZE
+        from res_vm RVM
+        LEFT JOIN (
+        SELECT
+        RVD.RES_VM_SID,
+        SUM(RVD.ALLOCATE_DISK_SIZE) as ALLOCATE_DISK_SIZE
+        FROM
+        res_vd RVD
+        GROUP BY RVD.RES_VM_SID
+        ) VD on (VD.RES_VM_SID = RVM.RES_VM_SID)
+
+        GROUP BY RVM.ALLOCATE_RES_HOST_SID
+        ) VM ON (H.RES_HOST_SID = VM.ALLOCATE_RES_HOST_SID)
+
+        GROUP BY H.PARENT_TOPOLOGY_SID
+
+        ) E ON (E.PARENT_TOPOLOGY_SID = A.RES_TOPOLOGY_SID)
+
+        left JOIN (
+        SELECT
+        SUM(A.TOTAL_CAPACITY) as TOTAL_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '01',A.TOTAL_CAPACITY,0)) as LOCAL_TOTAL_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '02',A.TOTAL_CAPACITY,0)) as SHARE_TOTAL_CAPACITY,
+
+        SUM(A.PROVISIONED_CAPACITY) as PROVISIONED_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '01',A.PROVISIONED_CAPACITY,0)) as LOCAL_PROVISIONED_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '02',A.PROVISIONED_CAPACITY,0)) as SHARE_PROVISIONED_CAPACITY,
+
+        SUM(C.TOTAL) as ALLOT_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '01',C.TOTAL,0)) as LOCAL_ALLOT_CAPACITY,
+        SUM(IF(A.STORAGE_CATEGORY = '02',C.TOTAL,0)) as SHARE_ALLOT_CAPACITY,
+
+        ROUND(SUM(C.TOTAL)/sum(A.TOTAL_CAPACITY)*100,2) as ALLOT_RATE,
+        ROUND(SUM(IF(A.STORAGE_CATEGORY = '01',C.TOTAL,0))/SUM(IF(A.STORAGE_CATEGORY = '01',A.TOTAL_CAPACITY,0))*100,2)
+        as LOCAL_ALLOT_RATE,
+        ROUND(SUM(IF(A.STORAGE_CATEGORY = '02',C.TOTAL,0))/SUM(IF(A.STORAGE_CATEGORY = '02',A.TOTAL_CAPACITY,0))*100,2)
+        as SHARE_ALLOT_RATE,
+        B.PARENT_TOPOLOGY_SID as PARENT_TOPOLOGY_SID
+        FROM
+        res_storage A
+        INNER JOIN (
+        SELECT
+        DISTINCT
+        RHS.RES_STORAGE_SID,
+        RH.PARENT_TOPOLOGY_SID
+        FROM
+        res_host_storage RHS
+        INNER JOIN res_host RH ON (RHS.RES_HOST_SID = RH.RES_HOST_SID ))B ON (A.RES_STORAGE_SID = B.RES_STORAGE_SID)
+
+        LEFT JOIN (
+        SELECT
+        SUM(VD.ALLOCATE_DISK_SIZE) as TOTAL,
+        VD.ALLOCATE_RES_STORAGE_SID
+        FROM
+        res_vd VD
+        GROUP BY VD.ALLOCATE_RES_STORAGE_SID
+        )C on(A.RES_STORAGE_SID = C.ALLOCATE_RES_STORAGE_SID)
+
+        GROUP BY B.PARENT_TOPOLOGY_SID
+
+        ) F ON (F.PARENT_TOPOLOGY_SID = A.RES_TOPOLOGY_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        GROUP BY A.RES_TOPOLOGY_SID
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        ,B.RES_TOPOLOGY_NAME as RES_TOPOLOGY_NAME
+        ,B.RES_TOPOLOGY_TYPE as RES_TOPOLOGY_TYPE
+        ,B.PARENT_TOPOLOGY_SID as PARENT_TOPOLOGY_SID
+        ,B.DESCRIPTION as DESCRIPTION
+        ,SUM(C.cpu) as CPU_TOTAL_COUNT
+        ,SUM(C.memory) as MEMORY_TOTAL_VOLUME
+        ,SUM(C.useCpu) as CPU_ALLOT_COUNT
+        ,SUM(C.useMempry) as MEMORY_ALLOT_VOLUME
+        from res_vc A
+        INNER JOIN res_topology B ON (A.RES_TOPOLOGY_SID=B.RES_TOPOLOGY_SID)
+        LEFT JOIN (SELECT
+        H.PARENT_TOPOLOGY_SID,
+        H.CPU_CORES as cpu,
+        H.MEMORY_SIZE as memory,
+        SUM(VM.CPU_CORES) as useCpu,
+        SUM(VM.MEMORY_SIZE) as useMempry
+        FROM
+        res_host H
+        LEFT JOIN res_vm VM ON (H.RES_HOST_SID = VM.ALLOCATE_RES_HOST_SID)
+        GROUP BY H.RES_HOST_SID
+        ) C ON (C.PARENT_TOPOLOGY_SID = A.RES_TOPOLOGY_SID)
+        where A.RES_TOPOLOGY_SID = #{resTopologySid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_vc
+        where RES_TOPOLOGY_SID = #{resTopologySid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_vc
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVc">
+        <selectKey keyProperty="resTopologySid" order="BEFORE" resultType="java.lang.Long">
+            select SEQ_RES_VC.NEXTVAL from dual
+        </selectKey>
+        insert into res_vc (RES_TOPOLOGY_SID, RES_POOL_SID, OPEN_HA, A.ZONE, HA_RES_RESERVE, CPU_RESERVE,
+        MEMORY_RESERVE)
+        values (#{resTopologySid}, #{resPoolSid}, #{openHa}, #{zone}, #{haResReserve}, #{cpuReserve},
+        #{memoryReserve})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVc">
+        insert into res_vc
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            RES_TOPOLOGY_SID,
+            <if test="resPoolSid != null">
+                RES_POOL_SID,
+            </if>
+            <if test="openHa != null">
+                OPEN_HA,
+            </if>
+            <if test="zone != null">
+                ZONE,
+            </if>
+            <if test="haResReserve != null">
+                HA_RES_RESERVE,
+            </if>
+            <if test="cpuReserve != null">
+                CPU_RESERVE,
+            </if>
+            <if test="memoryReserve != null">
+                MEMORY_RESERVE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{resTopologySid},
+            <if test="resPoolSid != null">
+                #{resPoolSid},
+            </if>
+            <if test="openHa != null">
+                #{openHa},
+            </if>
+            <if test="zone != null">
+                #{zone},
+            </if>
+            <if test="haResReserve != null">
+                #{haResReserve},
+            </if>
+            <if test="cpuReserve != null">
+                #{cpuReserve},
+            </if>
+            <if test="memoryReserve != null">
+                #{memoryReserve},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_vc
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_vc
+        <set>
+            <if test="record.resTopologySid != null">
+                RES_TOPOLOGY_SID = #{record.resTopologySid},
+            </if>
+            <if test="record.resPoolSid != null">
+                RES_POOL_SID = #{record.resPoolSid},
+            </if>
+            <if test="record.openHa != null">
+                OPEN_HA = #{record.openHa},
+            </if>
+            <if test="record.zone != null">
+                ZONE = #{record.zone},
+            </if>
+            <if test="record.haResReserve != null">
+                HA_RES_RESERVE = #{record.haResReserve},
+            </if>
+            <if test="record.cpuReserve != null">
+                CPU_RESERVE = #{record.cpuReserve},
+            </if>
+            <if test="record.memoryReserve != null">
+                MEMORY_RESERVE = #{record.memoryReserve},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_vc
+        set RES_TOPOLOGY_SID = #{record.resTopologySid},
+        RES_POOL_SID = #{record.resPoolSid},
+        OPEN_HA = #{record.openHa},
+        ZONE = #{record.zone},
+        HA_RES_RESERVE = #{record.haResReserve},
+        CPU_RESERVE = #{record.cpuReserve},
+        MEMORY_RESERVE = #{record.memoryReserve}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVc">
+        update res_vc
+        <set>
+            <if test="resPoolSid != null">
+                RES_POOL_SID = #{resPoolSid},
+            </if>
+            <if test="resPoolSid == ''">
+                RES_POOL_SID = '',
+            </if>
+            <if test="openHa != null">
+                OPEN_HA = #{openHa},
+            </if>
+            <if test="zone != null">
+                ZONE = #{zone},
+            </if>
+            <if test="haResReserve != null">
+                HA_RES_RESERVE = #{haResReserve},
+            </if>
+            <if test="cpuReserve != null">
+                CPU_RESERVE = #{cpuReserve},
+            </if>
+            <if test="memoryReserve != null">
+                MEMORY_RESERVE = #{memoryReserve},
+            </if>
+        </set>
+        where RES_TOPOLOGY_SID = #{resTopologySid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVc">
+        update res_vc
+        set RES_POOL_SID = #{resPoolSid},
+        OPEN_HA = #{openHa},
+        ZONE = #{zone},
+        HA_RES_RESERVE = #{haResReserve},
+        CPU_RESERVE = #{cpuReserve},
+        MEMORY_RESERVE = #{memoryReserve}
+        where RES_TOPOLOGY_SID = #{resTopologySid}
+    </update>
+</mapper>

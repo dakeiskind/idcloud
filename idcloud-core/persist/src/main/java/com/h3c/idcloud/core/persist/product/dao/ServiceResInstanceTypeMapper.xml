@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.product.dao.ServiceResInstanceTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.product.ServiceResInstanceType" >
+    <id column="RES_INSTANCE_TYPE" property="resInstanceType" jdbcType="VARCHAR" />
+    <id column="SERVICE_SID" property="serviceSid" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+    <if test="condition.serviceSid != null" >
+         and SERVICE_SID = #{condition.serviceSid}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    RES_INSTANCE_TYPE, SERVICE_SID
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from service_res_instance_type
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceResInstanceType" >
+    delete from service_res_instance_type
+    where RES_INSTANCE_TYPE = #{resInstanceType}
+      and SERVICE_SID = #{serviceSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from service_res_instance_type
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceResInstanceType" >
+    insert into service_res_instance_type (RES_INSTANCE_TYPE, SERVICE_SID)
+    values (#{resInstanceType}, #{serviceSid})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceResInstanceType" >
+    insert into service_res_instance_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="resInstanceType != null" >
+        RES_INSTANCE_TYPE,
+      </if>
+      <if test="serviceSid != null" >
+        SERVICE_SID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="resInstanceType != null" >
+        #{resInstanceType},
+      </if>
+      <if test="serviceSid != null" >
+        #{serviceSid},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from service_res_instance_type
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update service_res_instance_type
+    <set >
+      <if test="record.resInstanceType != null" >
+        RES_INSTANCE_TYPE = #{record.resInstanceType},
+      </if>
+      <if test="record.serviceSid != null" >
+        SERVICE_SID = #{record.serviceSid},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update service_res_instance_type
+    set RES_INSTANCE_TYPE = #{record.resInstanceType},
+      SERVICE_SID = #{record.serviceSid}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

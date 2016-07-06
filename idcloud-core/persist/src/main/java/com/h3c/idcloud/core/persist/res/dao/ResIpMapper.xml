@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResIpMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResIp">
+        <id column="RES_SID" property="resSid" jdbcType="VARCHAR"/>
+        <result column="RES_NETWORK_SID" property="resNetworkSid" jdbcType="VARCHAR"/>
+        <result column="RES_BIZ_NAME" property="resBizName" jdbcType="VARCHAR"/>
+        <result column="IP_TYPE" property="ipType" jdbcType="VARCHAR"/>
+        <result column="IP_TYPE_NAME" property="ipTypeName" jdbcType="VARCHAR"/>
+        <result column="IP_ADDRESS" property="ipAddress" jdbcType="VARCHAR"/>
+        <result column="MAP_PUBLIC_IP" property="mapPublicIp" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP"/>
+        <result column="VERSION" property="version" jdbcType="BIGINT"/>
+        <result column="USAGE_STATUS" property="usageStatus" jdbcType="VARCHAR"/>
+        <result column="USAGE_STATUS_NAME" property="usageStatusName" jdbcType="VARCHAR"/>
+        <result column="RES_POOL_TYPE" property="resPoolType" jdbcType="VARCHAR"/>
+
+        <result column="PARENT_TOPOLOGY_SID" property="parentTopologySid" jdbcType="VARCHAR"/>
+        <result column="VM_NAME" property="vmName" jdbcType="VARCHAR"/>
+        <result column="USED_COUNT" property="usedCount" jdbcType="VARCHAR"/>
+        <result column="UNUSED_COUNT" property="unusedCount" jdbcType="VARCHAR"/>
+        <result column="TOTAL_COUNT" property="totalCount" jdbcType="VARCHAR"/>
+        <result column="NET_PRIMARY" property="vmPrimaryNet" jdbcType="VARCHAR"/>
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR"/>
+        <result column="NETWORK_TYPE" property="networkType" jdbcType="VARCHAR"/>
+
+        <result column="OBJ_NAME" property="objName" jdbcType="VARCHAR"/>
+        <result column="OBJ_TYPE" property="objType" jdbcType="VARCHAR"/>
+        <result column="OBJ_SID" property="objSid" jdbcType="VARCHAR"/>
+        <result column="OBJ_MONITOR_NODE_ID" property="objMonitorNodeId" jdbcType="VARCHAR"/>
+        <result column="SUBNET" property="subnet" jdbcType="VARCHAR"/>
+        <result column="MGTOGJ_NAME" property="mgtObjName" jdbcType="VARCHAR"/>
+
+
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.ipAddressLike != null">
+                and A.IP_ADDRESS like concat('%', #{condition.ipAddressLike},'%')
+            </if>
+            <if test="condition.resNetworkSid != null">
+                and A.RES_NETWORK_SID = #{condition.resNetworkSid}
+            </if>
+            <if test="condition.resNetworkSidUsingDelete != null">
+                and RES_NETWORK_SID = #{condition.resNetworkSidUsingDelete}
+            </if>
+            <if test="condition.ipType != null">
+                and A.IP_TYPE = #{condition.ipType}
+            </if>
+            <if test="condition.ipAddress != null">
+                and A.IP_ADDRESS = #{condition.ipAddress}
+            </if>
+            <if test="condition.mapPublicIp != null">
+                and A.MAP_PUBLIC_IP = #{condition.mapPublicIp}
+            </if>
+            <if test="condition.status != null">
+                and A.STATUS = #{condition.status}
+            </if>
+            <if test="condition.uuid != null">
+                and A.UUID = #{condition.uuid}
+            </if>
+            <if test="condition.createdBy != null">
+                and A.CREATED_BY = #{condition.createdBy}
+            </if>
+            <if test="condition.createdDt != null">
+                and A.CREATED_DT = #{condition.createdDt}
+            </if>
+            <if test="condition.updatedBy != null">
+                and A.UPDATED_BY = #{condition.updatedBy}
+            </if>
+            <if test="condition.updatedDt != null">
+                and A.UPDATED_DT = #{condition.updatedDt}
+            </if>
+            <if test="condition.version != null">
+                and A.VERSION = #{condition.version}
+            </if>
+            <if test="condition.resVmSid != null">
+                and B.RES_VM_SID = #{condition.resVmSid}
+            </if>
+            <if test="condition.usageStatus == '01'">
+                and F.RES_VM_SID is null
+                and H.RES_HOST_SID is null
+                and I.EQUIP_SID is null
+                and J.EQUIP_SID is null
+                and K.EQUIP_SID is null
+                and (A.`STATUS` = '01' or A.`STATUS` is null)
+            </if>
+            <if test="condition.usageStatus == '02'">
+                and (F.RES_VM_SID is not null or H.RES_HOST_SID is not null or I.EQUIP_SID is not null or J.EQUIP_SID is
+                not null or K.EQUIP_SID is not null or A.`STATUS` = '02')
+            </if>
+            <if test="condition.usageStatus == '00'">
+                and F.RES_VM_SID is null
+                and H.RES_HOST_SID is null
+                and I.EQUIP_SID is not null
+                and J.EQUIP_SID is not null
+                and K.EQUIP_SID is not null
+                and A.STATUS = '00'
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        A.RES_SID, A.RES_NETWORK_SID, A.IP_TYPE, A.IP_ADDRESS, A.MAP_PUBLIC_IP, A.STATUS, A.DESCRIPTION, A.CREATED_BY,
+        A.CREATED_DT, A.UPDATED_BY, A.UPDATED_DT, A.VERSION, A.UUID
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        distinct
+
+        (case
+        when (CASE
+        when F.RES_VM_SID is not null then 'RES-VM'
+        when H.RES_HOST_SID is not null then 'RES-HOST'
+        when I.EQUIP_SID is not null then I.EQUIP_CATEGORY
+        when J.EQUIP_SID is not null then J.EQUIP_CATEGORY
+        when K.EQUIP_SID is not null then K.EQUIP_CATEGORY
+        else null
+        END) IS NULL then
+        case A.STATUS
+        when '00' then '00'
+        when '02' then '02'
+        else '01'
+        end
+        else '02'
+        end
+        ) as USAGE_STATUS,
+
+        (case
+        when (CASE
+        when F.RES_VM_SID is not null then 'RES-VM'
+        when H.RES_HOST_SID is not null then 'RES-HOST'
+        when I.EQUIP_SID is not null then I.EQUIP_CATEGORY
+        when J.EQUIP_SID is not null then J.EQUIP_CATEGORY
+        when K.EQUIP_SID is not null then K.EQUIP_CATEGORY
+        else null
+        END) IS NULL then
+        case A.STATUS
+        when '00' then '预占中'
+        when '02' then '已使用'
+        else '未使用'
+        end
+        else '已使用'
+        end
+        ) as USAGE_STATUS_NAME,
+
+        IFNULL(F.VM_NAME, IFNULL(H.HOST_NAME, IFNULL(I.`NAME`,IFNULL(J.`NAME`, IFNULL(K.EQUIP_TYPE, null))))) as
+        OBJ_NAME,
+        (CASE
+        when F.RES_VM_SID is not null then 'RES-VM'
+        when H.RES_HOST_SID is not null then 'RES-HOST'
+        when I.EQUIP_SID is not null then I.EQUIP_CATEGORY
+        when J.EQUIP_SID is not null then J.EQUIP_CATEGORY
+        when K.EQUIP_SID is not null then K.EQUIP_CATEGORY
+        else null
+        END) as OBJ_TYPE,
+
+        (CASE
+        when F.RES_VM_SID is not null then F.RES_VM_SID
+        when H.RES_HOST_SID is not null then H.RES_HOST_SID
+        when I.EQUIP_SID is not null then I.EQUIP_SID
+        when J.EQUIP_SID is not null then J.EQUIP_SID
+        when K.EQUIP_SID is not null then K.EQUIP_SID
+        else null
+        END) as OBJ_SID,
+        (CASE
+        when F.RES_VM_SID is not null then F.MONITOR_NODE_ID
+        when H.RES_HOST_SID is not null then H.MONITOR_NODE_ID
+
+        else null
+        END) as OBJ_MONITOR_NODE_ID,
+        B.NET_PRIMARY AS NET_PRIMARY,
+        C.CODE_DISPLAY AS IP_TYPE_NAME,
+        E.RES_TOPOLOGY_TYPE AS RES_POOL_TYPE,
+        F.VM_NAME as VM_NAME,
+        G.MGT_OBJ_NAME as RES_BIZ_NAME,
+        <include refid="Base_Column_List"/>
+        from res_ip A
+        LEFT JOIN res_vm_network B ON (A.IP_ADDRESS = B.IP_ADDRESS)
+        LEFT JOIN res_biz_vm G ON (B.RES_VM_SID = G.RES_VM_SID)
+        LEFT JOIN sys_m_code C ON (A.IP_TYPE = C.CODE_VALUE AND C.CODE_CATEGORY = 'IP_TYPE')
+        LEFT JOIN res_network D ON (B.RES_NETWORK_SID=D.RES_NETWORK_SID)
+        LEFT JOIN res_topology E ON (D.RES_POOL_SID=E.RES_TOPOLOGY_SID)
+        left join res_vm F on (B.RES_VM_SID = F.RES_VM_SID)
+
+        LEFT JOIN res_host H on (H.HOST_IP = A.IP_ADDRESS)
+        LEFT JOIN res_equip_info I ON (A.IP_ADDRESS = I.REMOTE_MGT_IP1)
+        LEFT JOIN res_equip_info J ON (A.IP_ADDRESS = J.REMOTE_MGT_IP2)
+        LEFT JOIN res_equip_info K ON (A.IP_ADDRESS = K.RELEVANCE_IP)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <select id="selectNetWorkInfoByParams" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        distinct
+        N.NAME AS MGTOGJ_NAME,
+        (case
+        when (CASE
+        when F.RES_VM_SID is not null then 'RES-VM'
+        when H.RES_HOST_SID is not null then 'RES-HOST'
+        when I.EQUIP_SID is not null then I.EQUIP_CATEGORY
+        when J.EQUIP_SID is not null then J.EQUIP_CATEGORY
+        when K.EQUIP_SID is not null then K.EQUIP_CATEGORY
+        else null
+        END) IS NULL then
+        case A.STATUS
+        when '00' then '预占中'
+        when '02' then '已使用'
+        else '未使用'
+        end
+        else '已使用'
+        end
+        ) as USAGE_STATUS_NAME,
+
+        IFNULL(F.VM_NAME, IFNULL(H.HOST_NAME, IFNULL(I.`NAME`,IFNULL(J.`NAME`, IFNULL(K.EQUIP_TYPE, null))))) as
+        OBJ_NAME,
+        A.IP_ADDRESS,
+        D1.SUBNET AS SUBNET
+        from res_ip A
+        LEFT JOIN res_vm_network B ON (A.IP_ADDRESS = B.IP_ADDRESS)
+        LEFT JOIN res_biz_vm G ON (B.RES_VM_SID = G.RES_VM_SID)
+        LEFT JOIN sys_m_code C ON (A.IP_TYPE = C.CODE_VALUE AND C.CODE_CATEGORY = 'IP_TYPE')
+        LEFT JOIN res_network D ON (B.RES_NETWORK_SID=D.RES_NETWORK_SID)
+        LEFT JOIN res_network D1 ON (A.RES_NETWORK_SID = D1.RES_NETWORK_SID)
+        LEFT JOIN res_topology E ON (D.RES_POOL_SID=E.RES_TOPOLOGY_SID)
+        left join res_vm F on (B.RES_VM_SID = F.RES_VM_SID)
+
+        LEFT JOIN res_host H on (H.HOST_IP = A.IP_ADDRESS)
+        LEFT JOIN res_equip_info I ON (A.IP_ADDRESS = I.REMOTE_MGT_IP1)
+        LEFT JOIN res_equip_info J ON (A.IP_ADDRESS = J.REMOTE_MGT_IP2)
+        LEFT JOIN res_equip_info K ON (A.IP_ADDRESS = K.RELEVANCE_IP)
+        LEFT JOIN service_inst_res L ON (L.RES_ID = F.RES_VM_SID)
+        LEFT JOIN service_instance M ON (L.INSTANCE_SID = M.INSTANCE_SID)
+        LEFT JOIN sys_m_mgt_obj N ON (M.MGT_OBJ_SID = N.MGT_OBJ_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <select id="statisticsIpInNetworkPool" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        SELECT
+        COUNT(A.RES_SID) as TOTAL_COUNT,
+        sum(case
+        when C.RES_VM_SID IS NULL then
+        case A.STATUS
+        when '00' then 1
+        when '02' then 1
+        else 0
+        end
+        else 1
+        end
+        ) as USED_COUNT,
+
+        sum(case
+        when C.RES_VM_SID IS NULL then
+        case A.STATUS
+        when '00' then 0
+        when '01' then 0
+        else 1
+        end
+        else 0
+        end
+        ) as UNUSED_COUNT
+        FROM
+        res_ip A
+        INNER JOIN (
+        SELECT
+        NET.RES_NETWORK_SID
+        FROM
+        res_network NET
+        WHERE NET.NETWORK_TYPE = #{condition.networkType} and NET.PARENT_TOPOLOGY_SID = #{condition.parentTopologySid}
+        ) B ON (A.RES_NETWORK_SID = B.RES_NETWORK_SID)
+
+        LEFT JOIN res_vm_network C ON (A.IP_ADDRESS = C.IP_ADDRESS)
+    </select>
+
+    <select id="selectResIpByVM" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        SELECT
+        B.IP_ADDRESS AS IP_ADDRESS,
+        E.RES_TOPOLOGY_TYPE AS RES_POOL_TYPE,
+        C.IP_TYPE AS IP_TYPE,
+        C.MAP_PUBLIC_IP AS MAP_PUBLIC_IP,
+        C.RES_NETWORK_SID AS RES_NETWORK_SID,
+        C.RES_SID AS RES_SID,
+        D.NETWORK_TYPE as NETWORK_TYPE
+        FROM
+        res_vm A
+        LEFT JOIN res_vm_network B ON (A.RES_VM_SID = B.RES_VM_SID)
+        LEFT JOIN res_ip C ON (B.IP_ADDRESS = C.IP_ADDRESS AND B.RES_NETWORK_SID = C.RES_NETWORK_SID)
+        LEFT JOIN res_network D ON (
+        C.RES_NETWORK_SID = D.RES_NETWORK_SID
+        )
+        LEFT JOIN res_topology E ON(
+        D.RES_POOL_SID=E.RES_TOPOLOGY_SID
+        )
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <select id="selectIpsByResNetworkSid" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        A.*,
+        (case
+        when (CASE
+        when C.RES_VM_SID is not null then 'RES-VM'
+        when H.RES_HOST_SID is not null then 'RES-HOST'
+        when I.EQUIP_SID is not null then I.EQUIP_CATEGORY
+        when J.EQUIP_SID is not null then J.EQUIP_CATEGORY
+        when K.EQUIP_SID is not null then K.EQUIP_CATEGORY
+        else null
+        END) IS NULL then
+        case A.STATUS
+        when '00' then '00'
+        when '02' then '02'
+        else '01'
+        end
+        else '02'
+        end
+        ) as USAGE_STATUS,
+        (case
+        when (CASE
+        when C.RES_VM_SID is not null then 'RES-VM'
+        when H.RES_HOST_SID is not null then 'RES-HOST'
+        when I.EQUIP_SID is not null then I.EQUIP_CATEGORY
+        when J.EQUIP_SID is not null then J.EQUIP_CATEGORY
+        when K.EQUIP_SID is not null then K.EQUIP_CATEGORY
+        else null
+        END) IS NULL then
+        case A.STATUS
+        when '00' then '预占中'
+        when '02' then '已使用'
+        else '未使用'
+        end
+        else '已使用'
+        end
+        ) as USAGE_STATUS_NAME
+        FROM
+        res_ip A
+        LEFT JOIN res_vm_network C ON (A.IP_ADDRESS = C.IP_ADDRESS)
+        LEFT JOIN res_host H on (H.HOST_IP = A.IP_ADDRESS)
+        LEFT JOIN res_equip_info I ON (A.IP_ADDRESS = I.REMOTE_MGT_IP1)
+        LEFT JOIN res_equip_info J ON (A.IP_ADDRESS = J.REMOTE_MGT_IP2)
+        LEFT JOIN res_equip_info K ON (A.IP_ADDRESS = K.RELEVANCE_IP)
+        WHERE A.RES_NETWORK_SID = #{resNetworkSid} and C.RES_VM_SID is null and H.RES_HOST_SID is null and I.EQUIP_SID
+        is null and J.EQUIP_SID is null and K.EQUIP_SID is null and (A.`STATUS` = '01' or A.`STATUS` is null or
+        A.`STATUS` = '00')
+    </select>
+
+    <select id="selectIpsByResNetworkSidAndVmSid" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        SELECT
+        A.*,
+        (case
+        when C.RES_VM_SID IS NULL then
+        case A.STATUS
+        when '00' then '00'
+        else '01'
+        end
+        else '02'
+        end
+        ) as USAGE_STATUS,
+        (case
+        when C.RES_VM_SID IS NULL then
+        case A.STATUS
+        when '00' then '预占中'
+        else '未使用'
+        end
+        else '已使用'
+        end
+        ) as USAGE_STATUS_NAME
+        FROM
+        res_ip A
+        LEFT JOIN res_vm_network C ON (A.IP_ADDRESS = C.IP_ADDRESS)
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.resNetworkSid != null">
+                and A.RES_NETWORK_SID = #{condition.resNetworkSid}
+            </if>
+            <if test="condition.resVmSid != null">
+                and (C.RES_VM_SID = #{condition.resVmSid} or C.RES_VM_SID is null)
+            </if>
+            <if test="condition.resVmSid == null">
+                and C.RES_VM_SID is null
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_ip A
+        where A.RES_SID = #{resSid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_ip
+        where RES_SID = #{resSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_ip
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResIp">
+        <selectKey resultType="java.lang.Long" keyProperty="resSid" order="BEFORE">
+            select SEQ_RES_IP.NEXTVAL from dual
+        </selectKey>
+        insert into res_ip (RES_SID, RES_NETWORK_SID, IP_TYPE, IP_ADDRESS, MAP_PUBLIC_IP, STATUS,
+        CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION, UUID)
+        values (#{resSid}, #{resNetworkSid}, #{ipType}, #{ipAddress}, #{mapPublicIp}, #{status},
+        #{createdBy}, #{createdDt}, #{updatedBy}, #{updatedDt}, #{version}, #{uuid})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResIp">
+        <selectKey resultType="java.lang.String" keyProperty="resSid" order="BEFORE">
+            select UUID()
+        </selectKey>
+        insert into res_ip
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            RES_SID,
+            <if test="resNetworkSid != null">
+                RES_NETWORK_SID,
+            </if>
+            <if test="ipType != null">
+                IP_TYPE,
+            </if>
+            <if test="ipAddress != null">
+                IP_ADDRESS,
+            </if>
+            <if test="mapPublicIp != null">
+                MAP_PUBLIC_IP,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="uuid != null">
+                UUID,
+            </if>
+            <if test="description != null">
+                DESCRIPTION,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+            <if test="version != null">
+                VERSION,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{resSid},
+            <if test="resNetworkSid != null">
+                #{resNetworkSid},
+            </if>
+            <if test="ipType != null">
+                #{ipType},
+            </if>
+            <if test="ipAddress != null">
+                #{ipAddress},
+            </if>
+            <if test="mapPublicIp != null">
+                #{mapPublicIp},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="uuid != null">
+                #{uuid},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_ip
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+
+    <select id="countByParamsForBar" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria"
+            resultType="java.lang.Integer">
+        SELECT COUNT(A.PARENT_TOPOLOGY_SID)
+        from(
+        SELECT A.*,B.PARENT_TOPOLOGY_SID
+        FROM res_ip A
+        LEFT JOIN res_network B ON (
+        B.RES_NETWORK_SID = A.RES_NETWORK_SID
+        )
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.parentTopologySid != null">
+                and B.PARENT_TOPOLOGY_SID = #{condition.parentTopologySid}
+            </if>
+        </trim>
+        )a
+
+    </select>
+
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_ip
+        <set>
+            <if test="record.resSid != null">
+                RES_SID = #{record.resSid},
+            </if>
+            <if test="record.resNetworkSid != null">
+                RES_NETWORK_SID = #{record.resNetworkSid},
+            </if>
+            <if test="record.ipType != null">
+                IP_TYPE = #{record.ipType},
+            </if>
+            <if test="record.ipAddress != null">
+                IP_ADDRESS = #{record.ipAddress},
+            </if>
+            <if test="record.mapPublicIp != null">
+                MAP_PUBLIC_IP = #{record.mapPublicIp},
+            </if>
+            <if test="record.status != null">
+                STATUS = #{record.status},
+            </if>
+            <if test="record.uuid != null">
+                UUID = #{record.uuid},
+            </if>
+            <if test="record.description != null">
+                DESCRIPTION = #{record.description},
+            </if>
+            <if test="record.createdBy != null">
+                CREATED_BY = #{record.createdBy},
+            </if>
+            <if test="record.createdDt != null">
+                CREATED_DT = #{record.createdDt},
+            </if>
+            <if test="record.updatedBy != null">
+                UPDATED_BY = #{record.updatedBy},
+            </if>
+            <if test="record.updatedDt != null">
+                UPDATED_DT = #{record.updatedDt},
+            </if>
+            <if test="record.version != null">
+                VERSION = #{record.version},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_ip
+        set RES_SID = #{record.resSid},
+        RES_NETWORK_SID = #{record.resNetworkSid},
+        IP_TYPE = #{record.ipType},
+        IP_ADDRESS = #{record.ipAddress},
+        MAP_PUBLIC_IP = #{record.mapPublicIp},
+        STATUS = #{record.status},
+        UUID = #{record.uuid},
+        CREATED_BY = #{record.createdBy},
+        CREATED_DT = #{record.createdDt},
+        UPDATED_BY = #{record.updatedBy},
+        UPDATED_DT = #{record.updatedDt},
+        VERSION = #{record.version}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResIp">
+        update res_ip
+        <set>
+            <if test="resNetworkSid != null">
+                RES_NETWORK_SID = #{resNetworkSid},
+            </if>
+            <if test="ipType != null">
+                IP_TYPE = #{ipType},
+            </if>
+            <if test="ipAddress != null">
+                IP_ADDRESS = #{ipAddress},
+            </if>
+            <if test="mapPublicIp != null">
+                MAP_PUBLIC_IP = #{mapPublicIp},
+            </if>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+            <if test="uuid != null">
+                UUID = #{uuid},
+            </if>
+            <if test="description != null">
+                DESCRIPTION = #{description},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt},
+            </if>
+            <if test="version != null">
+                VERSION = #{version},
+            </if>
+        </set>
+        where RES_SID = #{resSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResIp">
+        update res_ip
+        set RES_NETWORK_SID = #{resNetworkSid},
+        IP_TYPE = #{ipType},
+        IP_ADDRESS = #{ipAddress},
+        MAP_PUBLIC_IP = #{mapPublicIp},
+        STATUS = #{status},
+        UUID = #{uuid},
+        DESCRIPTION = #{description},
+        CREATED_BY = #{createdBy},
+        CREATED_DT = #{createdDt},
+        UPDATED_BY = #{updatedBy},
+        UPDATED_DT = #{updatedDt},
+        VERSION = #{version}
+        where RES_SID = #{resSid}
+    </update>
+</mapper>

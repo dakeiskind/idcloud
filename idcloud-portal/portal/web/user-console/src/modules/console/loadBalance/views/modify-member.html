@@ -1,0 +1,36 @@
+<script type="text/javascript">
+    require(["app-modules/console/loadBalance/vmodel/modify-member",
+             'app-modules/console/loadBalance/services/resource-pool'],function(modifyMember,resourcePoolService){
+        modifyMember.initValidator();
+        avalon.vmodels.modifyMember.data = avalon.vmodels.member.modifyData;
+        for(var i = 0;i < resourcePoolService.getGridDate().length;i++){
+            $("#resourcePool").append(
+                    '<option value="'+resourcePoolService.getGridDate()[i].loadBalanceName+'">'+resourcePoolService.getGridDate()[i].loadBalanceName+'</option>'
+            );
+        };
+        avalon.scan();
+    });
+</script>
+<form id="modifyMemberForm">
+    <table border="0" class="custom-table" style="font-size:12px;" ms-controller="modifyMember">
+        <tr>
+            <td class="required">ID：</td>
+            <td>
+                <input id="memberID" ms-duplex="data['memberID']" class="input text-small radius-none" type="text " disabled="disabled" name="memberID" style="width: 180px">
+            </td>
+        </tr>
+        <tr>
+            <td class="required">资源池：</td>
+            <td>
+                <select id="resourcePool" name="resourcePool" ms-duplex="data['resourcePool']" class="select radius-none" style="width:180px"></select>
+            </td>
+        </tr>
+        <tr>
+            <td class="required">重量：</td>
+            <td>
+                <input id="weight" ms-duplex="data['weight']" class="input text-small radius-none" type="number" name="weight" style="width: 180px">
+                <p class="description text-gray" style="width: 180px">这个资源池成员服务的申请的相关部分与其他的相比</p>
+            </td>
+        </tr>
+    </table>
+</form>

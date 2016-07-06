@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResFloatingIpMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResFloatingIp">
+        <id column="RES_SID" property="resSid" jdbcType="VARCHAR"/>
+        <result column="RES_EXT_NETWORK_SID" property="resExtNetworkSid" jdbcType="VARCHAR"/>
+        <result column="RES_IP_SID" property="resIpSid" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="MAPPING_NETWORK_SID" property="mappingNetworkSid" jdbcType="VARCHAR"/>
+        <result column="MAPPING_IP_SID" property="mappingIpSid" jdbcType="VARCHAR"/>
+        <result column="MAPPING_VM_SID" property="mappingVmSid" jdbcType="VARCHAR"/>
+        <result column="BANDWIDTH" property="bandwidth" jdbcType="INTEGER"/>
+        <result column="MGT_OBJ_SID" property="mgtObjSid" jdbcType="BIGINT"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR"/>
+        <result column="ZONE" property="zone" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP"/>
+        <result column="VERSION" property="version" jdbcType="BIGINT"/>
+
+        <result column="NETWORK_TYPE" property="netWorkType" jdbcType="VARCHAR"/>
+        <result column="IP_ADDRESS" property="ipAddress" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.resExtNetworkSid != null">
+                and RES_EXT_NETWORK_SID = #{condition.resExtNetworkSid}
+            </if>
+            <if test="condition.resIpSid != null">
+                and RES_IP_SID = #{condition.resIpSid}
+            </if>
+            <if test="condition.status != null">
+                and STATUS = #{condition.status}
+            </if>
+            <if test="condition.zone != null">
+                and A.ZONE = #{condition.zone}
+            </if>
+            <if test="condition.mappingNetworkSid != null">
+                and MAPPING_NETWORK_SID = #{condition.mappingNetworkSid}
+            </if>
+            <if test="condition.mappingIpSid != null">
+                and MAPPING_IP_SID = #{condition.mappingIpSid}
+            </if>
+            <if test="condition.mappingVmSid != null">
+                and MAPPING_VM_SID = #{condition.mappingVmSid}
+            </if>
+            <if test="condition.mgtObjSid != null">
+                and MGT_OBJ_SID = #{condition.mgtObjSid}
+            </if>
+            <if test="condition.uuid != null">
+                and UUID = #{condition.uuid}
+            </if>
+            <if test="condition.createdBy != null">
+                and CREATED_BY = #{condition.createdBy}
+            </if>
+            <if test="condition.createdDt != null">
+                and CREATED_DT = #{condition.createdDt}
+            </if>
+            <if test="condition.updatedBy != null">
+                and UPDATED_BY = #{condition.updatedBy}
+            </if>
+            <if test="condition.updatedDt != null">
+                and UPDATED_DT = #{condition.updatedDt}
+            </if>
+            <if test="condition.version != null">
+                and VERSION = #{condition.version}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        A.RES_SID,A.RES_EXT_NETWORK_SID,A.RES_IP_SID,A.STATUS, A.MAPPING_IP_SID, A.MAPPING_VM_SID, A.UUID, A.CREATED_BY,
+        A.CREATED_DT, A.UPDATED_BY,A.MGT_OBJ_SID,A.MAPPING_NETWORK_SID,A.BANDWIDTH, A.ZONE,
+        A.UPDATED_DT, A.VERSION
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        B.NETWORK_TYPE AS NETWORK_TYPE,
+        C.IP_ADDRESS AS IP_ADDRESS,
+        <include refid="Base_Column_List"/>
+        from res_floating_ip A
+        left join res_network B on (A.RES_EXT_NETWORK_SID = B.RES_EXT_NETWORK_SID)
+        left join res_ip C on (A.RES_IP_SID = C.RES_SID)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_floating_ip A
+        where A.RES_SID = #{resSid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_floating_ip
+        where RES_SID = #{resSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_floating_ip
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResFloatingIp">
+        insert into res_floating_ip (RES_SID,RES_EXT_NETWORK_SID,RES_IP_SID, STATUS,MAPPING_IP_SID, MAPPING_VM_SID, UUID,
+        CREATED_BY, CREATED_DT,MGT_OBJ_SID,MAPPING_NETWORK_SID,BANDWIDTH,ZONE,
+        UPDATED_BY, UPDATED_DT, VERSION)
+        values (#{resSid},#{resExtNetworkSid},#{resIpSid},#{status}, #{mappingIpSid}, #{mappingVmSid}, #{uuid},
+        #{createdBy}, #{createdDt},#{mgtObjSid},#{mappingNetworkSid},#{bandwidth},#{zone},
+        #{updatedBy}, #{updatedDt}, #{version})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResFloatingIp">
+        <selectKey resultType="java.lang.String" keyProperty="resSid" order="BEFORE">
+            select UUID()
+        </selectKey>
+        insert into res_floating_ip
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="resSid != null">
+                RES_SID,
+            </if>
+            <if test="resExtNetworkSid != null">
+                RES_EXT_NETWORK_SID,
+            </if>
+            <if test="resIpSid != null">
+                RES_IP_SID,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="mappingNetworkSid != null">
+                MAPPING_NETWORK_SID,
+            </if>
+            <if test="mappingIpSid != null">
+                MAPPING_IP_SID,
+            </if>
+            <if test="mappingVmSid != null">
+                MAPPING_VM_SID,
+            </if>
+            <if test="bandwidth != null">
+                BANDWIDTH,
+            </if>
+            <if test="mgtObjSid != null">
+                MGT_OBJ_SID,
+            </if>
+            <if test="uuid != null">
+                UUID,
+            </if>
+            <if test="zone != null">
+                ZONE,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+            <if test="version != null">
+                VERSION,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="resSid != null">
+                #{resSid},
+            </if>
+            <if test="resExtNetworkSid != null">
+                #{resExtNetworkSid},
+            </if>
+            <if test="resIpSid != null">
+                #{resIpSid},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="mappingNetworkSid != null">
+                #{mappingNetworkSid},
+            </if>
+            <if test="mappingIpSid != null">
+                #{mappingIpSid},
+            </if>
+            <if test="mappingVmSid != null">
+                #{mappingVmSid},
+            </if>
+            <if test="bandwidth != null">
+                #{bandwidth},
+            </if>
+            <if test="mgtObjSid != null">
+                #{mgtObjSid},
+            </if>
+            <if test="uuid != null">
+                #{uuid},
+            </if>
+            <if test="zone != null">
+                #{zone},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_floating_ip
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_floating_ip
+        <set>
+            <if test="record.resSid != null">
+                RES_SID = #{record.resSid},
+            </if>
+            <if test="record.resExtNetworkSid != null">
+                RES_EXT_NETWORK_SID = #{record.resExtNetworkSid},
+            </if>
+            <if test="record.resIpSid != null">
+                RES_IP_SID = #{record.resIpSid},
+            </if>
+            <if test="record.status != null">
+                STATUS = #{record.status},
+            </if>
+            <if test="record.mappingNetworkSid != null">
+                MAPPING_NETWORK_SID = #{record.mappingNetworkSid},
+            </if>
+            <if test="record.mappingIpSid != null">
+                MAPPING_IP_SID = #{record.mappingIpSid},
+            </if>
+            <if test="record.mappingVmSid != null">
+                MAPPING_VM_SID = #{record.mappingVmSid},
+            </if>
+            <if test="record.bandwidth != null">
+                BANDWIDTH = #{record.bandwidth},
+            </if>
+            <if test="record.mgtObjSid != null">
+                MGT_OBJ_SID = #{record.mgtObjSid},
+            </if>
+            <if test="record.uuid != null">
+                UUID = #{record.uuid},
+            </if>
+            <if test="record.zone != null">
+                A.ZONE = #{record.zone},
+            </if>
+            <if test="record.createdBy != null">
+                CREATED_BY = #{record.createdBy},
+            </if>
+            <if test="record.createdDt != null">
+                CREATED_DT = #{record.createdDt},
+            </if>
+            <if test="record.updatedBy != null">
+                UPDATED_BY = #{record.updatedBy},
+            </if>
+            <if test="record.updatedDt != null">
+                UPDATED_DT = #{record.updatedDt},
+            </if>
+            <if test="record.version != null">
+                VERSION = #{record.version},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_floating_ip
+        set RES_SID = #{record.resSid},
+        RES_EXT_NETWORK_SID = #{record.resExtNetworkSid},
+        RES_IP_SID = #{record.resIpSid},
+        STATUS = #{record.status},
+        MAPPING_NETWORK_SID = #{record.mappingNetworkSid},
+        MAPPING_IP_SID = #{record.mappingIpSid},
+        MAPPING_VM_SID = #{record.mappingVmSid},
+        BANDWIDTH = #{record.bandwidth},
+        MGT_OBJ_SID = #{record.mgtObjSid},
+        UUID = #{record.uuid},
+        ZONE = #{record.zone},
+        CREATED_BY = #{record.createdBy},
+        CREATED_DT = #{record.createdDt},
+        UPDATED_BY = #{record.updatedBy},
+        UPDATED_DT = #{record.updatedDt},
+        VERSION = #{record.version}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResFloatingIp">
+        update res_floating_ip
+        <set>
+            <if test="resExtNetworkSid != null">
+                RES_EXT_NETWORK_SID = #{resExtNetworkSid},
+            </if>
+            <if test="resIpSid != null">
+                RES_IP_SID = #{resIpSid},
+            </if>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+            <if test="mappingNetworkSid != null">
+                MAPPING_NETWORK_SID = #{mappingNetworkSid},
+            </if>
+            <if test="mappingIpSid != null">
+                MAPPING_IP_SID = #{mappingIpSid},
+            </if>
+            <if test="mappingVmSid != null">
+                MAPPING_VM_SID = #{mappingVmSid},
+            </if>
+            <if test="bandwidth != null">
+                BANDWIDTH = #{bandwidth},
+            </if>
+            <if test="mgtObjSid != null">
+                MGT_OBJ_SID = #{mgtObjSid},
+            </if>
+            <if test="uuid != null">
+                UUID = #{uuid},
+            </if>
+            <if test="zone != null">
+                ZONE = #{zone},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt},
+            </if>
+            <if test="version != null">
+                VERSION = #{version},
+            </if>
+        </set>
+        where RES_SID = #{resSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResFloatingIp">
+        update res_floating_ip
+        set RES_EXT_NETWORK_SID = #{resExtNetworkSid},
+        RES_IP_SID = #{resIpSid},
+        STATUS = #{status},
+        MAPPING_VM_SID = #{mappingVmSid},
+        MGT_OBJ_SID = #{mgtObjSid},
+        UUID = #{uuid},
+        ZONE = #{zone},
+        CREATED_BY = #{createdBy},
+        CREATED_DT = #{createdDt},
+        UPDATED_BY = #{updatedBy},
+        UPDATED_DT = #{updatedDt},
+        VERSION = #{version}
+        where RES_SID = #{resSid}
+    </update>
+</mapper>

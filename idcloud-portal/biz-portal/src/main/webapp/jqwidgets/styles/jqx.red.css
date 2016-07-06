@@ -1,0 +1,3 @@
+/*Progress Bar*/
+.jqx-progressbar-red .jqx-fill-state-pressed-red{background:red; border-bottom: none;}
+.jqx-progressbar-value-vertical-red{background: red; border-right: none; border-bottom: 1px solid #77d5f7;}

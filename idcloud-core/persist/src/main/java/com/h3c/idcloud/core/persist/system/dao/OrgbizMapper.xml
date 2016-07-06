@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.OrgbizMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.Orgbiz" >
+    <id column="BIZ_SID" property="bizSid" jdbcType="BIGINT" />
+    <id column="ORG_SID" property="orgSid" jdbcType="BIGINT" />
+    <id column="NAME" property="name" jdbcType="VARCHAR" />
+    <id column="LEVEL" property="level" jdbcType="BIGINT" />
+    <id column="PARENT_BIZ_SID" property="parentBizSid" jdbcType="BIGINT" />
+    <id column="PARENT_BIZ_NAME" property="parentBizName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.bizSid != null" >
+         and BIZ_SID = #{condition.bizSid}
+      </if>
+      <if test="condition.orgSid != null" >
+         and ORG_SID = #{condition.orgSid}
+      </if>
+      <if test="condition.level != null" >
+         and LEVEL = #{condition.level}
+      </if>
+      <if test="condition.parentBizSid != null" >
+         and PARENT_BIZ_SID = #{condition.parentBizSid}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    BIZ_SID, ORG_SID
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_m_org_biz
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.OrgbizKey" >
+    delete from sys_m_org_biz
+    where BIZ_SID = #{bizSid}
+      and ORG_SID = #{orgSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from sys_m_org_biz
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.system.OrgbizKey" >
+    insert into sys_m_org_biz (BIZ_SID, ORG_SID)
+    values (#{bizSid}, #{orgSid})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.OrgbizKey" >
+    insert into sys_m_org_biz
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bizSid != null" >
+        BIZ_SID,
+      </if>
+      <if test="orgSid != null" >
+        ORG_SID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bizSid != null" >
+        #{bizSid},
+      </if>
+      <if test="orgSid != null" >
+        #{orgSid},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from sys_m_org_biz
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update sys_m_org_biz
+    <set >
+      <if test="record.bizSid != null" >
+        BIZ_SID = #{record.bizSid},
+      </if>
+      <if test="record.orgSid != null" >
+        ORG_SID = #{record.orgSid},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update sys_m_org_biz
+    set BIZ_SID = #{record.bizSid},
+      ORG_SID = #{record.orgSid}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <select id="selectBizTreeByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT 
+		  B.BIZ_SID AS BIZ_SID,
+		  B.NAME AS NAME,
+		  B.LEVEL AS LEVEL,
+		  B.PARENT_BIZ_SID AS PARENT_BIZ_SID,
+		  IF(B.BIZ_SID = A.BIZ_SID,TRUE,FALSE) as SELECTED
+		  FROM SYS_M_BIZ B
+		  LEFT JOIN SYS_M_ORG_BIZ A ON(A.BIZ_SID = B.BIZ_SID) 
+		 <if test="condition.orgSid != null" >
+         	and A.ORG_SID = #{condition.orgSid}
+      	 </if>
+	    <if test="orderByClause != null" >
+	      order by ${orderByClause}
+	    </if>
+	</select>
+	<select id="selectSecondBizesByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT 
+		  B.BIZ_SID AS BIZ_SID,
+		  B.NAME AS NAME,
+		  B.LEVEL AS LEVEL,
+		  B.PARENT_BIZ_SID AS PARENT_BIZ_SID,
+		  IF(B.BIZ_SID = A.BIZ_SID,TRUE,FALSE) as SELECTED
+		  FROM SYS_M_BIZ B
+		  LEFT JOIN SYS_M_ORG_BIZ A ON(A.BIZ_SID = B.BIZ_SID)
+		  WHERE A.ORG_SID = #{condition.orgSid} AND B.LEVEL = #{condition.level}
+		  <if test="condition.parentBizSid != null" >
+         	AND B.PARENT_BIZ_SID = #{condition.parentBizSid}
+      	 </if> 
+	</select>
+	<select id="findBizByOrg" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select A.ORG_SID as ORG_SID, A.BIZ_SID as BIZ_SID, B.NAME as NAME, B.LEVEL as LEVEL, C.BIZ_SID as PARENT_BIZ_SID, C.NAME as PARENT_BIZ_NAME 
+			from sys_m_org_biz A 
+			left join sys_m_biz B on A.BIZ_SID = B.BIZ_SID
+			left join sys_m_biz c on C.BIZ_SID = B.PARENT_BIZ_SID
+			WHERE A.ORG_SID = #{condition.orgSid} AND B.LEVEL = #{condition.level} AND B.PARENT_BIZ_SID = #{condition.parentBizSid} 
+	</select>
+	<select id="findParentBizByOrg" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select A.ORG_SID as ORG_SID, A.BIZ_SID as BIZ_SID, B.NAME as NAME, B.LEVEL as LEVEL, C.BIZ_SID as PARENT_BIZ_SID, C.NAME as PARENT_BIZ_NAME 
+			from sys_m_org_biz A 
+			left join sys_m_biz B on A.BIZ_SID = B.BIZ_SID
+			left join sys_m_biz c on C.BIZ_SID = B.PARENT_BIZ_SID
+			WHERE A.ORG_SID = #{condition.orgSid} AND B.LEVEL = #{condition.level}
+    		group by PARENT_BIZ_SID
+	</select>
+</mapper>

@@ -1,0 +1,221 @@
+<style>
+    #createDefualtNetwork{
+        cursor:pointer;
+        font-size: 12px;
+    }
+    #createDefualtNetwork:hover{
+        background: #F5F5F5;
+    }
+    form{
+        padding-top:10px;
+    }
+
+    .list-media.list-underline li {
+        padding-bottom: 15px;
+        border-bottom: solid 1px gray;
+        line-height: inherit;
+    }
+    #anamite {
+        position: absolute;
+        top: 80px;
+        left: 300px;
+        background: #ccc;
+        width: 550px;
+        height: 600px;
+        z-index: 99999999;
+        opacity: 0.6;
+        display: none;
+    }
+    .ms-controller{
+        visibility: hidden;
+    }
+</style>
+<script type="text/javascript">
+    require(["lib/jquery/pintuer","app-modules/console/elasticPublic/vmodel/console-elasticip"],function(pintuer,orderEp){
+        // 清空订单数据
+        orderEp.orderHistoryListData = [];
+
+        // 初始化价格
+        orderEp.calculationPrice();
+
+        $("#range0").ionRangeSlider({
+        grid: true,
+        min: 1,
+        max: 200,
+        from: 1,
+        step: 1,
+        grid_num: 5,
+        hide_min_max:true,
+        prettify_enabled: false,
+        onChange: function (data) {
+            $("#bandwidth").val(data.from);
+            orderEp.calculationPrice();
+        }
+
+    });
+
+        $('#shoppingServer').initShopping();
+        pintuer.init();
+        avalon.scan();
+
+    });
+    function del(divname){
+        $('#shoppingServer').removeShopping(divname);
+    }
+</script>
+
+<div ms-controller="orderEDg" class="x12 " class="ms-controller">
+    <div class="line-big" id="orderDg">
+        <div class="xs12 ">
+            <div class="">
+                <form method="post" class="form-x form-auto xs8 border dgForm" id="dgForm" style="margin-left:0px;">
+                    <div class="form-group margin-left text-center margin-top">
+                        <div class="xs2 text-right text-center text-small " style="margin-top:5px;">
+                            <label class=" ">地域分区：</label>
+                        </div>
+                        <div class="text-left" style="">
+                            <div>
+                        		<span>
+                        		  <select class=" select radius-none " ms-duplex="regionValue" style="width:100px" name="areaDEBig" id="areaDEBig">
+                                      <!--<option ms-value=null>全部</option>-->
+                                      <option ms-repeat-el="regionData" ms-value='el.resTopologySid'>{{el.resTopologyName}}</option>
+                                  </select>
+								</span>
+                        		<span>
+                        			<select class=" select radius-none " ms-duplex="zoneValue"
+                                            style="width:200px" name="areaDESmall" id="areaDESmall">
+                                        <option ms-repeat-el="zoneData" ms-value='el.resTopologySid'>{{el.resTopologyName}}</option>
+                                    </select>
+								</span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+
+                    <div class="form-group margin-left" id="dataMain" style="margin-top:6px;">
+                        <div class="x2 text-right text-small" style="margin-top:17px;">
+                            <label>带宽：</label>
+                        </div>
+                        <div id="divRangeData" class="text-left x10" style="padding-left:0px;margin-top:-10px;">
+                            <div id="divRange0" class="x12 " style="margin-left:0px;padding-left:0px;">
+                            <div class="x7 text-left" style="padding-left:0px;">
+                            <div class="controls mt-10" style="margin-left:0px;">
+                            <input type="text" id="range0" value="1" name="range"/>
+                            </div>
+                            </div>
+                            <div class="x5 text-small" style="margin-top:25px;padding-left:0px;margin-left:0px;" >
+                            <input type="text"
+                                   style="width:35px;height: 22px;margin-right:0px;padding-left:5px;margin-top:1px;" class="rangevalue border border-sub text-small" maxlength="3" value="1" id="bandwidth" />Mbps
+                            <span style="padding-left:-10px;margin-left:0px;" class="text-small  button-group">
+                            </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group margin-left " style="margin-top:10px;">
+                        <div class="xs2 text-right text-small" style="margin-top:5px;">
+                            <label>付费方式：</label>
+                        </div>
+                        <div class="button-group radio radius-none border-blue">
+                            <label class="button active radius-none button-small billing-type">
+                                <input name="billingType" ms-change="billingType(this)" checked="checked" value="1" type="radio">
+                                <span class="text-small">1<span class='selected-biling-type text-small'>个月</span></span>
+                            </label>
+                            <label class="button radius-none button-small billing-type">
+                                <input name="billingType" ms-change="billingType(this)" value="2" type="radio">
+                                <span class="text-small">2</span>
+                            </label>
+                            <label class="button radius-none button-small billing-type">
+                                <input name="billingType" ms-change="billingType(this)" value="3" type="radio">
+                                <span class="text-small">3</span>
+                            </label>
+                            <label class="button radius-none button-small billing-type">
+                                <input name="billingType" ms-change="billingType(this)" value="4" type="radio">
+                                <span class="text-small">4</span>
+                            </label>
+                            <label class="button radius-none button-small billing-type">
+                                <input name="billingType" ms-change="billingType(this)" value="5" type="radio">
+                                <span class="text-small">5</span>
+                            </label>
+                            <label class="button radius-none button-small billing-type">
+                                <input name="billingType" ms-change="billingType(this)" value="6" type="radio">
+                                <span class="text-small">6</span>
+                            </label>
+                            <label class="button radius-none button-small billing-type">
+                                <input name="billingType" ms-change="billingType(this)" value="7" type="radio">
+                                <span class="text-small">7</span>
+                            </label>
+                            <label class="button radius-none button-small billing-type">
+                                <input name="billingType" ms-change="billingType(this)" value="8" type="radio">
+                                <span class="text-small">8</span>
+                            </label>
+                            <label class="button radius-none button-small billing-type">
+                                <input name="billingType" ms-change="billingType(this)" value="9" type="radio">
+                                <span class="text-small">9</span>
+                            </label>
+                            <label class="button radius-none button-small billing-type">
+                                <input name="billingType" ms-change="billingType(this)" value="12" type="radio">1年
+                            </label>
+                            <label class="button radius-none button-small billing-type">
+                                <input name="billingType" ms-change="billingType(this)" value="24" type="radio">2年
+                            </label>
+                            <label class="button radius-none button-small billing-type">
+                                <input name="billingType" ms-change="billingType(this)" value="36" type="radio">3年
+                            </label>
+
+                        </div>
+                    </div>
+                    <div class="form-group margin-left" style="margin-top:10px;">
+                        <div class="xs2 text-right text-small" style="margin-top:5px;">
+                            <label>购买数量：</label>
+                        </div>
+                        <div class=" x5 text-left" style="padding-left:0px;">
+                            <div class="input-group" style="">
+				            <span ><button class="button bg-blue radius-none button-small" id="decbtn" style="" type="button" ms-click="decCountBtn()">
+                                -</button><input id="orderCount" type="text" value="1" maxlength="2" class="input border-blue text-center text-small" style="" name="orderCount" size="4" ms-keyup="changeCount()" placeholder="" />
+                                <button id="addbtn" style="margin-left: -5px" type="button" class="button bg-blue radius-none button-small" ms-click="addCountBtn()">
+                                    +</button>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <div class="form-group margin-left margin-bottom" >
+                        <div class="xs2 text-right text-small" style="margin-top:7px;">
+                            <label>配置费用：</label>
+                        </div>
+                        <div id="productPrice" class="text-dot text-large">
+                            ￥
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="xs2 text-left ">
+                            <label>
+
+                            </label>
+                        </div>
+                        <div class="margin-bottom" style="margin-top: -5px" >
+                            <button class="button  bg-yellow radius-none text-small" style="margin-left:6px;width:130px;" type="button" ms-click="nowOrderConfim()"> 立即购买</button>
+                            <button class="button  border-blue radius-none text-small" style="margin-left:10px;width:130px;"  type="button" ms-click="addEShopping()"> 加入选购清单</button>
+                        </div>
+                        <div id="anamite"></div>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <div class="xs3 text-left" id ="shoppingServer" style="padding-left:0px;">
+                </div>
+                <div class="xs3 text-center " id ="" style="padding-top:10px;margin-left:30px;width: 300px;">
+                    <button id="submitButton" class="button bg-yellow radius-none text-small" type="button" disabled="disabled" ms-click="toOrderConfim()"> 确认订单</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="orderConfirm" class="change hidden">
+        <div class="line">
+            <div id="containerOrder" ms-include-src="orderconfirm" ></div>
+        </div>
+    </div>
+</div>

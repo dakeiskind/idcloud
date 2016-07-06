@@ -1,0 +1,56 @@
+<script type="text/javascript">
+    require(["app-modules/user-center/orderMgt/vmodel/order-pay-one",
+        "app-utils/$extendService"],function(first){
+        // 获取数据，判断数据来源
+        var urlPath = window.location.href.split("#!")[1];
+        if("/console/cs/host" == urlPath){
+            // 从云主机路由过来的
+            var data = avalon.vmodels.orderDg.orderData;
+            first.initDatagrid(data);
+
+        }else if("/console/eip/home" == urlPath){
+            // 从弹性公网过来的
+            var data = avalon.vmodels.orderEDg.orderData;
+            first.initDatagrid(data);
+        }else if("/console/cs/cbs"==urlPath){
+            //从云硬盘
+            var data = avalon.vmodels.orderBsPage.orderData;
+            first.initDatagrid(data);
+        }
+        avalon.scan();
+    });
+</script>
+<!-- 1、确认页面 -->
+<div ms-controller="payFlowOne">
+
+    <div class=" x12 margin-small-bottom top-height">
+        <div class="x8">
+            <div class="float-left text-large" id="currentFlowName">确认订购</div>
+        </div>
+    </div>
+    <hr>
+
+    <div class="step margin-top" style="margin-top:20px;">
+        <div class="step-bar bg-blue " style="width: 33%;">
+            <span class="step-point bg-blue">1</span><span class="step-text">确认订单</span>
+        </div>
+        <div class="step-bar" style="width: 33%;">
+            <span class="step-point">2</span><span class="step-text">支付</span>
+        </div>
+        <div class="step-bar" style="width: 34%;">
+            <span class="step-point">3</span><span class="step-text">支付成功</span>
+        </div>
+    </div>
+    <div class="line step_one show" style="margin-top:45px;" id="firstOrder">
+        <div id="orderConfirmGrid" class="grid" ></div>
+        <div class="xs2 xs10-move text-center">
+            <div class="margin-top">应付款： <span id="sumPrice " class="text-dot text-large">￥{{totalMoney}}</span></div>
+        </div>
+        <div >
+            <div class="xs3 xs9-move text-right " style="margin-top: 20px;">
+                <button class="button bg-blue radius-none" ms-click="backPreStep()" type="button" > 返回订购 </button>
+                <button class="button  next_step bg-yellow radius-none" type="button"  ms-click="gotoNextStep()"> 去支付</button>
+            </div>
+        </div>
+    </div>
+</div>

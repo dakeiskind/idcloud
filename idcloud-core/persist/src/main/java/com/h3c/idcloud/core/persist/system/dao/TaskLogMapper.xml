@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.TaskLogMapper">
+	<resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.TaskLog">
+		<id column="TASK_LOG_SID" property="taskLogSid" jdbcType="BIGINT" />
+		<result column="ACCOUNT" property="account" jdbcType="VARCHAR" />
+		<result column="OPERATOR" property="operator" jdbcType="VARCHAR" />
+		<result column="TASK_TYPE" property="taskType" jdbcType="VARCHAR" />
+		<result column="TASK_TYPE_NAME" property="taskTypeName"
+			jdbcType="VARCHAR" />
+		<result column="TASK_TARGET" property="taskTarget" jdbcType="VARCHAR" />
+		<result column="TASK_STATUS" property="taskStatus" jdbcType="VARCHAR" />
+		<result column="TASK_STATUS_NAME" property="taskStatusName"
+			jdbcType="VARCHAR" />
+		<result column="TASK_START_DATE" property="taskStartDate"
+			jdbcType="TIMESTAMP" />
+		<result column="TASK_END_DATE" property="taskEndDate" jdbcType="TIMESTAMP" />
+		<result column="TASK_FAILURE_REASON" property="taskFailureReason"
+			jdbcType="VARCHAR" />
+		<result column="TASK_DETAIL" property="taskDetail" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.account != null">
+				and ACCOUNT = #{condition.account}
+			</if>
+			<if test="condition.taskType != null">
+				and TASK_TYPE = #{condition.taskType}
+			</if>
+			<if test="condition.taskTarget != null">
+				and TASK_TARGET = #{condition.taskTarget}
+			</if>
+			<if test="condition.taskStatus != null">
+				and TASK_STATUS = #{condition.taskStatus}
+			</if>
+			<if test="condition.taskStartDate != null">
+				and TASK_START_DATE = #{condition.taskStartDate}
+			</if>
+			<if test="condition.taskEndDate != null">
+				and TASK_END_DATE = #{condition.taskEndDate}
+			</if>
+			<if test="condition.taskFailureReason != null">
+				and TASK_FAILURE_REASON = #{condition.taskFailureReason}
+			</if>
+			<if test="condition.taskDetail != null">
+				and TASK_DETAIL = #{condition.taskDetail}
+			</if>
+		</trim>
+	</sql>
+	<sql id="Base_Column_List">
+		A.TASK_LOG_SID, A.ACCOUNT, A.TASK_TYPE, A.TASK_TARGET,
+		A.TASK_STATUS,
+		A.TASK_START_DATE,
+		A.TASK_END_DATE,
+		A.TASK_FAILURE_REASON, A.TASK_DETAIL
+	</sql>
+	<select id="selectByParams" resultMap="BaseResultMap"
+		parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select
+		B.CODE_DISPLAY AS TASK_STATUS_NAME,
+		C.CODE_DISPLAY AS
+		TASK_TYPE_NAME,
+		IF(ISNULL(A.ACCOUNT) ,'Administrator',A.ACCOUNT) as OPERATOR,
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		FROM SYS_T_TASK_LOG A
+		LEFT JOIN SYS_M_CODE B ON (A.TASK_STATUS =
+		B.CODE_VALUE AND B.CODE_CATEGORY = 'TASK_STATUS')
+		LEFT JOIN SYS_M_CODE
+		C ON (A.TASK_TYPE = C.CODE_VALUE AND C.CODE_CATEGORY = 'TASK_TYPE')
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from sys_t_task_log A
+		where A.TASK_LOG_SID = #{taskLogSid}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		sys_t_task_log
+		where TASK_LOG_SID = #{taskLogSid}
+	</delete>
+	<delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		delete from sys_t_task_log
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.system.TaskLog">
+		<!-- <selectKey resultType="java.lang.String" keyProperty="taskLogSid" -->
+		<!-- order="BEFORE"> -->
+		<!-- SELECT UUID() -->
+		<!-- </selectKey> -->
+		insert into sys_t_task_log (ACCOUNT, TASK_TYPE,
+		TASK_TARGET,
+		TASK_STATUS, TASK_START_DATE,
+		TASK_END_DATE,
+		TASK_FAILURE_REASON,
+		TASK_DETAIL)
+		values (#{account},
+		#{taskType}, #{taskTarget},
+		#{taskStatus}, #{taskStartDate},
+		#{taskEndDate}, #{taskFailureReason},
+		#{taskDetail})
+	</insert>
+	<insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.TaskLog"
+		useGeneratedKeys="true" keyProperty="taskLogSid">
+		<!-- <selectKey resultType="java.lang.String" keyProperty="taskLogSid" -->
+		<!-- order="BEFORE"> -->
+		<!-- SELECT UUID() -->
+		<!-- </selectKey> -->
+		insert into sys_t_task_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="account != null">
+				ACCOUNT,
+			</if>
+			<if test="taskType != null">
+				TASK_TYPE,
+			</if>
+			<if test="taskTarget != null">
+				TASK_TARGET,
+			</if>
+			<if test="taskStatus != null">
+				TASK_STATUS,
+			</if>
+			<if test="taskStartDate != null">
+				TASK_START_DATE,
+			</if>
+			<if test="taskEndDate != null">
+				TASK_END_DATE,
+			</if>
+			<if test="taskFailureReason != null">
+				TASK_FAILURE_REASON,
+			</if>
+			<if test="taskDetail != null">
+				TASK_DETAIL,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="account != null">
+				#{account},
+			</if>
+			<if test="taskType != null">
+				#{taskType},
+			</if>
+			<if test="taskTarget != null">
+				#{taskTarget},
+			</if>
+			<if test="taskStatus != null">
+				#{taskStatus},
+			</if>
+			<if test="taskStartDate != null">
+				#{taskStartDate},
+			</if>
+			<if test="taskEndDate != null">
+				#{taskEndDate},
+			</if>
+			<if test="taskFailureReason != null">
+				#{taskFailureReason},
+			</if>
+			<if test="taskDetail != null">
+				#{taskDetail},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria"
+		resultType="java.lang.Integer">
+		select count(*) from sys_t_task_log
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByParamsSelective" parameterType="map">
+		update sys_t_task_log
+		<set>
+			<if test="record.taskLogSid != null">
+				TASK_LOG_SID = #{record.taskLogSid},
+			</if>
+			<if test="record.account != null">
+				ACCOUNT = #{record.account},
+			</if>
+			<if test="record.taskType != null">
+				TASK_TYPE = #{record.taskType},
+			</if>
+			<if test="record.taskTarget != null">
+				TASK_TARGET = #{record.taskTarget},
+			</if>
+			<if test="record.taskStatus != null">
+				TASK_STATUS = #{record.taskStatus},
+			</if>
+			<if test="record.taskStartDate != null">
+				TASK_START_DATE = #{record.taskStartDate},
+			</if>
+			<if test="record.taskEndDate != null">
+				TASK_END_DATE = #{record.taskEndDate},
+			</if>
+			<if test="record.taskFailureReason != null">
+				TASK_FAILURE_REASON = #{record.taskFailureReason},
+			</if>
+			<if test="record.taskDetail != null">
+				TASK_DETAIL = #{record.taskDetail},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="logUpdateSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.TaskLog">
+		update sys_t_task_log
+		<set>
+			<if test="record.account != null">
+				ACCOUNT = #{record.account},
+			</if>
+			<if test="record.taskType != null">
+				TASK_TYPE = #{record.taskType},
+			</if>
+			<if test="record.taskTarget != null">
+				TASK_TARGET = #{record.taskTarget},
+			</if>
+			<if test="record.taskStatus != null">
+				TASK_STATUS = #{record.taskStatus},
+			</if>
+			<if test="record.taskStartDate != null">
+				TASK_START_DATE = #{record.taskStartDate},
+			</if>
+			<if test="record.taskEndDate != null">
+				TASK_END_DATE = #{record.taskEndDate},
+			</if>
+			<if test="record.taskFailureReason != null">
+				TASK_FAILURE_REASON = #{record.taskFailureReason},
+			</if>
+			<if test="record.taskDetail != null">
+				TASK_DETAIL = concat(IFNULL(TASK_DETAIL, ''), '\n',
+				#{record.taskDetail}),
+			</if>
+		</set>
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="record.taskType != null">
+				and TASK_TYPE = #{record.taskType}
+			</if>
+			<if test="record.taskTarget != null">
+				and TASK_TARGET = #{record.taskTarget}
+				and TASK_END_DATE IS NULL
+			</if>
+			<if test="record.taskLogSid != null">
+				and TASK_LOG_SID = #{record.taskLogSid}
+			</if>
+		</trim>
+	</update>
+	<update id="updateByParams" parameterType="map">
+		update sys_t_task_log
+		set TASK_LOG_SID = #{record.taskLogSid},
+		ACCOUNT =
+		#{record.account},
+		TASK_TYPE = #{record.taskType},
+		TASK_TARGET =
+		#{record.taskTarget},
+		TASK_STATUS = #{record.taskStatus},
+		TASK_START_DATE = #{record.taskStartDate},
+		TASK_END_DATE =
+		#{record.taskEndDate},
+		TASK_FAILURE_REASON =
+		#{record.taskFailureReason},
+		TASK_DETAIL = #{record.taskDetail}
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.TaskLog">
+		update sys_t_task_log
+		<set>
+			<if test="account != null">
+				ACCOUNT = #{account},
+			</if>
+			<if test="taskType != null">
+				TASK_TYPE = #{taskType},
+			</if>
+			<if test="taskTarget != null">
+				TASK_TARGET = #{taskTarget},
+			</if>
+			<if test="taskStatus != null">
+				TASK_STATUS = #{taskStatus},
+			</if>
+			<if test="taskStartDate != null">
+				TASK_START_DATE = #{taskStartDate},
+			</if>
+			<if test="taskEndDate != null">
+				TASK_END_DATE = #{taskEndDate},
+			</if>
+			<if test="taskFailureReason != null">
+				TASK_FAILURE_REASON = #{taskFailureReason},
+			</if>
+			<if test="taskDetail != null">
+				TASK_DETAIL = #{taskDetail},
+			</if>
+		</set>
+		where TASK_LOG_SID = #{taskLogSid}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.TaskLog">
+		update
+		sys_t_task_log
+		set ACCOUNT = #{account},
+		TASK_TYPE = #{taskType},
+		TASK_TARGET = #{taskTarget},
+		TASK_STATUS = #{taskStatus},
+		TASK_START_DATE = #{taskStartDate},
+		TASK_END_DATE = #{taskEndDate},
+		TASK_FAILURE_REASON = #{taskFailureReason},
+		TASK_DETAIL = #{taskDetail}
+		where TASK_LOG_SID = #{taskLogSid}
+	</update>
+</mapper>

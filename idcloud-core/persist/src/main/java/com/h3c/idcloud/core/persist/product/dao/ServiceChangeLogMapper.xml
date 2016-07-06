@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.h3c.idcloud.core.persist.product.dao.ServiceChangeLogMapper">
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.product.ServiceChangeLog">
+    <id column="CM_SID" jdbcType="BIGINT" property="cmSid" />
+    <result column="INSTANCE_SID" jdbcType="BIGINT" property="instanceSid" />
+    <result column="SPEC_VERSION" jdbcType="BIGINT" property="specVersion" />
+    <result column="CM_SPONSOR" jdbcType="VARCHAR" property="cmSponsor" />
+    <result column="CM_TYPE" jdbcType="BIGINT" property="cmType" />
+    <result column="CM_COMMENTS" jdbcType="VARCHAR" property="cmComments" />
+    <result column="CM_BEGIN_TIME" jdbcType="TIMESTAMP" property="cmBeginTime" />
+    <result column="CM_END_TIME" jdbcType="TIMESTAMP" property="cmEndTime" />
+    <result column="SUG_TIME" jdbcType="TIMESTAMP" property="sugTime" />
+    <result column="STATUS" jdbcType="BIGINT" property="status" />
+    <result column="CHANGE_CONTENT" jdbcType="VARCHAR" property="changeContent" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="condition.instanceSid != null">
+         and INSTANCE_SID = #{condition.instanceSid}
+      </if>
+      <if test="condition.specVersion != null">
+         and SPEC_VERSION = #{condition.specVersion}
+      </if>
+      <if test="condition.cmSponsor != null">
+         and CM_SPONSOR = #{condition.cmSponsor}
+      </if>
+      <if test="condition.cmType != null">
+         and CM_TYPE = #{condition.cmType}
+      </if>
+      <if test="condition.cmComments != null">
+         and CM_COMMENTS = #{condition.cmComments}
+      </if>
+      <if test="condition.cmBeginTime != null">
+         and CM_BEGIN_TIME = #{condition.cmBeginTime}
+      </if>
+      <if test="condition.cmEndTime != null">
+         and CM_END_TIME = #{condition.cmEndTime}
+      </if>
+      <if test="condition.sugTime != null">
+         and SUG_TIME = #{condition.sugTime}
+      </if>
+      <if test="condition.status != null">
+         and STATUS = #{condition.status}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List">
+    CM_SID, INSTANCE_SID, SPEC_VERSION, CM_SPONSOR, CM_TYPE, CM_COMMENTS, CM_BEGIN_TIME, 
+    CM_END_TIME, SUG_TIME, STATUS ,CHANGE_CONTENT
+  </sql>
+  <select id="selectByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from service_change_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  
+   <select id="selectByParams2" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultMap="BaseResultMap">
+    select A.*
+    from(
+	    select
+	    <if test="distinct">
+	      distinct
+	    </if>
+	    <include refid="Base_Column_List" />
+	    from service_change_log
+	    where CM_END_TIME is null
+    ) A
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from service_change_log
+    where CM_SID = #{cmSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from service_change_log
+    where CM_SID = #{cmSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+    delete from service_change_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceChangeLog">
+    <selectKey keyProperty="cmSid" order="BEFORE" resultType="java.lang.Long">
+      SELECT NEXTVAL('SEQ_SERVICE_CHANGE_LOG')
+    </selectKey>
+    insert into service_change_log (CM_SID, INSTANCE_SID, SPEC_VERSION, CM_SPONSOR, CM_TYPE, CM_COMMENTS, 
+      CM_BEGIN_TIME, CM_END_TIME, SUG_TIME, STATUS,CHANGE_CONTENT)
+    values (#{cmSid}, #{instanceSid}, #{specVersion}, #{cmSponsor}, #{cmType}, #{cmComments}, 
+      #{cmBeginTime}, #{cmEndTime}, #{sugTime}, #{status},#{changeContent})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceChangeLog">
+    <selectKey keyProperty="cmSid" order="BEFORE" resultType="java.lang.Long">
+      SELECT NEXTVAL('SEQ_SERVICE_CHANGE_LOG')
+    </selectKey>
+    insert into service_change_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      CM_SID,
+      <if test="instanceSid != null">
+        INSTANCE_SID,
+      </if>
+      <if test="specVersion != null">
+        SPEC_VERSION,
+      </if>
+      <if test="cmSponsor != null">
+        CM_SPONSOR,
+      </if>
+      <if test="cmType != null">
+        CM_TYPE,
+      </if>
+      <if test="cmComments != null">
+        CM_COMMENTS,
+      </if>
+      <if test="cmBeginTime != null">
+        CM_BEGIN_TIME,
+      </if>
+      <if test="cmEndTime != null">
+        CM_END_TIME,
+      </if>
+      <if test="sugTime != null">
+        SUG_TIME,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="changeContent != null">
+        CHANGE_CONTENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{cmSid},
+      <if test="instanceSid != null">
+        #{instanceSid},
+      </if>
+      <if test="specVersion != null">
+        #{specVersion},
+      </if>
+      <if test="cmSponsor != null">
+        #{cmSponsor},
+      </if>
+      <if test="cmType != null">
+        #{cmType},
+      </if>
+      <if test="cmComments != null">
+        #{cmComments},
+      </if>
+      <if test="cmBeginTime != null">
+        #{cmBeginTime},
+      </if>
+      <if test="cmEndTime != null">
+        #{cmEndTime},
+      </if>
+      <if test="sugTime != null">
+        #{sugTime},
+      </if>
+      <if test="status != null">
+        #{status},
+      </if>
+      <if test="changeContent != null">
+        #{changeContent},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+    select count(*) from service_change_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map">
+    update service_change_log
+    <set>
+      <if test="record.cmSid != null">
+        CM_SID = #{record.cmSid},
+      </if>
+      <if test="record.instanceSid != null">
+        INSTANCE_SID = #{record.instanceSid},
+      </if>
+      <if test="record.specVersion != null">
+        SPEC_VERSION = #{record.specVersion},
+      </if>
+      <if test="record.cmSponsor != null">
+        CM_SPONSOR = #{record.cmSponsor},
+      </if>
+      <if test="record.cmType != null">
+        CM_TYPE = #{record.cmType},
+      </if>
+      <if test="record.cmComments != null">
+        CM_COMMENTS = #{record.cmComments},
+      </if>
+      <if test="record.cmBeginTime != null">
+        CM_BEGIN_TIME = #{record.cmBeginTime},
+      </if>
+      <if test="record.cmEndTime != null">
+        CM_END_TIME = #{record.cmEndTime},
+      </if>
+      <if test="record.sugTime != null">
+        SUG_TIME = #{record.sugTime},
+      </if>
+      <if test="record.status != null">
+        STATUS = #{record.status},
+      </if>
+      <if test="record.changeContent != null">
+        CHANGE_CONTENT = #{record.changeContent},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map">
+    update service_change_log
+    set CM_SID = #{record.cmSid},
+      INSTANCE_SID = #{record.instanceSid},
+      SPEC_VERSION = #{record.specVersion},
+      CM_SPONSOR = #{record.cmSponsor},
+      CM_TYPE = #{record.cmType},
+      CM_COMMENTS = #{record.cmComments},
+      CM_BEGIN_TIME = #{record.cmBeginTime},
+      CM_END_TIME = #{record.cmEndTime},
+      SUG_TIME = #{record.sugTime},
+      STATUS = #{record.status},
+      CHANGE_CONTENT = #{record.changeContent}
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceChangeLog">
+    update service_change_log
+    <set>
+      <if test="instanceSid != null">
+        INSTANCE_SID = #{instanceSid},
+      </if>
+      <if test="specVersion != null">
+        SPEC_VERSION = #{specVersion},
+      </if>
+      <if test="cmSponsor != null">
+        CM_SPONSOR = #{cmSponsor},
+      </if>
+      <if test="cmType != null">
+        CM_TYPE = #{cmType},
+      </if>
+      <if test="cmComments != null">
+        CM_COMMENTS = #{cmComments},
+      </if>
+      <if test="cmBeginTime != null">
+        CM_BEGIN_TIME = #{cmBeginTime},
+      </if>
+      <if test="cmEndTime != null">
+        CM_END_TIME = #{cmEndTime},
+      </if>
+      <if test="sugTime != null">
+        SUG_TIME = #{sugTime},
+      </if>
+      <if test="status != null">
+        STATUS = #{status},
+      </if>
+      <if test="changeContent != null">
+        CHANGE_CONTENT = #{changeContent},
+      </if>
+    </set>
+    where CM_SID = #{cmSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceChangeLog">
+    update service_change_log
+    set INSTANCE_SID = #{instanceSid},
+      SPEC_VERSION = #{specVersion},
+      CM_SPONSOR = #{cmSponsor},
+      CM_TYPE = #{cmType},
+      CM_COMMENTS = #{cmComments},
+      CM_BEGIN_TIME = #{cmBeginTime},
+      CM_END_TIME = #{cmEndTime},
+      SUG_TIME = #{sugTime},
+      STATUS = #{status},
+      CHANGE_CONTENT = #{changeContent}
+    where CM_SID = #{cmSid}
+  </update>
+</mapper>

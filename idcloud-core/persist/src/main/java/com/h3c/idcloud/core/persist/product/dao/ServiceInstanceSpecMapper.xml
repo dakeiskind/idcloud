@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.product.dao.ServiceInstanceSpecMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.product.ServiceInstanceSpec" >
+    <id column="SPEC_SID" property="specSid" jdbcType="BIGINT" />
+    <result column="INSTANCE_SID" property="instanceSid" jdbcType="BIGINT" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="SEQUENCE" property="sequence" jdbcType="VARCHAR" />
+    <result column="TAG" property="tag" jdbcType="VARCHAR" />
+    <result column="UNIT" property="unit" jdbcType="VARCHAR" />
+    <result column="VALUE" property="value" jdbcType="VARCHAR" />
+    <result column="VALUE_TEXT" property="valueText" jdbcType="VARCHAR" />
+    <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="VersionResultMap" type="com.h3c.idcloud.core.pojo.dto.product.ServiceInstanceSpec" >
+  	<result column="VERSION" property="version" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="LatestResultMap" type="com.h3c.idcloud.core.pojo.dto.product.ServiceInstanceSpec" >
+  	<result column="NAME" property="name" jdbcType="VARCHAR" />
+  	<result column="UNIT" property="unit" jdbcType="VARCHAR" />
+    <result column="VALUE" property="value" jdbcType="VARCHAR" />  	
+  	<result column="VERSION" property="version" jdbcType="BIGINT" />
+  </resultMap>  
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.instanceSid != null" >
+         and INSTANCE_SID = #{condition.instanceSid}
+      </if>
+      <if test="condition.name != null" >
+         and NAME = #{condition.name}
+      </if>
+      <if test="condition.description != null" >
+         and DESCRIPTION = #{condition.description}
+      </if>
+      <if test="condition.sequence != null" >
+         and SEQUENCE = #{condition.sequence}
+      </if>
+      <if test="condition.tag != null" >
+         and TAG = #{condition.tag}
+      </if>
+      <if test="condition.unit != null" >
+         and UNIT = #{condition.unit}
+      </if>
+      <if test="condition.value != null" >
+         and VALUE = #{condition.value}
+      </if>
+      <if test="condition.groupName != null" >
+         and GROUP_NAME = #{condition.groupName}
+      </if>
+      <if test="condition.createdBy != null" >
+         and CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.status != null" >
+         and STATUS = #{condition.status}
+      </if>      
+      <if test="condition.version != null" >
+         and VERSION = #{condition.version}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    SPEC_SID, INSTANCE_SID, NAME, DESCRIPTION, SEQUENCE, TAG, UNIT, VALUE, GROUP_NAME, 
+    CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION,STATUS
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from service_instance_spec
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByParamsNewVersion" resultMap="VersionResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+	max(VERSION)+1 as VERSION 
+    from service_instance_spec
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByParamsLatest" resultMap="LatestResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+	NAME, UNIT, VALUE, VERSION, STATUS
+    from service_instance_spec
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+	<include refid="common.Mysql_Pagination_Limit" />
+  </select>   
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from service_instance_spec
+    where SPEC_SID = #{specSid}
+  </select>
+  <select id="selectByInstanceSid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from service_instance_spec
+    where INSTANCE_SID = #{instanceSid}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from service_instance_spec
+    where SPEC_SID = #{specSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from service_instance_spec
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstanceSpec" >
+    <selectKey resultType="java.lang.Long" keyProperty="specSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SERVICE_INSTANCE_SPEC')
+    </selectKey>
+    insert into service_instance_spec (SPEC_SID, INSTANCE_SID, NAME, DESCRIPTION, SEQUENCE, TAG, 
+      UNIT, VALUE, GROUP_NAME, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, 
+      VERSION, STATUS)
+    values (#{specSid}, #{instanceSid}, #{name}, #{description}, #{sequence}, #{tag}, 
+      #{unit}, #{value}, #{groupName}, #{createdBy}, #{createdDt}, #{updatedBy}, #{updatedDt}, 
+      #{version}, #{status})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstanceSpec" >
+    <selectKey resultType="java.lang.Long" keyProperty="specSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SERVICE_INSTANCE_SPEC')
+    </selectKey>
+    insert into service_instance_spec
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      SPEC_SID,
+      <if test="instanceSid != null" >
+        INSTANCE_SID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+      <if test="sequence != null" >
+        SEQUENCE,
+      </if>
+      <if test="tag != null" >
+        TAG,
+      </if>
+      <if test="unit != null" >
+        UNIT,
+      </if>
+      <if test="value != null" >
+        VALUE,
+      </if>
+      <if test="groupName != null" >
+        GROUP_NAME,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{specSid},
+      <if test="instanceSid != null" >
+        #{instanceSid},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="description != null" >
+        #{description},
+      </if>
+      <if test="sequence != null" >
+        #{sequence},
+      </if>
+      <if test="tag != null" >
+        #{tag},
+      </if>
+      <if test="unit != null" >
+        #{unit},
+      </if>
+      <if test="value != null" >
+        #{value},
+      </if>
+      <if test="groupName != null" >
+        #{groupName},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from service_instance_spec
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update service_instance_spec
+    <set >
+      <if test="record.specSid != null" >
+        SPEC_SID = #{record.specSid},
+      </if>
+      <if test="record.instanceSid != null" >
+        INSTANCE_SID = #{record.instanceSid},
+      </if>
+      <if test="record.name != null" >
+        NAME = #{record.name},
+      </if>
+      <if test="record.description != null" >
+        DESCRIPTION = #{record.description},
+      </if>
+      <if test="record.sequence != null" >
+        SEQUENCE = #{record.sequence},
+      </if>
+      <if test="record.tag != null" >
+        TAG = #{record.tag},
+      </if>
+      <if test="record.unit != null" >
+        UNIT = #{record.unit},
+      </if>
+      <if test="record.value != null" >
+        VALUE = #{record.value},
+      </if>
+      <if test="record.groupName != null" >
+        GROUP_NAME = #{record.groupName},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update service_instance_spec
+    set SPEC_SID = #{record.specSid},
+      INSTANCE_SID = #{record.instanceSid},
+      NAME = #{record.name},
+      DESCRIPTION = #{record.description},
+      SEQUENCE = #{record.sequence},
+      TAG = #{record.tag},
+      UNIT = #{record.unit},
+      VALUE = #{record.value},
+      GROUP_NAME = #{record.groupName},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version},
+      STATUS = #{record.status}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstanceSpec" >
+    update service_instance_spec
+    <set >
+      <if test="instanceSid != null" >
+        INSTANCE_SID = #{instanceSid},
+      </if>
+      <if test="name != null" >
+        NAME = #{name},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description},
+      </if>
+      <if test="sequence != null" >
+        SEQUENCE = #{sequence},
+      </if>
+      <if test="tag != null" >
+        TAG = #{tag},
+      </if>
+      <if test="unit != null" >
+        UNIT = #{unit},
+      </if>
+      <if test="value != null" >
+        VALUE = #{value},
+      </if>
+      <if test="groupName != null" >
+        GROUP_NAME = #{groupName},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status},
+      </if>
+    </set>
+    where SPEC_SID = #{specSid}
+  </update>
+  <update id="updateByName">
+    update service_instance_spec set value = #{value}
+    where NAME = #{name} and INSTANCE_SID = #{instanceSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstanceSpec" >
+    update service_instance_spec
+    set INSTANCE_SID = #{instanceSid},
+      NAME = #{name},
+      DESCRIPTION = #{description},
+      SEQUENCE = #{sequence},
+      TAG = #{tag},
+      UNIT = #{unit},
+      VALUE = #{value},
+      GROUP_NAME = #{groupName},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version},
+      STATUS = #{status}
+    where SPEC_SID = #{specSid}
+  </update>
+  <select id="selectByInstanceSpecBySid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+   SELECT A.SPEC_SID, A.INSTANCE_SID, A.NAME, A.DESCRIPTION, A.SEQUENCE, A.TAG, A.UNIT, A.VALUE, A.GROUP_NAME, 
+    A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, A.UPDATED_DT, A.VERSION, A.STATUS,
+	CASE 
+	WHEN A.NAME IN('CPU','MEMORY', 'DATA_DISK', 'SYSTEM_DISK') THEN IF(A.VALUE IS NULL OR '', '', CONCAT(A.VALUE, IF(A.UNIT = '无', '', A.UNIT)))
+	WHEN A.NAME = 'OS' THEN (SELECT G.IMAGE_NAME FROM RES_IMAGE G WHERE A.VALUE = G.RES_IMAGE_SID)
+	WHEN A.NAME IN('NEED_WAN','NEED_LAN') THEN IF(A.VALUE = 1, '需要', '不需要')
+	END AS VALUE_TEXT 
+	FROM SERVICE_INSTANCE_SPEC A WHERE A.INSTANCE_SID = #{INSTANCESID}
+	AND A.VERSION = (SELECT MAX(`VERSION`) FROM SERVICE_INSTANCE_SPEC WHERE INSTANCE_SID = #{INSTANCESID})
+  </select>
+  <select id="selectByInstanceSpecMaxVersion" resultType="java.lang.Long" parameterType="java.lang.Long" >
+   	SELECT MAX(`VERSION`) FROM SERVICE_INSTANCE_SPEC WHERE INSTANCE_SID = #{INSTANCESID}
+  </select>
+  <select id="selectByInstanceSpecByVersion" resultMap="BaseResultMap">
+   	 SELECT A.SPEC_SID, A.INSTANCE_SID, A.NAME, A.DESCRIPTION, A.SEQUENCE, A.TAG, A.UNIT, A.VALUE, A.GROUP_NAME, 
+    A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, A.UPDATED_DT, A.VERSION, A.STATUS,
+	CASE 
+	WHEN A.NAME IN('CPU','MEMORY', 'DATA_DISK', 'SYSTEM_DISK') THEN IF(A.VALUE IS NULL OR '', '', CONCAT(A.VALUE, IF(A.UNIT = '无', '', A.UNIT)))
+	WHEN A.NAME = 'OS' THEN (SELECT G.IMAGE_NAME FROM RES_IMAGE G WHERE A.VALUE = G.RES_IMAGE_SID)
+	WHEN A.NAME IN('NEED_WAN','NEED_LAN') THEN IF(A.VALUE = 1, '需要', '不需要')
+	END AS VALUE_TEXT 
+	FROM SERVICE_INSTANCE_SPEC A WHERE A.INSTANCE_SID = #{instanceSid}
+	AND A.VERSION = #{version}
+	<if test="status != null" >
+		AND A.STATUS = #{status}
+	</if>
+  </select>
+  
+  <select id="selectValidInstanceSpecByVersion" resultType="java.lang.Long">
+	SELECT max(A.`version`)
+	FROM ( SELECT sum(IF(STATUS = '1', 1, 0)) = count(1) AS valid, `version`
+			   FROM service_instance_spec
+			   <if test="instanceSid != null" >
+					WHERE instance_sid = #{instanceSid}
+			   </if>
+			   GROUP BY `version`
+		) AS A
+	WHERE A.valid = 1;
+  </select>  
+  
+  <select id="selectValidSpecByInstanceAndVersion" resultType="java.lang.Long"  parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+	SELECT max(A.`version`)
+	FROM ( SELECT sum(IF(STATUS = '1', 1, 0)) = count(1) AS valid, `version`
+			   FROM service_instance_spec
+			   <trim prefix="where" prefixOverrides="and|or" >
+			      <if test="condition.instanceSid != null" >
+			         and INSTANCE_SID = #{condition.instanceSid}
+			      </if>
+			      <if test="condition.version != null" >
+			         and VERSION <![CDATA[< #{condition.version}]]>
+			      </if>
+			   </trim>
+			   GROUP BY `version`
+		) AS A
+	WHERE A.valid = 1;
+  </select>  
+  <select id="selectVmDiskTotalSize" resultType="java.lang.Long"  parameterType="java.lang.Long">
+	select sum(value) from service_instance_spec where instance_sid in
+	 (select instance_sid from service_instance where parent_instance_sid = #{instanceSid}) and NAME = 'DISK_SIZE';
+  </select>  
+  
+</mapper>

@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.MgtObjDefMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.MgtObjDef" >
+    <id column="DEF_SID" property="defSid" jdbcType="BIGINT" />
+    <result column="MGT_BIZ_MODE" property="mgtBizMode" jdbcType="VARCHAR" />
+    <result column="ATTR_NAME" property="attrName" jdbcType="VARCHAR" />
+    <result column="ATTR_KEY" property="attrKey" jdbcType="VARCHAR" />
+    <result column="DATA_TYPE" property="dataType" jdbcType="VARCHAR" />
+    <result column="DISPLAY_TYPE" property="displayType" jdbcType="VARCHAR" />
+    <result column="UNIT" property="unit" jdbcType="VARCHAR" />
+    <result column="VALUE_DOMAIN" property="valueDomain" jdbcType="VARCHAR" />
+    <result column="VALUE_INCREMENT" property="valueIncrement" jdbcType="VARCHAR" />
+    <result column="VALIDATE_RULE" property="validateRule" jdbcType="VARCHAR" />
+    <result column="SORT_RANK" property="sortRank" jdbcType="INTEGER" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="BIGINT" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.mgtBizMode != null" >
+         and MGT_BIZ_MODE = #{condition.mgtBizMode}
+      </if>
+      <if test="condition.attrName != null" >
+         and ATTR_NAME = #{condition.attrName}
+      </if>
+      <if test="condition.attrKey != null" >
+         and ATTR_KEY = #{condition.attrKey}
+      </if>
+      <if test="condition.dataType != null" >
+         and DATA_TYPE = #{condition.dataType}
+      </if>
+      <if test="condition.displayType != null" >
+         and DISPLAY_TYPE = #{condition.displayType}
+      </if>
+      <if test="condition.unit != null" >
+         and UNIT = #{condition.unit}
+      </if>
+      <if test="condition.valueDomain != null" >
+         and VALUE_DOMAIN = #{condition.valueDomain}
+      </if>
+      <if test="condition.valueIncrement != null" >
+         and VALUE_INCREMENT = #{condition.valueIncrement}
+      </if>
+      <if test="condition.sortRank != null" >
+         and SORT_RANK = #{condition.sortRank}
+      </if>
+      <if test="condition.description != null" >
+         and DESCRIPTION = #{condition.description}
+      </if>
+      <if test="condition.status != null" >
+         and STATUS = #{condition.status}
+      </if>
+      <if test="condition.createdBy != null" >
+         and CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and VERSION = #{condition.version}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    DEF_SID, MGT_BIZ_MODE, ATTR_NAME, ATTR_KEY, DATA_TYPE, DISPLAY_TYPE, UNIT, VALUE_DOMAIN, 
+    VALUE_INCREMENT,VALIDATE_RULE, SORT_RANK, DESCRIPTION, STATUS, CREATED_BY, CREATED_DT, UPDATED_BY, 
+    UPDATED_DT, VERSION
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_m_mgt_obj_def
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_m_mgt_obj_def
+    where DEF_SID = #{defSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_m_mgt_obj_def
+    where DEF_SID = #{defSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from sys_m_mgt_obj_def
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.system.MgtObjDef" >
+    <selectKey resultType="java.lang.Long" keyProperty="defSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SYS_M_MGT_OBJ_DEF')
+    </selectKey>
+    insert into sys_m_mgt_obj_def (DEF_SID, MGT_BIZ_MODE, ATTR_NAME, ATTR_KEY, DATA_TYPE, DISPLAY_TYPE, 
+      UNIT, VALUE_DOMAIN, VALUE_INCREMENT,VALIDATE_RULE, SORT_RANK, DESCRIPTION, STATUS, 
+      CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION)
+    values (#{defSid}, #{mgtBizMode}, #{attrName}, #{attrKey}, #{dataType}, #{displayType}, 
+      #{unit}, #{valueDomain}, #{valueIncrement}, #{validateRule}, #{sortRank}, #{description}, #{status}, 
+      #{createdBy}, #{createdDt}, #{updatedBy}, #{updatedDt}, #{version})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.MgtObjDef" >
+    <selectKey resultType="java.lang.Long" keyProperty="defSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SYS_M_MGT_OBJ_DEF')
+    </selectKey>
+    insert into sys_m_mgt_obj_def
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      DEF_SID,
+      <if test="mgtBizMode != null" >
+        MGT_BIZ_MODE,
+      </if>
+      <if test="attrName != null" >
+        ATTR_NAME,
+      </if>
+      <if test="attrKey != null" >
+        ATTR_KEY,
+      </if>
+      <if test="dataType != null" >
+        DATA_TYPE,
+      </if>
+      <if test="displayType != null" >
+        DISPLAY_TYPE,
+      </if>
+      <if test="unit != null" >
+        UNIT,
+      </if>
+      <if test="valueDomain != null" >
+        VALUE_DOMAIN,
+      </if>
+      <if test="valueIncrement != null" >
+        VALUE_INCREMENT,
+      </if>
+      <if test="validateRule != null" >
+        VALIDATE_RULE,
+      </if>
+      <if test="sortRank != null" >
+        SORT_RANK,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{defSid},
+      <if test="mgtBizMode != null" >
+        #{mgtBizMode},
+      </if>
+      <if test="attrName != null" >
+        #{attrName},
+      </if>
+      <if test="attrKey != null" >
+        #{attrKey},
+      </if>
+      <if test="dataType != null" >
+        #{dataType},
+      </if>
+      <if test="displayType != null" >
+        #{displayType},
+      </if>
+      <if test="unit != null" >
+        #{unit},
+      </if>
+      <if test="valueDomain != null" >
+        #{valueDomain},
+      </if>
+      <if test="valueIncrement != null" >
+        #{valueIncrement},
+      </if>
+      <if test="validateRule != null" >
+        #{validateRule},
+      </if>
+      <if test="sortRank != null" >
+        #{sortRank},
+      </if>
+      <if test="description != null" >
+        #{description},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from sys_m_mgt_obj_def
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update sys_m_mgt_obj_def
+    <set >
+      <if test="record.defSid != null" >
+        DEF_SID = #{record.defSid},
+      </if>
+      <if test="record.mgtBizMode != null" >
+        MGT_BIZ_MODE = #{record.mgtBizMode},
+      </if>
+      <if test="record.attrName != null" >
+        ATTR_NAME = #{record.attrName},
+      </if>
+      <if test="record.attrKey != null" >
+        ATTR_KEY = #{record.attrKey},
+      </if>
+      <if test="record.dataType != null" >
+        DATA_TYPE = #{record.dataType},
+      </if>
+      <if test="record.displayType != null" >
+        DISPLAY_TYPE = #{record.displayType},
+      </if>
+      <if test="record.unit != null" >
+        UNIT = #{record.unit},
+      </if>
+      <if test="record.valueDomain != null" >
+        VALUE_DOMAIN = #{record.valueDomain},
+      </if>
+      <if test="record.valueIncrement != null" >
+        VALUE_INCREMENT = #{record.valueIncrement},
+      </if>
+      <if test="record.validateRule != null" >
+        VALIDATE_RULE = #{record.validateRule},
+      </if>
+      <if test="record.sortRank != null" >
+        SORT_RANK = #{record.sortRank},
+      </if>
+      <if test="record.description != null" >
+        DESCRIPTION = #{record.description},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update sys_m_mgt_obj_def
+    set DEF_SID = #{record.defSid},
+      MGT_BIZ_MODE = #{record.mgtBizMode},
+      ATTR_NAME = #{record.attrName},
+      ATTR_KEY = #{record.attrKey},
+      DATA_TYPE = #{record.dataType},
+      DISPLAY_TYPE = #{record.displayType},
+      UNIT = #{record.unit},
+      VALUE_DOMAIN = #{record.valueDomain},
+      VALUE_INCREMENT = #{record.valueIncrement},
+      VALIDATE_RULE = #{record.validateRule},
+      SORT_RANK = #{record.sortRank},
+      DESCRIPTION = #{record.description},
+      STATUS = #{record.status},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.MgtObjDef" >
+    update sys_m_mgt_obj_def
+    <set >
+      <if test="mgtBizMode != null" >
+        MGT_BIZ_MODE = #{mgtBizMode},
+      </if>
+      <if test="attrName != null" >
+        ATTR_NAME = #{attrName},
+      </if>
+      <if test="attrKey != null" >
+        ATTR_KEY = #{attrKey},
+      </if>
+      <if test="dataType != null" >
+        DATA_TYPE = #{dataType},
+      </if>
+      <if test="displayType != null" >
+        DISPLAY_TYPE = #{displayType},
+      </if>
+      <if test="unit != null" >
+        UNIT = #{unit},
+      </if>
+      <if test="valueDomain != null" >
+        VALUE_DOMAIN = #{valueDomain},
+      </if>
+      <if test="valueIncrement != null" >
+        VALUE_INCREMENT = #{valueIncrement},
+      </if>
+      <if test="validateRule != null" >
+        VALIDATE_RULE = #{validateRule},
+      </if>
+      <if test="sortRank != null" >
+        SORT_RANK = #{sortRank},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+    </set>
+    where DEF_SID = #{defSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.MgtObjDef" >
+    update sys_m_mgt_obj_def
+    set MGT_BIZ_MODE = #{mgtBizMode},
+      ATTR_NAME = #{attrName},
+      ATTR_KEY = #{attrKey},
+      DATA_TYPE = #{dataType},
+      DISPLAY_TYPE = #{displayType},
+      UNIT = #{unit},
+      VALUE_DOMAIN = #{valueDomain},
+      VALUE_INCREMENT = #{valueIncrement},
+      VALIDATE_RULE = #{validateRule},
+      SORT_RANK = #{sortRank},
+      DESCRIPTION = #{description},
+      STATUS = #{status},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version}
+    where DEF_SID = #{defSid}
+  </update>
+</mapper>

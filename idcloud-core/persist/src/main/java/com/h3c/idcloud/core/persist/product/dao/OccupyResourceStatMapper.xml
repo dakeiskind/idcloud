@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.product.dao.OccupyResourceStatMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.product.OccupyResourceStat" >
+    <id column="OCCUPY_RESOURCE_SID" property="occupyResourceSid" jdbcType="BIGINT" />
+    <result column="BIZ_SID" property="bizSid" jdbcType="VARCHAR" />
+    <result column="BIZ_NAME" property="bizName" jdbcType="VARCHAR" />
+    <result column="STAT_DATE" property="statDate" jdbcType="TIMESTAMP" />
+    <result column="RES_TYPE" property="resType" jdbcType="VARCHAR" />
+    <result column="RES_OCCUPY_VALUE" property="resOccupyValue" jdbcType="DOUBLE" />
+    <result column="RES_TOTAL_VALUE" property="resTotalValue" jdbcType="DOUBLE" />
+    <result column="RES_USAGE" property="resUsage" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.bizSid != null" >
+         and BIZ_SID = #{condition.bizSid}
+      </if>
+      <if test="condition.bizName != null" >
+         and BIZ_NAME = #{condition.bizName}
+      </if>
+      <if test="condition.statDate != null" >
+         and STAT_DATE = #{condition.statDate}
+      </if>
+      <if test="condition.startDate != null" >
+         and STAT_DATE >= #{condition.startDate}
+      </if>
+      <if test="condition.endDate != null" >
+         and STAT_DATE <![CDATA[ <= #{condition.endDate} ]]>
+      </if>
+      <if test="condition.resType != null" >
+         and RES_TYPE = #{condition.resType}
+      </if>
+      <if test="condition.resOccupyValue != null" >
+         and RES_OCCUPY_VALUE = #{condition.resOccupyValue}
+      </if>
+      <if test="condition.resTotalValue != null" >
+         and RES_TOTAL_VALUE = #{condition.resTotalValue}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Example_Where_Clause2" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.bizSid != null" >
+         and A.BIZ_SID = #{condition.bizSid}
+      </if>
+      <if test="condition.bizName != null" >
+         and A.BIZ_NAME = #{condition.bizName}
+      </if>
+      <if test="condition.statDate != null" >
+         and A.STAT_DATE = #{condition.statDate}
+      </if>
+      <if test="condition.resType != null" >
+         and A.RES_TYPE = #{condition.resType}
+      </if>
+      <if test="condition.resOccupyValue != null" >
+         and A.RES_OCCUPY_VALUE = #{condition.resOccupyValue}
+      </if>
+      <if test="condition.resTotalValue != null" >
+         and A.RES_TOTAL_VALUE = #{condition.resTotalValue}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    OCCUPY_RESOURCE_SID, BIZ_SID, BIZ_NAME, STAT_DATE, RES_TYPE, RES_OCCUPY_VALUE, RES_TOTAL_VALUE
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from occupy_resource_stat
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  
+  <select id="selectByParamsSum" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+	select * from (
+	select A.OCCUPY_RESOURCE_SID, A.BIZ_SID, A.BIZ_NAME, A.STAT_DATE, A.RES_TYPE, 
+	       sum(A.RES_OCCUPY_VALUE) as RES_OCCUPY_VALUE, sum(A.RES_TOTAL_VALUE) as RES_TOTAL_VALUE
+	from occupy_resource_stat A
+	LEFT JOIN sys_m_biz B on B.BIZ_SID = A.BIZ_SID
+	where B.`STATUS` = '01' or B.`STATUS` is null
+	GROUP BY A.STAT_DATE,RES_TYPE
+	) A
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <select id="selectByParamsSumByDate" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select ROUND(avg(A.RES_OCCUPY_VALUE),2) as RES_OCCUPY_VALUE,ROUND(avg(A.RES_TOTAL_VALUE),2) as RES_TOTAL_VALUE,A.STAT_DATE
+	from(
+		select OCCUPY_RESOURCE_SID, BIZ_SID, BIZ_NAME, STAT_DATE, RES_TYPE,
+						sum(RES_OCCUPY_VALUE)as RES_OCCUPY_VALUE, sum(RES_TOTAL_VALUE) as RES_TOTAL_VALUE
+				from occupy_resource_stat
+		<if test="_parameter != null" >
+	      <include refid="Example_Where_Clause" />
+	    </if>
+		group by STAT_DATE
+		order by STAT_DATE desc
+	 ) A
+    <if test="orderByClause != null" >
+      group by ${orderByClause}
+    </if>
+    ORDER BY A.STAT_DATE asc
+  </select>
+  
+  <select id="selectUsageByParamsSum" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+	SELECT sum(A.RES_OCCUPY_VALUE) as RES_OCCUPY_VALUE, sum(A.RES_TOTAL_VALUE) as RES_TOTAL_VALUE,
+				 C.`NAME` as BIZ_NAME,A.RES_TYPE , C.BIZ_SID as BIZ_SID
+	from occupy_resource_stat A
+	LEFT JOIN sys_m_biz B on A.BIZ_SID = B.BIZ_SID
+	LEFT JOIN sys_m_biz C on C.BIZ_SID = B.PARENT_BIZ_SID
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause2" />
+    </if>
+	GROUP BY B.PARENT_BIZ_SID,A.RES_TYPE
+    ORDER BY B.PARENT_BIZ_SID
+  </select>
+  
+  <select id="selectUsageByParamsForRank" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+	SELECT D.BIZ_NAME,(D.RES_OCCUPY_VALUE/D.RES_TOTAL_VALUE) as RES_USAGE
+	FROM(
+		SELECT sum(A.RES_OCCUPY_VALUE) as RES_OCCUPY_VALUE, sum(A.RES_TOTAL_VALUE) as RES_TOTAL_VALUE,
+					 A.BIZ_NAME,A.RES_TYPE
+		from occupy_resource_stat A
+		<if test="_parameter != null" >
+	      <include refid="Example_Where_Clause2" />
+	    </if>
+		GROUP BY A.BIZ_SID
+	) D
+	<if test="orderByClause != null" >
+      order by RES_USAGE ${orderByClause}
+    </if>
+	LIMIT 0,10;
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from occupy_resource_stat
+    where OCCUPY_RESOURCE_SID = #{occupyResourceSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from occupy_resource_stat
+    where OCCUPY_RESOURCE_SID = #{occupyResourceSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from occupy_resource_stat
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.product.OccupyResourceStat" >
+    <selectKey resultType="java.lang.Long" keyProperty="occupyResourceSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_OCCUPY_RESOURCE_SID')
+    </selectKey>
+    insert into occupy_resource_stat (OCCUPY_RESOURCE_SID, BIZ_SID, BIZ_NAME, STAT_DATE, RES_TYPE, RES_OCCUPY_VALUE, 
+      RES_TOTAL_VALUE)
+    values (#{occupyResourceSid}, #{bizSid}, #{bizName}, #{statDate}, #{resType}, #{resOccupyValue}, 
+      #{resTotalValue})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.OccupyResourceStat" >
+    <selectKey resultType="java.lang.Long" keyProperty="occupyResourceSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_OCCUPY_RESOURCE_SID')
+    </selectKey>
+    insert into occupy_resource_stat
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      OCCUPY_RESOURCE_SID,
+      <if test="bizSid != null" >
+        BIZ_SID,
+      </if>
+      <if test="bizName != null" >
+        BIZ_NAME,
+      </if>
+      <if test="statDate != null" >
+        STAT_DATE,
+      </if>
+      <if test="resType != null" >
+        RES_TYPE,
+      </if>
+      <if test="resOccupyValue != null" >
+        RES_OCCUPY_VALUE,
+      </if>
+      <if test="resTotalValue != null" >
+        RES_TOTAL_VALUE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{occupyResourceSid},
+      <if test="bizSid != null" >
+        #{bizSid},
+      </if>
+      <if test="bizName != null" >
+        #{bizName},
+      </if>
+      <if test="statDate != null" >
+        #{statDate},
+      </if>
+      <if test="resType != null" >
+        #{resType},
+      </if>
+      <if test="resOccupyValue != null" >
+        #{resOccupyValue},
+      </if>
+      <if test="resTotalValue != null" >
+        #{resTotalValue},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from occupy_resource_stat
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update occupy_resource_stat
+    <set >
+      <if test="record.occupyResourceSid != null" >
+        OCCUPY_RESOURCE_SID = #{record.occupyResourceSid},
+      </if>
+      <if test="record.bizSid != null" >
+        BIZ_SID = #{record.bizSid},
+      </if>
+      <if test="record.bizName != null" >
+        BIZ_NAME = #{record.bizName},
+      </if>
+      <if test="record.statDate != null" >
+        STAT_DATE = #{record.statDate},
+      </if>
+      <if test="record.resType != null" >
+        RES_TYPE = #{record.resType},
+      </if>
+      <if test="record.resOccupyValue != null" >
+        RES_OCCUPY_VALUE = #{record.resOccupyValue},
+      </if>
+      <if test="record.resTotalValue != null" >
+        RES_TOTAL_VALUE = #{record.resTotalValue},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update occupy_resource_stat
+    set OCCUPY_RESOURCE_SID = #{record.occupyResourceSid},
+      BIZ_SID = #{record.bizSid},
+      BIZ_NAME = #{record.bizName},
+      STAT_DATE = #{record.statDate},
+      RES_TYPE = #{record.resType},
+      RES_OCCUPY_VALUE = #{record.resOccupyValue},
+      RES_TOTAL_VALUE = #{record.resTotalValue}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.OccupyResourceStat" >
+    update occupy_resource_stat
+    <set >
+      <if test="bizSid != null" >
+        BIZ_SID = #{bizSid},
+      </if>
+      <if test="bizName != null" >
+        BIZ_NAME = #{bizName},
+      </if>
+      <if test="statDate != null" >
+        STAT_DATE = #{statDate},
+      </if>
+      <if test="resType != null" >
+        RES_TYPE = #{resType},
+      </if>
+      <if test="resOccupyValue != null" >
+        RES_OCCUPY_VALUE = #{resOccupyValue},
+      </if>
+      <if test="resTotalValue != null" >
+        RES_TOTAL_VALUE = #{resTotalValue},
+      </if>
+    </set>
+    where OCCUPY_RESOURCE_SID = #{occupyResourceSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.product.OccupyResourceStat" >
+    update occupy_resource_stat
+    set BIZ_SID = #{bizSid},
+      BIZ_NAME = #{bizName},
+      STAT_DATE = #{statDate},
+      RES_TYPE = #{resType},
+      RES_OCCUPY_VALUE = #{resOccupyValue},
+      RES_TOTAL_VALUE = #{resTotalValue}
+    where OCCUPY_RESOURCE_SID = #{occupyResourceSid}
+  </update>
+</mapper>

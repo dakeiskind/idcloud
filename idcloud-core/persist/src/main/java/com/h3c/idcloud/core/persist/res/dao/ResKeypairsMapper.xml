@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResKeypairsMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResKeypairs">
+        <id column="RES_KEYPAIRS_SID" property="resKeypairsSid" jdbcType="VARCHAR"/>
+        <result column="KEYPAIRS_NAME" property="keypairsName" jdbcType="VARCHAR"/>
+        <result column="FINGERPRINT" property="fingerprint" jdbcType="VARCHAR"/>
+        <result column="PUBLIC_KEY" property="publicKey" jdbcType="VARCHAR"/>
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR"/>
+        <result column="OWNER_ID" property="ownerId" jdbcType="VARCHAR"/>
+        <result column="MGT_OBJ_SID" property="mgtObjSid" jdbcType="BIGINT"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP"/>
+        <result column="VERSION" property="version" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.keypairsName != null">
+                and KEYPAIRS_NAME = #{condition.keypairsName}
+            </if>
+            <if test="condition.keypairsNameLike != null">
+                and KEYPAIRS_NAME like concat('%', #{condition.keypairsNameLike}, '%')
+            </if>
+            <if test="condition.fingerprint != null">
+                and FINGERPRINT = #{condition.fingerprint}
+            </if>
+            <if test="condition.mgtObjSid != null">
+                and MGT_OBJ_SID = #{condition.mgtObjSid}
+            </if>
+            <if test="condition.ownerId != null">
+                and OWNER_ID = #{condition.ownerId}
+            </if>
+            <if test="condition.createdBy != null">
+                and CREATED_BY = #{condition.createdBy}
+            </if>
+            <if test="condition.createdDt != null">
+                and CREATED_DT = #{condition.createdDt}
+            </if>
+            <if test="condition.updatedBy != null">
+                and UPDATED_BY = #{condition.updatedBy}
+            </if>
+            <if test="condition.updatedDt != null">
+                and UPDATED_DT = #{condition.updatedDt}
+            </if>
+            <if test="condition.version != null">
+                and VERSION = #{condition.version}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        RES_KEYPAIRS_SID, KEYPAIRS_NAME, FINGERPRINT,DESCRIPTION, MGT_OBJ_SID ,CREATED_BY,CREATED_DT,
+        UPDATED_BY, UPDATED_DT, VERSION, OWNER_ID, PUBLIC_KEY
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from res_keypairs
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_keypairs
+        where RES_KEYPAIRS_SID = #{resKeypairsSid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_keypairs
+        where RES_KEYPAIRS_SID = #{resKeypairsSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_keypairs
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResKeypairs">
+        <selectKey resultType="java.lang.String" keyProperty="resKeypairsSid" order="BEFORE">
+            SELECT UUID()
+        </selectKey>
+        insert into res_keypairs (RES_KEYPAIRS_SID, KEYPAIRS_NAME, FINGERPRINT, MGT_OBJ_SID,CREATED_BY,
+        CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION, OWNER_ID, PUBLIC_KEY,DESCRIPTION)
+        values (#{resKeypairsSid}, #{keypairsName}, #{fingerprint}, #{mgtObjSid},#{createdBy},
+        #{createdDt}, #{updatedBy}, #{updatedDt}, #{version}, #{ownerId}, #{publicKey},#{description})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResKeypairs">
+        insert into res_keypairs
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="resKeypairsSid != null">
+                RES_KEYPAIRS_SID,
+            </if>
+            <if test="keypairsName != null">
+                KEYPAIRS_NAME,
+            </if>
+            <if test="fingerprint != null">
+                FINGERPRINT,
+            </if>
+            <if test="publicKey != null">
+                PUBLIC_KEY,
+            </if>
+            <if test="ownerId != null">
+                OWNER_ID,
+            </if>
+            <if test="description != null">
+                DESCRIPTION,
+            </if>
+            <if test="mgtObjSid != null">
+                MGT_OBJ_SID,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+            <if test="version != null">
+                VERSION,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="resKeypairsSid != null">
+                #{resKeypairsSid},
+            </if>
+            <if test="keypairsName != null">
+                #{keypairsName},
+            </if>
+            <if test="fingerprint != null">
+                #{fingerprint},
+            </if>
+            <if test="publicKey != null">
+                #{publicKey},
+            </if>
+            <if test="ownerId != null">
+                #{ownerId},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="mgtObjSid != null">
+                #{mgtObjSid},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_keypairs
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_keypairs
+        <set>
+            <if test="record.resKeypairsSid != null">
+                RES_KEYPAIRS_SID = #{record.resKeypairsSid},
+            </if>
+            <if test="record.keypairsName != null">
+                KEYPAIRS_NAME = #{record.keypairsName},
+            </if>
+            <if test="record.fingerprint != null">
+                FINGERPRINT = #{record.fingerprint},
+            </if>
+            <if test="record.publicKey != null">
+                PUBLIC_KEY = #{record.publicKey},
+            </if>
+            <if test="record.ownerId != null">
+                OWNER_ID = #{record.ownerId},
+            </if>
+            <if test="record.description != null">
+                DESCRIPTION = #{record.description},
+            </if>
+            <if test="record.mgtObjSid != null">
+                MGT_OBJ_SID = #{record.mgtObjSid},
+            </if>
+            <if test="record.createdBy != null">
+                CREATED_BY = #{record.createdBy},
+            </if>
+            <if test="record.createdDt != null">
+                CREATED_DT = #{record.createdDt},
+            </if>
+            <if test="record.updatedBy != null">
+                UPDATED_BY = #{record.updatedBy},
+            </if>
+            <if test="record.updatedDt != null">
+                UPDATED_DT = #{record.updatedDt},
+            </if>
+            <if test="record.version != null">
+                VERSION = #{record.version},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_keypairs
+        set RES_KEYPAIRS_SID = #{record.resKeypairsSid},
+        KEYPAIRS_NAME = #{record.keypairsName},
+        FINGERPRINT = #{record.fingerprint},
+        OWNER_ID = #{record.ownerId},
+        PUBLIC_KEY = #{record.publicKey},
+        DESCRIPTION = #{record.description},
+        MGT_OBJ_SID = #{record.mgtObjSid},
+        CREATED_BY = #{record.createdBy},
+        CREATED_DT = #{record.createdDt},
+        UPDATED_BY = #{record.updatedBy},
+        UPDATED_DT = #{record.updatedDt},
+        VERSION = #{record.version}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResKeypairs">
+        update res_keypairs
+        <set>
+            <if test="keypairsName != null">
+                KEYPAIRS_NAME = #{keypairsName},
+            </if>
+            <if test="publicKey != null">
+                PUBLIC_KEY = #{publicKey},
+            </if>
+            <if test="ownerId != null">
+                OWNER_ID = #{ownerId},
+            </if>
+            <if test="fingerprint != null">
+                FINGERPRINT = #{fingerprint},
+            </if>
+            <if test="description != null">
+                DESCRIPTION = #{description},
+            </if>
+            <if test="mgtObjSid != null">
+                MGT_OBJ_SID = #{mgtObjSid},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt},
+            </if>
+            <if test="version != null">
+                VERSION = #{version},
+            </if>
+        </set>
+        where RES_KEYPAIRS_SID = #{resKeypairsSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResKeypairs">
+        update res_keypairs
+        set KEYPAIRS_NAME = #{keypairsName},
+        FINGERPRINT = #{fingerprint},
+        MGT_OBJ_SID = #{mgtObjSid},
+        OWNER_ID = #{ownerId},
+        PUBLIC_KEY = #{publicKey},
+        DESCRIPTION = #{description},
+        CREATED_BY = #{createdBy},
+        CREATED_DT = #{createdDt},
+        UPDATED_BY = #{updatedBy},
+        UPDATED_DT = #{updatedDt},
+        VERSION = #{version}
+        where RES_KEYPAIRS_SID = #{resKeypairsSid}
+    </update>
+</mapper>

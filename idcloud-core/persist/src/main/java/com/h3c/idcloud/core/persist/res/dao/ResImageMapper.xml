@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResImageMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResImage">
+        <id column="RES_IMAGE_SID" property="resImageSid" jdbcType="VARCHAR"/>
+        <result column="IMAGE_ID" property="imageId" jdbcType="VARCHAR"/>
+        <result column="IMAGE_NAME" property="imageName" jdbcType="VARCHAR"/>
+        <result column="IMAGE_TYPE" property="imageType" jdbcType="VARCHAR"/>
+        <result column="IMAGE_TYPE_NAME" property="imageTypeName" jdbcType="VARCHAR"/>
+        <result column="RES_VE_SID" property="resVeSid" jdbcType="VARCHAR"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR"/>
+        <result column="MGT_OBJ_SID" property="mgtObjSid" jdbcType="BIGINT"/>
+        <result column="IMAGE_SIZE" property="imageSize" jdbcType="REAL"/>
+        <result column="OS_TYPE" property="osType" jdbcType="VARCHAR"/>
+        <result column="OS_TYPE_NAME" property="osTypeName" jdbcType="VARCHAR"/>
+        <result column="OS_VERSION" property="osVersion" jdbcType="VARCHAR"/>
+        <result column="OS_VERSION_NAME" property="osVersionName" jdbcType="VARCHAR"/>
+        <result column="ALLOCATE_RES_HOST_SID" property="allocateResHostSid" jdbcType="VARCHAR"/>
+        <result column="ALLOCATE_RES_STORAGE_SID" property="allocateResStorageSid" jdbcType="VARCHAR"/>
+        <result column="MANAGEMENT_ACCOUNT" property="managementAccount" jdbcType="VARCHAR"/>
+        <result column="MANAGEMENT_PASSWORD" property="managementPassword" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP"/>
+        <result column="VERSION" property="version" jdbcType="BIGINT"/>
+        <result column="IMAGE_STATUS" property="imageStatus" jdbcType="VARCHAR"/>
+        <result column="RES_TOPOLOGY_NAME" property="resTopologyName" jdbcType="VARCHAR"/>
+        <result column="RES_TOPOLOGY_SID" property="resTopologySid" jdbcType="VARCHAR"/>
+        <result column="RES_TOPOLOGY_NAME_VE" property="resTopologyNameVE" jdbcType="VARCHAR"/>
+        <result column="RES_TOPOLOGY_NAME_DC" property="resTopologyNameDC" jdbcType="VARCHAR"/>
+        <result column="RES_TOPOLOGY_NAME_R" property="resTopologyNameR" jdbcType="VARCHAR"/>
+        <result column="ALLOCATE_RES_HOST_NAME" property="allocateResHostName" jdbcType="VARCHAR"/>
+        <result column="ALLOCATE_RES_STORAGE_NAME" property="allocateResStorageName" jdbcType="VARCHAR"/>
+        <result column="INSTALLED_SOFTWARE" property="installedSoftware" jdbcType="VARCHAR"/>
+        <result column="SOFTWARE_TYPE" property="softwareType" jdbcType="VARCHAR"/>
+        <result column="SOFTWARE_VERSION" property="softwareVersion" jdbcType="VARCHAR"/>
+        <result column="RES_VE_SID_TP" property="resVeSidTp" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.imageId != null">
+                and A.IMAGE_ID = #{condition.imageId}
+            </if>
+            <if test="condition.resTopologyNameVE != null">
+                and A.RES_VE_SID like concat('%', #{condition.resTopologyNameVE},'%')
+            </if>
+            <if test="condition.resTopologyNameDC != null">
+                and D.RES_TOPOLOGY_SID = #{condition.resTopologyNameDC}
+            </if>
+            <if test="condition.resTopologyNameR != null">
+                and E.RES_TOPOLOGY_SID = #{condition.resTopologyNameR}
+            </if>
+            <if test="condition.uuid != null">
+                and A.UUID = #{condition.uuid}
+            </if>
+            <if test="condition.mgtObjSid != null">
+                and A.MGT_OBJ_SID = #{condition.mgtObjSid}
+            </if>
+            <if test="condition.imageName != null">
+                and A.IMAGE_NAME = #{condition.imageName}
+            </if>
+            <if test="condition.imageNameLike != null">
+                and A.IMAGE_NAME like concat('%', #{condition.imageNameLike},'%')
+            </if>
+            <if test="condition.imageType != null">
+                and A.IMAGE_TYPE = #{condition.imageType}
+            </if>
+            <if test="condition.resVeSid != null">
+                and A.RES_VE_SID = #{condition.resVeSid}
+            </if>
+            <if test="condition.resVeSidLike != null">
+                and A.RES_VE_SID like concat('%', #{condition.resVeSidLike},'%')
+            </if>
+            <if test="condition.resVeSidList != null">
+                and A.RES_VE_SID in
+                <foreach item="item" index="index" collection="condition.resVeSidList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="condition.imageSize != null">
+                and A.IMAGE_SIZE = #{condition.imageSize}
+            </if>
+            <if test="condition.osType != null">
+                and A.OS_TYPE = #{condition.osType}
+            </if>
+            <if test="condition.osVersion != null">
+                and A.OS_VERSION = #{condition.osVersion}
+            </if>
+            <if test="condition.allocateResHostSid != null">
+                and A.ALLOCATE_RES_HOST_SID = #{condition.allocateResHostSid}
+            </if>
+            <if test="condition.allocateResStorageSid != null">
+                and A.ALLOCATE_RES_STORAGE_SID = #{condition.allocateResStorageSid}
+            </if>
+            <if test="condition.managementAccount != null">
+                and A.MANAGEMENT_ACCOUNT = #{condition.managementAccount}
+            </if>
+            <if test="condition.managementPassword != null">
+                and A.MANAGEMENT_PASSWORD = #{condition.managementPassword}
+            </if>
+            <if test="condition.status != null">
+                and A.STATUS = #{condition.status}
+            </if>
+            <if test="condition.createdBy != null">
+                and A.CREATED_BY = #{condition.createdBy}
+            </if>
+            <if test="condition.createdDt != null">
+                and A.CREATED_DT = #{condition.createdDt}
+            </if>
+            <if test="condition.updatedBy != null">
+                and A.UPDATED_BY = #{condition.updatedBy}
+            </if>
+            <if test="condition.updatedDt != null">
+                and A.UPDATED_DT = #{condition.updatedDt}
+            </if>
+            <if test="condition.version != null">
+                and A.VERSION = #{condition.version}
+            </if>
+            <if test="condition.installedSoftware != null">
+                and A.INSTALLED_SOFTWARE = #{condition.installedSoftware}
+            </if>
+            <if test="condition.resTopologySid != null">
+                and RES_VE_SID in (SELECT R.RES_TOPOLOGY_SID FROM res_topology R WHERE
+                FIND_IN_SET(R.RES_TOPOLOGY_SID,getResTopologyChildList (#{condition.resTopologySid})) and
+                R.RES_TOPOLOGY_TYPE = 'VE')
+            </if>
+            <if test="condition.findChildBySid != null">
+                and FIND_IN_SET(A.PARENT_TOPOLOGY_SID,getResTopologyChildList(#{condition.findChildBySid}))
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        A.RES_IMAGE_SID, A.IMAGE_ID, A.INSTALLED_SOFTWARE, A.UUID, A.IMAGE_NAME, A.IMAGE_TYPE, A.RES_VE_SID,
+        A.IMAGE_SIZE, A.OS_TYPE,A.MGT_OBJ_SID,
+        A.OS_VERSION, A.ALLOCATE_RES_HOST_SID, A.ALLOCATE_RES_STORAGE_SID, A.MANAGEMENT_ACCOUNT,
+        A.MANAGEMENT_PASSWORD, A.STATUS, A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, A.UPDATED_DT, A.VERSION
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        <!-- 	<if test="condition.resTopologySid != null" >
+               call getResTopologyChildList(#{condition.resTopologySid});
+          </if> -->
+        SELECT
+        A.RES_VE_SID AS RES_VE_SID_TP,
+        A.RES_IMAGE_SID AS RES_IMAGE_SID,
+        A.IMAGE_ID AS IMAGE_ID,
+        A.IMAGE_NAME AS IMAGE_NAME,
+        A.RES_VE_SID AS RES_VE_SID,
+        A.IMAGE_SIZE AS IMAGE_SIZE,
+        A.OS_TYPE AS OS_TYPE,
+        A.ALLOCATE_RES_HOST_SID AS ALLOCATE_RES_HOST_SID,
+        A.ALLOCATE_RES_STORAGE_SID AS ALLOCATE_RES_STORAGE_SID,
+        A.MANAGEMENT_ACCOUNT AS MANAGEMENT_ACCOUNT,
+        A.MANAGEMENT_PASSWORD AS MANAGEMENT_PASSWORD,
+        A.CREATED_BY AS CREATED_BY,
+        A.CREATED_DT AS CREATED_DT,
+        A.UPDATED_BY AS UPDATED_BY,
+        A.UPDATED_DT AS UPDATED_DT,
+        A.VERSION AS VERSION,
+        A.MGT_OBJ_SID AS MGT_OBJ_SID,
+
+        <!-- C.RES_TOPOLOGY_NAME AS RES_TOPOLOGY_NAME_VE,
+        D.RES_TOPOLOGY_NAME AS RES_TOPOLOGY_NAME_DC,
+        E.RES_TOPOLOGY_NAME AS RES_TOPOLOGY_NAME_R, -->
+        F.CODE_DISPLAY AS IMAGE_TYPE_NAME,
+        H.CODE_DISPLAY AS OS_VERSION_NAME,
+        <!-- 		K.CODE_DISPLAY AS OS_TYPE, -->
+        I.CODE_DISPLAY AS IMAGE_STATUS,
+        <include refid="Base_Column_List"/>
+        <if test="distinct">
+            distinct
+        </if>
+        FROM
+        res_image A
+        <!-- INNER JOIN res_ve B ON (A.RES_VE_SID = B.RES_TOPOLOGY_SID)
+        LEFT JOIN res_topology C ON (B.RES_TOPOLOGY_SID = C.RES_TOPOLOGY_SID)
+        LEFT JOIN res_topology D ON (C.PARENT_TOPOLOGY_SID = D.RES_TOPOLOGY_SID)
+        LEFT JOIN res_topology E ON (D.PARENT_TOPOLOGY_SID = E.RES_TOPOLOGY_SID) -->
+        LEFT JOIN sys_m_code F ON (A.IMAGE_TYPE = F.CODE_VALUE AND F.CODE_CATEGORY = 'IMAGE_TYPE')
+        LEFT JOIN sys_m_code H ON (A.OS_VERSION = H.CODE_VALUE AND H.CODE_CATEGORY = 'OS_VERSION')
+        LEFT JOIN sys_m_code G ON (A.OS_TYPE = G.CODE_VALUE AND G.CODE_CATEGORY = 'OS_TYPE')
+        Left join sys_m_code K on (H.PARENT_CODE_VALUE = K.CODE_VALUE and K.CODE_CATEGORY = 'OS_TYPE')
+        LEFT JOIN sys_m_code I ON (A.STATUS = I.CODE_VALUE AND I.CODE_CATEGORY = 'IMAGE_STATUS')
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <select id="selectOSVersionByParams" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        <!-- <if test="condition.resTopologySid != null" >
+           call getResTopologyChildList(#{condition.resTopologySid});
+      </if> -->
+        SELECT
+        A.RES_IMAGE_SID AS RES_IMAGE_SID,
+        A.IMAGE_ID AS IMAGE_ID,
+        A.IMAGE_NAME AS IMAGE_NAME,
+        A.RES_VE_SID AS RES_VE_SID,
+        A.IMAGE_SIZE AS IMAGE_SIZE,
+        A.OS_TYPE AS OS_TYPE,
+        A.ALLOCATE_RES_HOST_SID AS ALLOCATE_RES_HOST_SID,
+        A.ALLOCATE_RES_STORAGE_SID AS ALLOCATE_RES_STORAGE_SID,
+        A.MANAGEMENT_ACCOUNT AS MANAGEMENT_ACCOUNT,
+        A.MANAGEMENT_PASSWORD AS MANAGEMENT_PASSWORD,
+        A.CREATED_BY AS CREATED_BY,
+        A.CREATED_DT AS CREATED_DT,
+        A.UPDATED_BY AS UPDATED_BY,
+        A.UPDATED_DT AS UPDATED_DT,
+        A.VERSION AS VERSION,
+        A.MGT_OBJ_SID AS MGT_OBJ_SID,
+        C.RES_TOPOLOGY_NAME AS RES_TOPOLOGY_NAME_VE,
+        D.RES_TOPOLOGY_NAME AS RES_TOPOLOGY_NAME_DC,
+        E.RES_TOPOLOGY_NAME AS RES_TOPOLOGY_NAME_R,
+        F.CODE_DISPLAY AS IMAGE_TYPE_NAME,
+        H.CODE_DISPLAY AS OS_VERSION_NAME,
+        I.CODE_DISPLAY AS IMAGE_STATUS,
+        <include refid="Base_Column_List"/>
+        <if test="distinct">
+            distinct
+        </if>
+        FROM res_image A
+        INNER JOIN res_ve B ON (A.RES_VE_SID LIKE CONCAT('%',B.RES_TOPOLOGY_SID,'%'))
+        LEFT JOIN res_topology C ON (B.RES_TOPOLOGY_SID = C.RES_TOPOLOGY_SID)
+        LEFT JOIN res_topology D ON (C.PARENT_TOPOLOGY_SID = D.RES_TOPOLOGY_SID)
+        LEFT JOIN res_topology E ON (D.PARENT_TOPOLOGY_SID = E.RES_TOPOLOGY_SID)
+        LEFT JOIN sys_m_code F ON (A.IMAGE_TYPE = F.CODE_VALUE AND F.CODE_CATEGORY = 'IMAGE_TYPE')
+        LEFT JOIN sys_m_code H ON (A.OS_VERSION = H.CODE_VALUE AND H.CODE_CATEGORY = 'OS_VERSION')
+        LEFT JOIN sys_m_code G ON (A.OS_TYPE = G.CODE_VALUE AND G.CODE_CATEGORY = 'OS_TYPE')
+        Left join sys_m_code K on (H.PARENT_CODE_VALUE = K.CODE_VALUE and K.CODE_CATEGORY = 'OS_TYPE')
+        LEFT JOIN sys_m_code I ON (A.STATUS = I.CODE_VALUE AND I.CODE_CATEGORY = 'IMAGE_STATUS')
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        GROUP BY A.OS_VERSION
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_image A
+        where A.RES_IMAGE_SID = #{resImageSid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_image
+        where RES_IMAGE_SID = #{resImageSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_image A
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResImage">
+        <selectKey resultType="java.lang.String" keyProperty="resImageSid" order="BEFORE">
+            SELECT UUID()
+        </selectKey>
+        insert into res_image (RES_IMAGE_SID, IMAGE_ID, INSTALLED_SOFTWARE, UUID, IMAGE_NAME, IMAGE_TYPE, RES_VE_SID,
+        IMAGE_SIZE,MGT_OBJ_SID,
+        OS_TYPE, OS_VERSION, ALLOCATE_RES_HOST_SID, ALLOCATE_RES_STORAGE_SID, MANAGEMENT_ACCOUNT,
+        MANAGEMENT_PASSWORD, STATUS, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT,
+        VERSION)
+        values (#{resImageSid}, #{imageId}, #{installedSoftware}, #{uuid}, #{imageName}, #{imageType}, #{resVeSid},
+        #{imageSize},#{mgtObjSid}
+        #{osType}, #{osVersion}, #{allocateResHostSid}, #{allocateResStorageSid}, #{managementAccount},
+        #{managementPassword}, #{status}, #{createdBy}, #{createdDt}, #{updatedBy}, #{updatedDt},
+        #{version})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResImage">
+        <selectKey resultType="java.lang.String" keyProperty="resImageSid" order="BEFORE">
+            SELECT UUID()
+        </selectKey>
+        insert into res_image
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            RES_IMAGE_SID,
+            <if test="imageId != null">
+                IMAGE_ID,
+            </if>
+            <if test="uuid != null">
+                UUID,
+            </if>
+            <if test="mgtObjSid != null">
+                MGT_OBJ_SID,
+            </if>
+            <if test="installedSoftware != null">
+                INSTALLED_SOFTWARE,
+            </if>
+            <if test="imageName != null">
+                IMAGE_NAME,
+            </if>
+            <if test="imageType != null">
+                IMAGE_TYPE,
+            </if>
+            <if test="resVeSid != null">
+                RES_VE_SID,
+            </if>
+            <if test="imageSize != null">
+                IMAGE_SIZE,
+            </if>
+            <if test="osType != null">
+                OS_TYPE,
+            </if>
+            <if test="osVersion != null">
+                OS_VERSION,
+            </if>
+            <if test="allocateResHostSid != null">
+                ALLOCATE_RES_HOST_SID,
+            </if>
+            <if test="allocateResStorageSid != null">
+                ALLOCATE_RES_STORAGE_SID,
+            </if>
+            <if test="managementAccount != null">
+                MANAGEMENT_ACCOUNT,
+            </if>
+            <if test="managementPassword != null">
+                MANAGEMENT_PASSWORD,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+            <if test="version != null">
+                VERSION,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{resImageSid},
+            <if test="imageId != null">
+                #{imageId},
+            </if>
+            <if test="uuid != null">
+                #{uuid},
+            </if>
+            <if test="mgtObjSid != null">
+                #{mgtObjSid},
+            </if>
+            <if test="installedSoftware != null">
+                #{installedSoftware},
+            </if>
+            <if test="imageName != null">
+                #{imageName},
+            </if>
+            <if test="imageType != null">
+                #{imageType},
+            </if>
+            <if test="resVeSid != null">
+                #{resVeSid},
+            </if>
+            <if test="imageSize != null">
+                #{imageSize},
+            </if>
+            <if test="osType != null">
+                #{osType},
+            </if>
+            <if test="osVersion != null">
+                #{osVersion},
+            </if>
+            <if test="allocateResHostSid != null">
+                #{allocateResHostSid},
+            </if>
+            <if test="allocateResStorageSid != null">
+                #{allocateResStorageSid},
+            </if>
+            <if test="managementAccount != null">
+                #{managementAccount},
+            </if>
+            <if test="managementPassword != null">
+                #{managementPassword},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        <!-- 	<if test="condition.resTopologySid != null" >
+              call getResTopologyChildList(#{condition.resTopologySid});
+         </if> -->
+        SELECT
+        COUNT(*)
+        FROM
+        res_image A
+        <!-- INNER JOIN res_ve B ON (A.RES_VE_SID = B.RES_TOPOLOGY_SID)
+        LEFT JOIN res_topology C ON (B.RES_TOPOLOGY_SID = C.RES_TOPOLOGY_SID)
+        LEFT JOIN res_topology D ON (C.PARENT_TOPOLOGY_SID = D.RES_TOPOLOGY_SID)
+        LEFT JOIN res_topology E ON (D.PARENT_TOPOLOGY_SID = E.RES_TOPOLOGY_SID) -->
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_image
+        <set>
+            <if test="record.resImageSid != null">
+                RES_IMAGE_SID = #{record.resImageSid},
+            </if>
+            <if test="record.imageId != null">
+                IMAGE_ID = #{record.imageId},
+            </if>
+            <if test="record.installedSoftware != null">
+                INSTALLED_SOFTWARE = #{record.installedSoftware},
+            </if>
+            <if test="record.uuid != null">
+                UUID = #{record.uuid},
+            </if>
+            <if test="record.mgtObjSid != null">
+                MGT_OBJ_SID = #{record.mgtObjSid},
+            </if>
+            <if test="record.imageName != null">
+                IMAGE_NAME = #{record.imageName},
+            </if>
+            <if test="record.imageType != null">
+                IMAGE_TYPE = #{record.imageType},
+            </if>
+            <if test="record.resVeSid != null">
+                RES_VE_SID = #{record.resVeSid},
+            </if>
+            <if test="record.imageSize != null">
+                IMAGE_SIZE = #{record.imageSize},
+            </if>
+            <if test="record.osType != null">
+                OS_TYPE = #{record.osType},
+            </if>
+            <if test="record.osVersion != null">
+                OS_VERSION = #{record.osVersion},
+            </if>
+            <if test="record.allocateResHostSid != null">
+                ALLOCATE_RES_HOST_SID = #{record.allocateResHostSid},
+            </if>
+            <if test="record.allocateResStorageSid != null">
+                ALLOCATE_RES_STORAGE_SID = #{record.allocateResStorageSid},
+            </if>
+            <if test="record.managementAccount != null">
+                MANAGEMENT_ACCOUNT = #{record.managementAccount},
+            </if>
+            <if test="record.managementPassword != null">
+                MANAGEMENT_PASSWORD = #{record.managementPassword},
+            </if>
+            <if test="record.status != null">
+                STATUS = #{record.status},
+            </if>
+            <if test="record.createdBy != null">
+                CREATED_BY = #{record.createdBy},
+            </if>
+            <if test="record.createdDt != null">
+                CREATED_DT = #{record.createdDt},
+            </if>
+            <if test="record.updatedBy != null">
+                UPDATED_BY = #{record.updatedBy},
+            </if>
+            <if test="record.updatedDt != null">
+                UPDATED_DT = #{record.updatedDt},
+            </if>
+            <if test="record.version != null">
+                VERSION = #{record.version},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_image
+        set RES_IMAGE_SID = #{record.resImageSid},
+        IMAGE_ID = #{record.imageId},
+        IMAGE_NAME = #{record.imageName},
+        IMAGE_TYPE = #{record.imageType},
+        RES_VE_SID = #{record.resVeSid},
+        MGT_OBJ_SID = #{record.mgtObjSid},
+        UUID = #{record.uuid},
+        IMAGE_SIZE = #{record.imageSize},
+        OS_TYPE = #{record.osType},
+        OS_VERSION = #{record.osVersion},
+        ALLOCATE_RES_HOST_SID = #{record.allocateResHostSid},
+        ALLOCATE_RES_STORAGE_SID = #{record.allocateResStorageSid},
+        MANAGEMENT_ACCOUNT = #{record.managementAccount},
+        MANAGEMENT_PASSWORD = #{record.managementPassword},
+        STATUS = #{record.status},
+        CREATED_BY = #{record.createdBy},
+        CREATED_DT = #{record.createdDt},
+        UPDATED_BY = #{record.updatedBy},
+        UPDATED_DT = #{record.updatedDt},
+        VERSION = #{record.version}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResImage">
+        update res_image
+        <set>
+            <if test="imageId != null">
+                IMAGE_ID = #{imageId},
+            </if>
+            <if test="uuid != null">
+                UUID = #{uuid},
+            </if>
+            <if test="mgtObjSid != null">
+                MGT_OBJ_SID = #{mgtObjSid},
+            </if>
+            <if test="installedSoftware != null">
+                INSTALLED_SOFTWARE = #{installedSoftware},
+            </if>
+            <if test="imageName != null">
+                IMAGE_NAME = #{imageName},
+            </if>
+            <if test="imageType != null">
+                IMAGE_TYPE = #{imageType},
+            </if>
+            <if test="resVeSid != null">
+                RES_VE_SID = #{resVeSid},
+            </if>
+            <if test="imageSize != null">
+                IMAGE_SIZE = #{imageSize},
+            </if>
+            <if test="osType != null">
+                OS_TYPE = #{osType},
+            </if>
+            <if test="osVersion != null">
+                OS_VERSION = #{osVersion},
+            </if>
+            <if test="allocateResHostSid != null">
+                ALLOCATE_RES_HOST_SID = #{allocateResHostSid},
+            </if>
+            <if test="allocateResStorageSid != null">
+                ALLOCATE_RES_STORAGE_SID = #{allocateResStorageSid},
+            </if>
+            <if test="managementAccount != null">
+                MANAGEMENT_ACCOUNT = #{managementAccount},
+            </if>
+            <if test="managementPassword != null">
+                MANAGEMENT_PASSWORD = #{managementPassword},
+            </if>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt},
+            </if>
+            <if test="version != null">
+                VERSION = #{version},
+            </if>
+        </set>
+        where RES_IMAGE_SID = #{resImageSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResImage">
+        update res_image
+        set IMAGE_ID = #{imageId},
+        IMAGE_NAME = #{imageName},
+        IMAGE_TYPE = #{imageType},
+        RES_VE_SID = #{resVeSid},
+        IMAGE_SIZE = #{imageSize},
+        MGT_OBJ_SID = #{mgtObjSid},
+        UUID = #{uuid},
+        OS_TYPE = #{osType},
+        OS_VERSION = #{osVersion},
+        ALLOCATE_RES_HOST_SID = #{allocateResHostSid},
+        ALLOCATE_RES_STORAGE_SID = #{allocateResStorageSid},
+        MANAGEMENT_ACCOUNT = #{managementAccount},
+        MANAGEMENT_PASSWORD = #{managementPassword},
+        STATUS = #{status},
+        CREATED_BY = #{createdBy},
+        CREATED_DT = #{createdDt},
+        UPDATED_BY = #{updatedBy},
+        UPDATED_DT = #{updatedDt},
+        VERSION = #{version}
+        where RES_IMAGE_SID = #{resImageSid}
+    </update>
+</mapper>

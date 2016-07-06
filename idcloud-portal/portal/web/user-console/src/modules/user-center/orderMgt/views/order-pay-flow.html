@@ -1,0 +1,28 @@
+<!--订单流程页面 -->
+<script type="text/javascript">
+     require(["app-utils/variableService",
+              "app-modules/user-center/orderMgt/vmodel/order-pay-flow",
+              "app-utils/$extendService"],function(variable,flow){
+         var urlPath = window.location.href.split("#!")[1];
+         // 订单未支付，从第二步开始
+         if("/user/expense/order" == urlPath){
+             flow.confirmPage ="";
+             flow.toPayPage();
+         }else{
+             flow.confirmPage = variable.app_modules + "/user-center/orderMgt/views/order-pay-one.html";
+         }
+         avalon.scan();
+     });
+</script>
+
+<div id="orderPayFlowContainer" class="line" ms-controller="orderPayFlow">
+
+    <!-- 1、确认页面 -->
+    <div id="firstDIV" class="show" ms-include-src="confirmPage"></div>
+
+    <!-- 2、支付 -->
+    <div id="secondDIV" class="hidden" ms-include-src="payPage"></div>
+
+    <!-- 3、支付结果(成功/失败) -->
+    <div id="thirdDIV" class="hidden" ms-include-src="payResultPage"></div>
+</div>

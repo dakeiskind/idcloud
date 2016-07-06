@@ -1,0 +1,47 @@
+<form id="addSubUserForm">
+    <table border="0" class="custom-table" ms-controller="subUserAdd">
+        <tr>
+            <td class="required">账号：</td>
+            <td>
+                <input id="account" type="text" ms-duplex="addSubUserData['account']" name="account" style="width:220px" class="input text-small radius-none">
+            </td>
+        </tr>
+        <tr>
+            <td class="required">手机号码：</td>
+            <td>
+                <input id="mobile" type="text" ms-duplex="addSubUserData['mobile']" name="mobile" style="width:220px" class="input text-small radius-none">
+            </td>
+        </tr>
+        <tr>
+            <td class="required">登陆邮箱：</td>
+            <td>
+                <input id="email" type="text" ms-duplex="addSubUserData['email']" name="email" style="width:220px" class="input text-small radius-none">
+            </td>
+        </tr>
+        <tr>
+            <td class="required">登陆密码：</td>
+            <td>
+                <input id="password" type="password" ms-duplex="addSubUserData['password']" name="password" style="width:220px" class="input text-small radius-none">
+            </td>
+        </tr>
+        <tr>
+            <td class="required">确认密码：</td>
+            <td>
+                <input id="confirmPwd" type="password"   style="width:220px" class="input text-small radius-none">
+            </td>
+        </tr>
+    </table>
+</form>
+<script type="text/javascript">
+    require(["app-modules/user-center/userMgt/vmodel/user-sub-add"],function(subAdd){
+        // 初始化数据
+        subAdd.addSubUserData = {
+            account:null,
+            mobile:null,
+            email:null,
+            password:null,
+        };
+        subAdd.initValidator();
+        avalon.scan();
+    });
+</script>

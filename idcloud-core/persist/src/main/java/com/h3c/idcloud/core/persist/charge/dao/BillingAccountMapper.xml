@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.charge.dao.BillingAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.charge.BillingAccount" >
+    <id column="ACCOUNT_SID" property="accountSid" jdbcType="BIGINT" />
+    <result column="BALANCE" property="balance" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+    <result column="ACCOUNT_NAME" property="accountName" jdbcType="VARCHAR" />
+    <result column="DEFAULT_SPACE" property="defaultSpace" jdbcType="BIGINT" />
+    <result column="ORDER_SPACE" property="orderSpace" jdbcType="BIGINT" />
+    <result column="USABLE_CREDIT" property="usableCredit" jdbcType="VARCHAR" />
+    <result column="GIFT_BALANCE" property="giftBalance" jdbcType="DECIMAL" />
+    <result column="ACCOUNT_LEVEL_SID" property="accountLevelSid" jdbcType="BIGINT" />
+    <result column="ACCOUNT_TYPE" property="accountType" jdbcType="VARCHAR" />
+    <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR" />
+    <result column="ACCOUNT_TYPE_NAME" property="accountTypeName" jdbcType="VARCHAR" />
+    <result column="ACCOUNT_LEVEL_NAME" property="accountLevelName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.balance != null" >
+         and A.BALANCE = #{condition.balance}
+      </if>
+      <if test="condition.status != null" >
+         and A.STATUS = #{condition.status}
+      </if>
+      <if test="condition.createdBy != null" >
+         and A.CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and A.CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and A.UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and A.UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and A.VERSION = #{condition.version}
+      </if>
+      <if test="condition.accountName != null" >
+        and A.ACCOUNT_NAME = #{condition.accountName}
+      </if>
+      <if test="condition.defaultSpace != null" >
+        and A.DEFAULT_SPACE = #{condition.defaultSpace}
+      </if>
+      <if test="condition.orderSpace != null" >
+        and A.ORDER_SPACE = #{condition.orderSpace}
+      </if>
+      <if test="condition.usableCredit != null" >
+        and A.USABLE_CREDIT = #{condition.usableCredit}
+      </if>
+      <if test="condition.giftBalance != null" >
+        and A.GIFT_BALANCE = #{condition.giftBalance}
+      </if>
+      <if test="condition.accountLevelSid != null" >
+        and A.ACCOUNT_LEVEL_SID = #{condition.accountLevelSid}
+      </if>
+      <if test="condition.accountType != null" >
+        and A.ACCOUNT_TYPE = #{condition.accountType}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    A.ACCOUNT_SID,A.BALANCE,
+    A.STATUS, A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, A.UPDATED_DT, A.VERSION,
+    A.ACCOUNT_NAME,A.DEFAULT_SPACE,A.ORDER_SPACE,A.USABLE_CREDIT,A.GIFT_BALANCE,
+    A.ACCOUNT_LEVEL_SID,A.ACCOUNT_TYPE
+  </sql>
+  <!--
+  <select id="selectByUserSid" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    FROM BILLING_ACCOUNT A
+    INNER JOIN billing_account_mgt_obj B on(A.ACCOUNT_SID = B.ACCOUNT_SID)
+    INNER JOIN sys_m_user C on(c.MGT_OBJ_SID = B.MGT_OBJ_SID)
+    where C.USER_SID = #{condition.userSid}
+  </select>
+  -->
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    , S1.CODE_DISPLAY ACCOUNT_TYPE_NAME
+    , S2.CODE_DISPLAY STATUS_NAME
+    , L.LEVEL_NAME ACCOUNT_LEVEL_NAME
+    FROM BILLING_ACCOUNT A
+    LEFT JOIN SYS_M_CODE S1 ON (S1.CODE_CATEGORY='ACCOUNT_TYPE' AND S1.CODE_VALUE=A.ACCOUNT_TYPE)
+    LEFT JOIN SYS_M_CODE S2 ON (S2.CODE_CATEGORY='ACCOUNT_STATUS' AND S2.CODE_VALUE=A.`STATUS`)
+    LEFT JOIN SYS_M_ACCOUNT_LEVEL L ON L.LEVEL_SID=A.ACCOUNT_LEVEL_SID
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from BILLING_ACCOUNT A
+    where A.ACCOUNT_SID = #{accountSid}
+  </select>
+  <select id="selectByPrimaryKeyForUpdate" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from BILLING_ACCOUNT A
+    where A.ACCOUNT_SID = #{accountSid} for update
+  </select>
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from BILLING_ACCOUNT A left join BILLING_ACCOUNT_MGT_OBJ B on(A.ACCOUNT_SID = B.ACCOUNT_SID)
+    left join SYS_M_USER C on(C.MGT_OBJ_SID = B.MGT_OBJ_SID) 
+	where C.USER_SID = #{userId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from BILLING_ACCOUNT
+    where ACCOUNT_SID = #{accountSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from BILLING_ACCOUNT
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingAccount" >
+    insert into BILLING_ACCOUNT (ACCOUNT_SID, 
+      BALANCE, STATUS, CREATED_BY, CREATED_DT, 
+      UPDATED_BY, UPDATED_DT, VERSION)
+    values (#{accountSid},
+      #{balance}, #{status}, #{createdBy}, #{createdDt}, 
+      #{updatedBy}, #{updatedDt}, #{version})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingAccount" >
+    <selectKey resultType="java.lang.Long" keyProperty="accountSid" order="BEFORE">
+			SELECT NEXTVAL('SEQ_BILLINGACCOUNT')
+	</selectKey>
+    insert into BILLING_ACCOUNT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        ACCOUNT_SID,
+      <if test="balance != null" >
+        BALANCE,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+      <if test="accountName != null" >
+        ACCOUNT_NAME,
+      </if>
+      <if test="defaultSpace != null" >
+        DEFAULT_SPACE,
+      </if>
+      <if test="orderSpace != null" >
+        ORDER_SPACE,
+      </if>
+      <if test="usableCredit != null" >
+        USABLE_CREDIT,
+      </if>
+      <if test="giftBalance != null" >
+        GIFT_BALANCE,
+      </if>
+      <if test="accountType != null" >
+        ACCOUNT_TYPE,
+      </if>
+      <if test="accountLevelSid != null" >
+        ACCOUNT_LEVEL_SID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{accountSid},
+      <if test="balance != null" >
+        #{balance},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+      <if test="accountName != null" >
+        #{accountName},
+      </if>
+      <if test="defaultSpace != null" >
+        #{defaultSpace},
+      </if>
+      <if test="orderSpace != null" >
+        #{orderSpace},
+      </if>
+      <if test="usableCredit != null" >
+        #{usableCredit},
+      </if>
+      <if test="giftBalance != null" >
+        #{giftBalance},
+      </if>
+      <if test="accountType != null" >
+        #{accountType},
+      </if>
+      <if test="accountLevelSid != null" >
+        #{accountLevelSid},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from BILLING_ACCOUNT
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update BILLING_ACCOUNT A
+    <set >
+      <if test="record.accountSid != null" >
+        A.ACCOUNT_SID = #{record.accountSid},
+      </if>
+      <if test="record.balance != null" >
+        A.BALANCE = #{record.balance},
+      </if>
+      <if test="record.status != null" >
+        A.STATUS = #{record.status},
+      </if>
+      <if test="record.createdBy != null" >
+        A.CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        A.CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        A.UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        A.UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        A.VERSION = #{record.version},
+      </if>
+      <if test="record.accountName != null" >
+        A.ACCOUNT_NAME = #{record.accountName},
+      </if>
+      <if test="record.defaultSpace != null" >
+        A.DEFAULT_SPACE = #{record.defaultSpace},
+      </if>
+      <if test="record.orderSpace != null" >
+        A.ORDER_SPACE = #{record.orderSpace},
+      </if>
+      <if test="record.usableCredit != null" >
+        A.USABLE_CREDIT = #{record.usableCredit},
+      </if>
+      <if test="record.giftBalance != null" >
+        A.GIFT_BALANCE = #{record.giftBalance},
+      </if>
+      <if test="record.accountType != null" >
+        A.ACCOUNT_TYPE = #{record.accountType},
+      </if>
+      <if test="record.accountLevelSid != null" >
+        A.ACCOUNT_LEVEL_SID = #{record.accountLevelSid},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update BILLING_ACCOUNT
+    set ACCOUNT_SID = #{record.accountSid},
+      BALANCE = #{record.balance},
+      STATUS = #{record.status},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingAccount" >
+    update BILLING_ACCOUNT
+    <set >
+      <if test="balance != null" >
+        BALANCE = #{balance},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+      <if test="accountName != null" >
+        ACCOUNT_NAME = #{accountName},
+      </if>
+      <if test="defaultSpace != null" >
+        DEFAULT_SPACE = #{defaultSpace},
+      </if>
+      <if test="orderSpace != null" >
+        ORDER_SPACE = #{orderSpace},
+      </if>
+      <if test="usableCredit != null" >
+        USABLE_CREDIT = #{usableCredit},
+      </if>
+      <if test="giftBalance != null" >
+        GIFT_BALANCE = #{giftBalance},
+      </if>
+      <if test="accountType != null" >
+        ACCOUNT_TYPE = #{accountType},
+      </if>
+      <if test="accountLevelSid != null" >
+        ACCOUNT_LEVEL_SID = #{accountLevelSid},
+      </if>
+    </set>
+    where ACCOUNT_SID = #{accountSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingAccount" >
+    update BILLING_ACCOUNT
+    set BALANCE = #{balance},
+      STATUS = #{status},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version}
+    where ACCOUNT_SID = #{accountSid}
+  </update>
+</mapper>

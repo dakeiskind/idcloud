@@ -1,0 +1,161 @@
+<div ms-controller="orderMgt">
+    <div id="orderList">
+        <div class="line">
+            <div class="xs12 margin-small-bottom top-height">
+                <div class="xs8">
+                    <div class="float-left text-large">{{title}}</div>
+                </div>
+            </div>
+            <hr>
+            <div class="xs12 margin-bottom">
+                <div class="search_div">
+                    <div class="search_div_02">产品：</div>
+                    <div class="search_div_01">
+                        <select class="select text-small radius-none" id="productName">
+                            <option value="" selected>全部</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="search_div">
+                    <div class="search_div_02">订单类型：</div>
+                    <div class="search_div_01">
+                        <select class="select text-small radius-none" id="orderType">
+                            <option value="" selected>全部</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="search_div">
+                    <div class="search_div_02">支付状态：</div>
+                    <div class="search_div_01">
+                        <select class="select text-small radius-none" id="payStatus">
+                            <option value="" selected>全部</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="search_div">
+                    <div class="search_div_02">开始时间：</div>
+                    <div class="search_div_01">
+                        <div id="beginDate" class="input-append date">
+                            <input type="text" class="input input-small radius-none floating-left" id="beginDateFile">
+                            <span class="add-on radius-none"><i class="icon-th"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="search_div">
+                    <div class="search_div_02">至</div>
+                    <div class="search_div_01">
+                        <div id="endDate" class="input-append date">
+                            <input type="text"
+                                   class="input input-small radius-none floating-left"
+                                   id="endDateFile">
+                            <span class="add-on radius-none"><i class="icon-th"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="search_div_L">
+                    <div class="search_div_button">
+                        <button class="button button-small radius-none" ms-click="search()">
+                            <span class="icon-search"></span>
+                            查询
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="orderGrid" class="grid"></div>
+        </div>
+    </div>
+    <!-- 详情 -->
+    <div id="orderDetail" class="change hidden">
+        <div class="line">
+            <div class="xs12 margin-small-bottom top-height">
+                <div class="xs12">
+                    <div class="float-left text-large">
+                        <i class="icon-arrow-left text-blue" ms-click="backList()"></i>
+                        订单编号：{{rowdata.orderId}}
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="xs12 alert alert-little alert-red radius-none margin-bottom" id="detail-msg">
+                订单状态：<span class="">{{rowdata.statusName}}</span> 请于 {{rowdata.timePurchase}} 前完成支付，若未及时付款，系统将自动取消订单。
+            </div>
+            <div class="xs12 margin-bottom">
+                <div class="xs12 alert radius-none padding">
+                    订单概要
+                </div>
+                <div class="xs12">
+                    <div class="xs6 padding border-left-right border-bottom radius-none ellipsiss">
+                        订单编号：{{rowdata.orderId}}
+                    </div>
+                    <div class="xs6 padding border-bottom border-right radius-none ellipsiss">
+                        订单类型：{{rowdata.orderTypeName}}
+                    </div>
+                </div>
+                <div class="xs12">
+                    <div class="xs6 padding border-left-right border-bottom radius-none ellipsiss">
+                        创建时间：{{rowdata.createdDt}}
+                    </div>
+                    <div class="xs6 padding border-bottom border-right radius-none ellipsiss">
+                        支付时间：{{rowdata.timePurchase}}
+                    </div>
+                </div>
+                <div class="xs12">
+                    <div class="xs6 padding border-left-right border-bottom radius-none ellipsiss">
+                        支付状态：{{rowdata.statusName}}
+                    </div>
+                    <div class="xs6 padding border-bottom border-right radius-none ellipsiss">
+                        支付金额：<span class="text-yellow">￥{{rowdata.amount}}.00</span>
+                    </div>
+                </div>
+                <div class="xs12 padding border-left-right border-bottom radius-none">
+                    <button class="button button-little radius-none float-right margin-small-left" id="cancelBtn" type="button" ms-click="cancel()">
+                        取消订单
+                    </button>
+                    <button class="button button-little bg-blue radius-none float-right" id="payBtn" type="button" ms-click="goConfirm()">
+                        立即支付
+                    </button>
+                </div>
+            </div>
+            <div class="xs12">
+                <div class="xs12 alert radius-none padding">
+                    订单详情
+                </div>
+                <div class="xs12 border-left-right border-bottom radius-none text-small height-small">
+                    <table width="100%">
+                        <tr >
+                            <td class="xs2  text-small padding-small float-inherit">产品</td>
+                            <td class="xs2  text-small padding-small float-inherit">数量</td>
+                            <td class="xs4  text-small padding-small float-inherit">具体配置</td>
+                            <td class="xs2 text-small padding-small float-inherit">付款方式</td>
+                            <td class="xs2  text-small padding-small float-inherit ">金额
+                            </td>
+                        </tr>
+                        <tr ms-repeat-el="rowdata.orderDetails" class="border-bottom">
+                            <td class="xs2 text-small padding-small float-inherit"
+                                valign="middle"><pre>{{el.serviceName}}</pre></td>
+                            <td class="xs4 text-small padding-small float-inherit"
+                                valign="middle">{{el.quantity}}</td>
+                            <td class="xs4 text-small padding-small float-inherit"
+                                valign="middle"><pre>{{el.specificationDesc}}</pre></td>
+                            <td class="xs2 text-small padding-small float-inherit"
+                                valign="middle">{{el.billingTypeName}}</td>
+                            <td class="xs2 text-small padding-small float-inherit"
+                                valign="middle" align="right">￥{{el.amount}}.00</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="padding text-small" colspan="6" align="right">应付金额：<span
+                                    class="text-yellow">￥{{rowdata.amount}}.00</span></td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="padding text-small" colspan="6" align="right">实际支付金额：<span
+                                    class="text-yellow">￥{{rowdata.amount}}.00</span></td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- 支付 -->
+    <div id="payPage" class="change hidden" ms-include-src="payPage"></div>
+</div>

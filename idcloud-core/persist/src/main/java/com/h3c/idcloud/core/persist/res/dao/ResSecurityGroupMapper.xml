@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResSecurityGroupMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResSecurityGroup">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="SECURITY_GROUP_NAME" property="securityGroupName" jdbcType="VARCHAR"/>
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR"/>
+        <result column="MGT_OBJ_SID" property="mgtObjSid" jdbcType="BIGINT"/>
+        <result column="ZONE" property="zone" jdbcType="VARCHAR"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP"/>
+        <result column="VERSION" property="version" jdbcType="BIGINT"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.securityGroupName != null">
+                and A.SECURITY_GROUP_NAME = #{condition.securityGroupName}
+            </if>
+            <if test="condition.description != null">
+                and A.DESCRIPTION = #{condition.description}
+            </if>
+            <if test="condition.mgtObjSid != null">
+                and A.MGT_OBJ_SID = #{condition.mgtObjSid}
+            </if>
+            <if test="condition.zone != null">
+                and A.ZONE = #{condition.zone}
+            </if>
+            <if test="condition.uuid != null">
+                and A.UUID = #{condition.uuid}
+            </if>
+            <if test="condition.createdBy != null">
+                and A.CREATED_BY = #{condition.createdBy}
+            </if>
+            <if test="condition.createdDt != null">
+                and A.CREATED_DT = #{condition.createdDt}
+            </if>
+            <if test="condition.updatedBy != null">
+                and A.UPDATED_BY = #{condition.updatedBy}
+            </if>
+            <if test="condition.updatedDt != null">
+                and A.UPDATED_DT = #{condition.updatedDt}
+            </if>
+            <if test="condition.version != null">
+                and A.VERSION = #{condition.version}
+            </if>
+            <if test="condition.status != null">
+                and A.STATUS = #{condition.status}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        A.ID, A.SECURITY_GROUP_NAME, A.DESCRIPTION, A.MGT_OBJ_SID, A.ZONE, A.UUID, A.CREATED_BY, A.CREATED_DT,
+        A.UPDATED_BY, A.UPDATED_DT, A.VERSION ,A.STATUS
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>,
+        B.CODE_DISPLAY AS STATUS_NAME
+        from res_security_group A
+        left join sys_m_code B on (B.CODE_CATEGORY = 'SECURITY_GROUP_STATUS' AND B.CODE_VALUE = A.STATUS)
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from res_security_group A
+        where A.ID = #{id}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from res_security_group
+        where ID = #{id}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_security_group
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResSecurityGroup">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="BEFORE">
+            SELECT NEXTVAL('SEQ_RES_SECURITY_GROUP')
+        </selectKey>
+        insert into res_security_group (ID, SECURITY_GROUP_NAME, DESCRIPTION, MGT_OBJ_SID, ZONE, UUID, CREATED_BY,
+        CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION,STATUS)
+        values (#{id}, #{securityGroupName}, #{description}, #{mgtObjSid}, #{zone}, #{uuid}, #{createdBy},
+        #{createdDt}, #{updatedBy}, #{updatedDt}, #{version},#{status})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResSecurityGroup">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="BEFORE">
+            SELECT NEXTVAL('SEQ_RES_SECURITY_GROUP')
+        </selectKey>
+        insert into res_security_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ID,
+            <if test="securityGroupName != null">
+                SECURITY_GROUP_NAME,
+            </if>
+            <if test="description != null">
+                DESCRIPTION,
+            </if>
+            <if test="mgtObjSid != null">
+                MGT_OBJ_SID,
+            </if>
+            <if test="zone != null">
+                ZONE,
+            </if>
+            <if test="uuid != null">
+                UUID,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+            <if test="version != null">
+                VERSION,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id},
+            <if test="securityGroupName != null">
+                #{securityGroupName},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="mgtObjSid != null">
+                #{mgtObjSid},
+            </if>
+            <if test="zone != null">
+                #{zone},
+            </if>
+            <if test="uuid != null">
+                #{uuid},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_security_group
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_security_group
+        <set>
+            <if test="record.id != null">
+                ID = #{record.id},
+            </if>
+            <if test="record.securityGroupName != null">
+                SECURITY_GROUP_NAME = #{record.securityGroupName},
+            </if>
+            <if test="record.description != null">
+                DESCRIPTION = #{record.description},
+            </if>
+            <if test="record.mgtObjSid != null">
+                MGT_OBJ_SID = #{record.mgtObjSid},
+            </if>
+            <if test="record.zone != null">
+                ZONE = #{record.zone},
+            </if>
+            <if test="record.uuid != null">
+                UUID = #{record.uuid},
+            </if>
+            <if test="record.createdBy != null">
+                CREATED_BY = #{record.createdBy},
+            </if>
+            <if test="record.createdDt != null">
+                CREATED_DT = #{record.createdDt},
+            </if>
+            <if test="record.updatedBy != null">
+                UPDATED_BY = #{record.updatedBy},
+            </if>
+            <if test="record.updatedDt != null">
+                UPDATED_DT = #{record.updatedDt},
+            </if>
+            <if test="record.version != null">
+                VERSION = #{record.version},
+            </if>
+            <if test="record.status != null">
+                VERSION = #{record.status},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_security_group
+        set ID = #{record.id},
+        SECURITY_GROUP_NAME = #{record.securityGroupName},
+        DESCRIPTION = #{record.description},
+        MGT_OBJ_SID = #{record.mgtObjSid},
+        ZONE = #{record.zone},
+        UUID = #{record.uuid},
+        CREATED_BY = #{record.createdBy},
+        CREATED_DT = #{record.createdDt},
+        UPDATED_BY = #{record.updatedBy},
+        UPDATED_DT = #{record.updatedDt},
+        VERSION = #{record.version},
+        STATUS = #{record.status}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResSecurityGroup">
+        update res_security_group
+        <set>
+            <if test="securityGroupName != null">
+                SECURITY_GROUP_NAME = #{securityGroupName},
+            </if>
+            <if test="description != null">
+                DESCRIPTION = #{description},
+            </if>
+            <if test="mgtObjSid != null">
+                MGT_OBJ_SID = #{mgtObjSid},
+            </if>
+            <if test="zone != null">
+                ZONE = #{zone},
+            </if>
+            <if test="uuid != null">
+                UUID = #{uuid},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt},
+            </if>
+            <if test="version != null">
+                VERSION = #{version},
+            </if>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResSecurityGroup">
+        update res_security_group
+        set SECURITY_GROUP_NAME = #{securityGroupName},
+        DESCRIPTION = #{description},
+        MGT_OBJ_SID = #{mgtObjSid},
+        ZONE = #{zone},
+        UUID = #{uuid},
+        CREATED_BY = #{createdBy},
+        CREATED_DT = #{createdDt},
+        UPDATED_BY = #{updatedBy},
+        UPDATED_DT = #{updatedDt},
+        VERSION = #{version},
+        STATUS = #{status}
+        where ID = #{id}
+    </update>
+</mapper>

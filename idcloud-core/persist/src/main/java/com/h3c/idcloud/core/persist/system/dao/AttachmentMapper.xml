@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.AttachmentMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.Attachments" >
+    <id column="ATTACHMENT_SID" property="attachmentSid" jdbcType="VARCHAR" />
+    <result column="ATTACHMENT_NAME" property="attachmentName" jdbcType="VARCHAR" />
+    <result column="ATTACHMENT_URL" property="attachmentUrl" jdbcType="VARCHAR" />
+    <result column="ATTACHMENT_LOCATION" property="attachmentLocation" jdbcType="VARCHAR" />
+    <result column="ATTACHMENT_TYPE" property="attachmentType" jdbcType="VARCHAR" />
+    <result column="ATTACHMENT_DESC" property="attachmentDesc" jdbcType="VARCHAR" />
+    <result column="ORIGINAL_NAME" property="originalName" jdbcType="VARCHAR" />
+    <result column="EXT_NAME" property="extName" jdbcType="VARCHAR" />
+    <result column="ATTACHMENT_SIZE" property="attachmentSize" jdbcType="BIGINT" />
+    <result column="UPLOAD_DATE" property="uploadDate" jdbcType="TIMESTAMP" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.attachmentName != null" >
+         and ATTACHMENT_NAME = #{condition.attachmentName}
+      </if>
+      <if test="condition.attachmentUrl != null" >
+         and ATTACHMENT_URL = #{condition.attachmentUrl}
+      </if>
+      <if test="condition.attachmentLocation != null" >
+         and ATTACHMENT_LOCATION = #{condition.attachmentLocation}
+      </if>
+      <if test="condition.attachmentType != null" >
+         and ATTACHMENT_TYPE = #{condition.attachmentType}
+      </if>
+      <if test="condition.attachmentDesc != null" >
+         and ATTACHMENT_DESC = #{condition.attachmentDesc}
+      </if>
+      <if test="condition.originalName != null" >
+         and ORIGINAL_NAME = #{condition.originalName}
+      </if>
+      <if test="condition.extName != null" >
+         and EXT_NAME = #{condition.extName}
+      </if>
+      <if test="condition.attachmentSize != null" >
+         and ATTACHMENT_SIZE = #{condition.attachmentSize}
+      </if>
+      <if test="condition.uploadDate != null" >
+         and UPLOAD_DATE = #{condition.uploadDate}
+      </if>
+      <if test="condition.createdBy != null" >
+         and CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and VERSION = #{condition.version}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    ATTACHMENT_SID, ATTACHMENT_NAME, ATTACHMENT_URL, ATTACHMENT_LOCATION, ATTACHMENT_TYPE, 
+    ATTACHMENT_DESC, ORIGINAL_NAME, EXT_NAME, ATTACHMENT_SIZE, UPLOAD_DATE, CREATED_BY, 
+    CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_t_attachment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_t_attachment
+    where ATTACHMENT_SID = #{attachmentSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_t_attachment
+    where ATTACHMENT_SID = #{attachmentSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from sys_t_attachment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.system.Attachments" >
+    insert into sys_t_attachment (ATTACHMENT_SID, ATTACHMENT_NAME, ATTACHMENT_URL, ATTACHMENT_LOCATION, 
+      ATTACHMENT_TYPE, ATTACHMENT_DESC, ORIGINAL_NAME, EXT_NAME, ATTACHMENT_SIZE, 
+      UPLOAD_DATE, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION
+      )
+    values (#{attachmentSid}, #{attachmentName}, #{attachmentUrl}, #{attachmentLocation}, 
+      #{attachmentType}, #{attachmentDesc}, #{originalName}, #{extName}, #{attachmentSize}, 
+      #{uploadDate}, #{createdBy}, #{createdDt}, #{updatedBy}, #{updatedDt}, #{version}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.Attachments" >
+   	<selectKey resultType="java.lang.String" keyProperty="attachmentSid" order="BEFORE" >
+      select UUID()
+    </selectKey>
+    insert into sys_t_attachment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        ATTACHMENT_SID,
+      <if test="attachmentName != null" >
+        ATTACHMENT_NAME,
+      </if>
+      <if test="attachmentUrl != null" >
+        ATTACHMENT_URL,
+      </if>
+      <if test="attachmentLocation != null" >
+        ATTACHMENT_LOCATION,
+      </if>
+      <if test="attachmentType != null" >
+        ATTACHMENT_TYPE,
+      </if>
+      <if test="attachmentDesc != null" >
+        ATTACHMENT_DESC,
+      </if>
+      <if test="originalName != null" >
+        ORIGINAL_NAME,
+      </if>
+      <if test="extName != null" >
+        EXT_NAME,
+      </if>
+      <if test="attachmentSize != null" >
+        ATTACHMENT_SIZE,
+      </if>
+      <if test="uploadDate != null" >
+        UPLOAD_DATE,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="attachmentSid != null" >
+        #{attachmentSid},
+      </if>
+      <if test="attachmentName != null" >
+        #{attachmentName},
+      </if>
+      <if test="attachmentUrl != null" >
+        #{attachmentUrl},
+      </if>
+      <if test="attachmentLocation != null" >
+        #{attachmentLocation},
+      </if>
+      <if test="attachmentType != null" >
+        #{attachmentType},
+      </if>
+      <if test="attachmentDesc != null" >
+        #{attachmentDesc},
+      </if>
+      <if test="originalName != null" >
+        #{originalName},
+      </if>
+      <if test="extName != null" >
+        #{extName},
+      </if>
+      <if test="attachmentSize != null" >
+        #{attachmentSize},
+      </if>
+      <if test="uploadDate != null" >
+        #{uploadDate},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from sys_t_attachment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update sys_t_attachment
+    <set >
+      <if test="record.attachmentSid != null" >
+        ATTACHMENT_SID = #{record.attachmentSid},
+      </if>
+      <if test="record.attachmentName != null" >
+        ATTACHMENT_NAME = #{record.attachmentName},
+      </if>
+      <if test="record.attachmentUrl != null" >
+        ATTACHMENT_URL = #{record.attachmentUrl},
+      </if>
+      <if test="record.attachmentLocation != null" >
+        ATTACHMENT_LOCATION = #{record.attachmentLocation},
+      </if>
+      <if test="record.attachmentType != null" >
+        ATTACHMENT_TYPE = #{record.attachmentType},
+      </if>
+      <if test="record.attachmentDesc != null" >
+        ATTACHMENT_DESC = #{record.attachmentDesc},
+      </if>
+      <if test="record.originalName != null" >
+        ORIGINAL_NAME = #{record.originalName},
+      </if>
+      <if test="record.extName != null" >
+        EXT_NAME = #{record.extName},
+      </if>
+      <if test="record.attachmentSize != null" >
+        ATTACHMENT_SIZE = #{record.attachmentSize},
+      </if>
+      <if test="record.uploadDate != null" >
+        UPLOAD_DATE = #{record.uploadDate},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update sys_t_attachment
+    set ATTACHMENT_SID = #{record.attachmentSid},
+      ATTACHMENT_NAME = #{record.attachmentName},
+      ATTACHMENT_URL = #{record.attachmentUrl},
+      ATTACHMENT_LOCATION = #{record.attachmentLocation},
+      ATTACHMENT_TYPE = #{record.attachmentType},
+      ATTACHMENT_DESC = #{record.attachmentDesc},
+      ORIGINAL_NAME = #{record.originalName},
+      EXT_NAME = #{record.extName},
+      ATTACHMENT_SIZE = #{record.attachmentSize},
+      UPLOAD_DATE = #{record.uploadDate},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.Attachments" >
+    update sys_t_attachment
+    <set >
+      <if test="attachmentName != null" >
+        ATTACHMENT_NAME = #{attachmentName},
+      </if>
+      <if test="attachmentUrl != null" >
+        ATTACHMENT_URL = #{attachmentUrl},
+      </if>
+      <if test="attachmentLocation != null" >
+        ATTACHMENT_LOCATION = #{attachmentLocation},
+      </if>
+      <if test="attachmentType != null" >
+        ATTACHMENT_TYPE = #{attachmentType},
+      </if>
+      <if test="attachmentDesc != null" >
+        ATTACHMENT_DESC = #{attachmentDesc},
+      </if>
+      <if test="originalName != null" >
+        ORIGINAL_NAME = #{originalName},
+      </if>
+      <if test="extName != null" >
+        EXT_NAME = #{extName},
+      </if>
+      <if test="attachmentSize != null" >
+        ATTACHMENT_SIZE = #{attachmentSize},
+      </if>
+      <if test="uploadDate != null" >
+        UPLOAD_DATE = #{uploadDate},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+    </set>
+    where ATTACHMENT_SID = #{attachmentSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.Attachments" >
+    update sys_t_attachment
+    set ATTACHMENT_NAME = #{attachmentName},
+      ATTACHMENT_URL = #{attachmentUrl},
+      ATTACHMENT_LOCATION = #{attachmentLocation},
+      ATTACHMENT_TYPE = #{attachmentType},
+      ATTACHMENT_DESC = #{attachmentDesc},
+      ORIGINAL_NAME = #{originalName},
+      EXT_NAME = #{extName},
+      ATTACHMENT_SIZE = #{attachmentSize},
+      UPLOAD_DATE = #{uploadDate},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version}
+    where ATTACHMENT_SID = #{attachmentSid}
+  </update>
+</mapper>

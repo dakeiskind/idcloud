@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResNetworkHostMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResNetworkHost">
+        <id column="RES_NETWORK_SID" property="resNetworkSid" jdbcType="VARCHAR"/>
+        <result column="RES_HOST_SID" property="resHostSid" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.resNetworkSid != null">
+                and RES_NETWORK_SID = #{condition.resNetworkSid}
+            </if>
+            <if test="condition.resHostSid != null">
+                and RES_HOST_SID = #{condition.resHostSid}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        RES_NETWORK_SID, RES_HOST_SID
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from res_network_host
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_network_host
+        where RES_NETWORK_SID = #{resNetworkSid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_network_host
+        where RES_NETWORK_SID = #{resNetworkSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_network_host
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResNetworkHost">
+        <selectKey resultType="java.lang.String" keyProperty="resNetworkSid" order="BEFORE">
+            SELECT NEXTVAL('SEQ_RES_OS_USER');
+        </selectKey>
+        insert into res_network_host (RES_NETWORK_SID, RES_HOST_SID)
+        values (#{resNetworkSid}, #{resHostSid})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResNetworkHost">
+        insert into res_network_host
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="resNetworkSid != null">
+                RES_NETWORK_SID,
+            </if>
+
+            <if test="resHostSid != null">
+                RES_HOST_SID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="resNetworkSid != null">
+                #{resNetworkSid},
+            </if>
+            <if test="resHostSid != null">
+                #{resHostSid},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_network_host
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_network_host
+        <set>
+            <if test="record.resNetworkSid != null">
+                RES_NETWORK_SID = #{record.resNetworkSid},
+            </if>
+            <if test="record.resHostSid != null">
+                RES_HOST_SID = #{record.resHostSid},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_network_host
+        set RES_NETWORK_SID = #{record.resNetworkSid},
+        RES_HOST_SID = #{record.resHostSid}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResNetworkHost">
+        update res_network_host
+        <set>
+            <if test="resHostSid != null">
+                RES_HOST_SID = #{resHostSid},
+            </if>
+        </set>
+        where RES_NETWORK_SID = #{resNetworkSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResNetworkHost">
+        update res_network_host
+        set RES_HOST_SID = #{resHostSid}
+        where RES_NETWORK_SID = #{resNetworkSid}
+    </update>
+</mapper>

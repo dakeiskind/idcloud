@@ -1,0 +1,2141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.product.dao.ServiceInstanceMapper">
+	<resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.product.ServiceInstance">
+		<id column="INSTANCE_SID" property="instanceSid" jdbcType="BIGINT" />
+		<id column="PARENT_INSTANCE_SID" property="parentInstanceSid" jdbcType="BIGINT" />
+		<id column="O_SERVICE_ID" property="oServiceId" jdbcType="VARCHAR" />
+		<id column="RES_INSTANCE_SID" property="resInstanceSid" jdbcType="BIGINT" />
+		<result column="INSTANCE_NAME" property="instanceName" jdbcType="VARCHAR" />
+		<result column="RES_INST_NAME" property="resInstName" jdbcType="VARCHAR" />
+
+		<result column="BILLING_TYPE" property="billingType" jdbcType="VARCHAR" />
+		<result column="SERVICE_CONFIG" property="serviceConfig" jdbcType="VARCHAR" />
+		<result column="RES_SID" property="resSid" jdbcType="VARCHAR" />
+
+		<result column="RES_INSTANCE_NAME" property="resInstanceName" jdbcType="VARCHAR" />
+		<result column="ALLOCATE_DISK_SIZE" property="allocateDiskSize" jdbcType="VARCHAR" />
+		<result column="ALLOCATE_VM_NAME" property="allocateVmName" jdbcType="VARCHAR" />
+		<result column="VOLUME_TYPE" property="volumeType" jdbcType="VARCHAR" />
+		<result column="VOLUME_TYPE_NAME" property="volumeTypeName" jdbcType="VARCHAR" />
+		<result column="ALLOCATE_SHAREPOINT_ADDRESS" property="allocateSharepointAddress" jdbcType="VARCHAR" />
+
+		<result column="BUY_LENGTH" property="buyLength" jdbcType="BIGINT" />
+		<result column="BILLING_TYPE_NAME" property="billingTypeName"
+				jdbcType="VARCHAR" />
+		<result column="BILLING_TYPE_ID" property="billingTypeId"
+				jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="EXPIRING_DATE" property="expiringDate"
+				jdbcType="TIMESTAMP" />
+		<result column="OWNER_ID" property="ownerId" jdbcType="VARCHAR" />
+		<result column="DETAIL_SID" property="detailSid" jdbcType="BIGINT" />
+		<result column="OWNER_NAME" property="ownerName" jdbcType="VARCHAR" />
+		<result column="OWNER_EMAIL" property="ownerEmail" jdbcType="VARCHAR" />
+		<result column="SERVICE_SID" property="serviceSid" jdbcType="BIGINT" />
+		<result column="SERVICE_NAME" property="serviceName" jdbcType="VARCHAR" />
+		<result column="TEMPLATE_SID" property="templateSid" jdbcType="BIGINT" />
+		<result column="ORDER_ID" property="orderId" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR" />
+		<result column="TARGET" property="target" jdbcType="VARCHAR" />
+		<result column="TANENT_ID" property="tanentId" jdbcType="VARCHAR" />
+		<result column="MGT_OBJ_SID" property="mgtObjSid" jdbcType="BIGINT" />
+		<result column="MGT_OBJ_NAME" property="mgtObjName" jdbcType="VARCHAR" />
+		<result column="COMPUTE_RES_SET" property="computeResSet" jdbcType="VARCHAR" />
+		<result column="COMPUTE_RES_SET_NAME" property="computeResSetName" jdbcType="VARCHAR" />
+		<result column="INTERNET_VLAN" property="internetVlan" jdbcType="VARCHAR" />
+		<result column="INTERNET_VLAN_NAME" property="internetVlanName" jdbcType="VARCHAR" />
+		<result column="INTRANET_VLAN" property="intranetVlan" jdbcType="VARCHAR" />
+		<result column="INTRANET_VLAN_NAME" property="intranetVlanName" jdbcType="VARCHAR" />
+		<result column="TENANT_NAME" property="tenantName" jdbcType="VARCHAR" />
+		<result column="TENANT_SHORT_NAME" property="tenantShortName" jdbcType="VARCHAR" />
+		<result column="DREDGE_DATE" property="dredgeDate" jdbcType="TIMESTAMP" />
+		<result column="FW_PORT" property="fwPort" jdbcType="VARCHAR" />
+		<result column="PROJECT_ID" property="projectId" jdbcType="VARCHAR" />
+		<result column="CONTRACT_ID" property="contractId" jdbcType="VARCHAR" />
+
+		<result column="DESTROY_DATE" property="destroyDate" jdbcType="TIMESTAMP" />
+		<result column="BILLING_END_TIME" property="billingEndTime" jdbcType="TIMESTAMP" />
+		<result column="EXPECTED_TIME" property="expectedTime"
+				jdbcType="TIMESTAMP" />
+		<result column="CREATION_DATE_BEGIN" property="creationDateBegin"
+				jdbcType="TIMESTAMP" />
+		<result column="CREATION_DATE_END" property="creationDateEnd"
+				jdbcType="TIMESTAMP" />
+		<result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+		<result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+		<result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+		<result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+		<result column="VERSION" property="version" jdbcType="BIGINT" />
+		<result column="PROCESS_INSTANCE_ID" property="processInstanceId"
+				jdbcType="VARCHAR" />
+		<result column="PROCESS_INSTANCE_CANCEL_ID" property="processInstanceCancelId"
+				jdbcType="VARCHAR" />
+		<result column="PROCESS_FAILED_DESC" property="processFailedDesc" jdbcType="VARCHAR" />
+		<result column="ALLOCATE_IP" property="allocateIp" jdbcType="VARCHAR" />
+		<result column="EXCEPTION_DESC" property="exceptionDesc" jdbcType="VARCHAR" />
+		<result column="RES_INS_VM_STATUS_NAME" property="resInsVmStatusName"
+				jdbcType="VARCHAR" />
+		<result column="ALLOCATE_INSTANCE_ID" property="allocateInstanceId"
+				jdbcType="VARCHAR" />
+		<result column="RES_POOL_SID" property="resPoolSid"
+				jdbcType="BIGINT" />
+		<result column="RES_INS_VM_STATUS" property="resInsVmStatus"
+				jdbcType="VARCHAR" />
+		<result column="RES_INS_VD_STATUS" property="resInsVdStatus"
+				jdbcType="VARCHAR" />
+		<result column="RES_INS_VD_STATUS_NAME" property="resInsVdStatusName"
+				jdbcType="VARCHAR" />
+		<result column="VIRTUAL_PLATFORM_TYPE" property="virtualPlatformType"
+				jdbcType="VARCHAR" />
+		<result column="VLAN_ID" property="vlanId" jdbcType="VARCHAR" />
+		<result column="OS_TYPE_NAME" property="osTypeName" jdbcType="VARCHAR" />
+		<result column="BILLING_TYPE_UNIT" property="billingTypeUnit" jdbcType="VARCHAR" />
+		<result column="MONITOR_NODE_ID" property="monitorNodeId" jdbcType="VARCHAR" />
+		<result column="RES_STATUS" property="resStatus" jdbcType="VARCHAR" />
+		<result column="TOTAL_SERVICE_NUM" property="totalServiceNum" jdbcType="BIGINT" />
+		<result column="VALID_SERVICE_NUM" property="validServiceNum" jdbcType="BIGINT" />
+		<result column="RES_INSTANCE_HOST_SID" property="resInstanceHostSid" jdbcType="VARCHAR" />
+		<result column="ALLOCATE_RES_STORAGE_SID" property="allocateResStorageSid" jdbcType="BIGINT" />
+		<result column="RES_VM_INS_NAME" property="resVmInsName" jdbcType="VARCHAR" />
+		<result column="USER_SERVICE_NUM" property="userServiceNum" jdbcType="BIGINT" />
+		<result column="QUOTA_SERVICE_NUM" property="quotaServiceNum" jdbcType="BIGINT" />
+		<result column="REST_QUOTA_SERVICE_NUM" property="restQuotaServiceNum" jdbcType="BIGINT" />
+		<result column="ALLOCATE_STORAGE_CAPACITY" property="allocateStorageCapacity" jdbcType="BIGINT" />
+		<result column="PURCHASE_LONG_TIME" property="purchaseLongTime" jdbcType="VARCHAR" />
+		<result column="IS_FREE" property="isFree" jdbcType="BIGINT" />
+		<result column="IS_FREE_NAME" property="isFreeName" jdbcType="VARCHAR" />
+		<result column="PROCESS_INSTANCE_CHANGE_ID" property="processInstanceChangeId" jdbcType="VARCHAR" />
+
+		<result column="IMAGE_PATH" property="imagePath" jdbcType="VARCHAR" />
+
+		<result column="MGT_OBJ_NAME" property="mgtObjName" jdbcType="VARCHAR" />
+
+		<result column="VM_COUNT" property="vmCount" jdbcType="INTEGER" />
+		<result column="CPU_CORES" property="cpuCores" jdbcType="INTEGER" />
+		<result column="MEMORY_SIZE" property="memorySize" jdbcType="BIGINT" />
+		<result column="TOTAL_STORAGE" property="totalStorage" jdbcType="BIGINT" />
+		<result column="AVAILABLE_CAPACITY" property="availableCapacity" jdbcType="BIGINT" />
+		<result column="VM_IP" property="vmIp" jdbcType="VARCHAR" />
+		<result column="VM_NAME" property="vmName" jdbcType="VARCHAR" />
+		<result column="VISIT_ADDRESS" property="visitAddress" jdbcType="VARCHAR" />
+
+		<result column="VM_INSTANCE_COUNT" property="vmInstanceCount" jdbcType="BIGINT" />
+		<result column="BLOCK_STORAGE_INSTANCE_COUNT" property="blockStorageInstanceCount" jdbcType="BIGINT" />
+		<result column="OBJECT_STORAGE_INSTANCE_COUNT" property="objectStorageInstanceCount" jdbcType="BIGINT" />
+		<result column="FLOATINGIP_INSTANCE_COUNT" property="floatingIpInstanceCount" jdbcType="BIGINT" />
+		<result column="BILLING_DAY" property="billingDay" jdbcType="BIGINT" />
+		<result column="SERVICE_TYPE" property="serviceType" jdbcType="BIGINT" />
+		<result column="RES_IP_SID" property="resIpSid" jdbcType="VARCHAR" />
+		<result column="IP_STATUS_NAME" property="ipStatusName" jdbcType="VARCHAR" />
+		<result column="FLOATING_IP_SID" property="floatingIpSid" jdbcType="VARCHAR" />
+		<result column="FLOATING_IP_STATUS" property="floatingIpStatus" jdbcType="VARCHAR" />
+
+		<result column="INSTANCE_COUNT" property="instanceCount" jdbcType="BIGINT" />
+		<result column="ST_COUNT" property="stCount" jdbcType="BIGINT" />
+		<result column="SPEC_VALUE" property="specValue" jdbcType="VARCHAR" />
+		<result column="SPECIFICATION" property="specification" jdbcType="VARCHAR" />
+		<result column="REGION_SID" property="regionSid" jdbcType="VARCHAR" />
+		<result column="REGION_NAME" property="regionName" jdbcType="VARCHAR" />
+		<result column="ZONE_SID" property="zoneSid" jdbcType="VARCHAR" />
+		<result column="ZONE_NAME" property="zoneName" jdbcType="VARCHAR" />
+		<result column="INSTANCE_ID" property="instanceId" jdbcType="VARCHAR" />
+		<result column="BANDWIDTH" property="bandWidth" jdbcType="VARCHAR" />
+		<result column="RES_NETWORK_SID" property="resNetworkSid" jdbcType="VARCHAR" />
+		<result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+		<result column="EIP_IP" property="eipIp" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.instanceId != null">
+				and A.INSTANCE_ID = #{condition.instanceId}
+			</if>
+			<if test="condition.specification != null">
+				and A.SPECIFICATION = #{condition.specification}
+			</if>
+			<if test="condition.instanceName != null">
+				and A.INSTANCE_NAME = #{condition.instanceName}
+			</if>
+			<if test="condition.resInstName != null">
+				and A.RES_INST_NAME = #{condition.resInstName}
+			</if>
+			<if test="condition.oldResInstName != null">
+				and A.RES_INST_NAME != #{condition.oldResInstName}
+			</if>
+			<if test="condition.instanceNameLike != null">
+				and A.INSTANCE_NAME like concat('%',
+				#{condition.instanceNameLike},
+				'%')
+			</if>
+			<if test="condition.instanceSid != null">
+				and A.INSTANCE_SID = #{condition.instanceSid}
+			</if>
+			<if test="condition.mgtObjSid != null">
+				and A.MGT_OBJ_SID = #{condition.mgtObjSid}
+			</if>
+			<if test="condition.mgtObjSids != null">
+				and A.MGT_OBJ_SID in
+				<foreach item="item" index="index" collection="condition.mgtObjSids"
+						 open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+
+			<if test="condition.parentInstanceSid != null">
+				and A.PARENT_INSTANCE_SID = #{condition.parentInstanceSid}
+			</if>
+			<if test="condition.billingType != null">
+				and A.BILLING_TYPE = #{condition.billingType}
+			</if>
+			<if test="condition.buyLength != null">
+				and A.BUY_LENGTH = #{condition.buyLength}
+			</if>
+			<if test="condition.billingTypeId != null">
+				and A.BILLING_TYPE_ID = #{condition.billingTypeId}
+			</if>
+			<if test="condition.description != null">
+				and A.DESCRIPTION = #{condition.description}
+			</if>
+			<if test="condition.expiringDate != null">
+				and A.EXPIRING_DATE = #{condition.expiringDate}
+			</if>
+			<if test="condition.ownerId != null">
+				and A.OWNER_ID = #{condition.ownerId}
+			</if>
+			<if test="condition.detailSid != null">
+				and A.DETAIL_SID = #{condition.detailSid}
+			</if>
+			<if test="condition.serviceSid != null">
+				and A.SERVICE_SID = #{condition.serviceSid}
+			</if>
+			<if test="condition.serviceSidList != null">
+				and A.SERVICE_SID in (${condition.serviceSidList})
+			</if>
+			<if test="condition.templateSid != null">
+				and A.TEMPLATE_SID = #{condition.templateSid}
+			</if>
+			<if test="condition.orderId != null">
+				and A.ORDER_ID = #{condition.orderId}
+			</if>
+			<if test="condition.orderIdLike != null">
+				and A.ORDER_ID like concat('%', #{condition.orderIdLike},
+				'%')
+			</if>
+			<if test="condition.volumeStorageOrderId != null">
+				and A.OWNER_ID = #{condition.volumeStorageOrderId}
+				and A.SERVICE_SID = 105
+			</if>
+			<if test="condition.volumeStorageOrderTenantId != null">
+				and A.TANENT_ID = #{condition.volumeStorageOrderTenantId}
+				and A.SERVICE_SID = 105
+			</if>
+			<if test="condition.status != null">
+				and A.STATUS = #{condition.status}
+			</if>
+			<if test="condition.storagePurpose != null">
+				and C.STORAGE_PURPOSE = #{condition.storagePurpose}
+			</if>
+			<if test="condition.statusParams != null">
+				and A.STATUS  in (${condition.statusParams})
+			</if>
+			<if test="condition.statusNotParams != null">
+				and A.STATUS not in (${condition.statusNotParams})
+			</if>
+			<if test="condition.dredgeFromDate != null">
+				and A.DREDGE_DATE >= #{condition.dredgeFromDate}
+			</if>
+			<if test="condition.dredgeToDate != null">
+				and A.DREDGE_DATE <![CDATA[ <= #{condition.dredgeToDate} ]]>
+			</if>
+			<if test="condition.expiringFromDate != null">
+				and A.EXPIRING_DATE >= #{condition.expiringFromDate}
+			</if>
+			<if test="condition.expiringToDate != null">
+				and A.EXPIRING_DATE <![CDATA[ <= #{condition.expiringToDate} ]]>
+			</if>
+			<if test="condition.billingEndTime != null">
+				and (A.BILLING_END_TIME <![CDATA[ < #{condition.billingEndTime} ]]> or A.BILLING_END_TIME is null)
+			</if>
+			<if test="condition.confirmFromDate != null">
+				and A.DREDGE_DATE >= #{condition.confirmFromDate}
+			</if>
+			<if test="condition.confirmToDate != null">
+				and A.DREDGE_DATE <![CDATA[ < #{condition.confirmToDate} ]]>
+			</if>
+			<if test="condition.target != null">
+				and A.TARGET = #{condition.target}
+			</if>
+			<if test="condition.tanentId != null">
+				and A.TANENT_ID = #{condition.tanentId}
+			</if>
+			<if test="condition.dredgeDate != null">
+				and A.DREDGE_DATE = #{condition.dredgeDate}
+			</if>
+			<if test="condition.expectedTime != null">
+				and A.EXPECTED_TIME = #{condition.expectedTime}
+			</if>
+			<if test="condition.creationDateBegin != null">
+				and A.CREATION_DATE_BEGIN =
+				#{condition.creationDateBegin}
+			</if>
+			<if test="condition.creationDateEnd != null">
+				and A.CREATION_DATE_END = #{condition.creationDateEnd}
+			</if>
+			<if test="condition.createdBy != null">
+				and A.CREATED_BY = #{condition.createdBy}
+			</if>
+			<if test="condition.createdDt != null">
+				and A.CREATED_DT = #{condition.createdDt}
+			</if>
+			<if test="condition.updatedBy != null">
+				and A.UPDATED_BY = #{condition.updatedBy}
+			</if>
+			<if test="condition.updatedDt != null">
+				and A.UPDATED_DT = #{condition.updatedDt}
+			</if>
+			<if test="condition.version != null">
+				and A.VERSION = #{condition.version}
+			</if>
+			<if test="condition.processInstanceId != null">
+				and A.PROCESS_INSTANCE_ID =
+				#{condition.processInstanceId}
+			</if>
+			<if test="condition.processInstanceCancelId != null">
+				and A.PROCESS_INSTANCE_CANCEL_ID =
+				#{condition.processInstanceCancelId}
+			</if>
+			<if test="condition.processInstanceChangeId != null">
+				and A.PROCESS_INSTANCE_CHANGE_ID =
+				#{condition.processInstanceChangeId}
+			</if>
+			<if test="condition.processFailedDesc != null">
+				and A.PROCESS_FAILED_DESC =
+				#{condition.processFailedDesc}
+			</if>
+			<if test="condition.exceptionDesc != null">
+				and A.EXCEPTION_DESC =
+				#{condition.exceptionDesc}
+			</if>
+			<if test="condition.cancelStatus != null">
+				and A.STATUS != #{condition.cancelStatus}
+			</if>
+			<if test="condition.invalidStatus != null">
+				and A.STATUS != #{condition.invalidStatus}
+			</if>
+			<if test="condition.virtualPlatformType != null">
+				and K.VIRTUAL_PLATFORM_TYPE = #{condition.virtualPlatformType}
+			</if>
+			<if test="condition.OStype!= null">
+				and A.SERVICE_SID =100
+				and A.STATUS="03"
+				and A.OWNER_ID = #{condition.ownerIdHost}
+				and D.PARENT_CODE_VALUE = #{condition.OStype}
+			</if>
+			<if test="condition.currentUser != null" >
+				A.OWNER_ID = #{condition.currentUser}
+				and A.SERVICE_SID =115
+				and A.STATUS="03"
+			</if>
+			<if test="condition.storageValidStatus != null">
+				and B.STATUS in (${condition.storageValidStatus})
+			</if>
+			<if test="condition.oServiceId != null">
+				and A.O_SERVICE_ID = #{condition.oServiceId}
+			</if>
+			<if test="condition.childrenInstance != null">
+				and (A.INSTANCE_SID = #{condition.childrenInstance}
+				or A.PARENT_INSTANCE_SID = #{condition.childrenInstance})
+			</if>
+			<if test="condition.bizIds != null">
+				and A.MGT_OBJ_SID in (${condition.bizIds})
+			</if>
+			<if test="condition.amount != null">
+				and A.AMOUNT = #{condition.amount}
+			</if>
+			<if test="condition.mgtObjNameLike != null">
+				and B.NAME like concat('%',#{condition.mgtObjNameLike},'%')
+			</if>
+			<if test="condition.isMgtBilling != null">
+				and (A.MGT_OBJ_SID IS NOT NULL or A.MGT_OBJ_SID = '')
+			</if>
+			<if test="condition.isBillingStatus == 'yes'">
+				and A.`STATUS` not in ('00','01','02','05')
+			</if>
+
+			<if test="condition.parentMgtObjSid != null">
+				and O.PARENT_ID = #{condition.parentMgtObjSid}
+			</if>
+			<if test="condition.resVmInsName == 01">
+				and H.INSTANCE_NAME IS NULL
+			</if>
+			<if test="condition.resVmInsName == 02">
+				and G.INSTANCE_NAME IS NULL
+			</if>
+		</trim>
+	</sql>
+	<sql id="Example_Where_Clause2">
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.instanceName != null">
+				and INSTANCE_NAME = #{condition.instanceName}
+			</if>
+			<if test="condition.instanceId != null">
+				and INSTANCE_ID = #{condition.instanceId}
+			</if>
+			<if test="condition.specification != null">
+				and SPECIFICATION = #{condition.specification}
+			</if>
+			<if test="condition.resInstName != null">
+				and RES_INST_NAME = #{condition.resInstName}
+			</if>
+			<if test="condition.oldResInstName != null">
+				and RES_INST_NAME != #{condition.oldResInstName}
+			</if>
+			<if test="condition.instanceNameLike != null">
+				and INSTANCE_NAME like concat('%',
+				#{condition.instanceNameLike},
+				'%')
+			</if>
+			<if test="condition.instanceSid != null">
+				and INSTANCE_SID = #{condition.instanceSid}
+			</if>
+			<if test="condition.mgtObjSid != null">
+				and MGT_OBJ_SID = #{condition.mgtObjSid}
+			</if>
+			<if test="condition.mgtObjSids != null">
+				and MGT_OBJ_SID in
+				<foreach item="item" index="index" collection="condition.mgtObjSids"
+						 open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+
+			<if test="condition.parentInstanceSid != null">
+				and PARENT_INSTANCE_SID = #{condition.parentInstanceSid}
+			</if>
+			<if test="condition.billingType != null">
+				and BILLING_TYPE = #{condition.billingType}
+			</if>
+			<if test="condition.buyLength != null">
+				and BUY_LENGTH = #{condition.buyLength}
+			</if>
+			<if test="condition.billingTypeId != null">
+				and BILLING_TYPE_ID = #{condition.billingTypeId}
+			</if>
+			<if test="condition.description != null">
+				and DESCRIPTION = #{condition.description}
+			</if>
+			<if test="condition.expiringDate != null">
+				and EXPIRING_DATE = #{condition.expiringDate}
+			</if>
+			<if test="condition.ownerId != null">
+				and OWNER_ID = #{condition.ownerId}
+			</if>
+			<if test="condition.detailSid != null">
+				and DETAIL_SID = #{condition.detailSid}
+			</if>
+			<if test="condition.serviceSid != null">
+				and SERVICE_SID = #{condition.serviceSid}
+			</if>
+			<if test="condition.templateSid != null">
+				and TEMPLATE_SID = #{condition.templateSid}
+			</if>
+			<if test="condition.orderId != null">
+				and ORDER_ID = #{condition.orderId}
+			</if>
+			<if test="condition.orderIdLike != null">
+				and ORDER_ID like concat('%', #{condition.orderIdLike},
+				'%')
+			</if>
+			<if test="condition.volumeStorageOrderId != null">
+				and OWNER_ID = #{condition.volumeStorageOrderId}
+				and SERVICE_SID = 105
+			</if>
+			<if test="condition.volumeStorageOrderTenantId != null">
+				and TANENT_ID = #{condition.volumeStorageOrderTenantId}
+				and SERVICE_SID = 105
+			</if>
+			<if test="condition.status != null">
+				and STATUS = #{condition.status}
+			</if>
+			<if test="condition.statusParams != null">
+				and STATUS  in (${condition.statusParams})
+			</if>
+			<if test="condition.statusNotParams != null">
+				and STATUS not in (${condition.statusNotParams})
+			</if>
+			<if test="condition.dredgeFromDate != null">
+				and DREDGE_DATE >= #{condition.dredgeFromDate}
+			</if>
+			<if test="condition.dredgeToDate != null">
+				and DREDGE_DATE <![CDATA[ <= #{condition.dredgeToDate} ]]>
+			</if>
+			<if test="condition.expiringFromDate != null">
+				and EXPIRING_DATE >= #{condition.expiringFromDate}
+			</if>
+			<if test="condition.expiringToDate != null">
+				and EXPIRING_DATE <![CDATA[ <= #{condition.expiringToDate} ]]>
+			</if>
+			<if test="condition.confirmFromDate != null">
+				and DREDGE_DATE >= #{condition.confirmFromDate}
+			</if>
+			<if test="condition.confirmToDate != null">
+				and DREDGE_DATE <![CDATA[ < #{condition.confirmToDate} ]]>
+			</if>
+			<if test="condition.target != null">
+				and TARGET = #{condition.target}
+			</if>
+			<if test="condition.tanentId != null">
+				and TANENT_ID = #{condition.tanentId}
+			</if>
+			<if test="condition.dredgeDate != null">
+				and DREDGE_DATE = #{condition.dredgeDate}
+			</if>
+			<if test="condition.expectedTime != null">
+				and EXPECTED_TIME = #{condition.expectedTime}
+			</if>
+			<if test="condition.creationDateBegin != null">
+				and CREATION_DATE_BEGIN =
+				#{condition.creationDateBegin}
+			</if>
+			<if test="condition.creationDateEnd != null">
+				and CREATION_DATE_END = #{condition.creationDateEnd}
+			</if>
+			<if test="condition.createdBy != null">
+				and CREATED_BY = #{condition.createdBy}
+			</if>
+			<if test="condition.createdDt != null">
+				and CREATED_DT = #{condition.createdDt}
+			</if>
+			<if test="condition.updatedBy != null">
+				and UPDATED_BY = #{condition.updatedBy}
+			</if>
+			<if test="condition.updatedDt != null">
+				and UPDATED_DT = #{condition.updatedDt}
+			</if>
+			<if test="condition.version != null">
+				and VERSION = #{condition.version}
+			</if>
+			<if test="condition.processInstanceId != null">
+				and PROCESS_INSTANCE_ID =
+				#{condition.processInstanceId}
+			</if>
+			<if test="condition.processInstanceCancelId != null">
+				and PROCESS_INSTANCE_CANCEL_ID =
+				#{condition.processInstanceCancelId}
+			</if>
+			<if test="condition.processInstanceChangeId != null">
+				and PROCESS_INSTANCE_CHANGE_ID =
+				#{condition.processInstanceChangeId}
+			</if>
+			<if test="condition.processFailedDesc != null">
+				and PROCESS_FAILED_DESC =
+				#{condition.processFailedDesc}
+			</if>
+			<if test="condition.exceptionDesc != null">
+				and EXCEPTION_DESC =
+				#{condition.exceptionDesc}
+			</if>
+			<if test="condition.amount != null">
+				and AMOUNT = #{condition.amount}
+			</if>
+		</trim>
+	</sql>
+	<sql id="Instance_Where_Clause">
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.processInstanceChangeId != null">
+				and PROCESS_INSTANCE_CHANGE_ID =
+				#{condition.processInstanceChangeId}
+			</if>
+		</trim>
+	</sql>
+	<sql id="Base_Column_List">
+		A.INSTANCE_SID,A.PARENT_INSTANCE_SID, A.O_SERVICE_ID, A.INSTANCE_NAME, A.RES_INST_NAME, A.BILLING_TYPE, A.BUY_LENGTH,
+		A.BILLING_TYPE_ID, A.DESCRIPTION, A.FW_PORT, A.CONTRACT_ID, A.PROJECT_ID,
+		A.EXPIRING_DATE,A.BILLING_END_TIME,
+		A.OWNER_ID,A.DETAIL_SID,A.MGT_OBJ_SID,
+		A.SERVICE_SID, A.TEMPLATE_SID, A.ORDER_ID, A.STATUS, A.TARGET,
+		A.TANENT_ID,A.COMPUTE_RES_SET,A.INTERNET_VLAN,A.INTRANET_VLAN, A.DREDGE_DATE, A.EXPECTED_TIME,
+		A.CREATION_DATE_BEGIN,
+		A.CREATION_DATE_END, A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY,
+		A.UPDATED_DT,
+		A.VERSION, A.PROCESS_INSTANCE_ID, A.IS_FREE,
+		A.PROCESS_INSTANCE_CANCEL_ID, A.PROCESS_FAILED_DESC, A.EXCEPTION_DESC,A.DESTROY_DATE,A.SPECIFICATION,
+		A.REGION_SID,A.ZONE_SID,A.INSTANCE_ID,A.AMOUNT
+	</sql>
+	<sql id="Instance_Column_List">
+		INSTANCE_SID
+	</sql>
+	<select id="selectByInstanceId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		distinct
+		<include refid="Base_Column_List" />
+		FROM SERVICE_INSTANCE A where A.INSTANCE_ID = #{instanceId}
+	</select>
+	<select id="selectByParams" resultMap="BaseResultMap"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select
+		distinct
+		<include refid="Base_Column_List" />,
+		K.CODE_DISPLAY AS IS_FREE_NAME,
+		B.SERVICE_NAME AS SERVICE_NAME ,
+		C.CODE_DISPLAY AS STATUS_NAME,
+		H.CODE_DISPLAY AS RES_INS_VM_STATUS_NAME,
+		D.RES_TOPOLOGY_NAME as ZONE_NAME,
+		H.RES_ID AS RES_SID,
+		M.REAL_NAME AS OWNER_NAME,
+		I.CODE_DISPLAY AS BILLING_TYPE_NAME,
+		J.UNIT AS BILLING_TYPE_UNIT,
+		O.`NAME` AS MGT_OBJ_NAME,
+		H.RES_NETWORK_SID as RES_NETWORK_SID,
+		H.INSTANCE_NAME as RES_VM_INS_NAME,
+		H.EIP_IP AS EIP_IP,
+		H.FLOATINGIP_SID AS FLOATING_IP_SID
+		FROM SERVICE_INSTANCE A
+		LEFT JOIN SERVICE B ON (A.SERVICE_SID = B.SERVICE_SID)
+		LEFT JOIN SYS_M_CODE C ON (C.CODE_CATEGORY = 'SERVICE_INASTANCE_STATUS' AND A.STATUS = C.CODE_VALUE)
+		LEFT JOIN res_topology D ON (A.ZONE_SID = D.RES_TOPOLOGY_SID)
+		INNER JOIN (
+		SELECT
+		VM.*,
+		NET.VM_IP,
+		NET.RES_NETWORK_SID
+		FROM(
+		SELECT
+		E.INSTANCE_SID,
+		E.RES_ID,F.STATUS,
+		G.CODE_DISPLAY,
+		IFNULL(I.CODE_DISPLAY , F.OS_VERSION ) AS OS_TYPE_NAME,
+		F.VM_NAME,
+		F.RES_VM_SID,
+		R.INSTANCE_NAME AS INSTANCE_NAME,
+		S.IP_ADDRESS AS EIP_IP,
+		P.RES_SID as FLOATINGIP_SID
+		FROM
+		RES_VM F
+		LEFT JOIN SYS_M_CODE G ON (G.CODE_CATEGORY = 'RES_VM_STATUS' AND F.STATUS = G.CODE_VALUE)
+		LEFT JOIN SYS_M_CODE I ON (I.CODE_CATEGORY = 'OS_VERSION' AND F.OS_VERSION = I.CODE_VALUE)
+		LEFT JOIN SERVICE_INST_RES E ON ( E.RES_ID = F.RES_VM_SID AND E.RES_TYPE = 'RES-VM')
+		LEFT JOIN res_floating_ip P ON (F.RES_VM_SID = P.MAPPING_VM_SID)
+		LEFT JOIN service_inst_res Q ON (P.RES_SID = Q.RES_ID)
+		LEFT JOIN service_instance R ON (Q.INSTANCE_SID = R.INSTANCE_SID)
+		LEFT JOIN res_ext_ip S ON (P.RES_IP_SID=S.RES_SID)
+		) AS VM
+		LEFT JOIN(
+		SELECT
+		group_concat(net.IP_ADDRESS separator ',') AS VM_IP,
+		net.RES_VM_SID as RES_VM_SID,
+		group_concat(net.RES_NETWORK_SID separator ',') AS RES_NETWORK_SID
+		from
+		RES_VM_NETWORK net
+		GROUP BY net.RES_VM_SID
+		) as NET ON (VM.RES_VM_SID = NET.RES_VM_SID)
+		) H ON(A.INSTANCE_SID = H.INSTANCE_SID)
+		LEFT JOIN SYS_M_CODE K ON (K.CODE_CATEGORY = 'SERVICE_INSTANCE_FREE' AND A.IS_FREE = K.CODE_VALUE)
+		LEFT JOIN SYS_M_USER M ON ( A.OWNER_ID=M.ACCOUNT )
+		left join SYS_M_CODE I on(I.CODE_CATEGORY ='BILLING_TYPE_YM' and A.BILLING_TYPE = I.CODE_VALUE )
+		LEFT JOIN BILLING_TYPE J ON (A.BILLING_TYPE=J.BILLING_TYPE)
+		LEFT JOIN sys_m_mgt_obj O ON (O.MGT_OBJ_SID = A.MGT_OBJ_SID)
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		order by A.CREATED_DT DESC
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+
+	<select id="selectInstVmByParams" resultMap="BaseResultMap"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select
+		distinct
+		<include refid="Base_Column_List" />
+		,
+		K.CODE_DISPLAY AS IS_FREE_NAME,
+		B.SERVICE_NAME AS SERVICE_NAME ,
+		C.CODE_DISPLAY AS STATUS_NAME,
+		H.CODE_DISPLAY AS RES_INS_VM_STATUS_NAME,
+		H.STATUS AS RES_INS_VM_STATUS,
+		H.OS_TYPE_NAME AS OS_TYPE_NAME,
+		H.RES_ID AS RES_SID,
+		M.REAL_NAME AS OWNER_NAME,
+		H.VM_NAME AS VM_NAME,
+		H.VM_IP AS VM_IP,
+		I.CODE_DISPLAY AS BILLING_TYPE_NAME,
+		J.UNIT AS BILLING_TYPE_UNIT,
+		O.`NAME` AS MGT_OBJ_NAME,
+		P.SPEC_VAL AS SPEC_VALUE,
+		Q.RES_TOPOLOGY_NAME as ZONE_NAME
+		FROM SERVICE_INSTANCE A
+		LEFT JOIN SERVICE B ON (A.SERVICE_SID = B.SERVICE_SID)
+		LEFT JOIN SYS_M_CODE C ON (C.CODE_CATEGORY = 'SERVICE_INASTANCE_STATUS' AND A.STATUS = C.CODE_VALUE)
+		LEFT JOIN SYS_M_CODE K ON (K.CODE_CATEGORY = 'SERVICE_INSTANCE_FREE' AND A.IS_FREE = K.CODE_VALUE)
+		INNER JOIN (
+			SELECT
+				VM.*,
+				NET.VM_IP
+			FROM(
+				SELECT
+					E.INSTANCE_SID,
+					E.RES_ID,F.STATUS,
+					G.CODE_DISPLAY,
+					IFNULL(I.CODE_DISPLAY , F.OS_VERSION ) AS OS_TYPE_NAME,
+					F.VM_NAME,
+					F.RES_VM_SID
+				FROM
+				RES_VM F
+				LEFT JOIN SYS_M_CODE G ON (G.CODE_CATEGORY = 'RES_VM_STATUS' AND F.STATUS = G.CODE_VALUE)
+				LEFT JOIN SYS_M_CODE I ON (I.CODE_CATEGORY = 'OS_VERSION' AND F.OS_VERSION = I.CODE_VALUE)
+				LEFT JOIN SERVICE_INST_RES E ON ( E.RES_ID = F.RES_VM_SID AND E.RES_TYPE = 'RES-VM')
+			) AS VM
+			LEFT JOIN(
+				SELECT
+				group_concat(net.IP_ADDRESS separator ',') AS VM_IP,
+				net.RES_VM_SID as RES_VM_SID
+				from
+				RES_VM_NETWORK net
+				GROUP BY net.RES_VM_SID
+			) as NET ON (VM.RES_VM_SID = NET.RES_VM_SID)
+		) H ON(A.INSTANCE_SID = H.INSTANCE_SID)
+		LEFT JOIN SYS_M_USER M ON ( A.OWNER_ID=M.ACCOUNT )
+		left join SYS_M_CODE I on(I.CODE_CATEGORY ='BILLING_TYPE_YM' and A.BILLING_TYPE = I.CODE_VALUE )
+		LEFT JOIN BILLING_TYPE J ON (A.BILLING_TYPE=J.BILLING_TYPE)
+		LEFT JOIN sys_m_mgt_obj O ON (O.MGT_OBJ_SID = A.MGT_OBJ_SID)
+		LEFT JOIN (
+			SELECT
+			SPEC.INSTANCE_SID,
+			GROUP_CONCAT(IF((SPEC.NAME ='CPU' || SPEC.NAME ='cpu' || SPEC.NAME ='memory'|| SPEC.NAME ='MEMORY'),SPEC.NAME,null),":",SPEC.VALUE,SPEC.UNIT) as SPEC_VAL
+			FROM
+			service_instance_spec SPEC
+			GROUP BY SPEC.INSTANCE_SID
+		) as P on(P.INSTANCE_SID = A.INSTANCE_SID)
+		LEFT JOIN res_topology Q ON (A.ZONE_SID = Q.RES_TOPOLOGY_SID)
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by CREATED_DT DESC
+		</if>
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+
+	<select id="countMgtObjInstVdByParams" resultType="java.lang.Integer" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT SUM(C.ST_SIZE) AS ST_COUNT
+		FROM service_instance A
+		INNER JOIN service_inst_res B ON (A.INSTANCE_SID = B.INSTANCE_SID)
+		<if test="condition.resType != null">
+			<if test="condition.resType == 'RES-VD'">
+				INNER JOIN (SELECT RV.RES_VD_SID,RV.ALLOCATE_DISK_SIZE AS ST_SIZE from res_vd RV) C ON (B.RES_ID = C.RES_VD_SID)
+			</if>
+			<if test="condition.resType == 'RES-STORAGE'">
+				INNER JOIN (SELECT RS.RES_STORAGE_SID,RS.TOTAL_CAPACITY AS ST_SIZE from res_storage RS) C ON (B.RES_ID = C.RES_STORAGE_SID)
+			</if>
+		</if>
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+
+	<select id="countInstVmByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select COUNT(*) AS INSTANCE_COUNT,H.OS_TYPE AS OS_TYPE_NAME
+		FROM SERVICE_INSTANCE A
+		LEFT JOIN SERVICE B ON (A.SERVICE_SID = B.SERVICE_SID)
+		INNER JOIN (
+		select VM.*, group_concat(RVN.IP_ADDRESS separator ',') AS VM_IP
+		from (
+		select E.INSTANCE_SID, E.RES_ID,F.STATUS, G.CODE_DISPLAY, I.CODE_DISPLAY AS OS_TYPE_NAME,
+		I.PARENT_CODE_VALUE AS OS_TYPE, F.VM_NAME, F.RES_VM_SID
+		from RES_VM F
+		LEFT JOIN SYS_M_CODE G ON (G.CODE_CATEGORY = 'RES_VM_STATUS' AND F.STATUS = G.CODE_VALUE)
+		LEFT JOIN SYS_M_CODE I ON (I.CODE_CATEGORY = 'OS_VERSION' AND F.OS_VERSION = I.CODE_VALUE)
+		JOIN SERVICE_INST_RES E ON (E.RES_ID = F.RES_VM_SID AND E.RES_TYPE = 'RES-VM')
+		) AS VM
+		LEFT JOIN RES_VM_NETWORK RVN ON (VM.RES_VM_SID = RVN.RES_VM_SID) group by RVN.RES_VM_SID
+		) H ON(A.INSTANCE_SID = H.INSTANCE_SID)
+		LEFT JOIN SYS_M_USER M ON ( A.OWNER_ID=M.ACCOUNT )
+		LEFT JOIN sys_m_mgt_obj O ON (O.MGT_OBJ_SID = A.MGT_OBJ_SID)
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		GROUP BY H.OS_TYPE
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+
+	<select id="countInstHostByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select COUNT(*) AS INSTANCE_COUNT,H.OS_TYPE AS OS_TYPE_NAME
+		FROM SERVICE_INSTANCE A
+		LEFT JOIN SERVICE B ON (A.SERVICE_SID = B.SERVICE_SID)
+		INNER JOIN (
+		select `HOST`.*
+		from (
+		select E.INSTANCE_SID, E.RES_ID,F.STATUS, G.CODE_DISPLAY, I.CODE_DISPLAY AS OS_TYPE_NAME,
+		I.PARENT_CODE_VALUE AS OS_TYPE, F.HOST_NAME, F.RES_HOST_SID, F.HOST_IP
+		from RES_HOST F
+		LEFT JOIN SYS_M_CODE G ON (G.CODE_CATEGORY = 'HOST_STATUS' AND F.STATUS = G.CODE_VALUE)
+		LEFT JOIN SYS_M_CODE I ON (I.CODE_CATEGORY = 'OS_VERSION' AND F.HOST_OS_TYPE = I.CODE_VALUE)
+		JOIN SERVICE_INST_RES E ON (E.RES_ID = F.RES_HOST_SID AND E.RES_TYPE = 'RES-HOST')
+		) AS `HOST`
+		) H ON(A.INSTANCE_SID = H.INSTANCE_SID)
+		LEFT JOIN SYS_M_USER M ON ( A.OWNER_ID=M.ACCOUNT )
+		LEFT JOIN sys_m_mgt_obj O ON (O.MGT_OBJ_SID = A.MGT_OBJ_SID)
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		GROUP BY H.OS_TYPE
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+
+	<select id="selectInstHostByParams" resultMap="BaseResultMap"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select
+		distinct
+		<include refid="Base_Column_List" />
+		,
+		K.CODE_DISPLAY AS IS_FREE_NAME,
+		B.SERVICE_NAME AS SERVICE_NAME ,
+		C.CODE_DISPLAY AS STATUS_NAME,
+		H.CODE_DISPLAY AS RES_INS_VM_STATUS_NAME,
+		H.STATUS AS RES_INS_VM_STATUS,
+		H.OS_TYPE_NAME AS OS_TYPE_NAME,
+		H.RES_ID AS RES_SID,
+		M.REAL_NAME AS OWNER_NAME,
+		H.HOST_NAME AS VM_NAME,
+		H.HOST_IP AS VM_IP,
+		I.CODE_DISPLAY AS BILLING_TYPE_NAME,
+		J.UNIT AS BILLING_TYPE_UNIT,
+		O.`NAME` AS MGT_OBJ_NAME
+		FROM SERVICE_INSTANCE A
+		LEFT JOIN SERVICE B ON (A.SERVICE_SID = B.SERVICE_SID)
+		LEFT JOIN SYS_M_CODE C ON (C.CODE_CATEGORY = 'SERVICE_INASTANCE_STATUS' AND A.STATUS = C.CODE_VALUE)
+		LEFT JOIN SYS_M_CODE K ON (K.CODE_CATEGORY = 'SERVICE_INSTANCE_FREE' AND A.IS_FREE = K.CODE_VALUE)
+		INNER JOIN (
+		select `HOST`.*
+		from (
+		select E.INSTANCE_SID, E.RES_ID,F.STATUS, G.CODE_DISPLAY, IFNULL(I.CODE_DISPLAY , F.HOST_OS_TYPE ) AS OS_TYPE_NAME, F.HOST_NAME, F.RES_HOST_SID, F.HOST_IP
+		from RES_HOST F
+		LEFT JOIN SYS_M_CODE G ON (G.CODE_CATEGORY = 'HOST_STATUS' AND F.STATUS = G.CODE_VALUE)
+		LEFT JOIN SYS_M_CODE I ON (I.CODE_CATEGORY = 'OS_VERSION' AND F.HOST_OS_TYPE = I.CODE_VALUE)
+		JOIN SERVICE_INST_RES E ON (E.RES_ID = F.RES_HOST_SID AND E.RES_TYPE = 'RES-HOST')
+		) AS `HOST`
+		) H ON(A.INSTANCE_SID = H.INSTANCE_SID)
+		LEFT JOIN SYS_M_USER M ON ( A.OWNER_ID=M.ACCOUNT )
+		left join SYS_M_CODE I on(I.CODE_CATEGORY ='BILLING_TYPE_YM' and A.BILLING_TYPE = I.CODE_VALUE )
+		LEFT JOIN BILLING_TYPE J ON (A.BILLING_TYPE=J.BILLING_TYPE)
+		LEFT JOIN sys_m_mgt_obj O ON (O.MGT_OBJ_SID = A.MGT_OBJ_SID)
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+
+	<select id="selectByParamsOrderByPurpose" resultMap="BaseResultMap"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select
+		distinct
+		<include refid="Base_Column_List" />
+		,
+		K.CODE_DISPLAY AS IS_FREE_NAME,
+		B.SERVICE_NAME AS SERVICE_NAME ,
+		C.CODE_DISPLAY AS STATUS_NAME,
+		H.CODE_DISPLAY AS RES_INS_VM_STATUS_NAME,
+		H.STATUS AS RES_INS_VM_STATUS,
+		H.OS_TYPE_NAME AS OS_TYPE_NAME,
+		H.RES_ID AS RES_SID,
+		M.REAL_NAME AS OWNER_NAME,
+		M.MGT_OBJ_SID AS MGT_OBJ_SID,
+		H.VM_NAME AS VM_NAME
+		FROM SERVICE_INSTANCE A
+		LEFT JOIN SERVICE B ON (A.SERVICE_SID = B.SERVICE_SID)
+		LEFT JOIN SYS_M_CODE C ON (C.CODE_CATEGORY = 'SERVICE_INASTANCE_STATUS' AND A.STATUS = C.CODE_VALUE)
+		LEFT JOIN SYS_M_CODE K ON (K.CODE_CATEGORY = 'SERVICE_INSTANCE_FREE' AND A.IS_FREE = K.CODE_VALUE)
+		LEFT JOIN (
+		SELECT E.INSTANCE_SID, E.RES_ID,F.STATUS, G.CODE_DISPLAY, I.CODE_DISPLAY AS OS_TYPE_NAME, F.VM_NAME
+		FROM SERVICE_INST_RES E, RES_VM F
+		LEFT JOIN SYS_M_CODE G ON (G.CODE_CATEGORY = 'RES_VM_STATUS' AND F.STATUS = G.CODE_VALUE)
+		LEFT JOIN SYS_M_CODE I ON (I.CODE_CATEGORY = 'OS_VERSION' AND F.OS_VERSION = I.CODE_VALUE)
+		WHERE E.RES_ID = F.RES_VM_SID
+		) H ON(A.INSTANCE_SID = H.INSTANCE_SID)
+		LEFT JOIN (select C.* from service_instance_spec C where C.`NAME`='STORAGE_PURPOSE') B on B.INSTANCE_SID = A.INSTANCE_SID
+		LEFT JOIN SYS_M_USER M ON ( A.OWNER_ID=M.ACCOUNT )
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		ORDER BY B.VALUE, A.INSTANCE_NAME
+	</select>
+
+	<select id="selectServiceInstanceForNeedBalance" resultMap="BaseResultMap"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select
+		distinct
+		<include refid="Base_Column_List" />
+		,B.SERVICE_NAME AS SERVICE_NAME
+		,M.MGT_OBJ_SID AS MGT_OBJ_SID
+		from
+		service_instance A
+		LEFT JOIN service B ON(A.SERVICE_SID = B.SERVICE_SID)
+		LEFT JOIN SYS_M_USER M ON ( A.OWNER_ID=M.ACCOUNT )
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause} desc
+		</if>
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+	<select id="selectServiceInstanceForApprove" resultMap="BaseResultMap"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select
+		<if test="distinct" >
+			distinct
+		</if>
+		<include refid="Instance_Column_List" />
+		,M.MGT_OBJ_SID AS MGT_OBJ_SID
+		from service_instance A
+		LEFT JOIN SYS_M_USER M ON ( A.OWNER_ID=M.ACCOUNT )
+		<if test="_parameter != null">
+			<include refid="Instance_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause} desc
+		</if>
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+	<select id="selectedTarfgetHost" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+		select
+		<include refid="Base_Column_List" />
+		,M.MGT_OBJ_SID AS MGT_OBJ_SID
+		FROM
+		service_instance A
+		INNER JOIN resource_instance B ON (A.INSTANCE_SID = B.SERVICE_INSTANCE_SID)
+		INNER JOIN resource_instance_vm C ON (B.RES_INSTANCE_SID = C.RES_INSTANCE_SID)
+		INNER JOIN sys_m_code D ON (C.OS_TYPE = D.CODE_VALUE)
+		LEFT JOIN SYS_M_USER M ON ( A.OWNER_ID=M.ACCOUNT )
+		<if test="_parameter != null" >
+			<include refid="Example_Where_Clause" />
+		</if>
+
+	</select>
+	<select id="selectedSPAddressByServiceSid" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+		select
+		<if test="distinct" >
+			distinct
+		</if>
+		<include refid="Base_Column_List" />,
+		B.RES_INSTANCE_SID AS RES_INSTANCE_SID,
+		C.ALLOCATE_SHAREPOINT_ADDRESS as ALLOCATE_SHAREPOINT_ADDRESS,
+		C.ALLOCATE_STORAGE_CAPACITY AS ALLOCATE_STORAGE_CAPACITY,
+		M.MGT_OBJ_SID AS MGT_OBJ_SID
+		from service_instance A
+		INNER JOIN resource_instance B ON(A.INSTANCE_SID = B.SERVICE_INSTANCE_SID)
+		INNER JOIN resource_instance_sharepoint C ON(B.RES_INSTANCE_SID = C.RES_INSTANCE_SID)
+		LEFT JOIN SYS_M_USER M ON ( A.OWNER_ID=M.ACCOUNT )
+		<if test="_parameter != null" >
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+
+	<select id="selectVolumeStorageInfo" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select * from (
+		select
+		distinct
+		<include refid="Base_Column_List" />,
+		M.CODE_DISPLAY AS STATUS_NAME,
+		C.STATUS AS RES_INS_VD_STATUS,
+		C.ALLOCATE_DISK_SIZE as ALLOCATE_DISK_SIZE,
+		D.RES_VM_SID AS RES_INSTANCE_HOST_SID,
+		H.CODE_DISPLAY as RES_INS_VD_STATUS_NAME,
+		D.VM_NAME as VM_NAME,
+		G.INSTANCE_NAME as RES_VM_INS_NAME,
+		L.CODE_DISPLAY AS BILLING_TYPE_NAME
+		from service_instance A
+		INNER JOIN service_inst_res B on (B.INSTANCE_SID = A.INSTANCE_SID)
+		INNER JOIN res_vd C on (B.RES_ID = C.RES_VD_SID)
+		LEFT JOIN res_vm D on (D.RES_VM_SID = C.RES_VM_SID)
+		LEFT JOIN service_inst_res F on (F.RES_ID = D.RES_VM_SID)
+		LEFT JOIN service_instance G on (F.INSTANCE_SID = G.INSTANCE_SID)
+		LEFT JOIN sys_m_code H on ( H.CODE_CATEGORY = 'RES_VD_STATUS' AND C.STATUS = H.CODE_VALUE)
+		left join SYS_M_CODE L on(L.CODE_CATEGORY =	'BILLING_TYPE_YM' and A.BILLING_TYPE = L.CODE_VALUE)
+		left join SYS_M_CODE M on(M.CODE_CATEGORY =	'SERVICE_INASTANCE_STATUS' and A.STATUS = M.CODE_VALUE)
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause} desc
+		</if>
+		) A
+		where A.PARENT_INSTANCE_SID is null
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+
+	<select id="selectFloatingIpInfo" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select * from (
+		select distinct
+		<include refid="Base_Column_List" />,
+		N.CODE_DISPLAY AS STATUS_NAME,
+		D.RES_VM_SID AS RES_INSTANCE_HOST_SID,
+		C.STATUS as FLOATING_IP_STATUS,
+		C.RES_SID as FLOATING_IP_SID,
+		C.BANDWIDTH as BANDWIDTH,
+		W.NETWORK_NAME AS INTERNET_VLAN_NAME,
+		H.IP_ADDRESS AS VM_IP,
+		D.VM_NAME as VM_NAME,
+		G.INSTANCE_NAME as RES_VM_INS_NAME,
+		L.CODE_DISPLAY AS BILLING_TYPE_NAME,
+		M.CODE_DISPLAY AS IP_STATUS_NAME
+		from service_instance A
+		INNER JOIN service_inst_res B on (B.INSTANCE_SID = A.INSTANCE_SID)
+		INNER JOIN res_floating_ip C on (B.RES_ID = C.RES_SID)
+		LEFT JOIN res_vm D on (D.RES_VM_SID = C.MAPPING_VM_SID)
+		LEFT JOIN res_ext_ip H on (C.RES_IP_SID = H.RES_SID)
+		left join res_network W on (W.RES_NETWORK_SID = C.RES_EXT_NETWORK_SID)
+		LEFT JOIN service_inst_res F on (F.RES_ID = D.RES_VM_SID)
+		LEFT JOIN service_instance G on (F.INSTANCE_SID = G.INSTANCE_SID)
+		left join SYS_M_CODE L on(L.CODE_CATEGORY =	'BILLING_TYPE_YM' and A.BILLING_TYPE = L.CODE_VALUE)
+		left join SYS_M_CODE M on(M.CODE_CATEGORY =	'FLOATING_IP_STATUS' and C.STATUS = M.CODE_VALUE)
+		left join SYS_M_CODE N on(N.CODE_CATEGORY =	'SERVICE_INASTANCE_STATUS' and A.STATUS = N.CODE_VALUE)
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		) A
+		where A.PARENT_INSTANCE_SID is null
+		order by A.CREATED_DT desc
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+
+	<!-- 查询服务总数与有效服务数 -->
+	<select id="countServiceByParams" resultMap="BaseResultMap"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT
+		A.SERVICE_SID,
+		B.SERVICE_NAME,
+		COUNT(CASE A.STATUS WHEN '03' THEN 1 ELSE NULL END) AS VALID_SERVICE_NUM,
+		COUNT(A.STATUS) as TOTAL_SERVICE_NUM
+		FROM service_instance A
+		INNER JOIN service B ON (
+		A.SERVICE_SID = B.SERVICE_SID
+		)
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		GROUP BY SERVICE_SID, SERVICE_NAME
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+
+	<!-- 查询服务视图租户下云主机服务总数与用户服务数 -->
+	<select id="countTenantServiceVmByParams" resultMap="BaseResultMap"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT
+		A.OWNER_ID,
+		A.SERVICE_SID,
+		B.REAL_NAME AS OWNER_NAME,
+		COUNT(A.INSTANCE_SID) as USER_SERVICE_NUM
+		FROM service_instance A
+		LEFT JOIN sys_m_user B ON (A.OWNER_ID=B.ACCOUNT)
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		GROUP BY OWNER_ID, SERVICE_SID
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+
+	<!-- 查询服务视图租户下块存储服务总数与用户服务数 -->
+	<select id="countTenantServiceStByParams" resultMap="BaseResultMap"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT
+		A.OWNER_ID,
+		A.SERVICE_SID,
+		D.REAL_NAME AS OWNER_NAME,
+		COUNT(A.INSTANCE_SID) as USER_SERVICE_NUM
+		FROM service_instance A
+		INNER JOIN resource_instance B on(A.INSTANCE_SID = B.SERVICE_INSTANCE_SID)
+		INNER JOIN resource_instance_storage C on(B.RES_INSTANCE_SID = C.RES_INSTANCE_SID)
+		LEFT JOIN sys_m_user D ON (A.OWNER_ID = D.ACCOUNT)
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		GROUP BY OWNER_ID, SERVICE_SID
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+
+	<!-- 查询每个企业下的服务实例统计  -->
+	<select id="selectServiceCountByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT
+		<include refid="Base_Column_List" />,
+		SUM(IF(A.SERVICE_SID = 100,1,0)) as VM_INSTANCE_COUNT,
+		SUM(IF(A.SERVICE_SID = 104,1,0)) as OBJECT_STORAGE_INSTANCE_COUNT,
+		SUM(IF(A.SERVICE_SID = 105,1,0)) as BLOCK_STORAGE_INSTANCE_COUNT,
+		SUM(IF(A.SERVICE_SID = 106,1,0)) as FLOATINGIP_INSTANCE_COUNT,
+		B.`NAME` as MGT_OBJ_NAME
+		FROM
+		service_instance A
+		LEFT JOIN sys_m_mgt_obj B ON (A.MGT_OBJ_SID = B.MGT_OBJ_SID)
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		GROUP BY A.MGT_OBJ_SID
+	</select>
+	<!-- 查询管理对象下的服务实例个数 -->
+	<select id="selectServiceInstanceByMgtObjSid" resultMap="BaseResultMap" parameterType="java.lang.Long">
+
+		(SELECT
+		A.INSTANCE_SID,
+		'VM' as SERVICE_TYPE,
+		GROUP_CONCAT(D.DESCRIPTION,':',D.SPEC_VALUE) as SERVICE_CONFIG,
+		A.INSTANCE_NAME ,
+		A.DREDGE_DATE,
+		A.DESTROY_DATE,
+		A.STATUS,
+		A.OWNER_ID,
+		C.CODE_DISPLAY AS STATUS_NAME,
+		(CASE
+		when A.`STATUS` = '99' then TO_DAYS(A.DESTROY_DATE) - TO_DAYS(A.DREDGE_DATE) + 1
+		ELSE TO_DAYS(NOW()) - TO_DAYS(A.DREDGE_DATE) + 1
+		END) as BILLING_DAY
+		FROM
+		service_instance A
+		LEFT JOIN service_order_detail B ON (A.DETAIL_SID = B.DETAIL_SID)
+		LEFT JOIN SYS_M_CODE C ON (C.CODE_CATEGORY = 'SERVICE_INASTANCE_STATUS' AND A.STATUS = C.CODE_VALUE)
+		LEFT JOIN (
+		SELECT A.*,
+		(CASE
+		WHEN A.`NAME` = 'OS' THEN
+		I.IMAGE_NAME
+		ELSE
+		GROUP_CONCAT(A.`VALUE`, A.UNIT)
+		END
+		) AS SPEC_VALUE
+		FROM service_instance_spec A
+		LEFT JOIN res_image I ON (
+		I.RES_IMAGE_SID = A.`VALUE`
+		AND A.`NAME` = "OS"
+		)
+		GROUP BY A.SPEC_SID
+		) D ON (A.INSTANCE_SID = D.INSTANCE_SID AND D.`NAME` IN ('CPU','MEMORY','OS','SYSTEM_DISK'))
+		where A.MGT_OBJ_SID = #{mgtObjSid} and A.SERVICE_SID = 100 and A.`STATUS` not in ('00','01','02')
+		GROUP BY A.INSTANCE_SID
+		)
+		UNION
+		(SELECT
+		A.INSTANCE_SID,
+		'BS' as SERVICE_TYPE,
+		GROUP_CONCAT(F.DESCRIPTION,':',F.`VALUE`) as SERVICE_CONFIG,
+		A.INSTANCE_NAME ,
+		A.DREDGE_DATE,
+		A.DESTROY_DATE,
+		A.STATUS,
+		A.OWNER_ID,
+		C.CODE_DISPLAY AS STATUS_NAME,
+		(CASE
+		when A.`STATUS` = '99' then TO_DAYS(A.DESTROY_DATE) - TO_DAYS(A.DREDGE_DATE) + 1
+		ELSE TO_DAYS(NOW()) - TO_DAYS(A.DREDGE_DATE) + 1
+		END) as BILLING_DAY
+		FROM
+		service_instance A
+		LEFT JOIN service_order_detail B ON (A.DETAIL_SID = B.DETAIL_SID)
+		LEFT JOIN SYS_M_CODE C ON (C.CODE_CATEGORY = 'SERVICE_INASTANCE_STATUS' AND A.STATUS = C.CODE_VALUE)
+		LEFT JOIN service_instance_spec F ON (A.INSTANCE_SID = F.INSTANCE_SID)
+		LEFT JOIN service_inst_res D ON (A.INSTANCE_SID = D.INSTANCE_SID and D.RES_TYPE = 'RES-STORAGE')
+		LEFT JOIN res_vd E ON (D.RES_ID = E.RES_VD_SID)
+		where A.MGT_OBJ_SID = #{mgtObjSid} and A.SERVICE_SID = 105 and A.`STATUS` not in ('00','01','02')
+		<!-- 				and E.STORAGE_PURPOSE = '02' -->
+		GROUP BY A.INSTANCE_SID
+		)
+		UNION
+		(SELECT
+		A.INSTANCE_SID,
+		'IP' as SERVICE_TYPE,
+		GROUP_CONCAT(F.DESCRIPTION,':',CONCAT(F.`VALUE`,F.UNIT)) as SERVICE_CONFIG,
+		IP.IP_ADDRESS as INSTANCE_NAME,
+		A.DREDGE_DATE,
+		A.DESTROY_DATE,
+		A.STATUS,
+		A.OWNER_ID,
+		C.CODE_DISPLAY AS STATUS_NAME,
+		(CASE
+		when A.`STATUS` = '99' then TO_DAYS(A.DESTROY_DATE) - TO_DAYS(A.DREDGE_DATE) + 1
+		ELSE TO_DAYS(NOW()) - TO_DAYS(A.DREDGE_DATE) + 1
+		END) as BILLING_DAY
+		FROM
+		service_instance A
+		LEFT JOIN service_order_detail B ON (A.DETAIL_SID = B.DETAIL_SID)
+		LEFT JOIN SYS_M_CODE C ON (C.CODE_CATEGORY = 'SERVICE_INASTANCE_STATUS' AND A.STATUS = C.CODE_VALUE)
+		LEFT JOIN service_instance_spec F ON (A.INSTANCE_SID = F.INSTANCE_SID)
+		LEFT JOIN service_inst_res D ON (A.INSTANCE_SID = D.INSTANCE_SID and D.RES_TYPE = 'RES-NETWORK')
+		LEFT JOIN res_floating_ip E ON (D.RES_ID = E.RES_SID)
+		LEFT JOIN res_ip IP ON (E.RES_IP_SID = IP.RES_SID)
+		where A.MGT_OBJ_SID = #{mgtObjSid} and A.SERVICE_SID = 106 and A.`STATUS` not in ('00','01','02')
+		GROUP BY A.INSTANCE_SID
+		)
+	</select>
+
+
+	<!-- 查询服务视图租户下云主机CPU服务总数与用户服务CPU数 -->
+	<select id="countTenantServiceVmCpuByParams" resultMap="BaseResultMap"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT
+		A.OWNER_ID,
+		A.SERVICE_SID,
+		SUM(B.VALUE) as USER_SERVICE_NUM,
+		C.REAL_NAME AS OWNER_NAME
+		FROM service_instance A
+		LEFT JOIN service_instance_spec B ON (A.INSTANCE_SID = B.INSTANCE_SID AND B.NAME='CPU')
+		LEFT JOIN sys_m_user C ON (A.OWNER_ID=C.ACCOUNT)
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		GROUP BY OWNER_ID, SERVICE_SID
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+
+	<select id="selectObjStorageByMgtobjSid" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT
+		<include refid="Base_Column_List" />,
+		C.VISIT_ADDRESS as VISIT_ADDRESS,
+		C.VISIT_KEY as MGT_OBJ_SID
+		FROM
+		service_instance A
+		INNER JOIN service_inst_res B ON (A.INSTANCE_SID = B.INSTANCE_SID)
+		INNER JOIN res_obj_storage_inst C ON (B.RES_ID = C.RES_INST_SID)
+		where A.MGT_OBJ_SID = #{condition.mgtObjSid} and A.SERVICE_SID = #{condition.serviceSid} and C.VISIT_KEY = #{condition.mgtObjSid}
+		<if test="condition.statusParams != null">
+			and A.STATUS  in (${condition.statusParams})
+		</if>
+	</select>
+
+	<!-- 查询服务视图租户下云主机内存服务总数与用户内存数 -->
+	<select id="countTenantServiceVmMemoryByParams" resultMap="BaseResultMap"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT
+		A.OWNER_ID,
+		A.SERVICE_SID,
+		1024*SUM(B.VALUE) as USER_SERVICE_NUM,
+		C.REAL_NAME AS OWNER_NAME
+		FROM service_instance A
+		LEFT JOIN service_instance_spec B ON (A.INSTANCE_SID = B.INSTANCE_SID AND B.NAME='MEMORY')
+		LEFT JOIN sys_m_user C ON (A.OWNER_ID=C.ACCOUNT)
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		GROUP BY OWNER_ID, SERVICE_SID
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+
+
+	<!-- 查询服务视图租户下块存储磁盘大小服务总数与用户磁盘数 -->
+	<select id="countTenantServiceStDiskByParams" resultMap="BaseResultMap"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT
+		A.OWNER_ID,
+		A.SERVICE_SID,
+		D.REAL_NAME AS OWNER_NAME,
+		SUM(E.VALUE) as USER_SERVICE_NUM
+		FROM service_instance A
+		INNER JOIN resource_instance B on(A.INSTANCE_SID = B.SERVICE_INSTANCE_SID)
+		INNER JOIN resource_instance_storage C on(B.RES_INSTANCE_SID = C.RES_INSTANCE_SID)
+		LEFT JOIN sys_m_user D ON (A.OWNER_ID=D.ACCOUNT)
+		LEFT JOIN service_instance_spec E ON (A.INSTANCE_SID = E.INSTANCE_SID AND E.NAME='DISK_SIZE')
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		GROUP BY OWNER_ID, SERVICE_SID
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+
+
+	<!-- 配额 -->
+	<!-- 查询配额视图租户下云主机服务总数与用户服务数 -->
+	<select id="countTenantServiceVmQuotaByParams" resultMap="BaseResultMap"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT
+		A.TANENT_ID,
+		A.SERVICE_SID,
+		C.QUOTA_VALUE AS QUOTA_SERVICE_NUM,
+		C.QUOTA_VALUE  - COUNT(A.INSTANCE_SID) AS REST_QUOTA_SERVICE_NUM
+		FROM service_instance A
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		GROUP BY TANENT_ID, SERVICE_SID
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+
+	<!-- 查询配额视图租户下块存储服务总数与用户服务数 -->
+	<select id="countTenantServiceStQuotaByParams" resultMap="BaseResultMap"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT
+		A.TANENT_ID,
+		A.SERVICE_SID,
+		COUNT(A.INSTANCE_SID) as USER_SERVICE_NUM
+		FROM service_instance A
+		INNER JOIN resource_instance B on(A.INSTANCE_SID = B.SERVICE_INSTANCE_SID)
+		INNER JOIN resource_instance_storage C on(B.RES_INSTANCE_SID = C.RES_INSTANCE_SID)
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		GROUP BY TANENT_ID, SERVICE_SID
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+
+	<!-- 查询配额视图租户下云主机CPU内核总数与用户服务CPU内核数 -->
+	<select id="countTenantServiceVmCpuQuotaByParams" resultMap="BaseResultMap"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT
+		A.TANENT_ID,
+		A.SERVICE_SID,
+		SUM(B.VALUE) as USER_SERVICE_NUM
+		FROM service_instance A
+		LEFT JOIN service_instance_spec B ON (A.INSTANCE_SID = B.INSTANCE_SID AND B.NAME='CPU')
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		GROUP BY TANENT_ID, SERVICE_SID
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+
+	<!-- 查询配额视图租户下云主机内存服务总数与用户内存数 -->
+	<select id="countTenantServiceVmMemoryQuotaByParams" resultMap="BaseResultMap"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT
+		A.TANENT_ID,
+		A.SERVICE_SID,
+		1024 * SUM(B.VALUE) as USER_SERVICE_NUM
+		FROM service_instance A
+		LEFT JOIN service_instance_spec B ON (A.INSTANCE_SID = B.INSTANCE_SID AND B.NAME='MEMORY')
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		GROUP BY TANENT_ID, SERVICE_SID
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+
+	<!-- 查询配额视图租户下块存储磁盘大小服务总数与用户磁盘数 -->
+	<select id="countTenantServiceStDiskQuotaByParams" resultMap="BaseResultMap"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT
+		A.TANENT_ID,
+		A.SERVICE_SID,
+		SUM(E.VALUE) as USER_SERVICE_NUM
+		FROM service_instance A
+		INNER JOIN resource_instance B on(A.INSTANCE_SID = B.SERVICE_INSTANCE_SID)
+		INNER JOIN resource_instance_storage C on(B.RES_INSTANCE_SID = C.RES_INSTANCE_SID)
+		LEFT JOIN service_instance_spec E ON (A.INSTANCE_SID = E.INSTANCE_SID AND E.NAME='DISK_SIZE')
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		GROUP BY TANENT_ID, SERVICE_SID
+		<include refid="common.Mysql_Pagination_Limit" />
+	</select>
+
+	<!-- 查询服务实例计费 -->
+	<select id="selectBillServiceByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+		select
+		<include refid="Base_Column_List" />
+		,M.MGT_OBJ_SID AS MGT_OBJ_SID
+		FROM
+		service_instance A
+		LEFT JOIN SYS_M_USER M ON ( A.OWNER_ID=M.ACCOUNT )
+		<if test="_parameter != null" >
+			<include refid="Example_Where_Clause" />
+		</if>
+		GROUP BY A.TANENT_ID
+		<include refid="common.Mysql_Pagination_Limit" />
+
+
+	</select>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+			parameterType="java.lang.Long">
+		select
+		distinct
+		<include refid="Base_Column_List" />
+		,G.NETWORK_NAME AS INTERNET_VLAN_NAME
+		,H.NETWORK_NAME AS INTRANET_VLAN_NAME
+		,I.RES_TOPOLOGY_NAME AS COMPUTE_RES_SET_NAME
+		,C.REAL_NAME AS OWNER_NAME
+		,C.MGT_OBJ_SID AS MGT_OBJ_SID
+		,C.EMAIL AS OWNER_EMAIL
+		,D.CODE_DISPLAY AS STATUS_NAME
+		,E.CODE_DISPLAY AS BILLING_TYPE_NAME
+		,F.UNIT AS BILLING_TYPE_UNIT
+		,K.SERVICE_NAME AS SERVICE_NAME
+		,CASE WHEN A.BUY_LENGTH = 99 THEN '永久' ELSE Concat(CONVERT(A.BUY_LENGTH,char),F.UNIT) END AS PURCHASE_LONG_TIME
+		from
+		service_instance A
+		LEFT JOIN sys_m_user C ON (
+		A.OWNER_ID = C.ACCOUNT
+		)left
+		join SYS_M_CODE D on (D.CODE_CATEGORY =
+		'SERVICE_INASTANCE_STATUS'
+		and
+		A.STATUS = D.CODE_VALUE)
+		left join SYS_M_CODE E on(
+		E.CODE_CATEGORY =
+		'BILLING_TYPE_YM'
+		and A.BILLING_TYPE = E.CODE_VALUE
+		)
+		LEFT JOIN BILLING_TYPE F ON (
+		A.BILLING_TYPE=F.BILLING_TYPE
+		)
+		LEFT JOIN res_network G on (A.INTERNET_VLAN = G.RES_NETWORK_SID)
+		LEFT JOIN res_network H on (A.INTRANET_VLAN = H.RES_NETWORK_SID)
+		LEFT JOIN res_topology I on (A.COMPUTE_RES_SET = I.RES_TOPOLOGY_SID)
+		LEFT JOIN SERVICE K ON (A.SERVICE_SID = K.SERVICE_SID)
+		where
+		A.INSTANCE_SID = #{instanceSid}
+	</select>
+	<select id="selectByPrimaryKeyInstance" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		INSTANCE_SID, INSTANCE_NAME, OWNER_ID, STATUS, IS_FREE, O_SERVICE_ID
+		from
+		service_instance
+		where
+		INSTANCE_SID = #{instanceSid}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		service_instance
+		where INSTANCE_SID = #{instanceSid}
+	</delete>
+	<delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		delete from service_instance
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause2" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstance">
+		<selectKey resultType="java.lang.Long" keyProperty="instanceSid"
+				   order="BEFORE">
+			SELECT NEXTVAL('SEQ_SERVICE_INSTANCE')
+		</selectKey>
+		insert into service_instance (INSTANCE_SID, O_SERVICE_ID, INSTANCE_NAME, RES_INST_NAME, PARENT_INSTANCE_SID,
+		BILLING_TYPE, BUY_LENGTH, BILLING_TYPE_ID, DESCRIPTION,
+		EXPIRING_DATE, OWNER_ID, DETAIL_SID,
+		SERVICE_SID, TEMPLATE_SID, ORDER_ID, STATUS,
+		TARGET, TANENT_ID,
+		DREDGE_DATE, EXPECTED_TIME, CREATION_DATE_BEGIN,
+		CREATION_DATE_END,
+		CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION,
+		PROCESS_INSTANCE_ID,
+		PROCESS_INSTANCE_CANCEL_ID, PROCESS_FAILED_DESC, EXCEPTION_DESC, SPECIFICATION,INSTANCE_ID,AMOUNT)
+		values (#{instanceSid}, #{oServiceId},
+		#{instanceName}, #{resInstName} #{parentInstanceSid}, #{billingType}, #{buyLength}, #{billingTypeId},
+		#{description},
+		#{expiringDate}, #{ownerId},#{detailSid}, #{serviceSid}, #{templateSid},
+		#{orderId}, #{status},
+		#{target}, #{tanentId}, #{dredgeDate},
+		#{expectedTime},
+		#{creationDateBegin}, #{creationDateEnd},
+		#{createdBy}, #{createdDt}, #{updatedBy}, #{updatedDt}, #{version},
+		#{processInstanceId}, #{processInstanceCancelId}, #{processFailedDesc}, #{exceptionDesc}, #{specification}, #{instanceId}, #{amount})
+	</insert>
+	<insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstance">
+		<selectKey resultType="java.lang.Long" keyProperty="instanceSid"
+				   order="BEFORE">
+			SELECT NEXTVAL('SEQ_SERVICE_INSTANCE')
+		</selectKey>
+		insert into service_instance
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			INSTANCE_SID,
+			<if test="oServiceId != null">
+				O_SERVICE_ID,
+			</if>
+			<if test="instanceName != null">
+				INSTANCE_NAME,
+			</if>
+			<if test="resInstName != null">
+				RES_INST_NAME,
+			</if>
+			<if test="parentInstanceSid != null">
+				PARENT_INSTANCE_SID,
+			</if>
+			<if test="billingType != null">
+				BILLING_TYPE,
+			</if>
+			<if test="buyLength != null">
+				BUY_LENGTH,
+			</if>
+			<if test="billingTypeId != null">
+				BILLING_TYPE_ID,
+			</if>
+			<if test="description != null">
+				DESCRIPTION,
+			</if>
+			<if test="expiringDate != null">
+				EXPIRING_DATE,
+			</if>
+			<if test="ownerId != null">
+				OWNER_ID,
+			</if>
+			<if test="detailSid != null">
+				DETAIL_SID,
+			</if>
+			<if test="serviceSid != null">
+				SERVICE_SID,
+			</if>
+			<if test="templateSid != null">
+				TEMPLATE_SID,
+			</if>
+			<if test="orderId != null">
+				ORDER_ID,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="target != null">
+				TARGET,
+			</if>
+			<if test="tanentId != null">
+				TANENT_ID,
+			</if>
+			<if test="computeResSet != null">
+				COMPUTE_RES_SET,
+			</if>
+			<if test="internetVlan != null">
+				INTERNET_VLAN,
+			</if>
+			<if test="intranetVlan != null">
+				INTRANET_VLAN,
+			</if>
+			<if test="dredgeDate != null">
+				DREDGE_DATE,
+			</if>
+			<if test="destroyDate != null">
+				DESTROY_DATE,
+			</if>
+			<if test="expectedTime != null">
+				EXPECTED_TIME,
+			</if>
+			<if test="creationDateBegin != null">
+				CREATION_DATE_BEGIN,
+			</if>
+			<if test="creationDateEnd != null">
+				CREATION_DATE_END,
+			</if>
+			<if test="createdBy != null">
+				CREATED_BY,
+			</if>
+			<if test="createdDt != null">
+				CREATED_DT,
+			</if>
+			<if test="updatedBy != null">
+				UPDATED_BY,
+			</if>
+			<if test="updatedDt != null">
+				UPDATED_DT,
+			</if>
+			<if test="version != null">
+				VERSION,
+			</if>
+			<if test="processInstanceId != null">
+				PROCESS_INSTANCE_ID,
+			</if>
+			<if test="processInstanceCancelId != null">
+				PROCESS_INSTANCE_CANCEL_ID,
+			</if>
+			<if test="processFailedDesc != null">
+				PROCESS_FAILED_DESC,
+			</if>
+			<if test="exceptionDesc != null">
+				EXCEPTION_DESC,
+			</if>
+			<if test="contractId != null">
+				CONTRACT_ID,
+			</if>
+			<if test="projectId != null">
+				PROJECT_ID,
+			</if>
+			<if test="contractFile != null">
+				CONTRACT_FILE,
+			</if>
+			<if test="fwPort != null">
+				FW_PORT,
+			</if>
+			<if test="mgtObjSid != null">
+				MGT_OBJ_SID,
+			</if>
+			<if test="specification != null">
+				SPECIFICATION,
+			</if>
+			<if test="regionSid != null">
+				REGION_SID,
+			</if>
+			<if test="zoneSid != null">
+				ZONE_SID,
+			</if>
+			<if test="instanceId != null">
+				INSTANCE_ID,
+			</if>
+			<if test="amount != null">
+				AMOUNT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{instanceSid},
+			<if test="oServiceId != null">
+				#{oServiceId},
+			</if>
+			<if test="instanceName != null">
+				#{instanceName},
+			</if>
+			<if test="resInstName != null">
+				#{resInstName},
+			</if>
+			<if test="parentInstanceSid != null">
+				#{parentInstanceSid},
+			</if>
+			<if test="billingType != null">
+				#{billingType},
+			</if>
+			<if test="buyLength != null">
+				#{buyLength},
+			</if>
+			<if test="billingTypeId != null">
+				#{billingTypeId},
+			</if>
+			<if test="description != null">
+				#{description},
+			</if>
+			<if test="expiringDate != null">
+				#{expiringDate},
+			</if>
+			<if test="ownerId != null">
+				#{ownerId},
+			</if>
+			<if test="detailSid != null">
+				#{detailSid},
+			</if>
+			<if test="serviceSid != null">
+				#{serviceSid},
+			</if>
+			<if test="templateSid != null">
+				#{templateSid},
+			</if>
+			<if test="orderId != null">
+				#{orderId},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="target != null">
+				#{target},
+			</if>
+			<if test="tanentId != null">
+				#{tanentId},
+			</if>
+			<if test="computeResSet != null">
+				#{computeResSet},
+			</if>
+			<if test="internetVlan != null">
+				#{internetVlan},
+			</if>
+			<if test="intranetVlan != null">
+				#{intranetVlan},
+			</if>
+			<if test="dredgeDate != null">
+				#{dredgeDate},
+			</if>
+			<if test="destroyDate != null">
+				#{destroyDate},
+			</if>
+			<if test="expectedTime != null">
+				#{expectedTime},
+			</if>
+			<if test="creationDateBegin != null">
+				#{creationDateBegin},
+			</if>
+			<if test="creationDateEnd != null">
+				#{creationDateEnd},
+			</if>
+			<if test="createdBy != null">
+				#{createdBy},
+			</if>
+			<if test="createdDt != null">
+				#{createdDt},
+			</if>
+			<if test="updatedBy != null">
+				#{updatedBy},
+			</if>
+			<if test="updatedDt != null">
+				#{updatedDt},
+			</if>
+			<if test="version != null">
+				#{version},
+			</if>
+			<if test="processInstanceId != null">
+				#{processInstanceId},
+			</if>
+			<if test="processInstanceCancelId != null">
+				#{processInstanceCancelId},
+			</if>
+			<if test="processFailedDesc != null">
+				#{processFailedDesc},
+			</if>
+			<if test="exceptionDesc != null">
+				#{exceptionDesc},
+			</if>
+			<if test="contractId != null">
+				#{contractId},
+			</if>
+			<if test="projectId != null">
+				#{projectId},
+			</if>
+			<if test="contractFile != null">
+				#{contractFile},
+			</if>
+			<if test="fwPort != null">
+				#{fwPort},
+			</if>
+			<if test="mgtObjSid != null">
+				#{mgtObjSid},
+			</if>
+			<if test="specification != null">
+				#{specification},
+			</if>
+			<if test="regionSid != null">
+				#{regionSid},
+			</if>
+			<if test="zoneSid != null">
+				#{zoneSid},
+			</if>
+			<if test="instanceId != null">
+				#{instanceId},
+			</if>
+			<if test="amount != null">
+				#{amount},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria"
+			resultType="java.lang.Integer">
+		select count(*) from service_instance A
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByParamsSelective" parameterType="map">
+		update service_instance
+		<set>
+			<if test="record.instanceSid != null">
+				INSTANCE_SID = #{record.instanceSid},
+			</if>
+			<if test="record.instanceSid != null">
+				O_SERVICE_ID = #{record.oServiceId},
+			</if>
+			<if test="record.resInstName != null">
+				RES_INST_NAME = #{record.resInstName},
+			</if>
+			<if test="record.billingType != null">
+				BILLING_TYPE = #{record.billingType},
+			</if>
+			<if test="record.buyLength != null">
+				BUY_LENGTH = #{record.buyLength},
+			</if>
+			<if test="record.billingTypeId != null">
+				BILLING_TYPE_ID = #{record.billingTypeId},
+			</if>
+			<if test="record.description != null">
+				DESCRIPTION = #{record.description},
+			</if>
+			<if test="record.expiringDate != null">
+				EXPIRING_DATE = #{record.expiringDate},
+			</if>
+			<if test="record.ownerId != null">
+				OWNER_ID = #{record.ownerId},
+			</if>
+			<if test="record.detailSid != null">
+				DETAIL_SID = #{record.detailSid},
+			</if>
+			<if test="record.serviceSid != null">
+				SERVICE_SID = #{record.serviceSid},
+			</if>
+			<if test="record.templateSid != null">
+				TEMPLATE_SID = #{record.templateSid},
+			</if>
+			<if test="record.orderId != null">
+				ORDER_ID = #{record.orderId},
+			</if>
+			<if test="record.status != null">
+				STATUS = #{record.status},
+			</if>
+			<if test="record.target != null">
+				TARGET = #{record.target},
+			</if>
+			<if test="record.tanentId != null">
+				TANENT_ID = #{record.tanentId},
+			</if>
+			<if test="record.dredgeDate != null">
+				DREDGE_DATE = #{record.dredgeDate},
+			</if>
+			<if test="record.expectedTime != null">
+				EXPECTED_TIME = #{record.expectedTime},
+			</if>
+			<if test="record.creationDateBegin != null">
+				CREATION_DATE_BEGIN = #{record.creationDateBegin},
+			</if>
+			<if test="record.creationDateEnd != null">
+				CREATION_DATE_END = #{record.creationDateEnd},
+			</if>
+			<if test="record.createdBy != null">
+				CREATED_BY = #{record.createdBy},
+			</if>
+			<if test="record.createdDt != null">
+				CREATED_DT = #{record.createdDt},
+			</if>
+			<if test="record.updatedBy != null">
+				UPDATED_BY = #{record.updatedBy},
+			</if>
+			<if test="record.updatedDt != null">
+				UPDATED_DT = #{record.updatedDt},
+			</if>
+			<if test="record.version != null">
+				VERSION = #{record.version},
+			</if>
+			<if test="record.processInstanceId != null">
+				PROCESS_INSTANCE_ID = #{record.processInstanceId},
+			</if>
+			<if test="record.processInstanceCancelId != null">
+				PROCESS_INSTANCE_CANCEL_ID =
+				#{record.processInstanceCancelId},
+			</if>
+			<if test="record.processFailedDesc != null">
+				PROCESS_FAILED_DESC =
+				#{record.processFailedDesc},
+			</if>
+			<if test="record.exceptionDesc != null">
+				EXCEPTION_DESC =
+				#{record.exceptionDesc},
+			</if>
+			<if test="record.processInstanceChangeId != null">
+				PROCESS_INSTANCE_CHANGE_ID =
+				#{record.processInstanceChangeId},
+			</if>
+			<if test="record.isFree != null">
+				IS_FREE = #{record.isFree},
+			</if>
+			<if test="record.specification != null">
+				SPECIFICATION = #{record.specification},
+			</if>
+			<if test="record.regionSid != null">
+				REGION_SID = #{record.regionSid},
+			</if>
+			<if test="record.zoneSid != null">
+				ZONE_SID = #{record.zoneSid},
+			</if>
+			<if test="record.instanceId != null">
+				INSTANCE_ID = #{record.instanceId},
+			</if>
+			<if test="record.amount != null">
+				AMOUNT = #{record.amount},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByParams" parameterType="map">
+		update service_instance
+		set INSTANCE_SID = #{record.instanceSid},
+		O_SERVICE_ID = #{record.oServiceId},
+		INSTANCE_NAME = #{record.instanceName},
+		RES_INST_NAME = #{record.resInstName},
+		PARENT_INSTANCE_SID =
+		#{record.parentInstanceSid},
+		BILLING_TYPE =
+		#{record.billingType},
+		BUY_LENGTH =
+		#{record.buyLength},
+		BILLING_TYPE_ID = #{record.billingTypeId},
+		DESCRIPTION = #{record.description},
+		EXPIRING_DATE =
+		#{record.expiringDate},
+		OWNER_ID = #{record.ownerId},
+		DETAIL_SID = #{record.detailSid},
+		SERVICE_SID =
+		#{record.serviceSid},
+		TEMPLATE_SID = #{record.templateSid},
+		ORDER_ID =
+		#{record.orderId},
+		STATUS = #{record.status},
+		TARGET = #{record.target},
+		TANENT_ID = #{record.tanentId},
+		DREDGE_DATE = #{record.dredgeDate},
+		EXPECTED_TIME = #{record.expectedTime},
+		CREATION_DATE_BEGIN =
+		#{record.creationDateBegin},
+		CREATION_DATE_END =
+		#{record.creationDateEnd},
+		CREATED_BY = #{record.createdBy},
+		CREATED_DT
+		= #{record.createdDt},
+		UPDATED_BY = #{record.updatedBy},
+		UPDATED_DT =
+		#{record.updatedDt},
+		VERSION = #{record.version},
+		PROCESS_INSTANCE_ID =
+		#{record.processInstanceId},
+		PROCESS_INSTANCE_CANCEL_ID =
+		#{record.processInstanceCancelId},
+		PROCESS_FAILED_DESC =
+		#{record.processFailedDesc},
+		EXCEPTION_DESC =
+		#{record.exceptionDesc},
+		SPECIFICATION =
+		#{record.specification},
+		REGION_SID =
+		#{record.regionSid},
+		INSTANCE_ID =
+		#{record.instanceId},
+		AMOUNT =
+		#{record.amount},
+		ZONE_SID =
+		#{record.zoneSid}
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstance">
+		update service_instance
+		<set>
+			<if test="oServiceId != null">
+				O_SERVICE_ID = #{oServiceId},
+			</if>
+			<if test="instanceName != null">
+				INSTANCE_NAME = #{instanceName},
+			</if>
+			<if test="resInstName != null">
+				RES_INST_NAME = #{resInstName},
+			</if>
+			<if test="parentInstanceSid != null">
+				PARENT_INSTANCE_SID = #{parentInstanceSid},
+			</if>
+			<if test="billingType != null">
+				BILLING_TYPE = #{billingType},
+			</if>
+			<if test="buyLength != null">
+				BUY_LENGTH = #{buyLength},
+			</if>
+			<if test="billingTypeId != null">
+				BILLING_TYPE_ID = #{billingTypeId},
+			</if>
+			<if test="description != null">
+				DESCRIPTION = #{description},
+			</if>
+			<if test="billingEndTime != null">
+				BILLING_END_TIME = #{billingEndTime},
+			</if>
+			<if test="expiringDate != null">
+				EXPIRING_DATE = #{expiringDate},
+			</if>
+			<if test="ownerId != null">
+				OWNER_ID = #{ownerId},
+			</if>
+			<if test="detailSid != null">
+				DETAIL_SID = #{detailSid},
+			</if>
+			<if test="serviceSid != null">
+				SERVICE_SID = #{serviceSid},
+			</if>
+			<if test="templateSid != null">
+				TEMPLATE_SID = #{templateSid},
+			</if>
+			<if test="orderId != null">
+				ORDER_ID = #{orderId},
+			</if>
+			<if test="status != null">
+				STATUS = #{status},
+			</if>
+			<if test="target != null">
+				TARGET = #{target},
+			</if>
+			<if test="tanentId != null">
+				TANENT_ID = #{tanentId},
+			</if>
+			<if test="computeResSet != null" >
+				COMPUTE_RES_SET = #{computeResSet},
+			</if>
+			<if test="internetVlan != null" >
+				INTERNET_VLAN = #{internetVlan},
+			</if>
+			<if test="intranetVlan != null" >
+				INTRANET_VLAN = #{intranetVlan},
+			</if>
+			<if test="dredgeDate != null">
+				DREDGE_DATE = #{dredgeDate},
+			</if>
+			<if test="destroyDate != null">
+				DESTROY_DATE = #{destroyDate},
+			</if>
+			<if test="creationDateBegin != null">
+				CREATION_DATE_BEGIN = #{creationDateBegin},
+			</if>
+			<if test="creationDateEnd != null">
+				CREATION_DATE_END = #{creationDateEnd},
+			</if>
+			<if test="createdBy != null">
+				CREATED_BY = #{createdBy},
+			</if>
+			<if test="createdDt != null">
+				CREATED_DT = #{createdDt},
+			</if>
+			<if test="updatedBy != null">
+				UPDATED_BY = #{updatedBy},
+			</if>
+			<if test="updatedDt != null">
+				UPDATED_DT = #{updatedDt},
+			</if>
+			<if test="version != null">
+				VERSION = #{version},
+			</if>
+			<if test="processInstanceId != null">
+				PROCESS_INSTANCE_ID = #{processInstanceId},
+			</if>
+			<if test="processInstanceCancelId != null">
+				PROCESS_INSTANCE_CANCEL_ID = #{processInstanceCancelId},
+			</if>
+			<if test="processInstanceChangeId != null">
+				PROCESS_INSTANCE_CHANGE_ID = #{processInstanceChangeId},
+			</if>
+			<if test="processFailedDesc != null">
+				PROCESS_FAILED_DESC = #{processFailedDesc},
+			</if>
+			<if test="exceptionDesc != null">
+				EXCEPTION_DESC = #{exceptionDesc},
+			</if>
+			<if test="mgtObjSid != null">
+				MGT_OBJ_SID = #{mgtObjSid},
+			</if>
+			<if test="isFree != null">
+				IS_FREE = #{isFree},
+			</if>
+			<if test="specification != null">
+				SPECIFICATION = #{specification},
+			</if>
+			<if test="regionSid != null">
+				REGION_SID = #{regionSid},
+			</if>
+			<if test="zoneSid != null">
+				ZONE_SID = #{zoneSid},
+			</if>
+			<if test="instanceId != null">
+				INSTANCE_ID = #{instanceId},
+			</if>
+			<if test="amount != null">
+				AMOUNT = #{amount},
+			</if>
+		</set>
+		where INSTANCE_SID = #{instanceSid}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstance">
+		update
+		service_instance
+		set
+		O_SERVICE_ID = #{oServiceId},
+		INSTANCE_NAME = #{instanceName},
+		RES_INST_NAME = #{resInstName},
+		PARENT_INSTANCE_SID =
+		#{parentInstanceSid},
+		BILLING_TYPE =
+		#{billingType},
+		BUY_LENGTH =
+		#{buyLength},
+		BILLING_TYPE_ID = #{billingTypeId},
+		BILLING_END_TIME = #{billingEndTime},
+		DESCRIPTION =
+		#{description},
+		EXPIRING_DATE = #{expiringDate},
+		OWNER_ID = #{ownerId},
+		DETAIL_SID = #{detailSid},
+		SERVICE_SID = #{serviceSid},
+		TEMPLATE_SID = #{templateSid},
+		ORDER_ID = #{orderId},
+		STATUS = #{status},
+		TARGET = #{target},
+		TANENT_ID = #{tanentId},
+		DREDGE_DATE = #{dredgeDate},
+		CREATION_DATE_BEGIN = #{creationDateBegin},
+		CREATION_DATE_END = #{creationDateEnd},
+		CREATED_BY = #{createdBy},
+		CREATED_DT = #{createdDt},
+		UPDATED_BY = #{updatedBy},
+		UPDATED_DT = #{updatedDt},
+		VERSION = #{version},
+		PROCESS_INSTANCE_ID = #{processInstanceId},
+		PROCESS_INSTANCE_CANCEL_ID = #{processInstanceCancelId},
+		PROCESS_FAILED_DESC = #{processFailedDesc},
+		EXCEPTION_DESC = #{exceptionDesc},
+		SPECIFICATION = #{specification},
+		REGION_SID = #{regionSid},
+		INSTANCE_ID = #{instanceId},
+		AMOUNT = #{amount},
+		ZONE_SID = #{zoneSid}
+		where INSTANCE_SID = #{instanceSid}
+	</update>
+	<select id="countAllUsageQuotaByParams" resultType="java.util.Map"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT SUM(D.VALUE) as VALUE, D.NAME
+		FROM (SELECT A.INSTANCE_SID FROM SERVICE_INSTANCE A, SYS_M_USER B WHERE A.OWNER_ID = B.ACCOUNT AND  B.MGT_OBJ_SID = #{condition.mgtObjSid} AND A.STATUS IS NOT NULL AND A.STATUS != '99') AS C
+		LEFT JOIN SERVICE_INSTANCE_SPEC D ON (C.INSTANCE_SID = D.INSTANCE_SID) GROUP BY D.NAME
+	</select>
+	<select id="getOrderQuotaByParams" resultType="java.util.Map"
+			parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT SUM(B.VALUE) as VALUE, B.NAME
+		FROM SERVICE_INSTANCE A
+		LEFT JOIN SERVICE_INSTANCE_SPEC B ON (A.INSTANCE_SID = B.INSTANCE_SID)
+		WHERE A.ORDER_ID = #{condition.orderId} GROUP BY NAME
+	</select>
+	<select id="checkOrderSuccess" resultType="java.lang.Boolean" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select sum(if(status = '03', 1, 0)) = count(1)
+		from service_instance where order_id = #{condition.orderId} and service_sid = #{condition.serviceSid};
+	</select>
+	<select id="checkVmServiceInstanceSuccess" resultType="java.lang.Boolean" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		select sum(if(status = '03', 1, 0)) = count(1)
+		from service_instance where parent_instance_sid = #{condition.instanceSid}
+	</select>
+	<select id="checkUnsubscribeVmSuccess" resultType="java.lang.Boolean"
+			parameterType="String">
+		select sum(if(status = '99', 1, 0)) = count(1)
+		from service_instance where order_id = #{orderId} and service_sid = 100;
+	</select>
+
+	<select id="selectByParamsForBar" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT
+		SUM(C.CPU_CORES) AS CPU_CORES,
+		SUM(C.MEMORY_SIZE) AS MEMORY_SIZE,
+		SUM(D.ALLOCATE_DISK_SIZE) AS TOTAL_STORAGE
+		FROM service_instance A
+		LEFT JOIN service_inst_res B ON B.INSTANCE_SID = A.INSTANCE_SID
+		LEFT JOIN res_vm C ON C.RES_VM_SID = B.RES_ID
+		LEFT JOIN res_vd D ON D.RES_VD_SID = B.RES_ID
+		WHERE A.MGT_OBJ_SID in (${condition.bizsids})
+	</select>
+	<select id="selectVdNameByInstanceSid" resultType="java.lang.String" parameterType="java.lang.Long">
+		SELECT VD_NAME FROM SERVICE_INST_RES A
+		JOIN RES_VD B ON A.RES_ID = RES_VD_SID
+		WHERE A.INSTANCE_SID = #{instanceSid}
+	</select>
+	<select id="selectCountByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+		SELECT
+		count(*) AS VM_COUNT,
+		A.SERVICE_SID,
+		s.SERVICE_NAME,
+		s.S_IMAGE_PATH_1 as IMAGE_PATH
+		FROM ( SELECT *
+		FROM `service_instance` si
+		WHERE si.PARENT_INSTANCE_SID IS NULL
+		) A
+		LEFT JOIN service s ON s.SERVICE_SID = A.SERVICE_SID
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		GROUP BY A.SERVICE_SID
+	</select>
+
+	<select id="selectVmHostNameSeq" resultType="java.lang.Long">
+		SELECT NEXTVAL('SEQ_VM_HOST_NAME')
+	</select>
+</mapper>

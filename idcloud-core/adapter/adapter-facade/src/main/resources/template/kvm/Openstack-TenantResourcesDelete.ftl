@@ -1,0 +1,1 @@
+{"delete_tenant_with_resource":{}}

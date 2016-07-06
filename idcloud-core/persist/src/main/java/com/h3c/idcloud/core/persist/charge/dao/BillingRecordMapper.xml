@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.charge.dao.BillingRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.charge.BillingRecord" >
+    <id column="BILLINGRECORD_SID" property="id" jdbcType="BIGINT" />
+    <result column="PROVIDER" property="provider" jdbcType="VARCHAR" />
+    <result column="REQUESTID" property="requestId" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="FLOWNO" property="flowNo" jdbcType="VARCHAR" />
+    <result column="BILLING_ACCOUNT_SID" property="accountSid" jdbcType="BIGINT" />
+    <result column="CUSTOMERNAME" property="customerName" jdbcType="VARCHAR" />
+    <result column="CHANNEL" property="channel" jdbcType="VARCHAR" />
+    <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+    <result column="CHANNEL_NAME" property="channelName" jdbcType="VARCHAR" />
+    <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.provider != null" >
+         and A.PROVIDER = #{condition.provider}
+      </if>
+      <if test="condition.requestId != null" >
+         and A.REQUESTID = #{condition.requestId}
+      </if>
+      <if test="condition.status != null" >
+         and A.STATUS = #{condition.status}
+      </if>
+      <if test="condition.flowNo != null" >
+         and A.FLOWNO = #{condition.flowNo}
+      </if>
+      <if test="condition.accountSid != null" >
+         and A.BILLING_ACCOUNT_SID = #{condition.accountSid}
+      </if>
+      <if test="condition.customerName != null" >
+         and A.CUSTOMERNAME = #{condition.customerName}
+      </if>
+      <if test="condition.channel != null" >
+         and A.CHANNEL = #{condition.channel}
+      </if>
+      <if test="condition.amount != null" >
+         and A.AMOUNT = #{condition.amount}
+      </if>
+      <if test="condition.createdBy != null" >
+         and A.CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and A.CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and A.UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and A.UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and A.VERSION = #{condition.version}
+      </if>
+      <if test="condition.version != null" >
+         and A.VERSION = #{condition.version}
+      </if>
+      <if test="condition.flowNoLike != null" >
+         and A.flowNo like concat('%', #{condition.flowNoLike},'%')
+      </if>
+      <if test="condition.fromDate != null" >
+         and A.CREATED_DT >= #{condition.fromDate}
+      </if>
+      <if test="condition.toDate != null" >
+         and A.CREATED_DT <![CDATA[ <= #{condition.toDate} ]]>
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    A.BILLINGRECORD_SID,A.PROVIDER,A.REQUESTID,A.FLOWNO,A.BILLING_ACCOUNT_SID,A.CUSTOMERNAME,A.CHANNEL,A.AMOUNT,
+    A.STATUS, A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, A.UPDATED_DT, A.VERSION
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,B.CODE_DISPLAY as STATUS_NAME,
+    C.CODE_DISPLAY as CHANNEL_NAME 
+    from BILLING_RECORD A
+    left join SYS_M_CODE B on (A.STATUS = B.CODE_VALUE and B.CODE_CATEGORY = 'PAY_STATUS')
+    left join SYS_M_CODE C on (A.CHANNEL = C.CODE_VALUE and C.CODE_CATEGORY = 'PAY_CHANNEL')
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from BILLING_RECORD A
+    where A.BILLINGRECORD_SID = #{accountSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from BILLING_RECORD
+    where BILLINGRECORD_SID = #{accountSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from BILLING_RECORD
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingAccount" >
+    insert into BILLING_RECORD (BILLINGRECORD_SID, PROVIDER,
+    REQUESTID,STATUS,FLOWNO,BILLING_ACCOUNT_SID,CUSTOMERNAME,CHANNEL,AMOUNT,
+      CREATED_BY, CREATED_DT, 
+      UPDATED_BY, UPDATED_DT, VERSION)
+    values (#{id},#{provider},
+    #{requestId},#{status},#{flowNo},#{accountSid},#{customerName},#{channel},#{amount},
+      #{createdBy}, #{createdDt}, 
+      #{updatedBy}, #{updatedDt}, #{version})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingAccount" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="BEFORE">
+			SELECT NEXTVAL('SEQ_BILLINGRECORD')
+	</selectKey>
+    insert into BILLING_RECORD
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        BILLINGRECORD_SID,
+      <if test="provider != null" >
+        PROVIDER,
+      </if>
+      <if test="requestId != null" >
+        REQUESTID,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="flowNo != null" >
+        FLOWNO,
+      </if>
+      <if test="accountSid != null" >
+        BILLING_ACCOUNT_SID,
+      </if>
+      <if test="customerName != null" >
+        CUSTOMERNAME,
+      </if>
+      <if test="channel != null" >
+        CHANNEL,
+      </if>
+      <if test="amount != null" >
+        AMOUNT,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{id},
+      <if test="provider != null" >
+        #{provider},
+      </if>
+      <if test="requestId != null" >
+        #{requestId},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="flowNo != null" >
+        #{flowNo},
+      </if>
+      <if test="accountSid != null" >
+        #{accountSid},
+      </if>
+      <if test="customerName != null" >
+        #{customerName},
+      </if>
+      <if test="channel != null" >
+        #{channel},
+      </if>
+      <if test="amount != null" >
+        #{amount},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from BILLING_RECORD
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update BILLING_RECORD
+    <set >
+      <if test="record.id != null" >
+        BILLINGRECORD_SID = #{record.id},
+      </if>
+      <if test="record.provider != null" >
+        PROVIDER = #{record.provider},
+      </if>
+      <if test="record.requestId != null" >
+        REQUESTID = #{record.requestId},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status},
+      </if>
+      <if test="record.flowNo != null" >
+        FLOWNO = #{record.flowNo},
+      </if>
+      <if test="record.accountSid != null" >
+        BILLING_ACCOUNT_SID = #{record.accountSid},
+      </if>
+      <if test="record.customerName != null" >
+        CUSTOMERNAME = #{record.customerName},
+      </if>
+      <if test="record.channel != null" >
+        CHANNEL = #{record.channel},
+      </if>
+      <if test="record.amount != null" >
+        AMOUNT = #{record.amount},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update BILLING_RECORD
+    set 
+        BILLINGRECORD_SID = #{record.id},
+        PROVIDER = #{record.provider},
+        REQUESTID = #{record.requestId},
+        STATUS = #{record.status},
+        FLOWNO = #{record.flowNo},
+        BILLING_ACCOUNT_SID = #{record.accountSid},
+        CUSTOMERNAME = #{record.customerName},
+        CHANNEL = #{record.channel},
+        AMOUNT = #{record.amount},
+      	CREATED_BY = #{record.createdBy},
+      	CREATED_DT = #{record.createdDt},
+      	UPDATED_BY = #{record.updatedBy},
+      	UPDATED_DT = #{record.updatedDt},
+      	VERSION = #{record.version}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingAccount" >
+    update BILLING_RECORD
+    <set >
+      <if test="provider != null" >
+        PROVIDER = #{provider},
+      </if>
+      <if test="requestId != null" >
+        REQUESTID = #{requestId},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status},
+      </if>
+      <if test="flowNo != null" >
+        FLOWNO = #{flowNo},
+      </if>
+      <if test="accountSid != null" >
+        BILLING_ACCOUNT_SID = #{accountSid},
+      </if>
+      <if test="customerName != null" >
+        CUSTOMERNAME = #{customerName},
+      </if>
+      <if test="channel != null" >
+        CHANNEL = #{channel},
+      </if>
+      <if test="amount != null" >
+        AMOUNT = #{amount},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+    </set>
+    where BILLINGRECORD_SID = #{id}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.charge.BillingAccount" >
+    update BILLING_RECORD
+    set 
+      PROVIDER = #{provider},
+      REQUESTID = #{requestId},
+      STATUS = #{status},
+      FLOWNO = #{flowNo},
+      BILLING_ACCOUNT_SID = #{accountSid},
+      CUSTOMERNAME = #{customerName},
+      CHANNEL = #{channel},
+      AMOUNT = #{amount},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version}
+    where BILLINGRECORD_SID = #{id}
+  </update>
+</mapper>

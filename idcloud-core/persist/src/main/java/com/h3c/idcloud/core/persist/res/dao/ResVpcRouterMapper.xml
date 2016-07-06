@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResVpcRouterMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResVpcRouter">
+        <id column="RES_ROUTER_SID" property="resRouterSid" jdbcType="VARCHAR" />
+        <result column="PARENT_TOPOLOGY_SID" property="parentTopologySid" jdbcType="VARCHAR" />
+        <result column="RES_POOL_SID" property="resPoolSid" jdbcType="VARCHAR" />
+        <result column="ROUTER_ID" property="routerId" jdbcType="VARCHAR" />
+        <result column="ROUTER_NAME" property="routerName" jdbcType="VARCHAR" />
+        <result column="EXTERNAL_GATEWAY_INFO" property="externalGatewayInfo" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="VARCHAR" />
+        <result column="STATUS_NAME" property="statusName" jdbcType="VARCHAR" />
+        <result column="MGT_OBJ_SID" property="mgtObjSid" jdbcType="BIGINT" />
+        <result column="OWNER_ID" property="ownerId" jdbcType="VARCHAR" />
+        <result column="ZONE" property="zone" jdbcType="VARCHAR" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+        <result column="VERSION" property="version" jdbcType="BIGINT" />
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.routerId != null">
+                and A.ROUTER_ID = #{condition.routerId}
+            </if>
+            <if test="condition.parentTopologySid != null">
+                and A.PARENT_TOPOLOGY_SID = #{condition.parentTopologySid}
+            </if>
+            <if test="condition.resPoolSid != null">
+                and A.RES_POOL_SID = #{condition.resPoolSid}
+            </if>
+            <if test="condition.routerName != null">
+                and A.ROUTER_NAME = #{condition.routerName}
+            </if>
+            <if test="condition.mgtObjSid != null">
+                and A.MGT_OBJ_SID = #{condition.mgtObjSid}
+            </if>
+            <if test="condition.ownerId != null">
+                and A.OWNER_ID = #{condition.ownerId}
+            </if>
+            <if test="condition.zone != null">
+                and A.ZONE = #{condition.zone}
+            </if>
+            <if test="condition.externalGatewayInfoNull != null">
+                and A.EXTERNAL_GATEWAY_INFO is null
+            </if>
+            <if test="condition.externalGatewayInfoNotNull != null">
+                and A.EXTERNAL_GATEWAY_INFO is not null
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        A.RES_ROUTER_SID,
+        A.PARENT_TOPOLOGY_SID,
+        A.RES_POOL_SID,
+        A.ROUTER_ID,
+        A.ROUTER_NAME,
+        A.EXTERNAL_GATEWAY_INFO,
+        A.STATUS,
+        A.MGT_OBJ_SID,
+        A.OWNER_ID,
+        A.ZONE,
+        A.CREATED_BY,
+        A.CREATED_DT,
+        A.UPDATED_BY,
+        A.UPDATED_DT,
+        A.VERSION
+    </sql>
+    <select id="selectByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria"
+            resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />,
+        B.CODE_DISPLAY AS STATUS_NAME
+        FROM res_vpc_router A
+        LEFT JOIN sys_m_code B ON (A.`STATUS` = B.CODE_VALUE AND B.CODE_CATEGORY = 'NETWORK_STATUS')
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM res_vpc_router A
+        WHERE A.RES_ROUTER_SID = #{resRouterSid}
+    </select>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVpcRouter">
+        <selectKey resultType="java.lang.String" keyProperty="resRouterSid"
+                   order="BEFORE">
+            select UUID()
+        </selectKey>
+        INSERT
+        INTO res_vpc_router(
+        `RES_ROUTER_SID`
+        , `ROUTER_ID`
+        , `PARENT_TOPOLOGY_SID`
+        , `RES_POOL_SID`
+        , `ROUTER_NAME`
+        , `EXTERNAL_GATEWAY_INFO`
+        , `STATUS`
+        , `MGT_OBJ_SID`
+        , `OWNER_ID`
+        , `ZONE`
+        , `CREATED_BY`
+        , `CREATED_DT`
+        , `UPDATED_BY`
+        , `UPDATED_DT`
+        , `VERSION`
+        )
+        VALUES (
+        #{resRouterSid}
+        ,#{routerId}
+        ,#{parentTopologySid}
+        ,#{resPoolSid}
+        ,#{routerName}
+        ,#{externalGatewayInfo}
+        ,#{status}
+        ,#{mgtObjSid}
+        ,#{ownerId}
+        ,#{zone}
+        ,#{createdBy}
+        ,#{createdDt}
+        ,#{updatedBy}
+        ,#{updatedDt}
+        ,#{version}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVpcRouter">
+        <selectKey resultType="java.lang.String" keyProperty="resRouterSid"
+                   order="BEFORE">
+            select UUID()
+        </selectKey>
+        INSERT INTO res_vpc_router
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            RES_ROUTER_SID,
+            <if test="routerId != null">
+                ROUTER_ID,
+            </if>
+            <if test="parentTopologySid != null">
+                PARENT_TOPOLOGY_SID,
+            </if>
+            <if test="resPoolSid != null">
+                RES_POOL_SID,
+            </if>
+            <if test="routerName != null">
+                ROUTER_NAME,
+            </if>
+            <if test="externalGatewayInfo != null">
+                EXTERNAL_GATEWAY_INFO,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="mgtObjSid != null">
+                MGT_OBJ_SID,
+            </if>
+            <if test="ownerId != null">
+                OWNER_ID,
+            </if>
+            <if test="zone != null">
+                ZONE,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+            <if test="version != null">
+                VERSION
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{resRouterSid},
+            <if test="routerId != null">
+                #{routerId},
+            </if>
+            <if test="parentTopologySid != null">
+                #{parentTopologySid},
+            </if>
+            <if test="resPoolSid != null">
+                #{resPoolSid},
+            </if>
+            <if test="routerName != null">
+                #{routerName},
+            </if>
+            <if test="externalGatewayInfo != null">
+                #{externalGatewayInfo},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="mgtObjSid != null">
+                #{mgtObjSid},
+            </if>
+            <if test="ownerId != null">
+                #{ownerId},
+            </if>
+            <if test="zone != null">
+                #{zone},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt},
+            </if>
+            <if test="version != null">
+                #{version}
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        DELETE FROM res_vpc_router A
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        DELETE FROM
+        res_vpc_router WHERE RES_ROUTER_SID = #{vpcSid}
+    </delete>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVpcRouter">
+        UPDATE res_vpc_router
+        <set>
+            <if test="routerId != null">
+                ROUTER_ID = #{routerId},
+            </if>
+            <if test="resPoolSid != null">
+                RES_POOL_SID = #{resPoolSid},
+            </if>
+            <if test="parentTopologySid != null">
+                PARENT_TOPOLOGY_SID = #{parentTopologySid},
+            </if>
+            <if test="routerName != null">
+                ROUTER_NAME = #{routerName},
+            </if>
+            <if test="externalGatewayInfo != null">
+                EXTERNAL_GATEWAY_INFO = #{externalGatewayInfo},
+            </if>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+            <if test="mgtObjSid != null">
+                MGT_OBJ_SID = #{mgtObjSid},
+            </if>
+            <if test="ownerId != null">
+                OWNER_ID = #{ownerId},
+            </if>
+            <if test="zone != null">
+                ZONE = #{zone},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt},
+            </if>
+            <if test="version != null">
+                VERSION = #{version},
+            </if>
+        </set>
+        WHERE RES_ROUTER_SID = #{resRouterSid}
+    </update>
+</mapper>

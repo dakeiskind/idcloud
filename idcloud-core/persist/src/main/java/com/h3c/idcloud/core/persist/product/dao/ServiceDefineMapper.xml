@@ -1,0 +1,685 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.product.dao.ServiceDefineMapper" >
+  <resultMap id="CommonCodeResultMap" type="com.h3c.idcloud.core.pojo.vo.common.CommonServiceCode">
+    <id column="SERVICE_SID" property="serviceSid" jdbcType="BIGINT" />
+    <result column="SERVICE_NAME" property="serviceName" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.product.ServiceDefine" >
+    <id column="SERVICE_SID" property="serviceSid" jdbcType="BIGINT" />
+    <result column="SERVICE_NAME" property="serviceName" jdbcType="VARCHAR" />
+    <result column="SERVICE_CODE" property="serviceCode" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="SERVICE_TYPE" property="serviceType" jdbcType="VARCHAR" />
+    <result column="SERVICE_TYPE_NAME" property="serviceTypeName" jdbcType="VARCHAR" />
+    <result column="SERVICE_STATUS" property="serviceStatus" jdbcType="VARCHAR" />
+    <result column="SERVICE_SCOPE" property="serviceScope" jdbcType="VARCHAR" />
+    <result column="SERVICE_STATUS_NAME" property="serviceStatusName" jdbcType="VARCHAR" />
+    <result column="PRICING_PLAN_SID" property="pricingPlanSid" jdbcType="BIGINT" />
+    <result column="CONTRACT_ID" property="contractId" jdbcType="VARCHAR" />
+    <result column="OWNER_ID" property="ownerId" jdbcType="VARCHAR" />
+    <result column="PARENT_CATALOG_SID" property="parentCatalogSid" jdbcType="BIGINT" />
+    <result column="PARENT_CATALOG_NAME" property="parentCatalogName" jdbcType="VARCHAR" />
+    <result column="TANENT_ID" property="tanentId" jdbcType="VARCHAR" />
+    <result column="S_IMAGE_PATH_1" property="sImagePath1" jdbcType="VARCHAR" />
+    <result column="S_IMAGE_PATH_2" property="sImagePath2" jdbcType="VARCHAR" />
+    <result column="B_IMAGE_PATH" property="bImagePath" jdbcType="VARCHAR" />
+    <result column="REPEAT_ORDER" property="repeatOrder" jdbcType="VARCHAR" />
+    <result column="CAN_ORDER" property="canOrder" jdbcType="VARCHAR" />
+    <result column="HELP_PATH" property="helpPath" jdbcType="VARCHAR" />
+    <result column="SOFTWARE_PACKAGE_PATH" property="softwarePackagePath" jdbcType="VARCHAR" />
+    <result column="EXPIRING_DATE" property="expiringDate" jdbcType="DATE" />
+    <result column="OPERATION_HANDLER" property="operationHandler" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_DT" property="createdDt" jdbcType="DATE" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_DT" property="updatedDt" jdbcType="DATE" />
+    <result column="VERSION" property="version" jdbcType="BIGINT" />
+    <result column="PRODUCT_DESCRIPTION" property="productDescription" jdbcType="VARCHAR" />
+    <result column="DETAIL_DESCRIPTION" property="detailDescription" jdbcType="VARCHAR" />
+	<result column="PRODUCT_FEATURES" property="productFeatures" jdbcType="VARCHAR" />
+	<result column="PRODUCT_CASE" property="productCase" jdbcType="VARCHAR" />
+	<result column="SORT_RANK" property="sortRank" jdbcType="INTEGER" />
+    
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.serviceName != null" >
+         and SERVICE_NAME = #{condition.serviceName}
+      </if>
+      <if test="condition.serviceCode != null" >
+        and SERVICE_CODE = #{condition.serviceCode}
+      </if>
+      <if test="condition.description != null" >
+         and DESCRIPTION = #{condition.description}
+      </if>
+      <if test="condition.serviceType != null" >
+         and SERVICE_TYPE = #{condition.serviceType}
+      </if>
+      <if test="condition.serviceStatus != null" >
+         and A.SERVICE_STATUS = #{condition.serviceStatus}
+      </if>
+      <if test="condition.pricingPlanSid != null" >
+         and PRICING_PLAN_SID = #{condition.pricingPlanSid}
+      </if>
+      <if test="condition.contractId != null" >
+         and CONTRACT_ID = #{condition.contractId}
+      </if>
+      <if test="condition.ownerId != null" >
+         and OWNER_ID = #{condition.ownerId}
+      </if>
+      <if test="condition.parentCatalogSid != null" >
+         and A.PARENT_CATALOG_SID = #{condition.parentCatalogSid}
+      </if>
+      <if test="condition.tanentId != null" >
+         and TANENT_ID = #{condition.tanentId}
+      </if>
+      <if test="condition.sImagePath != null" >
+         and S_IMAGE_PATH_1 = #{condition.sImagePath}
+      </if>
+      <if test="condition.bImagePath != null" >
+         and B_IMAGE_PATH = #{condition.bImagePath}
+      </if>
+      <if test="condition.repeatOrder != null" >
+         and REPEAT_ORDER = #{condition.repeatOrder}
+      </if>
+      <if test="condition.canOrder != null" >
+         and A.CAN_ORDER = #{condition.canOrder}
+      </if>
+      <if test="condition.serviceScope != null" >
+         and A.SERVICE_SCOPE in("00", #{condition.serviceScope})
+      </if>
+      <if test="condition.helpPath != null" >
+         and HELP_PATH = #{condition.helpPath}
+      </if>
+      <if test="condition.softwarePackagePath != null" >
+         and SOFTWARE_PACKAGE_PATH = #{condition.softwarePackagePath}
+      </if>
+      <if test="condition.expiringDate != null" >
+         and EXPIRING_DATE = #{condition.expiringDate}
+      </if>
+      <if test="condition.operationHandler != null" >
+         and OPERATION_HANDLER = #{condition.operationHandler}
+      </if>
+      <if test="condition.createdBy != null" >
+         and CREATED_BY = #{condition.createdBy}
+      </if>
+      <if test="condition.createdDt != null" >
+         and CREATED_DT = #{condition.createdDt}
+      </if>
+      <if test="condition.updatedBy != null" >
+         and UPDATED_BY = #{condition.updatedBy}
+      </if>
+      <if test="condition.updatedDt != null" >
+         and UPDATED_DT = #{condition.updatedDt}
+      </if>
+      <if test="condition.version != null" >
+         and VERSION = #{condition.version}
+      </if>
+      <if test="condition.CatalogSid != null" >
+          A.PARENT_CATALOG_SID IN(select CATALOG_SID from service_catalog where FIND_IN_SET(CATALOG_SID, getSerCatalogChildList(#{condition.CatalogSid})));
+      </if>
+      <if test="condition.productDescription != null">
+		and A.PRODUCT_DESCRIPTION =
+		#{condition.productDescription}
+	</if>
+	<if test="condition.productFeatures != null">
+		and A.PRODUCT_FEATURES = #{condition.productFeatures}
+	</if>
+	<if test="condition.productCase != null">
+		and A.PRODUCT_CASE = #{condition.productCase}
+	</if>
+	<if test="condition.detailDescription != null">
+		and A.DETAIL_DESCRIPTION = #{condition.detailDescription}
+	</if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+   A.SERVICE_SID, A.SERVICE_NAME,A.SERVICE_CODE, A.DESCRIPTION, A.SERVICE_TYPE, A.SERVICE_STATUS, A.PRICING_PLAN_SID,
+   A.CONTRACT_ID, A.OWNER_ID, A.PARENT_CATALOG_SID, A.TANENT_ID, A.SORT_RANK,
+   A.S_IMAGE_PATH_1,A.S_IMAGE_PATH_2,A.B_IMAGE_PATH, A.REPEAT_ORDER, A.CAN_ORDER,A.HELP_PATH, A.SOFTWARE_PACKAGE_PATH, A.EXPIRING_DATE, A.SERVICE_SCOPE, 
+   A.OPERATION_HANDLER, A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, A.UPDATED_DT, A.VERSION,A.PRODUCT_DESCRIPTION,A.PRODUCT_FEATURES,A.PRODUCT_CASE,A.DETAIL_DESCRIPTION
+  </sql>
+
+  <select id="findCommonServiceCodes" resultMap="CommonCodeResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    A.SERVICE_SID,
+    A.SERVICE_NAME
+    from service A
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    , B.CATALOG_NAME as PARENT_CATALOG_NAME
+    , C.CODE_DISPLAY as SERVICE_STATUS_NAME
+    , D.CODE_DISPLAY as SERVICE_TYPE_NAME
+    from service A
+    left join service_catalog B on (A.PARENT_CATALOG_SID = B.CATALOG_SID)
+    left join SYS_M_CODE C on (C.CODE_CATEGORY = 'SERVICE_STATUS' and A.SERVICE_STATUS = C.CODE_VALUE)
+    left join SYS_M_CODE D on (D.CODE_CATEGORY = 'SERVICE_TYPE' and A.SERVICE_TYPE = D.CODE_VALUE)
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  
+  <select id="selectServiceByCatalogSidList" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    , B.CATALOG_NAME as PARENT_CATALOG_NAME
+    , C.CODE_DISPLAY as SERVICE_STATUS_NAME
+    , D.CODE_DISPLAY as SERVICE_TYPE_NAME
+    from service A
+    left join service_catalog B on (A.PARENT_CATALOG_SID = B.CATALOG_SID)
+    left join SYS_M_CODE C on (C.CODE_CATEGORY = 'SERVICE_STATUS' and A.SERVICE_STATUS = C.CODE_VALUE)
+    left join SYS_M_CODE D on (D.CODE_CATEGORY = 'SERVICE_TYPE' and A.SERVICE_TYPE = D.CODE_VALUE)
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from service A
+    where SERVICE_SID = #{serviceSid}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from service
+    where SERVICE_SID = #{serviceSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from service
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceDefine" >
+    <selectKey resultType="java.lang.Long" keyProperty="serviceSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SERVICE')
+    </selectKey>
+    insert into service (SERVICE_SID, SERVICE_NAME, DESCRIPTION, SERVICE_TYPE, SERVICE_STATUS, 
+      PRICING_PLAN_SID,  CONTRACT_ID, OWNER_ID, 
+      PARENT_CATALOG_SID, TANENT_ID, S_IMAGE_PATH_1, B_IMAGE_PATH, REPEAT_ORDER,CAN_ORDER, SERVICE_SCOPE,
+      HELP_PATH, SOFTWARE_PACKAGE_PATH, EXPIRING_DATE, OPERATION_HANDLER, CREATED_BY, 
+      CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION,PRODUCT_FEATURES,PRODUCT_DESCRIPTION,PRODUCT_CASE,DETAIL_DESCRIPTION,SERVICE_CODE)
+    values (#{serviceSid}, #{serviceName}, #{description}, #{serviceType}, #{serviceStatus}, 
+      #{pricingPlanSid}, #{serInstanceSid}, #{contractId}, #{ownerId}, #{ownerName}, 
+      #{parentCatalogSid}, #{tanentId}, #{sImagePath}, #{bImagePath}, #{repeatOrder}, #{canOrder}, 
+      #{helpPath}, #{softwarePackagePath}, #{expiringDate}, #{operationHandler}, #{createdBy}, 
+      #{createdDt}, #{updatedBy}, #{updatedDt}, #{version},#{productDescription},#{productFeatures},#{productCase},#{detailDescription},#{serviceCode})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceDefine" >
+    <selectKey resultType="java.lang.Long" keyProperty="serviceSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SERVICE')
+    </selectKey>
+    insert into service
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      SERVICE_SID,
+      <if test="serviceName != null" >
+        SERVICE_NAME,
+      </if>
+      <if test="serviceCode != null" >
+        SERVICE_CODE,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+      <if test="serviceType != null" >
+        SERVICE_TYPE,
+      </if>
+      <if test="serviceStatus != null" >
+        SERVICE_STATUS,
+      </if>
+      <if test="pricingPlanSid != null" >
+        PRICING_PLAN_SID,
+      </if>
+      <if test="contractId != null" >
+        CONTRACT_ID,
+      </if>
+      <if test="ownerId != null" >
+        OWNER_ID,
+      </if>
+      <if test="parentCatalogSid != null" >
+        PARENT_CATALOG_SID,
+      </if>
+      <if test="tanentId != null" >
+        TANENT_ID,
+      </if>
+      <if test="sImagePath != null" >
+        S_IMAGE_PATH_1,
+      </if>
+      <if test="bImagePath != null" >
+        B_IMAGE_PATH,
+      </if>
+      <if test="repeatOrder != null" >
+        REPEAT_ORDER,
+      </if>
+      <if test="canOrder != null" >
+        CAN_ORDER,
+      </if>
+      <if test="serviceScope != null" >
+        SERVICE_SCOPE,
+      </if>
+      <if test="helpPath != null" >
+        HELP_PATH,
+      </if>
+      <if test="softwarePackagePath != null" >
+        SOFTWARE_PACKAGE_PATH,
+      </if>
+      <if test="expiringDate != null" >
+        EXPIRING_DATE,
+      </if>
+      <if test="operationHandler != null" >
+        OPERATION_HANDLER,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+      <if test="productDescription != null">
+			PRODUCT_DESCRIPTION,
+		</if>
+		<if test="productFeatures != null">
+			PRODUCT_FEATURES,
+		</if>
+		<if test="productCase != null">
+			PRODUCT_CASE,
+		</if>
+		<if test="detailDescription != null">
+			DETAIL_DESCRIPTION,
+		</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{serviceSid},
+      <if test="serviceName != null" >
+        #{serviceName},
+      </if>
+      <if test="serviceCode != null" >
+        #{serviceCode},
+      </if>
+      <if test="description != null" >
+        #{description},
+      </if>
+      <if test="serviceType != null" >
+        #{serviceType},
+      </if>
+      <if test="serviceStatus != null" >
+        #{serviceStatus},
+      </if>
+      <if test="pricingPlanSid != null" >
+        #{pricingPlanSid},
+      </if>
+      <if test="serInstanceSid != null" >
+        #{serInstanceSid},
+      </if>
+      <if test="contractId != null" >
+        #{contractId},
+      </if>
+      <if test="ownerId != null" >
+        #{ownerId},
+      </if>
+      <if test="ownerName != null" >
+        #{ownerName},
+      </if>
+      <if test="parentCatalogSid != null" >
+        #{parentCatalogSid},
+      </if>
+      <if test="tanentId != null" >
+        #{tanentId},
+      </if>
+      <if test="sImagePath != null" >
+        #{sImagePath},
+      </if>
+      <if test="bImagePath != null" >
+        #{bImagePath},
+      </if>
+      <if test="repeatOrder != null" >
+        #{repeatOrder},
+      </if>
+      <if test="canOrder != null" >
+        #{canOrder},
+      </if>
+      <if test="serviceScope != null" >
+        #{serviceScope},
+      </if>
+      <if test="helpPath != null" >
+        #{helpPath},
+      </if>
+      <if test="softwarePackagePath != null" >
+        #{softwarePackagePath},
+      </if>
+      <if test="expiringDate != null" >
+        #{expiringDate},
+      </if>
+      <if test="operationHandler != null" >
+        #{operationHandler},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        #{updatedDt},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+      <if test="productDescription != null">
+			#{productDescription},
+		</if>
+		<if test="productFeatures != null">
+			#{productFeatures},
+		</if>
+		<if test="productCase != null">
+			#{productCase},
+		</if>
+		<if test="detailDescription != null">
+			#{detailDescription},
+		</if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from service
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update service
+    <set >
+      <if test="record.serviceSid != null" >
+        SERVICE_SID = #{record.serviceSid},
+      </if>
+      <if test="record.serviceName != null" >
+        SERVICE_NAME = #{record.serviceName},
+      </if>
+      <if test="record.serviceCode != null" >
+        SERVICE_CODE = #{record.serviceCode},
+      </if>
+      <if test="record.description != null" >
+        DESCRIPTION = #{record.description},
+      </if>
+      <if test="record.serviceType != null" >
+        SERVICE_TYPE = #{record.serviceType},
+      </if>
+      <if test="record.serviceStatus != null" >
+        SERVICE_STATUS = #{record.serviceStatus},
+      </if>
+      <if test="record.pricingPlanSid != null" >
+        PRICING_PLAN_SID = #{record.pricingPlanSid},
+      </if>
+      <if test="record.contractId != null" >
+        CONTRACT_ID = #{record.contractId},
+      </if>
+      <if test="record.ownerId != null" >
+        OWNER_ID = #{record.ownerId},
+      </if>
+      <if test="record.parentCatalogSid != null" >
+        PARENT_CATALOG_SID = #{record.parentCatalogSid},
+      </if>
+      <if test="record.tanentId != null" >
+        TANENT_ID = #{record.tanentId},
+      </if>
+      <if test="record.sImagePath != null" >
+        S_IMAGE_PATH_1 = #{record.sImagePath},
+      </if>
+      <if test="record.bImagePath != null" >
+        B_IMAGE_PATH = #{record.bImagePath},
+      </if>
+      <if test="record.repeatOrder != null" >
+        REPEAT_ORDER = #{record.repeatOrder},
+      </if>
+      <if test="record.helpPath != null" >
+        HELP_PATH = #{record.helpPath},
+      </if>
+      <if test="record.softwarePackagePath != null" >
+        SOFTWARE_PACKAGE_PATH = #{record.softwarePackagePath},
+      </if>
+      <if test="record.expiringDate != null" >
+        EXPIRING_DATE = #{record.expiringDate},
+      </if>
+      <if test="record.operationHandler != null" >
+        OPERATION_HANDLER = #{record.operationHandler},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy},
+      </if>
+      <if test="record.createdDt != null" >
+        CREATED_DT = #{record.createdDt},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy},
+      </if>
+      <if test="record.updatedDt != null" >
+        UPDATED_DT = #{record.updatedDt},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version},
+      </if>
+      <if test="record.productDescription != null">
+			PRODUCTD_ESCRIPTION =
+			#{record.productDescription},
+		</if>
+		<if test="record.productFeatures != null">
+			PRODUCT_FEATURES =
+			#{record.productFeatures},
+		</if>
+		<if test="record.productCase != null">
+			PRODUCT_CASE =
+			#{record.productCase},
+		</if>
+		<if test="record.detailDescription != null">
+			DETAIL_DESCRIPTION =
+			#{record.detailDescription},
+		</if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update service
+    set SERVICE_SID = #{record.serviceSid},
+      SERVICE_NAME = #{record.serviceName},
+      SERVICE_CODE = #{record.serviceCode},
+      DESCRIPTION = #{record.description},
+      SERVICE_TYPE = #{record.serviceType},
+      SERVICE_STATUS = #{record.serviceStatus},
+      PRICING_PLAN_SID = #{record.pricingPlanSid},
+      CONTRACT_ID = #{record.contractId},
+      OWNER_ID = #{record.ownerId},
+      PARENT_CATALOG_SID = #{record.parentCatalogSid},
+      TANENT_ID = #{record.tanentId},
+      S_IMAGE_PATH_1 = #{record.sImagePath},
+      B_IMAGE_PATH = #{record.bImagePath},
+      REPEAT_ORDER = #{record.repeatOrder},
+      CAN_ORDER = #{record.canOrder},
+      SERVICE_SCOPE = #{record.serviceScope},
+      HELP_PATH = #{record.helpPath},
+      SOFTWARE_PACKAGE_PATH = #{record.softwarePackagePath},
+      EXPIRING_DATE = #{record.expiringDate},
+      OPERATION_HANDLER = #{record.operationHandler},
+      CREATED_BY = #{record.createdBy},
+      CREATED_DT = #{record.createdDt},
+      UPDATED_BY = #{record.updatedBy},
+      UPDATED_DT = #{record.updatedDt},
+      VERSION = #{record.version},
+      PRODUCT_FEATURES =
+		#{record.productFeatures},
+      PRODUCT_CASE =
+		#{record.productCase},
+		PRODUCTD_ESCRIPTION =
+		#{record.productDescription},
+		DETAIL_DESCRIPTION =
+		#{record.detailDescription}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceDefine" >
+    update service
+    <set >
+      <if test="serviceName != null" >
+        SERVICE_NAME = #{serviceName},
+      </if>
+      <if test="serviceCode != null" >
+        SERVICE_CODE = #{serviceCode},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description},
+      </if>
+      <if test="serviceType != null" >
+        SERVICE_TYPE = #{serviceType},
+      </if>
+      <if test="serviceStatus != null" >
+        SERVICE_STATUS = #{serviceStatus},
+      </if>
+      <if test="pricingPlanSid != null" >
+        PRICING_PLAN_SID = #{pricingPlanSid},
+      </if>
+      <if test="contractId != null" >
+        CONTRACT_ID = #{contractId},
+      </if>
+      <if test="ownerId != null" >
+        OWNER_ID = #{ownerId},
+      </if>
+      <if test="parentCatalogSid != null" >
+        PARENT_CATALOG_SID = #{parentCatalogSid},
+      </if>
+      <if test="tanentId != null" >
+        TANENT_ID = #{tanentId},
+      </if>
+      <if test="sImagePath1 != null" >
+        S_IMAGE_PATH_1 = #{sImagePath1},
+      </if>
+      <if test="bImagePath != null" >
+        B_IMAGE_PATH = #{bImagePath},
+      </if>
+      <if test="repeatOrder != null" >
+        REPEAT_ORDER = #{repeatOrder},
+      </if>
+      <if test="canOrder != null" >
+        CAN_ORDER = #{canOrder},
+      </if>
+      <if test="serviceScope != null" >
+        SERVICE_SCOPE = #{serviceScope},
+      </if>
+      <if test="helpPath != null" >
+        HELP_PATH = #{helpPath},
+      </if>
+      <if test="softwarePackagePath != null" >
+        SOFTWARE_PACKAGE_PATH = #{softwarePackagePath},
+      </if>
+      <if test="expiringDate != null" >
+        EXPIRING_DATE = #{expiringDate},
+      </if>
+      <if test="operationHandler != null" >
+        OPERATION_HANDLER = #{operationHandler},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy},
+      </if>
+      <if test="createdDt != null" >
+        CREATED_DT = #{createdDt},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy},
+      </if>
+      <if test="updatedDt != null" >
+        UPDATED_DT = #{updatedDt},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version},
+      </if>
+      <if test="productDescription != null">
+				PRODUCT_DESCRIPTION = #{productDescription},
+			</if>
+			<if test="productFeatures != null">
+				PRODUCT_FEATURES = #{productFeatures},
+			</if>
+			<if test="productCase != null">
+				PRODUCT_CASE = #{productCase},
+			</if>
+			<if test="detailDescription != null">
+				DETAIL_DESCRIPTION = #{detailDescription},
+			</if>
+    </set>
+    where SERVICE_SID = #{serviceSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceDefine" >
+    update service
+    set SERVICE_NAME = #{serviceName},
+      DESCRIPTION = #{description},
+      SERVICE_CODE = #{serviceCode},
+      SERVICE_TYPE = #{serviceType},
+      SERVICE_STATUS = #{serviceStatus},
+      PRICING_PLAN_SID = #{pricingPlanSid},
+      CONTRACT_ID = #{contractId},
+      OWNER_ID = #{ownerId},
+      PARENT_CATALOG_SID = #{parentCatalogSid},
+      TANENT_ID = #{tanentId},
+      S_IMAGE_PATH_1 = #{sImagePath},
+      B_IMAGE_PATH = #{bImagePath},
+      REPEAT_ORDER = #{repeatOrder},
+      CAN_ORDER = #{canOrder},
+      SERVICE_SCOPE = #{serviceScope},
+      HELP_PATH = #{helpPath},
+      SOFTWARE_PACKAGE_PATH = #{softwarePackagePath},
+      EXPIRING_DATE = #{expiringDate},
+      OPERATION_HANDLER = #{operationHandler},
+      CREATED_BY = #{createdBy},
+      CREATED_DT = #{createdDt},
+      UPDATED_BY = #{updatedBy},
+      UPDATED_DT = #{updatedDt},
+      VERSION = #{version},
+      PROCESS_INSTANCE_ID = #{processInstanceId},
+		PROCESS_INSTANCE_CANCEL_ID
+		= #{processInstanceCancelId},
+		PRODUCT_DESCRIPTION
+		= #{productDescription},
+		PRODUCT_FEATURES
+		= #{productFeatures},
+		PRODUCT_CASE
+		= #{productCase},
+		DETAIL_DESCRIPTION
+		= #{detailDescription}
+    where SERVICE_SID = #{serviceSid}
+  </update>
+</mapper>

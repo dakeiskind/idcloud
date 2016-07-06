@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResVsHostMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResVsHost">
+        <id column="RES_HOST_SID" property="resHostSid" jdbcType="VARCHAR"/>
+        <id column="RES_VS_SID" property="resVsSid" jdbcType="VARCHAR"/>
+        <id column="RES_VS_NAME" property="resVsName" jdbcType="VARCHAR"/>
+        <id column="VLAN_ID" property="vlanId" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.resVeSid != null">
+                and C.RES_TOPOLOGY_SID = #{condition.resVeSid}
+            </if>
+            <if test="condition.resVsSid != null">
+                and A.RES_VS_SID = #{condition.resVsSid}
+            </if>
+            <if test="condition.resHostSid != null">
+                and A.RES_HOST_SID = #{condition.resHostSid}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        A.RES_HOST_SID, A.RES_VS_SID
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        B.RES_VS_NAME as RES_VS_NAME,
+        D.VLAN_ID as VLAN_ID,
+        <include refid="Base_Column_List"/>
+        from res_vs_host A
+        LEFT JOIN res_vs B ON (
+        A.RES_VS_SID = B.RES_VS_SID
+        )
+        LEFT JOIN res_ve C ON (
+        B.PARENT_TOPOLOGY_SID = C.RES_TOPOLOGY_SID
+        )
+        LEFT JOIN res_vs_port_group D ON (
+        A.RES_VS_SID = D.RES_VS_SID
+        )
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <select id="selectResVsHostByVe" resultMap="BaseResultMap"
+            parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from res_vs_host A
+        LEFT JOIN res_vs B ON (
+        A.RES_VS_SID = B.RES_VS_SID
+        )
+        LEFT JOIN res_ve C ON (
+        B.PARENT_TOPOLOGY_SID = C.RES_TOPOLOGY_SID
+        )
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        GROUP BY A.RES_VS_SID
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVsHost">
+        delete from res_vs_host
+        where RES_HOST_SID = #{resHostSid}
+        and RES_VS_SID = #{resVsSid}
+    </delete>
+    <delete id="deleteByResVsSid" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVsHost">
+        delete from res_vs_host
+        where RES_VS_SID = #{resVsSid}
+    </delete>
+    <delete id="deleteByPrimaryKeyHostSid" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVsHost">
+        delete from res_vs_host
+        where RES_HOST_SID = #{resHostSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_vs_host
+        <if test="_parameter != null">
+            <trim prefix="where" prefixOverrides="and|or">
+                <if test="condition.resVsSid != null">
+                    and RES_VS_SID = #{condition.resVsSid}
+                </if>
+                <if test="condition.resHostSid != null">
+                    and RES_HOST_SID = #{condition.resHostSid}
+                </if>
+            </trim>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVsHost">
+        insert into res_vs_host (RES_HOST_SID, RES_VS_SID)
+        values (#{resHostSid}, #{resVsSid})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVsHost">
+        insert into res_vs_host
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="resHostSid != null">
+                RES_HOST_SID,
+            </if>
+            <if test="resVsSid != null">
+                RES_VS_SID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="resHostSid != null">
+                #{resHostSid},
+            </if>
+            <if test="resVsSid != null">
+                #{resVsSid},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria"
+            resultType="java.lang.Integer">
+        select count(*) from res_vs_host
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResVsHost">
+        update res_vs_host
+        <set>
+            <if test="resHostSid != null">
+                RES_HOST_SID = #{resHostSid},
+            </if>
+            <if test="resVsSid != null">
+                RES_VS_SID = #{resVsSid},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_vs_host
+        set RES_HOST_SID = #{record.resHostSid},
+        RES_VS_SID = #{record.resVsSid}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+</mapper>

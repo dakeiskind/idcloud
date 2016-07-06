@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.product.dao.ServiceInstResMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.product.ServiceInstRes" >
+    <id column="INSTANCE_SID" property="instanceSid" jdbcType="BIGINT" />
+    <id column="RES_ID" property="resId" jdbcType="VARCHAR" />
+    <result column="RES_TYPE" property="resType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.resType != null" >
+         and RES_TYPE = #{condition.resType}
+      </if>
+      <if test="condition.resId != null" >
+         and RES_ID = #{condition.resId}
+      </if>
+      <if test="condition.instanceSid != null" >
+         and INSTANCE_SID = #{condition.instanceSid}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    INSTANCE_SID, RES_ID, RES_TYPE
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from service_inst_res
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstResKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from service_inst_res
+    where INSTANCE_SID = #{instanceSid}
+      and RES_ID = #{resId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstResKey" >
+    delete from service_inst_res
+    where INSTANCE_SID = #{instanceSid}
+      and RES_ID = #{resId}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from service_inst_res
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstRes" >
+    insert into service_inst_res (INSTANCE_SID, RES_ID, RES_TYPE)
+    values (#{instanceSid}, #{resId}, #{resType})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstRes" >
+    insert into service_inst_res
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="instanceSid != null" >
+        INSTANCE_SID,
+      </if>
+      <if test="resId != null" >
+        RES_ID,
+      </if>
+      <if test="resType != null" >
+        RES_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="instanceSid != null" >
+        #{instanceSid},
+      </if>
+      <if test="resId != null" >
+        #{resId},
+      </if>
+      <if test="resType != null" >
+        #{resType},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from service_inst_res
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update service_inst_res
+    <set >
+      <if test="record.instanceSid != null" >
+        INSTANCE_SID = #{record.instanceSid},
+      </if>
+      <if test="record.resId != null" >
+        RES_ID = #{record.resId},
+      </if>
+      <if test="record.resType != null" >
+        RES_TYPE = #{record.resType},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update service_inst_res
+    set INSTANCE_SID = #{record.instanceSid},
+      RES_ID = #{record.resId},
+      RES_TYPE = #{record.resType}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstRes" >
+    update service_inst_res
+    <set >
+      <if test="resType != null" >
+        RES_TYPE = #{resType},
+      </if>
+    </set>
+    where INSTANCE_SID = #{instanceSid}
+      and RES_ID = #{resId}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.product.ServiceInstRes" >
+    update service_inst_res
+    set RES_TYPE = #{resType}
+    where INSTANCE_SID = #{instanceSid}
+      and RES_ID = #{resId}
+  </update>
+
+  <select id="selectInstanceReses" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		SELECT
+			*
+		FROM service_inst_res
+		WHERE instance_sid in (select instance_sid from service_instance where parent_instance_sid = #{instance_sid} or instance_sid = #{instance_sid})
+  </select>
+</mapper>

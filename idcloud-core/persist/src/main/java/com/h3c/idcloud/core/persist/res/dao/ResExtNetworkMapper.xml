@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResExtNetworkMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResExtNetwork">
+        <id column="RES_EXT_NETWORK_SID" property="resExtNetworkSid" jdbcType="VARCHAR"/>
+        <result column="PARENT_TOPOLOGY_SID" property="parentTopologySid" jdbcType="VARCHAR"/>
+        <result column="RES_POOL_SID" property="resPoolSid" jdbcType="VARCHAR"/>
+        <result column="NETWORK_NAME" property="networkName" jdbcType="VARCHAR"/>
+        <result column="NETWORK_TYPE" property="networkType" jdbcType="VARCHAR"/>
+        <result column="ZONE" property="zone" jdbcType="VARCHAR"/>
+        <result column="IP_POOL" property="ipPool" jdbcType="VARCHAR"/>
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR"/>
+        <result column="IP_TYPE" property="ipType" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="UUID" property="uuid" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP"/>
+        <result column="VERSION" property="version" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.parentTopologySid != null">
+                and A.PARENT_TOPOLOGY_SID = #{condition.parentTopologySid}
+            </if>
+            <if test="condition.resPoolSid != null">
+                and A.RES_POOL_SID = #{condition.resPoolSid}
+            </if>
+            <if test="condition.networkName != null">
+                and A.NETWORK_NAME = #{condition.networkName}
+            </if>
+            <if test="condition.networkNameLike != null">
+                and A.NETWORK_NAME like concat('%', #{condition.networkNameLike},'%')
+            </if>
+            <if test="condition.ipOwnerNetwork != null">
+                and E.IP_ADDRESS like concat('%', #{condition.ipOwnerNetwork},'%')
+            </if>
+            <if test="condition.networkType != null">
+                and A.NETWORK_TYPE = #{condition.networkType}
+            </if>
+            <if test="condition.description != null">
+                and A.DESCRIPTION = #{condition.description}
+            </if>
+            <if test="condition.ipType != null">
+                and A.IP_TYPE = #{condition.ipType}
+            </if>
+            <if test="condition.status != null">
+                and A.STATUS = #{condition.status}
+            </if>
+            <if test="condition.createdBy != null">
+                and A.CREATED_BY = #{condition.createdBy}
+            </if>
+            <if test="condition.createdDt != null">
+                and A.CREATED_DT = #{condition.createdDt}
+            </if>
+            <if test="condition.updatedBy != null">
+                and A.UPDATED_BY = #{condition.updatedBy}
+            </if>
+            <if test="condition.updatedDt != null">
+                and A.UPDATED_DT = #{condition.updatedDt}
+            </if>
+            <if test="condition.version != null">
+                and A.VERSION = #{condition.version}
+            </if>
+            <if test="condition.uuid != null">
+                and A.UUID = #{condition.uuid}
+            </if>
+            <if test="condition.zone != null">
+                and A.ZONE = #{condition.zone}
+            </if>
+            <if test="condition.ipPool != null">
+                and A.IP_POOL = #{condition.ipPool}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        A.RES_EXT_NETWORK_SID,
+        A.PARENT_TOPOLOGY_SID,
+        A.RES_POOL_SID,
+        A.NETWORK_NAME,
+        A.NETWORK_TYPE,
+        A.ZONE,
+        A.IP_POOL,
+        A.DESCRIPTION,
+        A.IP_TYPE,
+        A.UUID,
+        A.STATUS,
+        A.CREATED_BY,
+        A.CREATED_DT,
+        A.UPDATED_BY,
+        A.UPDATED_DT,
+        A.VERSION
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from res_ext_network A
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        GROUP BY A.RES_EXT_NETWORK_SID
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from res_ext_network A
+        where A.RES_EXT_NETWORK_SID = #{resExtNetworkSid}
+    </select>
+    <select id="selectAvailableByZone" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT DISTINCT
+        <include refid="Base_Column_List"/>
+        FROM res_ext_network a
+          INNER JOIN res_ext_ip ip
+            ON a.RES_EXT_NETWORK_SID = ip.RES_EXT_NETWORK_SID
+          LEFT JOIN res_floating_ip fl
+            ON ip.RES_SID = fl.RES_IP_SID
+        WHERE a.ZONE = #{zone} AND fl.RES_SID IS NULL
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from res_ext_network
+        where RES_EXT_NETWORK_SID = #{resExtNetworkSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_ext_network
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResExtNetwork">
+        <selectKey resultType="java.lang.Long" keyProperty="resExtNetworkSid" order="BEFORE">
+            select SEQ_res_ext_network.NEXTVAL from dual
+        </selectKey>
+        insert into res_ext_network (
+        RES_EXT_NETWORK_SID,
+        PARENT_TOPOLOGY_SID,
+        RES_POOL_SID,
+        NETWORK_NAME,
+        NETWORK_TYPE,
+        `ZONE`,
+        IP_POOL,
+        DESCRIPTION,
+        IP_TYPE,
+        UUID,
+        STATUS,
+        CREATED_BY,
+        CREATED_DT,
+        UPDATED_BY,
+        UPDATED_DT,
+        VERSION)
+        values (
+        #{resExtNetworkSid},
+        #{parentTopologySid},
+        #{resPoolSid},
+        #{networkName},
+        #{networkType},
+        #{zone},
+        #{ipPool},
+        #{description},
+        #{ipType},
+        #{uuid},
+        #{status},
+        #{createdBy},
+        #{createdDt},
+        #{updatedBy},
+        #{updatedDt},
+        #{version})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResExtNetwork">
+        <selectKey resultType="java.lang.String" keyProperty="resExtNetworkSid" order="BEFORE">
+            select UUID()
+        </selectKey>
+        insert into res_ext_network
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            RES_EXT_NETWORK_SID,
+            <if test="parentTopologySid != null">
+                PARENT_TOPOLOGY_SID,
+            </if>
+            <if test="resPoolSid != null">
+                RES_POOL_SID,
+            </if>
+            <if test="networkName != null">
+                NETWORK_NAME,
+            </if>
+            <if test="networkType != null">
+                NETWORK_TYPE,
+            </if>
+            <if test="description != null">
+                DESCRIPTION,
+            </if>
+            <if test="ipType != null">
+                IP_TYPE,
+            </if>
+            <if test="ipPool != null">
+                IP_POOL,
+            </if>
+            <if test="zone != null">
+                `ZONE`,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+            <if test="version != null">
+                VERSION,
+            </if>
+            <if test="uuid != null">
+                UUID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{resExtNetworkSid},
+            <if test="parentTopologySid != null">
+                #{parentTopologySid},
+            </if>
+            <if test="resPoolSid != null">
+                #{resPoolSid},
+            </if>
+            <if test="networkName != null">
+                #{networkName},
+            </if>
+            <if test="networkType != null">
+                #{networkType},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="ipType != null">
+                #{ipType},
+            </if>
+            <if test="ipPool != null">
+                #{ipPool},
+            </if>
+            <if test="zone != null">
+                #{zone},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+            <if test="uuid != null">
+                #{uuid},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_ext_network
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_ext_network
+        <set>
+            <if test="record.resExtNetworkSid != null">
+                RES_EXT_NETWORK_SID = #{record.resExtNetworkSid},
+            </if>
+            <if test="record.parentTopologySid != null">
+                PARENT_TOPOLOGY_SID = #{record.parentTopologySid},
+            </if>
+            <if test="record.resPoolSid != null">
+                RES_POOL_SID = #{record.resPoolSid},
+            </if>
+            <if test="record.networkName != null">
+                NETWORK_NAME = #{record.networkName},
+            </if>
+            <if test="record.networkType != null">
+                NETWORK_TYPE = #{record.networkType},
+            </if>
+            <if test="record.description != null">
+                DESCRIPTION = #{record.description},
+            </if>
+            <if test="record.ipType != null">
+                IP_TYPE = #{record.ipType},
+            </if>
+            <if test="record.ipPool != null">
+                IP_POOL = #{record.ipPool},
+            </if>
+            <if test="record.zone != null">
+                `ZONE` = #{record.zone},
+            </if>
+            <if test="record.status != null">
+                STATUS = #{record.status},
+            </if>
+            <if test="record.createdBy != null">
+                CREATED_BY = #{record.createdBy},
+            </if>
+            <if test="record.createdDt != null">
+                CREATED_DT = #{record.createdDt},
+            </if>
+            <if test="record.updatedBy != null">
+                UPDATED_BY = #{record.updatedBy},
+            </if>
+            <if test="record.updatedDt != null">
+                UPDATED_DT = #{record.updatedDt},
+            </if>
+            <if test="record.version != null">
+                VERSION = #{record.version},
+            </if>
+            <if test="record.uuid != null">
+                UUID = #{record.uuid},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_ext_network
+        set RES_EXT_NETWORK_SID = #{record.resExtNetworkSid},
+        PARENT_TOPOLOGY_SID = #{record.parentTopologySid},
+        RES_POOL_SID = #{record.resPoolSid},
+        NETWORK_NAME = #{record.networkName},
+        NETWORK_TYPE = #{record.networkType},
+        DESCRIPTION = #{record.description},
+        IP_TYPE = #{record.ipType},
+        IP_POOL = #{record.ipPool},
+        `ZONE` = #{record.zone},
+        STATUS = #{record.status},
+        CREATED_BY = #{record.createdBy},
+        CREATED_DT = #{record.createdDt},
+        UPDATED_BY = #{record.updatedBy},
+        UPDATED_DT = #{record.updatedDt},
+        VERSION = #{record.version},
+        UUID = #{record.uuid}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResExtNetwork">
+        update res_ext_network
+        <set>
+            <if test="parentTopologySid != null">
+                PARENT_TOPOLOGY_SID = #{parentTopologySid},
+            </if>
+            <if test="resPoolSid != null">
+                RES_POOL_SID = #{resPoolSid},
+            </if>
+            <if test="networkName != null">
+                NETWORK_NAME = #{networkName},
+            </if>
+            <if test="networkType != null">
+                NETWORK_TYPE = #{networkType},
+            </if>
+            <if test="description != null">
+                DESCRIPTION = #{description},
+            </if>
+            <if test="ipType != null">
+                IP_TYPE = #{ipType},
+            </if>
+            <if test="ipPool != null">
+                IP_POOL = #{ipPool},
+            </if>
+            <if test="zone != null">
+                `ZONE` = #{zone},
+            </if>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt},
+            </if>
+            <if test="version != null">
+                VERSION = #{version},
+            </if>
+            <if test="uuid != null">
+                UUID = #{uuid},
+            </if>
+        </set>
+        where RES_EXT_NETWORK_SID = #{resExtNetworkSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResExtNetwork">
+        update res_ext_network
+        set PARENT_TOPOLOGY_SID = #{parentTopologySid},
+        RES_POOL_SID = #{resPoolSid},
+        NETWORK_NAME = #{networkName},
+        NETWORK_TYPE = #{networkType},
+        DESCRIPTION = #{description},
+        IP_TYPE = #{ipType},
+        IP_POOL = #{ipPool},
+        `ZONE` = #{zone},
+        STATUS = #{status},
+        CREATED_BY = #{createdBy},
+        CREATED_DT = #{createdDt},
+        UPDATED_BY = #{updatedBy},
+        UPDATED_DT = #{updatedDt},
+        VERSION = #{version},
+        UUID = #{uuid}
+        where RES_EXT_NETWORK_SID = #{resExtNetworkSid}
+    </update>
+</mapper>

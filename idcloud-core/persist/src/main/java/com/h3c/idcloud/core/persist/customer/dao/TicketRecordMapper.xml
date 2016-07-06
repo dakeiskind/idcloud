@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.customer.dao.TicketRecordMapper" >
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.customer.TicketRecord" >
+        <id column="TICKET_RECORD_SID" property="ticketRecordSid" jdbcType="BIGINT" />
+        <result column="TICKET_SID" property="ticketSid" jdbcType="BIGINT" />
+        <result column="TICKET_NO" property="ticketNo" jdbcType="VARCHAR" />
+        <result column="OPERATOR" property="operator" jdbcType="VARCHAR" />
+        <result column="OPERATE" property="operate" jdbcType="VARCHAR" />
+        <result column="OPERATE_NAME" property="operateName" jdbcType="VARCHAR" />
+        <result column="OPERATE_CONTENT" property="operateContent" jdbcType="VARCHAR" />
+        <result column="OPERATE_TIME" property="operateTime" jdbcType="TIMESTAMP" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+        <result column="VERSION" property="version" jdbcType="BIGINT" />
+    </resultMap>
+    <sql id="Example_Where_Clause" >
+        <trim prefix="where" prefixOverrides="and|or" >
+            <if test="condition.ticketSid != null" >
+                and A.TICKET_SID = #{condition.ticketSid}
+            </if>
+            <if test="condition.operator != null" >
+                and A.OPERATOR = #{condition.operator}
+            </if>
+            <if test="condition.operate != null" >
+                and A.OPERATE = #{condition.operate}
+            </if>
+            <if test="condition.operateContent != null" >
+                and A.OPERATE_CONTENT = #{condition.operateContent}
+            </if>
+            <if test="condition.operateTime != null" >
+                and A.OPERATE_TIME = #{condition.operateTime}
+            </if>
+            <if test="condition.createdBy != null" >
+                and A.CREATED_BY = #{condition.createdBy}
+            </if>
+            <if test="condition.createdDt != null" >
+                and A.CREATED_DT = #{condition.createdDt}
+            </if>
+            <if test="condition.updatedBy != null" >
+                and A.UPDATED_BY = #{condition.updatedBy}
+            </if>
+            <if test="condition.updatedDt != null" >
+                and A.UPDATED_DT = #{condition.updatedDt}
+            </if>
+            <if test="condition.version != null" >
+                and A.VERSION = #{condition.version}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List" >
+        A.TICKET_RECORD_SID, A.TICKET_SID, A.OPERATOR, A.OPERATE, A.OPERATE_CONTENT, A.OPERATE_TIME,
+        A.CREATED_BY, A.CREATED_DT, A.UPDATED_BY, A.UPDATED_DT, A.VERSION
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        B.CODE_DISPLAY AS OPERATE_NAME,
+        C.TICKET_NO AS TICKET_NO,
+        <include refid="Base_Column_List" />
+        from ticket_record A
+        left join sys_m_code B ON
+        (A.OPERATE = B.CODE_VALUE AND B.CODE_CATEGORY = 'TICKET_PROCESS')
+        left join ticket C ON
+        (A.TICKET_SID = C.TICKET_SID)
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        order by A.OPERATE_TIME
+        <include refid="common.Mysql_Pagination_Limit" />
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        B.CODE_DISPLAY AS OPERATE_NAME,
+        C.TICKET_NO AS TICKET_NO,
+        <include refid="Base_Column_List" />
+        from ticket_record A
+        left join sys_m_code B ON
+        (A.OPERATE = B.CODE_VALUE AND B.CODE_CATEGORY = 'TICKET_PROCESS')
+        left join ticket C ON
+        (A.TICKET_SID = C.TICKET_SID)
+        where A.TICKET_RECORD_SID = #{ticketRecordSid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from ticket_record
+        where TICKET_RECORD_SID = #{ticketRecordSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+        delete A from ticket_record A
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.customer.TicketRecord" >
+        insert into ticket_record (TICKET_RECORD_SID, TICKET_SID, OPERATOR, OPERATE, OPERATE_CONTENT,
+        OPERATE_TIME, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, VERSION
+        )
+        values (#{ticketRecordSid}, #{ticketSid}, #{operator}, #{operate}, #{operateContent},
+        #{operateTime}, #{createdBy}, #{createdDt}, #{updatedBy}, #{updatedDt}, #{version}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.customer.TicketRecord" >
+        <selectKey resultType="java.lang.Long" keyProperty="ticketRecordSid" order="BEFORE">
+            SELECT NEXTVAL('SEQ_TICKET_RECORD')
+        </selectKey>
+        insert into ticket_record
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            TICKET_RECORD_SID,
+            <if test="ticketSid != null" >
+                TICKET_SID,
+            </if>
+            <if test="operator != null" >
+                OPERATOR,
+            </if>
+            <if test="operate != null" >
+                OPERATE,
+            </if>
+            <if test="operateContent != null" >
+                OPERATE_CONTENT,
+            </if>
+            <if test="operateTime != null" >
+                OPERATE_TIME,
+            </if>
+            <if test="createdBy != null" >
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null" >
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null" >
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null" >
+                UPDATED_DT,
+            </if>
+            <if test="version != null" >
+                VERSION,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            #{ticketRecordSid},
+            <if test="ticketSid != null" >
+                #{ticketSid},
+            </if>
+            <if test="operator != null" >
+                #{operator},
+            </if>
+            <if test="operate != null" >
+                #{operate},
+            </if>
+            <if test="operateContent != null" >
+                #{operateContent},
+            </if>
+            <if test="operateTime != null" >
+                #{operateTime},
+            </if>
+            <if test="createdBy != null" >
+                #{createdBy},
+            </if>
+            <if test="createdDt != null" >
+                #{createdDt},
+            </if>
+            <if test="updatedBy != null" >
+                #{updatedBy},
+            </if>
+            <if test="updatedDt != null" >
+                #{updatedDt},
+            </if>
+            <if test="version != null" >
+                #{version},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+        select count(*) from ticket_record
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map" >
+        update ticket_record
+        <set >
+            <if test="record.ticketRecordSid != null" >
+                TICKET_RECORD_SID = #{record.ticketRecordSid},
+            </if>
+            <if test="record.ticketSid != null" >
+                TICKET_SID = #{record.ticketSid},
+            </if>
+            <if test="record.operator != null" >
+                OPERATOR = #{record.operator},
+            </if>
+            <if test="record.operate != null" >
+                OPERATE = #{record.operate},
+            </if>
+            <if test="record.operateContent != null" >
+                OPERATE_CONTENT = #{record.operateContent},
+            </if>
+            <if test="record.operateTime != null" >
+                OPERATE_TIME = #{record.operateTime},
+            </if>
+            <if test="record.createdBy != null" >
+                CREATED_BY = #{record.createdBy},
+            </if>
+            <if test="record.createdDt != null" >
+                CREATED_DT = #{record.createdDt},
+            </if>
+            <if test="record.updatedBy != null" >
+                UPDATED_BY = #{record.updatedBy},
+            </if>
+            <if test="record.updatedDt != null" >
+                UPDATED_DT = #{record.updatedDt},
+            </if>
+            <if test="record.version != null" >
+                VERSION = #{record.version},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map" >
+        update ticket_record
+        set TICKET_RECORD_SID = #{record.ticketRecordSid},
+        TICKET_SID = #{record.ticketSid},
+        OPERATOR = #{record.operator},
+        OPERATE = #{record.operate},
+        OPERATE_CONTENT = #{record.operateContent},
+        OPERATE_TIME = #{record.operateTime},
+        CREATED_BY = #{record.createdBy},
+        CREATED_DT = #{record.createdDt},
+        UPDATED_BY = #{record.updatedBy},
+        UPDATED_DT = #{record.updatedDt},
+        VERSION = #{record.version}
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.customer.TicketRecord" >
+        update ticket_record
+        <set >
+            <if test="ticketSid != null" >
+                TICKET_SID = #{ticketSid},
+            </if>
+            <if test="operator != null" >
+                OPERATOR = #{operator},
+            </if>
+            <if test="operate != null" >
+                OPERATE = #{operate},
+            </if>
+            <if test="operateContent != null" >
+                OPERATE_CONTENT = #{operateContent},
+            </if>
+            <if test="operateTime != null" >
+                OPERATE_TIME = #{operateTime},
+            </if>
+            <if test="createdBy != null" >
+                CREATED_BY = #{createdBy},
+            </if>
+            <if test="createdDt != null" >
+                CREATED_DT = #{createdDt},
+            </if>
+            <if test="updatedBy != null" >
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="updatedDt != null" >
+                UPDATED_DT = #{updatedDt},
+            </if>
+            <if test="version != null" >
+                VERSION = #{version},
+            </if>
+        </set>
+        where TICKET_RECORD_SID = #{ticketRecordSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.customer.TicketRecord" >
+        update ticket_record
+        set TICKET_SID = #{ticketSid},
+        OPERATOR = #{operator},
+        OPERATE = #{operate},
+        OPERATE_CONTENT = #{operateContent},
+        OPERATE_TIME = #{operateTime},
+        CREATED_BY = #{createdBy},
+        CREATED_DT = #{createdDt},
+        UPDATED_BY = #{updatedBy},
+        UPDATED_DT = #{updatedDt},
+        VERSION = #{version}
+        where TICKET_RECORD_SID = #{ticketRecordSid}
+    </update>
+</mapper>

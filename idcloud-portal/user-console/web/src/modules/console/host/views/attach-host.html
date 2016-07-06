@@ -1,0 +1,19 @@
+<form id="attachHostForm">
+    <table border="0" class="custom-table" ms-controller="attachHostWindow">
+
+        <tr>
+            <td class="required">云主机：</td>
+            <td>
+                <select id="vmSid" name="vmSid" class="select radius-none " style="width:150px">
+                    <option ms-repeat-el="data" ms-value='el.resSid'>{{el.instanceName}}</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+</form>
+<script type="text/javascript">
+    require(["app-modules/console/host/vmodel/attach-host",'app-utils/codeService'], function (obj,code) {
+        obj.data = code.getCustomCode("/cs","POST",{instanceName:""});
+        avalon.scan();
+    });
+</script>

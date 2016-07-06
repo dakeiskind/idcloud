@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.customer.dao.IssueMapper" >
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.customer.Issue" >
+        <id column="ISSUE_SID" property="issueSid" jdbcType="BIGINT" />
+        <result column="ISSUE_TYPE" property="issueType" jdbcType="VARCHAR" />
+        <result column="ISSUE_TYPE_NAME" property="issueTypeName" jdbcType="VARCHAR" />
+        <result column="ISSUE_PRIORITY" property="issuePriority" jdbcType="VARCHAR" />
+        <result column="ISSUE_PRIORITY_NAME" property="issuePriorityName" jdbcType="VARCHAR" />
+        <result column="ISSUE_TITLE" property="issueTitle" jdbcType="VARCHAR" />
+        <result column="ISSUE_DESC" property="issueDesc" jdbcType="VARCHAR" />
+        <result column="ISSUE_COMMENT" property="issueComment" jdbcType="VARCHAR" />
+        <result column="ISSUE_STATUS" property="issueStatus" jdbcType="VARCHAR" />
+        <result column="ISSUE_STATUS_NAME" property="issueStatusName" jdbcType="VARCHAR" />
+        <result column="FEEDBACK_MAIL" property="feedbackMail" jdbcType="VARCHAR" />
+        <result column="FEEDBACK_PHONE" property="feedbackPhone" jdbcType="VARCHAR" />
+        <result column="RES_VM_SID" property="cloudHost" jdbcType="VARCHAR" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+        <result column="CREATED_DT" property="createdDt" jdbcType="TIMESTAMP" />
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+        <result column="UPDATED_DT" property="updatedDt" jdbcType="TIMESTAMP" />
+        <result column="VERSION" property="version" jdbcType="BIGINT" />
+    </resultMap>
+    <sql id="Example_Where_Clause" >
+        <trim prefix="where" prefixOverrides="and|or" >
+            <if test="condition.issueType != null" >
+                and A.ISSUE_TYPE = #{condition.issueType}
+            </if>
+            <if test="condition.issuePriority != null" >
+                and A.ISSUE_PRIORITY = #{condition.issuePriority}
+            </if>
+            <if test="condition.issueTitle != null" >
+                and A.ISSUE_TITLE like concat('%', #{condition.issueTitle}, '%')
+            </if>
+            <if test="condition.issueDesc != null" >
+                and A.ISSUE_DESC = #{condition.issueDesc}
+            </if>
+            <if test="condition.issueStatus != null" >
+                and A.ISSUE_STATUS = #{condition.issueStatus}
+            </if>
+            <if test="condition.issueToProcessedIssue != null" >
+                and A.ISSUE_STATUS IN
+                <foreach item="item" index="index" collection="condition.issueToProcessedIssue"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="condition.createdBy != null" >
+                and A.CREATED_BY = #{condition.createdBy}
+            </if>
+            <if test="condition.createdByUserAndAdmin != null" >
+                and A.CREATED_BY IN
+                <foreach item="item" index="index" collection="condition.createdByUserAndAdmin"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="condition.updatedBy != null" >
+                and A.UPDATED_BY = #{condition.updatedBy}
+            </if>
+            <if test="condition.version != null" >
+                and A.VERSION = #{condition.version}
+            </if>
+            <if test="condition.createdDtFromDate != null" >
+                and A.CREATED_DT >= #{condition.createdDtFromDate}
+            </if>
+            <if test="condition.createdDtToDate != null" >
+                and A.CREATED_DT <![CDATA[ <= #{condition.createdDtToDate} ]]>
+            </if>
+            <if test="condition.feedbackMail != null" >
+                and A.FEEDBACK_MAIL = #{condition.feedbackMail}
+            </if>
+            <if test="condition.feedbackPhone != null" >
+                and A.FEEDBACK_PHONE = #{condition.feedbackPhone}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List" >
+        A.ISSUE_SID, A.ISSUE_TYPE, A.ISSUE_PRIORITY, A.ISSUE_TITLE, A.ISSUE_DESC, A.ISSUE_COMMENT, A.ISSUE_STATUS, A.CREATED_BY, A.CREATED_DT, A.UPDATED_DT, A.UPDATED_BY, A.VERSION,A.FEEDBACK_MAIL,A.FEEDBACK_PHONE
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        B.CODE_DISPLAY AS ISSUE_TYPE_NAME,
+        C.CODE_DISPLAY AS ISSUE_PRIORITY_NAME,
+        D.CODE_DISPLAY AS ISSUE_STATUS_NAME,
+        <include refid="Base_Column_List" />
+        from issue A
+        left join sys_m_code B ON
+        (A.ISSUE_TYPE = B.CODE_VALUE AND B.CODE_CATEGORY = 'ISSUE_TYPE' )
+        left join sys_m_code C ON
+        (A.ISSUE_PRIORITY = C.CODE_VALUE AND C.CODE_CATEGORY = 'ISSUE_PRIORITY' )
+        left join sys_m_code D ON
+        (A.ISSUE_STATUS = D.CODE_VALUE AND D.CODE_CATEGORY = 'ISSUE_STATUS' )
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit" />
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        B.CODE_DISPLAY AS ISSUE_TYPE_NAME,
+        C.CODE_DISPLAY AS ISSUE_PRIORITY_NAME,
+        D.CODE_DISPLAY AS ISSUE_STATUS_NAME,
+        <include refid="Base_Column_List" />
+        from issue A
+        left join sys_m_code B ON
+        (A.ISSUE_TYPE = B.CODE_VALUE AND B.CODE_CATEGORY = 'ISSUE_TYPE' )
+        left join sys_m_code C ON
+        (A.ISSUE_PRIORITY = C.CODE_VALUE AND C.CODE_CATEGORY = 'ISSUE_PRIORITY' )
+        left join sys_m_code D ON
+        (A.ISSUE_STATUS = D.CODE_VALUE AND D.CODE_CATEGORY = 'ISSUE_STATUS' )
+        where A.ISSUE_SID = #{issueSid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from issue
+        where ISSUE_SID = #{issueSid}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+        delete from issue
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.customer.Issue" >
+        insert into issue (ISSUE_SID, ISSUE_TYPE, ISSUE_PRIORITY, ISSUE_TITLE, ISSUE_DESC, ISSUE_COMMENT, ISSUE_STATUS, CREATED_BY, CREATED_DT, UPDATED_DT, UPDATED_BY, VERSION, FEEDBACK_MAIL, FEEDBACK_PHONE)
+        values (#{issueSid}, #{issueType}, #{issuePriority}, #{issueTitle}, #{issueDesc}, #{issueComment}, #{issueStatus}, #{createdBy}, #{createdDt}, #{updatedDt}, #{updatedBy}, #{version}, #{feedbackMail}, #{feedbackPhone})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.customer.Issue" >
+        <selectKey resultType="java.lang.Long" keyProperty="issueSid" order="BEFORE">
+            SELECT NEXTVAL('SEQ_ISSUE')
+        </selectKey>
+        insert into issue
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            ISSUE_SID,
+            <if test="issueType != null" >
+                ISSUE_TYPE,
+            </if>
+            <if test="issuePriority != null" >
+                ISSUE_PRIORITY,
+            </if>
+            <if test="issueTitle != null" >
+                ISSUE_TITLE,
+            </if>
+            <if test="issueDesc != null" >
+                ISSUE_DESC,
+            </if>
+            <if test="issueComment != null" >
+                ISSUE_COMMENT,
+            </if>
+            <if test="issueStatus != null" >
+                ISSUE_STATUS,
+            </if>
+            <if test="createdBy != null" >
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null" >
+                CREATED_DT,
+            </if>
+            <if test="updatedDt != null" >
+                UPDATED_DT,
+            </if>
+            <if test="updatedBy != null" >
+                UPDATED_BY,
+            </if>
+            <if test="version != null" >
+                VERSION,
+            </if>
+            <if test="feedbackMail != null" >
+                FEEDBACK_MAIL,
+            </if>
+            <if test="feedbackPhone != null" >
+                FEEDBACK_PHONE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            #{issueSid},
+            <if test="issueType != null" >
+                #{issueType},
+            </if>
+            <if test="issuePriority != null" >
+                #{issuePriority},
+            </if>
+            <if test="issueTitle != null" >
+                #{issueTitle},
+            </if>
+            <if test="issueDesc != null" >
+                #{issueDesc},
+            </if>
+            <if test="issueComment != null" >
+                #{issueComment},
+            </if>
+            <if test="issueStatus != null" >
+                #{issueStatus},
+            </if>
+            <if test="createdBy != null" >
+                #{createdBy},
+            </if>
+            <if test="createdDt != null" >
+                #{createdDt},
+            </if>
+            <if test="updatedDt != null" >
+                #{updatedDt},
+            </if>
+            <if test="updatedBy != null" >
+                #{updatedBy},
+            </if>
+            <if test="version != null" >
+                #{version},
+            </if>
+            <if test="feedbackMail != null" >
+                #{feedbackMail},
+            </if>
+            <if test="feedbackPhone != null" >
+                #{feedbackPhone},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+        select count(*) from issue A
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map" >
+        update issue
+        <set >
+            <if test="record.issueSid != null" >
+                ISSUE_SID = #{record.issueSid},
+            </if>
+            <if test="record.issueType != null" >
+                ISSUE_TYPE = #{record.issueType},
+            </if>
+            <if test="record.issuePriority != null" >
+                ISSUE_PRIORITY = #{record.issuePriority},
+            </if>
+            <if test="record.issueTitle != null" >
+                ISSUE_TITLE = #{record.issueTitle},
+            </if>
+            <if test="record.issueDesc != null" >
+                ISSUE_DESC = #{record.issueDesc},
+            </if>
+            <if test="record.issueComment != null" >
+                ISSUE_COMMENT = #{record.issueComment},
+            </if>
+            <if test="record.issueStatus != null" >
+                ISSUE_STATUS = #{record.issueStatus},
+            </if>
+            <if test="record.createdBy != null" >
+                CREATED_BY = #{record.createdBy},
+            </if>
+            <if test="record.createdDt != null" >
+                CREATED_DT = #{record.createdDt},
+            </if>
+            <if test="record.updatedDt != null" >
+                UPDATED_DT = #{record.updatedDt},
+            </if>
+            <if test="record.updatedBy != null" >
+                UPDATED_BY = #{record.updatedBy},
+            </if>
+            <if test="record.version != null" >
+                VERSION = #{record.version},
+            </if>
+            <if test="record.feedbackMail != null" >
+                FEEDBACK_MAIL = #{record.feedbackMail},
+            </if>
+            <if test="record.feedbackPhone != null" >
+                FEEDBACK_PHONE = #{record.feedbackPhone},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map" >
+        update issue
+        set ISSUE_SID = #{record.issueSid},
+        ISSUE_TYPE = #{record.issueType},
+        ISSUE_PRIORITY = #{record.issuePriority},
+        ISSUE_TITLE = #{record.issueTitle},
+        ISSUE_DESC = #{record.issueDesc},
+        ISSUE_COMMENT = #{record.issueComment},
+        ISSUE_STATUS = #{record.issueStatus},
+        CREATED_BY = #{record.createdBy},
+        CREATED_DT = #{record.createdDt},
+        UPDATED_DT = #{record.updatedDt},
+        UPDATED_BY = #{record.updatedBy},
+        VERSION = #{record.version},
+        FEEDBACK_MAIL = #{record.feedbackMail},
+        FEEDBACK_PHONE = #{record.feedbackPhone},
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.customer.Issue" >
+        update issue
+        <set >
+            <if test="issueType != null" >
+                ISSUE_TYPE = #{issueType},
+            </if>
+            <if test="issuePriority != null" >
+                ISSUE_PRIORITY = #{issuePriority},
+            </if>
+            <if test="issueTitle != null" >
+                ISSUE_TITLE = #{issueTitle},
+            </if>
+            <if test="issueDesc != null" >
+                ISSUE_DESC = #{issueDesc},
+            </if>
+            <if test="issueComment != null" >
+                ISSUE_COMMENT = #{issueComment},
+            </if>
+            <if test="issueStatus != null" >
+                ISSUE_STATUS = #{issueStatus},
+            </if>
+            <if test="createdBy != null" >
+                CREATED_BY = #{createdBy},
+            </if>
+            <if test="createdDt != null" >
+                CREATED_DT = #{createdDt},
+            </if>
+            <if test="updatedDt != null" >
+                UPDATED_DT = #{updatedDt},
+            </if>
+            <if test="updatedBy != null" >
+                UPDATED_BY = #{updatedBy},
+            </if>
+            <if test="version != null" >
+                VERSION = #{version},
+            </if>
+            <if test="feedbackMail != null" >
+                FEEDBACK_MAIL = #{feedbackMail},
+            </if>
+            <if test="feedbackPhone != null" >
+                FEEDBACK_PHONE = #{feedbackPhone},
+            </if>
+        </set>
+        where ISSUE_SID = #{issueSid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.customer.Issue" >
+        update issue
+        set ISSUE_TYPE = #{issueType},
+        ISSUE_PRIORITY = #{issuePriority},
+        ISSUE_TITLE = #{issueTitle},
+        ISSUE_DESC = #{issueDesc},
+        ISSUE_COMMENT = #{issueComment},
+        ISSUE_STATUS = #{issueStatus},
+        CREATED_BY = #{createdBy},
+        UPDATED_DT = #{createdDt},
+        UPDATED_BY = #{updatedDt},
+        UPDATED_BY = #{updatedBy},
+        VERSION = #{version},
+        FEEDBACK_MAIL = #{record.feedbackMail},
+        FEEDBACK_PHONE = #{record.feedbackPhone},
+        where ISSUE_SID = #{issueSid}
+    </update>
+</mapper>

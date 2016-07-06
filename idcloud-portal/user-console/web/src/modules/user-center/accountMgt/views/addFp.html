@@ -1,0 +1,22 @@
+<form id="addFpForm">
+    <table border="0" class="custom-table" ms-controller="fpAdd">
+        <tr>
+            <td class="required">发票条目金额：</td>
+            <td>
+                <input type="text" id="invoiceItemAmount" name="invoiceItemAmount"
+                       ms-duplex="data['invoiceItemAmount']" style="width:180px" class="input text-small radius-none">&nbsp;元
+                <p class="description text-gray" style="width: 180px">请输入该条目金额，确定后将不能更改和删除！</p>
+            </td>
+        </tr>
+    </table>
+</form>
+
+<script type="text/javascript">
+    require(["app-modules/user-center/accountMgt/vmodel/addFp"],function(addfp){
+        // 初始化数据
+        addfp.data.serviceName = avalon.vmodels.userFp.serviceName;
+        addfp.data.invoiceItemAmount = null;
+        addfp.initValidator();
+        avalon.scan();
+    });
+</script>

@@ -1,0 +1,53 @@
+<form id="addPortsForm" >
+    <table border="0" class="custom-table" ms-controller="addPortsWindow">
+        <tr>
+            <td class="required">名称：</td>
+            <td>
+                <input type="text" ms-duplex="addRuleData['portName']" name="portName" style="width:220px" class="input text-small radius-none">
+                <p class="description text-gray" style="width: 220px">名称为2-128个字符，以大写字母或中文开头，可包含数字，"-"或"_"</p>
+            </td>
+        </tr>
+        <tr>
+            <td class="required">私有网络：</td>
+            <td>
+                <select style="width:220px" class="select radius-none" ms-duplex="pnValue" ms-change="pnValueChanged()">
+                    <option ms-repeat-el="pnData" ms-value='el.resVpcSid'>{{el.vpcName}}</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="required">子网：</td> 
+            <td>
+                <select style="width:220px" class="select radius-none" ms-duplex="subnetValue">
+                    <option ms-repeat-el="subnetData" ms-value='el.resNetworkSid'>{{el.networkName}}</option>
+                </select>
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="required">路由名称：</td>
+            <td>
+                <input type="text" ms-duplex="addRuleData['routerName']" disabled="true" name="routerName" style="width:220px" class="input text-small radius-none">
+            </td>
+        </tr>
+
+        <tr>
+            <td class="required">路由ID：</td>
+            <td>
+                <input type="text" ms-duplex="addRuleData['routerId']" disabled="true" name="routerId" style="width:220px" class="input text-small radius-none">
+
+            </td>
+        </tr>
+        
+    </table>
+</form>
+
+<script type="text/javascript">
+    require(["app-modules/console/vpc/vmodel/router-rule-add"],function(ruleAdd){
+        // 初始化数据
+        ruleAdd.addRuleData = avalon.vmodels.routerMgt.addPortData;
+        ruleAdd.initData(ruleAdd.addRuleData.zondeSid);
+        ruleAdd.initValidator();
+        avalon.scan();
+    });     
+</script>

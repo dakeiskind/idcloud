@@ -1,0 +1,99 @@
+<style>
+        .node {
+            cursor: pointer;
+        }
+        #topologyContainer{
+            width:100%;
+            height:100%;
+            border-radius:5px;
+            position:relative;
+        }
+
+        #tips{
+          position: absolute;
+          min-width: 400px;
+          min-height: 150px;
+          background: #FFF;
+          border: 1px solid #DADADA;
+          -webkit-box-shadow:0 0 10px 0 #ddd;
+          border-radius: 4px;
+        }
+
+        #tips .content{
+          width: 100%;
+          height: 100%;
+          padding:5px;
+          margin: 0px;
+        }
+
+        #tips .content .title{
+          width:100%;
+          height:23px;
+          /*border-bottom:1px solid #DADADA;*/
+        }
+
+        #tips .content .info{
+          width:100%;
+          height:42px;
+          border-bottom:1px solid #DADADA;
+        }
+
+        #tips .footer{
+          width: 100%;
+          height: 35px;
+          text-align: right;
+          background: #EFEFEF;
+        }
+
+        #tips .content td{
+          font-size:10px; 
+        }
+
+        #tips .arrow{
+            position: absolute;
+            left: -19px;
+            top: 40px;
+            width: 0px;
+            height: 0px;
+            border: 9px solid transparent;
+            border-right-color: #ddd;
+        }
+        #tips .box1{
+          position: absolute;
+          left: -8px;
+          top: -10px;
+          width: 0px;
+          height: 0px;
+          border: 10px solid transparent;
+          border-right-color: #fff;
+        }
+    </style>
+<div ms-controller="networkTopology">
+    
+    <div id="networkTopo" class="line show">
+
+        <div class="xs12 padding-bottom">
+            <div class="xs8">
+                <div class="float-left text-large">网络拓扑</div>
+                <div class="margin-small-left float-left title">
+                    <select class="select" ms-duplex="regionValue" ms-change="regionChanged()">
+                        <option ms-repeat-el="regionData" ms-value='el.resTopologySid'>{{el.resTopologyName}}</option>
+                    </select>
+                    <select class="select" ms-duplex="zoneValue" ms-change="zoneChanged()">
+                        <option ms-repeat-el="zoneData" ms-value='el.resTopologySid'>{{el.resTopologyName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="xs4">
+                <button class="button bg-blue float-right radius-none margin-small-left" type="button" ms-click="createRouter()">创建路由器</button>
+                <button class="button bg-blue float-right radius-none margin-small-left"type="button" ms-click="createPrivateNetwork()">创建私有网络</button>
+                <a class="button bg-blue float-right radius-none margin-small-left" href="/user-console/#!/console/cs/host?from=b3JkZXJQYWdl">创建云主机</a>
+            </div>
+        </div>
+        
+        <hr>
+        <!-- 网络容器 -->
+        <div id="topologyContainer"></div>
+
+    </div>
+</div>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <timestamp key="timeShow" datePattern="yyyy-MM-dd HH:mm:ss.SSS"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <!--<pattern>- %m%n</pattern>-->
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>target/test-data/jclouds.log</file>
+
+        <encoder>
+            <Pattern>%d %-5p [%c] [%thread] %m%n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="WIREFILE" class="ch.qos.logback.core.FileAppender">
+        <file>target/test-data/jclouds-wire.log</file>
+
+        <encoder>
+            <Pattern>%d %-5p [%c] [%thread] %m%n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="COMPUTEFILE" class="ch.qos.logback.core.FileAppender">
+        <file>target/test-data/jclouds-compute.log</file>
+
+        <encoder>
+            <Pattern>%d %-5p [%c] [%thread] %m%n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SSHFILE" class="ch.qos.logback.core.FileAppender">
+        <file>target/test-data/jclouds-ssh.log</file>
+
+        <encoder>
+            <Pattern>%d %-5p [%c] [%thread] %m%n</Pattern>
+        </encoder>
+    </appender>
+
+
+    <!--<logger name="org.jclouds">-->
+    <!--<level value="DEBUG"/>-->
+    <!--<appender-ref ref="FILE"/>-->
+    <!--</logger>-->
+
+    <!--<logger name="jclouds.wire">-->
+    <!--<level value="DEBUG"/>-->
+    <!--<appender-ref ref="STDOUT"/>-->
+    <!--</logger>-->
+
+    <!--<logger name="jclouds.headers">-->
+    <!--<level value="DEBUG"/>-->
+    <!--<appender-ref ref="STDOUT"/>-->
+    <!--</logger>-->
+
+    <!--<logger name="jclouds.compute">-->
+    <!--<level value="DEBUG"/>-->
+    <!--<appender-ref ref="COMPUTEFILE"/>-->
+    <!--</logger>-->
+
+    <!--<logger name="jclouds.ssh">-->
+    <!--<level value="DEBUG"/>-->
+    <!--<appender-ref ref="SSHFILE"/>-->
+    <!--</logger>-->
+
+    <logger name="org.jclouds">
+        <level value="DEBUG"/>
+    </logger>
+
+    <logger name="org.springframework.amqp.rabbit">
+        <level value="warn"/>
+    </logger>
+
+    <logger name="com.h3c.idcloud.core.adapter">
+        <level value="debug"/>
+    </logger>
+
+    <root level="debug">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

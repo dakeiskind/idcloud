@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResObjectStorageUsageMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResObjectStorageUsage">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="ACCOUNT" property="account" jdbcType="BIGINT"/>
+        <result column="CREATE_DT" property="createDt" jdbcType="TIMESTAMP"/>
+        <result column="COUNT_DT" property="countDt" jdbcType="TIMESTAMP"/>
+        <result column="CONTAINER_COUNT" property="containerCount" jdbcType="BIGINT"/>
+        <result column="OBJECT_COUNT" property="objectCount" jdbcType="BIGINT"/>
+        <result column="BYTES" property="bytes" jdbcType="BIGINT"/>
+    </resultMap>
+    <resultMap id="SumMap" type="com.h3c.idcloud.core.pojo.dto.res.ResOSUsageSum">
+        <result column="ACCOUNT" property="account" jdbcType="BIGINT"/>
+        <result column="CONTAINER_COUNT" property="containerCount" jdbcType="BIGINT"/>
+        <result column="OBJECT_COUNT" property="objectCount" jdbcType="BIGINT"/>
+        <result column="BYTES" property="bytes" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.account != null">
+                and ACCOUNT = #{condition.account}
+            </if>
+            <if test="condition.createDt != null">
+                and CREATE_DT = #{condition.createDt}
+            </if>
+            <if test="condition.countDt != null">
+                and COUNT_DT = #{condition.countDt}
+            </if>
+            <if test="condition.containerCount != null">
+                and CONTAINER_COUNT = #{condition.containerCount}
+            </if>
+            <if test="condition.objectCount != null">
+                and OBJECT_COUNT = #{condition.objectCount}
+            </if>
+            <if test="condition.bytes != null">
+                and BYTES = #{condition.bytes}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        ID, ACCOUNT, CREATE_DT, COUNT_DT, CONTAINER_COUNT, OBJECT_COUNT, BYTES
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from res_object_storage_usage
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <select id="selectByMap" resultMap="BaseResultMap" parameterType="map">
+        select * from res_object_storage_usage where ACCOUNT=#{account} and COUNT_DT between #{begin} and #{end}
+    </select>
+    <select id="selectSum" resultMap="SumMap" parameterType="map">
+        select account, sum(container_count) as container_count, sum(object_count) as object_count, sum(bytes) as bytes
+        from res_object_storage_usage
+        where ACCOUNT=#{account} and COUNT_DT between #{begin} and #{end} group by account;
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from res_object_storage_usage
+        where ID = #{id}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from res_object_storage_usage
+        where ID = #{id}
+    </delete>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_object_storage_usage
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResObjectStorageUsage">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="BEFORE">
+            SELECT NEXTVAL('SEQ_OBJECT_STORAGE_USAGE')
+        </selectKey>
+        insert into res_object_storage_usage (ID, ACCOUNT, CREATE_DT, COUNT_DT, CONTAINER_COUNT, OBJECT_COUNT,
+        BYTES)
+        values (#{id}, #{account}, #{createDt}, #{countDt}, #{containerCount}, #{objectCount},
+        #{bytes})
+    </insert>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResObjectStorageUsage">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="BEFORE">
+            SELECT NEXTVAL('SEQ_OBJECT_STORAGE_USAGE')
+        </selectKey>
+        insert into res_object_storage_usage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            ID,
+            <if test="account != null">
+                ACCOUNT,
+            </if>
+            <if test="createDt != null">
+                CREATE_DT,
+            </if>
+            <if test="countDt != null">
+                COUNT_DT,
+            </if>
+            <if test="containerCount != null">
+                CONTAINER_COUNT,
+            </if>
+            <if test="objectCount != null">
+                OBJECT_COUNT,
+            </if>
+            <if test="bytes != null">
+                BYTES,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id},
+            <if test="account != null">
+                #{account},
+            </if>
+            <if test="createDt != null">
+                #{createDt},
+            </if>
+            <if test="countDt != null">
+                #{countDt},
+            </if>
+            <if test="containerCount != null">
+                #{containerCount},
+            </if>
+            <if test="objectCount != null">
+                #{objectCount},
+            </if>
+            <if test="bytes != null">
+                #{bytes},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_object_storage_usage
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_object_storage_usage
+        <set>
+            <if test="record.id != null">
+                ID = #{record.id},
+            </if>
+            <if test="record.account != null">
+                ACCOUNT = #{record.account},
+            </if>
+            <if test="record.createDt != null">
+                CREATE_DT = #{record.createDt},
+            </if>
+            <if test="record.countDt != null">
+                COUNT_DT = #{record.countDt},
+            </if>
+            <if test="record.containerCount != null">
+                CONTAINER_COUNT = #{record.containerCount},
+            </if>
+            <if test="record.objectCount != null">
+                OBJECT_COUNT = #{record.objectCount},
+            </if>
+            <if test="record.bytes != null">
+                BYTES = #{record.bytes},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByParams" parameterType="map">
+        update res_object_storage_usage
+        set ID = #{record.id},
+        ACCOUNT = #{record.account},
+        CREATE_DT = #{record.createDt},
+        COUNT_DT = #{record.countDt},
+        CONTAINER_COUNT = #{record.containerCount},
+        OBJECT_COUNT = #{record.objectCount},
+        BYTES = #{record.bytes}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResObjectStorageUsage">
+        update res_object_storage_usage
+        <set>
+            <if test="account != null">
+                ACCOUNT = #{account},
+            </if>
+            <if test="createDt != null">
+                CREATE_DT = #{createDt},
+            </if>
+            <if test="countDt != null">
+                COUNT_DT = #{countDt},
+            </if>
+            <if test="containerCount != null">
+                CONTAINER_COUNT = #{containerCount},
+            </if>
+            <if test="objectCount != null">
+                OBJECT_COUNT = #{objectCount},
+            </if>
+            <if test="bytes != null">
+                BYTES = #{bytes},
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResObjectStorageUsage">
+        update res_object_storage_usage
+        set ACCOUNT = #{account},
+        CREATE_DT = #{createDt},
+        COUNT_DT = #{countDt},
+        CONTAINER_COUNT = #{containerCount},
+        OBJECT_COUNT = #{objectCount},
+        BYTES = #{bytes}
+        where ID = #{id}
+    </update>
+</mapper>

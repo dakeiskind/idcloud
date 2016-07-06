@@ -1,0 +1,19 @@
+<script type="text/javascript">
+    require(["app-modules/console/loadBalance/vmodel/distribution-float-IP"],function(distributionFloatIP){
+        avalon.vmodels.distributionFloatIP.data.resourcePool = avalon.vmodels.bindingFloatIP.resourcePool;
+        avalon.scan();
+    });
+</script>
+<form id="distributionFloatIPForm">
+    <table border="0" class="custom-table" style="font-size:12px;" ms-controller="distributionFloatIP">
+        <tr>
+            <td class="required">资源池：</td>
+            <td>
+                <select id="resourcePool" name="resourcePool" ms-duplex="data['resourcePool']" class="select radius-none" style="width:200px">
+                    <option selected="selected" value="public">public</option>
+                </select>
+                <p class="description text-gray" style="width: 200px">从指定的浮动IP池中分配一个浮动IP</p>
+            </td>
+        </tr>
+    </table>
+</form>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.res.dao.ResCpuPoolMparRelMapper">
+    <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.res.ResCpuPoolMparRel">
+        <result column="RES_CPU_POOL_SID" property="resCpuPoolSid" jdbcType="VARCHAR"/>
+        <result column="RES_PAR_SID" property="resParSid" jdbcType="VARCHAR"/>
+        <result column="RES_PAR_TYPE" property="resParType" jdbcType="INTEGER"/>
+        <result column="CPU_VALUE" property="cpuValue" jdbcType="REAL"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.resCpuPoolSid != null">
+                and RES_CPU_POOL_SID = #{condition.resCpuPoolSid}
+            </if>
+            <if test="condition.resParSid != null">
+                and RES_PAR_SID = #{condition.resParSid}
+            </if>
+            <if test="condition.resParType != null">
+                and RES_PAR_TYPE = #{condition.resParType}
+            </if>
+            <if test="condition.cpuValue != null">
+                and CPU_VALUE = #{condition.cpuValue}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List">
+        RES_CPU_POOL_SID, RES_PAR_SID, RES_PAR_TYPE, CPU_VALUE
+    </sql>
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from res_cpu_pool_mpar_rel
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <include refid="common.Mysql_Pagination_Limit"/>
+    </select>
+    <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria">
+        delete from res_cpu_pool_mpar_rel
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.res.ResCpuPoolMparRel">
+        insert into res_cpu_pool_mpar_rel
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="resCpuPoolSid != null">
+                RES_CPU_POOL_SID,
+            </if>
+            <if test="resParSid != null">
+                RES_PAR_SID,
+            </if>
+            <if test="resParType != null">
+                RES_PAR_TYPE,
+            </if>
+            <if test="cpuValue != null">
+                CPU_VALUE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="resCpuPoolSid != null">
+                #{resCpuPoolSid},
+            </if>
+            <if test="resParSid != null">
+                #{resParSid},
+            </if>
+            <if test="resParType != null">
+                #{resParType},
+            </if>
+            <if test="cpuValue != null">
+                #{cpuValue},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer">
+        select count(*) from res_cpu_pool_mpar_rel
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByParamsSelective" parameterType="map">
+        update res_cpu_pool_mpar_rel
+        <set>
+            <if test="record.resCpuPoolSid != null">
+                RES_CPU_POOL_SID = #{record.resCpuPoolSid},
+            </if>
+            <if test="record.resParSid != null">
+                RES_PAR_SID = #{record.resParSid},
+            </if>
+            <if test="record.resParType != null">
+                RES_PAR_TYPE = #{record.resParType},
+            </if>
+            <if test="record.cpuValue != null">
+                CPU_VALUE = #{record.cpuValue},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </update>
+</mapper>

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.product.dao.MgtObjResMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.product.MgtObjRes" >
+    <id column="BIZ_SID" property="bizSid" jdbcType="BIGINT" />
+    <id column="RES_SET_SID" property="resSetSid" jdbcType="VARCHAR" />
+    <result column="RES_SET_TYPE" property="resSetType" jdbcType="VARCHAR" />
+    <result column="BIZ_TEXT" property="bizText" jdbcType="VARCHAR" />
+    <result column="RES_CATEGORY" property="resCategory" jdbcType="VARCHAR" />
+    <result column="COUNT" property="count" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.bizSid != null" >
+         and BIZ_SID = #{condition.bizSid}
+      </if>
+      <if test="condition.bizSids != null" >
+         and BIZ_SID in (${condition.bizSids})
+      </if>
+      <if test="condition.bizSidList != null" >
+         and BIZ_SID in 
+         <foreach item="item" index="index" collection="condition.bizSidList"
+                        open="(" separator="," close=")">  
+                       #{item}  
+         </foreach> 
+      </if>
+       <if test="condition.resSetSid != null" >
+         and RES_SET_SID = #{condition.resSetSid}
+      </if>
+      <if test="condition.resSetType != null" >
+         and RES_SET_TYPE = #{condition.resSetType}
+      </if>
+      <if test="condition.resSetType_vc != null and condition.resSetType_host != null" >
+         and RES_SET_TYPE in ( #{condition.resSetType_vc},  #{condition.resSetType_host})
+      </if>
+      <if test="condition.resCategory != null" >
+         and RES_CATEGORY = #{condition.resCategory}
+      </if>
+      <if test="condition.resCategorys != null" >
+         and RES_CATEGORY in 
+         <foreach item="item" index="index" collection="condition.resCategorys"
+                        open="(" separator="," close=")">  
+                       #{item}  
+         </foreach>  
+      </if>
+    </trim>
+  </sql>
+  <sql id="Example_Where_Clause2" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.bizSid != null" >
+         and A.BIZ_SID = #{condition.bizSid}
+      </if>
+       <if test="condition.resSetSid != null" >
+         and A.RES_SET_SID = #{condition.resSetSid}
+      </if>
+      <if test="condition.resSetType != null" >
+         and A.RES_SET_TYPE = #{condition.resSetType}
+      </if>
+      <if test="condition.resSetType_vc != null and condition.resSetType_host != null" >
+         and A.RES_SET_TYPE in ( #{condition.resSetType_vc},  #{condition.resSetType_host})
+      </if>
+      <if test="condition.resCategory != null" >
+         and A.RES_CATEGORY = #{condition.resCategory}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    BIZ_SID, RES_SET_SID, RES_SET_TYPE, RES_CATEGORY
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_m_mgt_obj_res
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  
+  <select id="selectByParams2" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select A.BIZ_SID, A.RES_SET_SID, A.RES_SET_TYPE, A.RES_CATEGORY,B.NAME as BIZ_TEXT
+    from sys_m_mgt_obj_res A
+    left join sys_m_biz B on B.BIZ_SID = A.BIZ_SID
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause2" />
+    </if>
+  </select>
+  
+  <select id="selectMgtObjResByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    COUNT(*) AS COUNT,
+    <include refid="Base_Column_List" />
+    from sys_m_mgt_obj_res A
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause2" />
+    </if>
+    GROUP BY A.RES_SET_TYPE
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.core.pojo.dto.product.MgtObjResKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_m_mgt_obj_res
+    where BIZ_SID = #{bizSid}
+      and RES_SET_SID = #{resSetSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.product.MgtObjResKey" >
+    delete from sys_m_mgt_obj_res
+    where BIZ_SID = #{bizSid}
+      and RES_SET_SID = #{resSetSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from sys_m_mgt_obj_res
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.product.MgtObjRes" >
+    insert into sys_m_mgt_obj_res (BIZ_SID, RES_SET_SID, RES_SET_TYPE, RES_CATEGORY)
+    values (#{bizSid}, #{resSetSid}, #{resSetType}, #{resCategory})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.MgtObjRes" >
+    insert into sys_m_mgt_obj_res
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bizSid != null" >
+        BIZ_SID,
+      </if>
+      <if test="resSetSid != null" >
+        RES_SET_SID,
+      </if>
+      <if test="resSetType != null" >
+        RES_SET_TYPE,
+      </if>
+      <if test="resCategory != null" >
+        RES_CATEGORY,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bizSid != null" >
+        #{bizSid},
+      </if>
+      <if test="resSetSid != null" >
+        #{resSetSid},
+      </if>
+      <if test="resSetType != null" >
+        #{resSetType},
+      </if>
+      <if test="resCategory != null" >
+        #{resCategory},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from sys_m_mgt_obj_res
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update sys_m_mgt_obj_res
+    <set >
+      <if test="record.bizSid != null" >
+        BIZ_SID = #{record.bizSid},
+      </if>
+      <if test="record.resSetSid != null" >
+        RES_SET_SID = #{record.resSetSid},
+      </if>
+      <if test="record.resSetType != null" >
+        RES_SET_TYPE = #{record.resSetType},
+      </if>
+      <if test="record.resCategory != null" >
+        RES_CATEGORY = #{record.resCategory},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update sys_m_mgt_obj_res
+    set BIZ_SID = #{record.bizSid},
+      RES_SET_SID = #{record.resSetSid},
+      RES_SET_TYPE = #{record.resSetType},
+      RES_CATEGORY = #{record.resCategory}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.product.MgtObjRes" >
+    update sys_m_mgt_obj_res
+    <set >
+      <if test="resSetType != null" >
+        RES_SET_TYPE = #{resSetType},
+      </if>
+      <if test="resCategory != null" >
+        RES_CATEGORY = #{resCategory},
+      </if>
+    </set>
+    where BIZ_SID = #{bizSid}
+      and RES_SET_SID = #{resSetSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.product.MgtObjRes" >
+    update sys_m_mgt_obj_res
+    set RES_SET_TYPE = #{resSetType},
+      RES_CATEGORY = #{resCategory}
+    where BIZ_SID = #{bizSid}
+      and RES_SET_SID = #{resSetSid}
+  </update>
+  <select id="selectBizReses" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+	SELECT A.RES_SET_SID,
+	(CASE
+	WHEN A.RES_SET_TYPE IN ('RZ', 'VC') THEN (SELECT B.RES_TOPOLOGY_NAME FROM RES_TOPOLOGY B WHERE A.RES_SET_SID = B.RES_TOPOLOGY_SID)
+	WHEN A.RES_SET_TYPE = 'RES-HOST' THEN (SELECT C.HOST_NAME FROM RES_HOST C WHERE A.RES_SET_SID = C.RES_HOST_SID)
+	WHEN A.RES_SET_TYPE = 'RES-NETWORK' THEN (SELECT D.NETWORK_NAME FROM RES_NETWORK D WHERE A.RES_SET_SID = D.RES_NETWORK_SID)
+	END)
+	AS resSetType
+	FROM sys_m_mgt_obj_res A WHERE A.RES_CATEGORY = #{condition.resCategory} AND A.BIZ_SID in (${condition.bizSid})
+	<if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

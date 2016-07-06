@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h3c.idcloud.core.persist.system.dao.MgtObjExtMapper" >
+  <resultMap id="BaseResultMap" type="com.h3c.idcloud.core.pojo.dto.system.MgtObjExt" >
+    <id column="EXTEND_SID" property="extendSid" jdbcType="BIGINT" />
+    <result column="MGT_OBJ_SID" property="mgtObjSid" jdbcType="BIGINT" />
+    <result column="ATTR_KEY" property="attrKey" jdbcType="VARCHAR" />
+    <result column="ATTR_VALUE" property="attrValue" jdbcType="VARCHAR" />
+    <result column="ATTR_NAME" property="attrName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.mgtObjSid != null" >
+         and A.MGT_OBJ_SID = #{condition.mgtObjSid}
+      </if>
+      <if test="condition.mgtObjSidNotIn != null" >
+         and A.MGT_OBJ_SID not in (${condition.mgtObjSidNotIn})
+      </if>
+      <if test="condition.attrKey != null" >
+         and A.ATTR_KEY = #{condition.attrKey}
+      </if>
+      <if test="condition.attrValue != null" >
+         and A.ATTR_VALUE = #{condition.attrValue}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Example_Where_Clause2" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.mgtObjSid != null" >
+         and MGT_OBJ_SID = #{condition.mgtObjSid}
+      </if>
+      <if test="condition.attrKey != null" >
+         and ATTR_KEY = #{condition.attrKey}
+      </if>
+      <if test="condition.attrValue != null" >
+         and ATTR_VALUE = #{condition.attrValue}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    A.EXTEND_SID, A.MGT_OBJ_SID, A.ATTR_KEY, A.ATTR_VALUE
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,B.ATTR_NAME AS ATTR_NAME
+    from sys_m_mgt_obj_ext A
+    left join sys_m_mgt_obj_def B on (A.ATTR_KEY = B.ATTR_KEY)
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_m_mgt_obj_ext
+    where EXTEND_SID = #{extendSid}
+  </select>
+  <select id="selectByMgtObjSid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    A.MGT_OBJ_SID, A.ATTR_KEY, A.ATTR_VALUE
+    from sys_m_mgt_obj_ext
+    where MGT_OBJ_SID = #{mgtObjSid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_m_mgt_obj_ext
+    where EXTEND_SID = #{extendSid}
+  </delete>
+  <delete id="deleteByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" >
+    delete from sys_m_mgt_obj_ext
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause2" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.h3c.idcloud.core.pojo.dto.system.MgtObjExt" >
+    <selectKey resultType="java.lang.Long" keyProperty="extendSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SYS_M_MGT_OBJ_EXT')
+    </selectKey>
+    insert into sys_m_mgt_obj_ext (EXTEND_SID, MGT_OBJ_SID, ATTR_KEY, ATTR_VALUE)
+    values (#{extendSid}, #{mgtObjSid}, #{attrKey}, #{attrValue})
+  </insert>
+  <insert id="insertSelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.MgtObjExt" >
+    <selectKey resultType="java.lang.Long" keyProperty="extendSid" order="BEFORE" >
+      SELECT NEXTVAL('SEQ_SYS_M_MGT_OBJ_EXT')
+    </selectKey>
+    insert into sys_m_mgt_obj_ext
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      EXTEND_SID,
+      <if test="mgtObjSid != null" >
+        MGT_OBJ_SID,
+      </if>
+      <if test="attrKey != null" >
+        ATTR_KEY,
+      </if>
+      <if test="attrValue != null" >
+        ATTR_VALUE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{extendSid},
+      <if test="mgtObjSid != null" >
+        #{mgtObjSid},
+      </if>
+      <if test="attrKey != null" >
+        #{attrKey},
+      </if>
+      <if test="attrValue != null" >
+        #{attrValue},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByParams" parameterType="com.h3c.idcloud.infrastructure.common.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from sys_m_mgt_obj_ext
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByParamsSelective" parameterType="map" >
+    update sys_m_mgt_obj_ext
+    <set >
+      <if test="record.extendSid != null" >
+        EXTEND_SID = #{record.extendSid},
+      </if>
+      <if test="record.mgtObjSid != null" >
+        MGT_OBJ_SID = #{record.mgtObjSid},
+      </if>
+      <if test="record.attrKey != null" >
+        ATTR_KEY = #{record.attrKey},
+      </if>
+      <if test="record.attrValue != null" >
+        ATTR_VALUE = #{record.attrValue},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause2" />
+    </if>
+  </update>
+  <update id="updateByParams" parameterType="map" >
+    update sys_m_mgt_obj_ext
+    set EXTEND_SID = #{record.extendSid},
+      MGT_OBJ_SID = #{record.mgtObjSid},
+      ATTR_KEY = #{record.attrKey},
+      ATTR_VALUE = #{record.attrValue}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.h3c.idcloud.core.pojo.dto.system.MgtObjExt" >
+    update sys_m_mgt_obj_ext
+    <set >
+      <if test="mgtObjSid != null" >
+        MGT_OBJ_SID = #{mgtObjSid},
+      </if>
+      <if test="attrKey != null" >
+        ATTR_KEY = #{attrKey},
+      </if>
+      <if test="attrValue != null" >
+        ATTR_VALUE = #{attrValue},
+      </if>
+    </set>
+    where EXTEND_SID = #{extendSid}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h3c.idcloud.core.pojo.dto.system.MgtObjExt" >
+    update sys_m_mgt_obj_ext
+    set MGT_OBJ_SID = #{mgtObjSid},
+      ATTR_KEY = #{attrKey},
+      ATTR_VALUE = #{attrValue}
+    where EXTEND_SID = #{extendSid}
+  </update>
+  <update id="updateBatchByPks" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+      UPDATE sys_m_mgt_obj_ext
+      <set>
+        ATTR_VALUE = #{item.attrValue}
+        WHERE
+        MGT_OBJ_SID = #{item.mgtObjSid}
+        AND
+        ATTR_KEY = #{item.attrKey}
+      </set>
+    </foreach>
+  </update>
+</mapper>
