@@ -37,6 +37,15 @@ public final class UuidUtil {
                                                 "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S",
                                                 "T", "U", "V",
                                                 "W", "X", "Y", "Z"};
+    public static String[] alphabet = new String[]{"a", "b", "c", "d", "e", "f",
+            "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
+            "q", "r", "s",
+            "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F",
+            "G", "H", "I",
+            "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S",
+            "T", "U", "V",
+            "W", "X", "Y", "Z"};
+
 
     /**
      * 取得8位UUID
@@ -81,5 +90,25 @@ public final class UuidUtil {
      */
     public static String getUuid() {
         return UUID.randomUUID().toString().replace("-", "");
+    }
+
+    public static String getShortAlphabeticUuid(String prefix) {
+
+        StringBuffer shortBuffer = new StringBuffer();
+        if (StringUtils.isNotEmpty(prefix)) {
+            shortBuffer.append(prefix);
+        }
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        for (int i = 0; i < 8; i++) {
+            String str = uuid.substring(i * 4, i * 4 + 4);
+            int x = Integer.parseInt(str, 16);
+            shortBuffer.append(alphabet[x % 0x34]);
+        }
+        return shortBuffer.toString().toLowerCase();
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println(getShortAlphabeticUuid("/dev/"));
     }
 }

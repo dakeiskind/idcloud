@@ -281,31 +281,33 @@ public class VmResultListener {
         logger.debug("创建虚拟机回调 | 更新VM状态：" + JsonUtil.toJson(resVm));
 
         List<ResStorage> resStorageList = this.resStorageMapper.selectAllocateStoByHostSid(resHost.getResHostSid());
-        ResStorage resStorage = resStorageList.get(0);
+        if (null != resStorageList && !resStorageList.isEmpty()) {
+            ResStorage resStorage = resStorageList.get(0);
 
-        // 更新磁盘状态
-        Criteria criteria2 = new Criteria();
-        criteria2.put("resVmSid", resVm.getResVmSid());
-        List<ResVd> resVdList = this.resVdMapper.selectByParams(criteria2);
-        final List<VmDisk> diskResults = vmCreateResult.getDisks();
-        if (diskResults != null) {
-            for (ResVd resVd : resVdList) {
-                for (VmDisk diskResult : diskResults) {
-                    if (resVd.getVdName().equals(diskResult.getName())) {
-                        // OpenStack环境的时候，系统盘做存储的关联
-                        if (WebConstants.StoragePurpose.SYSTEM_DISK.equals(resVd.getStoragePurpose())) {
-                            resVd.setAllocateResStorageSid(resStorage.getResStorageSid());
+            // 更新磁盘状态
+            Criteria criteria2 = new Criteria();
+            criteria2.put("resVmSid", resVm.getResVmSid());
+            List<ResVd> resVdList = this.resVdMapper.selectByParams(criteria2);
+            final List<VmDisk> diskResults = vmCreateResult.getDisks();
+            if (diskResults != null) {
+                for (ResVd resVd : resVdList) {
+                    for (VmDisk diskResult : diskResults) {
+                        if (resVd.getVdName().equals(diskResult.getName())) {
+                            // OpenStack环境的时候，系统盘做存储的关联
+                            if (WebConstants.StoragePurpose.SYSTEM_DISK.equals(resVd.getStoragePurpose())) {
+                                resVd.setAllocateResStorageSid(resStorage.getResStorageSid());
+                            }
+                            resVd.setStatus(WebConstants.ResVdStatus.NORMAL);
+                            resVd.setUuid(diskResult.getUuid());
+                            resVd.setPath(diskResult.getPath());
+                            resVd.setReleaseMode(WebConstants.ReleaseMode.WITH_INSTANCE);
+                            WebUtil.prepareUpdateParams(resVd, userAccount);
+                            this.resVdMapper.updateByPrimaryKeySelective(resVd);
                         }
-                        resVd.setStatus(WebConstants.ResVdStatus.NORMAL);
-                        resVd.setUuid(diskResult.getUuid());
-                        resVd.setPath(diskResult.getPath());
-                        resVd.setReleaseMode(WebConstants.ReleaseMode.WITH_INSTANCE);
-                        WebUtil.prepareUpdateParams(resVd, userAccount);
-                        this.resVdMapper.updateByPrimaryKeySelective(resVd);
                     }
                 }
+                logger.debug("创建虚拟机回调 | 更新VD状态：" + JsonUtil.toJson(resVdList));
             }
-            logger.debug("创建虚拟机回调 | 更新VD状态：" + JsonUtil.toJson(resVdList));
         }
 
         // 更新网络状态

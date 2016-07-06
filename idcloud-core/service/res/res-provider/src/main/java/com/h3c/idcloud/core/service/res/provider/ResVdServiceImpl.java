@@ -36,10 +36,7 @@ import com.h3c.idcloud.infra.log.task.TaskLoggerFactory;
 import com.h3c.idcloud.infrastructure.common.constants.WebConstants;
 import com.h3c.idcloud.infrastructure.common.pojo.Criteria;
 import com.h3c.idcloud.infrastructure.common.pojo.User;
-import com.h3c.idcloud.infrastructure.common.util.AuthUtil;
-import com.h3c.idcloud.infrastructure.common.util.JsonUtil;
-import com.h3c.idcloud.infrastructure.common.util.StringUtil;
-import com.h3c.idcloud.infrastructure.common.util.WebUtil;
+import com.h3c.idcloud.infrastructure.common.util.*;
 import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +44,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -78,19 +77,20 @@ public class ResVdServiceImpl implements ResVdService {
     /**
      * 创建虚拟磁盘
      *
-     * @implSpec
-     * {
-     *      "region": "10",
-     *      "zone": "12e0c825-3ff5-11e5-8c09-005056ba3c46",
-     *      "dataDisk": [{
-     *          "dataDiskCategory": "cloud_ssd",
-     *          "dataDiskSize": "20"
-     *      }]
+     * @implSpec {
+     * "region": "10",
+     * "zone": "12e0c825-3ff5-11e5-8c09-005056ba3c46",
+     * "dataDisk": [{
+     * "dataDiskCategory": "cloud_ssd",
+     * "dataDiskSize": "20"
+     * }]
      * }
      */
     @Override
     @Transactional
     public ResInstResult createVd(ResCommonInst resCommonInst) {
+        ResInstResult result;
+
         logger.info("创建块存储 | 输入参数：{}", JsonUtil.toJson(resCommonInst));
         JsonNode jsonNode = JsonUtil.fromJson(resCommonInst.getResSpecParam());
         String zone = jsonNode.get("zone").getTextValue();
@@ -117,8 +117,18 @@ public class ResVdServiceImpl implements ResVdService {
         // 查找Cinder存储
         // TODO 存储类型 ssd，normal
         Criteria criteria = new Criteria().put("parentTopologySid", resVe.getResTopologySid())
-                                          .put("storageCategory", WebConstants.StorageCategory.CINDER);
+                .put("storageCategory", WebConstants.StorageCategory.CINDER);
         List<ResStorage> resStorages = this.resStorageMapper.selectBaseInfoByParams(criteria);
+        if (null == resStorages || resStorages.isEmpty()) {
+            String error = String.format("没有可用的存储设备，类型：%s", "cinder");
+            logger.error(error);
+            log = new TaskLog();
+            log.setTaskLogSid(taskId);
+            log.setTaskFailureReason(String.format("创建块存储异常：%s", error));
+            taskLogger.fail(log);
+            result = new ResInstResult(ResInstResult.FAILURE, error);
+            return result;
+        }
         ResStorage resStorage = resStorages.get(0);
 
         // 插入VD表
@@ -144,7 +154,6 @@ public class ResVdServiceImpl implements ResVdService {
         diskCreate.setSize(resVd.getAllocateDiskSize().toString());
         logger.info("创建块存储 | 输入MQ参数：" + JsonUtil.toJson(diskCreate));
 
-        ResInstResult result;
         try {
             MQHelper.sendMessage(diskCreate);
             Map<String, String> resMap = Maps.newHashMap();
@@ -168,13 +177,12 @@ public class ResVdServiceImpl implements ResVdService {
     /**
      * 挂载虚拟磁盘
      *
-     * @implSpec
-     * {
-     *      "region": "10",
-     *      "zone": "12e0c825-3ff5-11e5-8c09-005056ba3c46",
-     *      "resVdSid": "",
-     *      "resVmSid": "",
-     *      "mountPath": "/dev/vdb"
+     * @implSpec {
+     * "region": "10",
+     * "zone": "12e0c825-3ff5-11e5-8c09-005056ba3c46",
+     * "resVdSid": "",
+     * "resVmSid": "",
+     * "mountPath": "/dev/vdb"
      * }
      */
     @Override
@@ -213,15 +221,17 @@ public class ResVdServiceImpl implements ResVdService {
         this.resBaseService.setAdapterBaseInfo(resVe, resCommonInst, diskAttach);
         diskAttach.setRegion(this.resBaseService.getRegionFromZone(zone));
 
-        // 组装参数，调用MQ
-        ResVm resVm = this.resVmMapper.selectByPrimaryKey(jsonNode.get("resVmSid").getTextValue());
-        diskAttach.setServerId(resVm.getUuid());
-        diskAttach.setVolumeId(resVd.getUuid());
-        diskAttach.setDevice(jsonNode.get("mountPath").getTextValue());
-
         logger.info("输入MQ参数：" + JsonUtil.toJson(diskAttach));
         ResInstResult result;
         try {
+            // 组装参数，调用MQ
+            ResVm resVm = this.resVmMapper.selectByPrimaryKey(jsonNode.get("resVmSid").getTextValue());
+            diskAttach.setServerId(resVm.getUuid());
+            diskAttach.setVolumeId(resVd.getUuid());
+//        diskAttach.setDevice(jsonNode.get("mountPath").getTextValue());
+//            String device = String.format("/dev/%s", resVd.getVdName().replaceAll("-", ""));
+            diskAttach.setDevice(UuidUtil.getShortAlphabeticUuid("/dev/"));
+
             MQHelper.sendMessage(diskAttach);
             result = new ResInstResult(ResInstResult.SUCCESS, "挂载块存储成功", null);
         } catch (MQException e) {

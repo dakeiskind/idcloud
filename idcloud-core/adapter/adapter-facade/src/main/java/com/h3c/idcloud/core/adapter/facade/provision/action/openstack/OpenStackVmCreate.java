@@ -107,7 +107,7 @@ public class OpenStackVmCreate extends ActionKvm implements Runnable {
         CreateServerOptions options = CreateServerOptions.Builder
                 .availabilityZone(vmCreate.getAvailabilityZone())
 //                .networks(vmCreate.getNics().stream().map(nic -> nic.getNetId()).collect(Collectors.toList()))
-                .adminPass(null == vmCreate.getAdminPass() ? "root" : vmCreate.getAdminPass());
+                .adminPass(vmCreate.getAdminPass());
         if(vmCreate.getKeypair() != null) {
             prepareKeypairs(options, base);
         }
@@ -277,18 +277,6 @@ public class OpenStackVmCreate extends ActionKvm implements Runnable {
     }
 
     /**
-     * close thread pool
-     *
-     * @param singleThreadScheduledPool the thread pool to be close
-     */
-    private void shutDownThreadPool(ScheduledExecutorService singleThreadScheduledPool) {
-        if (!singleThreadScheduledPool.isShutdown()) {
-            logger.debug("schedule finished, will shutdown thread pool.");
-            singleThreadScheduledPool.shutdownNow();
-        }
-    }
-
-    /**
      * find flavor by cpu mem disk, if there is no flavor found by the criteria, create a new flavor
      *
      * @param vmCreate query criteria, include cpu, memory, sysDiskSize
@@ -321,6 +309,18 @@ public class OpenStackVmCreate extends ActionKvm implements Runnable {
                     .build());
             logger.debug("newly created flavor: {}", flavor);
             return flavor;
+        }
+    }
+
+    /**
+     * close thread pool
+     *
+     * @param singleThreadScheduledPool the thread pool to be close
+     */
+    private void shutDownThreadPool(ScheduledExecutorService singleThreadScheduledPool) {
+        if (!singleThreadScheduledPool.isShutdown()) {
+            logger.debug("schedule finished, will shutdown thread pool.");
+            singleThreadScheduledPool.shutdownNow();
         }
     }
 

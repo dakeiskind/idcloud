@@ -148,6 +148,7 @@
 	</resultMap>
 	<sql id="Example_Where_Clause">
 		<trim prefix="where" prefixOverrides="and|or">
+			1=1
 			<if test="condition.instanceId != null">
 				and A.INSTANCE_ID = #{condition.instanceId}
 			</if>
@@ -944,6 +945,7 @@
 		select
 		distinct
 		<include refid="Base_Column_List" />,
+		N.CONFIG_VALUE AS ZONE_NAME,
 		M.CODE_DISPLAY AS STATUS_NAME,
 		C.STATUS AS RES_INS_VD_STATUS,
 		C.ALLOCATE_DISK_SIZE as ALLOCATE_DISK_SIZE,
@@ -961,9 +963,11 @@
 		LEFT JOIN sys_m_code H on ( H.CODE_CATEGORY = 'RES_VD_STATUS' AND C.STATUS = H.CODE_VALUE)
 		left join SYS_M_CODE L on(L.CODE_CATEGORY =	'BILLING_TYPE_YM' and A.BILLING_TYPE = L.CODE_VALUE)
 		left join SYS_M_CODE M on(M.CODE_CATEGORY =	'SERVICE_INASTANCE_STATUS' and A.STATUS = M.CODE_VALUE)
+		LEFT JOIN res_topology_config N ON (A.ZONE_SID = N.RES_TOPOLOGY_SID)
 		<if test="_parameter != null">
 			<include refid="Example_Where_Clause" />
 		</if>
+		and N.CONFIG_KEY = 'region_name'
 		<if test="orderByClause != null">
 			order by ${orderByClause} desc
 		</if>

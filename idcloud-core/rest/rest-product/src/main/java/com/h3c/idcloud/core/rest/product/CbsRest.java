@@ -1,5 +1,7 @@
 package com.h3c.idcloud.core.rest.product;
 
+import com.h3c.idcloud.core.pojo.dto.product.ServiceInstance;
+import com.h3c.idcloud.core.rest.product.impl.CbsRestImpl;
 import org.springframework.context.annotation.Scope;
 
 import javax.jws.WebMethod;
@@ -27,4 +29,11 @@ public interface CbsRest {
     @POST
     @Path("/findCbs")
     Response findCbsInfo(@Context HttpServletRequest req);
+
+    /**
+     * 挂载或卸载块存储
+     */
+    @POST
+    @Path("/operation")
+    Response operation(CbsRestImpl.ParamOperateObs param, @Context HttpServletRequest request);
 }
