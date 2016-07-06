@@ -53,7 +53,8 @@ define(['app-utils/httpService','app-utils/codeService',"app-modules/console/hos
                 callback:function(){
                     var obj = new Object();
                     obj.actionName = "detach";
-                    var cbs = getSelectedCbsArr(row,null);
+                    var vmSid = $("#vmSid").val();
+                    var cbs = getSelectedCbsArr(row,vmSid);
                     obj.actionCbs = cbs;
                     httpOperation(obj,"卸载硬盘成功！");
                     return true;
@@ -104,6 +105,7 @@ define(['app-utils/httpService','app-utils/codeService',"app-modules/console/hos
         },
         refresh:function(){
             initGrid();
+            initButton();
             messageBox.msgNotification({
                 type:"success",
                 message:"刷新成功！"
@@ -279,13 +281,13 @@ define(['app-utils/httpService','app-utils/codeService',"app-modules/console/hos
         if (row >= 0) {
             var selectObj = $("#diskGrid").ptGrid("getrowdata", row);
             if(vmSid != null)
-                selectObj.vmSid = vmSid;
+                selectObj.resInstanceHostSid = vmSid;
             cbs.push(selectObj);
         }else {
             var selectObj = $("#diskGrid").ptGrid("getselectedrow");
             for (var i=0;i<selectObj.length;i++) {
                 if(vmSid != null)
-                    selectObj[i].vmSid = vmSid;
+                    selectObj[i].resInstanceHostSid = vmSid;
                 cbs.push(selectObj[i]);
             }
         }
@@ -316,13 +318,13 @@ define(['app-utils/httpService','app-utils/codeService',"app-modules/console/hos
     Array.prototype.isH=function (a){
         if(this.length===0){return false};
         for(var i=0;i<this.length;i++){
-            if(this[i].vmSid==a){return true}
+            if(this[i].vmName==a){return true}
         }
     };
     Array.prototype.isFH=function (a){
         if(this.length===0){return false};
         for(var i=0;i<this.length;i++){
-            if(this[i].vmSid!==a){return true}
+            if(this[i].vmName!==a){return true}
         }
     };
     //初始grid;
@@ -337,14 +339,14 @@ define(['app-utils/httpService','app-utils/codeService',"app-modules/console/hos
                 params: searchObj
             },
             columns: [
-                { text: '硬盘ID/硬盘名称', datafield: 'instanceIdName'},
-                { text: '硬盘类型', datafield: 'diskType'},
-                { text: '容量(单位：G)', datafield: 'diskSize'},
-                { text: '硬盘状态', datafield: 'vdStatusName'},
+                { text: '硬盘ID/硬盘名称', datafield: 'instanceId'},
+                { text: '硬盘类型', datafield: 'specification'},
+                { text: '容量(单位：G)', datafield: 'allocateDiskSize'},
+                { text: '硬盘状态', datafield: 'resInsVdStatusName'},
                 { text: '付费类型', datafield: 'billingTypeName'},
                 { text: '挂载云主机',datafield:'vmName'},
                 { text: '可用区',datafield:'zoneName'},
-                { text: '创建时间',datafield:'dredgeTime'},
+                { text: '创建时间',datafield:'createdDt'},
                 { text: '操作', datafield: '',sortable: false,width:150,align:"center"
                     , cellsrenderer:function (row,rowdata) {
                         var cellsHtml = "";
@@ -370,7 +372,8 @@ define(['app-utils/httpService','app-utils/codeService',"app-modules/console/hos
                     cellsHtml += '</div>';
                     return cellsHtml;
                     }
-                }
+                },
+                {text: 'vmSid', datafield:'resInstanceHostSid', hidden:true}
             ],
             toolbars:[
                 {id: "refreshBtn",name:"刷新",type:"button",icon:"icon-refresh",click:"refresh()"},
